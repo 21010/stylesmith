@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",

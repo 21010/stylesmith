@@ -1,26 +1,31 @@
 // Stylesmith caret animation, runs inside the VS Code workbench page.
 //
-// When the text cursor moves, a shape glides from the old position to the new one. The
-// corners at the front of the motion arrive quickly and the ones at the back follow more
-// slowly, which stretches the shape into a short trail. The idea comes from Neovide's
-// cursor animation; this is a separate implementation.
+// Draws the text cursor on a canvas above the editor, with a soft glow. When the cursor
+// moves, the drawn shape glides to the new position: corners at the front of the motion
+// arrive almost at once and corners at the back follow, which stretches the shape into a
+// short trail. The idea comes from Neovide's cursor animation; this is a separate
+// implementation.
 //
-// Nothing runs while the editor is idle: the script only wakes when VS Code changes the
-// page, and it stops drawing as soon as every cursor has settled.
+// Nothing runs while the editor is idle. The script only wakes when VS Code changes the
+// page, and the canvas keeps showing the last frame without being redrawn.
 (function () {
 	"use strict";
 
 	const CURSOR_SELECTOR = ".monaco-editor .cursors-layer .cursor";
 
-	// Roughly how long (in seconds) corners take to reach the new position.
-	const FRONT_TIME = 0.03;
-	const BACK_TIME = 0.12;
-	const SAME_LINE_BACK_TIME = 0.05; // shorter trail while typing along a line
-	const SAME_LINE_DISTANCE = 4; // in cursor heights
+	// Roughly how long (in seconds) the corners take to reach the new position.
+	const TRAIL_TIME = 0.125; // corners at the back of the motion
+	const SAME_LINE_TRAIL_TIME = 0.05; // shorter trail while typing along a line
+	const LEAD_TIME = 0.02; // corners pointing in the direction of travel
+	const LEAD_FACING = 0.5; // how directly a corner must point forward to lead
+	const SAME_LINE_DISTANCE = 8; // in cursor widths
+	const KEEP_SPEED_BELOW = 0.075; // quick moves keep their speed, so fast typing flows
 
+	const GLOW_BLUR = 10; // pixels
+	const MAX_TRAIL = 100; // in cursor sizes; stops huge jumps smearing across the screen
 	const MAX_STEP = 1 / 30; // seconds; keeps motion stable after a slow frame
 	const SETTLED = 0.25; // pixels
-	const SCROLL_PAUSE = 150; // ms without animating after a wheel event
+	const SCROLL_PAUSE = 150; // ms without animating after scrolling
 
 	// Corner offsets from the cursor's center, as a fraction of its width and height.
 	const CORNERS = [
@@ -37,14 +42,15 @@
 	let ctx = null;
 	let lastPosition = null; // where the most recently moved cursor ended up
 	let scrollingUntil = 0;
-	let checkQueued = false;
-	let frameQueued = false;
+	let scheduled = false;
+	let dirty = false; // redraw even if no cursor changed (e.g. after a resize)
 	let lastFrameTime = null; // null while no animation is running
 
 	class Trail {
 		constructor(start) {
 			this.rect = start;
 			this.color = "";
+			this.visible = true;
 			this.corners = CORNERS.map(([dx, dy]) => ({
 				dx,
 				dy,
@@ -52,12 +58,13 @@
 				y: 0,
 				vx: 0,
 				vy: 0,
-				time: 0
+				time: TRAIL_TIME
 			}));
 			this.snapTo(start);
 		}
 
 		snapTo(rect) {
+			this.rect = rect;
 			for (const corner of this.corners) {
 				corner.x = rect.left + (corner.dx + 0.5) * rect.width;
 				corner.y = rect.top + (corner.dy + 0.5) * rect.height;
@@ -66,15 +73,15 @@
 			}
 		}
 
-		// Starts a move to `rect`. Corners that face the direction of travel get a short
-		// time and lead; corners facing away get a long time and trail behind.
+		// Starts a move to `rect`. Each corner gets a time based on how much it points in
+		// the direction of travel: forward corners lead, backward corners trail.
 		moveTo(rect) {
 			const moveX = centerX(rect) - centerX(this.rect);
 			const moveY = centerY(rect) - centerY(this.rect);
 			const distance = Math.hypot(moveX, moveY);
 			const sameLine =
-				Math.abs(moveY) < 1 && Math.abs(moveX) < rect.height * SAME_LINE_DISTANCE;
-			const backTime = sameLine ? SAME_LINE_BACK_TIME : BACK_TIME;
+				Math.abs(moveY) < 1 && Math.abs(moveX) <= rect.width * SAME_LINE_DISTANCE;
+			const trailTime = sameLine ? SAME_LINE_TRAIL_TIME : TRAIL_TIME;
 
 			for (const corner of this.corners) {
 				const facing =
@@ -82,21 +89,36 @@
 						? 0
 						: (corner.dx * moveX + corner.dy * moveY) /
 							(Math.hypot(corner.dx, corner.dy) * distance);
-				const front = (facing + 1) / 2; // 0 at the back, 1 at the front
-				corner.time = backTime + (FRONT_TIME - backTime) * front;
+
+				if (facing > LEAD_FACING) {
+					corner.time = Math.min(LEAD_TIME, trailTime);
+				} else {
+					// From the full trail time for a corner pointing straight back, down to
+					// 30% of it for a corner that almost leads. Squaring keeps the back
+					// corners close to the full time.
+					const forward = (facing + 1) / (LEAD_FACING + 1);
+					corner.time = trailTime * (1 - 0.7 * forward * forward);
+				}
+
+				// Keep momentum between quick moves; start fresh for slower, bigger ones.
+				if (corner.time > KEEP_SPEED_BELOW) {
+					corner.vx = 0;
+					corner.vy = 0;
+				}
 			}
 			this.rect = rect;
 		}
 
 		// Advances the animation by `dt` seconds. Returns true while still moving.
 		step(dt) {
+			const maxOffset = Math.max(this.rect.width, this.rect.height) * MAX_TRAIL;
 			let moving = false;
 			for (const corner of this.corners) {
 				const targetX = this.rect.left + (corner.dx + 0.5) * this.rect.width;
 				const targetY = this.rect.top + (corner.dy + 0.5) * this.rect.height;
-				const speed = 6 / corner.time;
-				[corner.x, corner.vx] = follow(corner.x, corner.vx, targetX, speed, dt);
-				[corner.y, corner.vy] = follow(corner.y, corner.vy, targetY, speed, dt);
+				const speed = 4 / corner.time;
+				[corner.x, corner.vx] = follow(corner.x, corner.vx, targetX, speed, dt, maxOffset);
+				[corner.y, corner.vy] = follow(corner.y, corner.vy, targetY, speed, dt, maxOffset);
 
 				if (
 					Math.abs(corner.x - targetX) < SETTLED &&
@@ -121,17 +143,24 @@
 			}
 			ctx.closePath();
 			ctx.fillStyle = this.color;
+			ctx.shadowColor = this.color;
+			ctx.shadowBlur = GLOW_BLUR;
 			ctx.fill();
 		}
 	}
 
 	// A critically damped spring: moves `position` towards `target` as fast as possible
 	// without overshooting. Returns the new position and velocity after `dt` seconds.
-	function follow(position, velocity, target, speed, dt) {
+	function follow(position, velocity, target, speed, dt, maxOffset) {
 		const offset = position - target;
 		const k = velocity + speed * offset;
 		const decay = Math.exp(-speed * dt);
-		return [target + (offset + k * dt) * decay, (velocity - speed * k * dt) * decay];
+		const next = clamp((offset + k * dt) * decay, -maxOffset, maxOffset);
+		return [target + next, (velocity - speed * k * dt) * decay];
+	}
+
+	function clamp(value, min, max) {
+		return Math.min(Math.max(value, min), max);
 	}
 
 	function centerX(rect) {
@@ -144,6 +173,12 @@
 
 	function sameRect(a, b) {
 		return a.left === b.left && a.top === b.top && a.width === b.width && a.height === b.height;
+	}
+
+	function isVisible(element, rect) {
+		if (rect.width === 0 || rect.height === 0) return false;
+		const style = getComputedStyle(element);
+		return style.visibility !== "hidden" && style.display !== "none" && style.opacity !== "0";
 	}
 
 	function cursorColor(element) {
@@ -171,25 +206,30 @@
 		ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 	}
 
-	// Looks at every visible cursor once. Called after DOM changes, at most once per frame.
+	// Looks at every cursor once. Returns true if anything needs to be redrawn.
 	function check() {
-		checkQueued = false;
 		const animate = !reducedMotion.matches && performance.now() > scrollingUntil;
 		const seen = new Set();
+		let changed = false;
 
 		for (const element of document.querySelectorAll(CURSOR_SELECTOR)) {
-			const rect = element.getBoundingClientRect();
-			if (rect.width === 0 || rect.height === 0) continue;
-			if (getComputedStyle(element).visibility === "hidden") continue;
 			seen.add(element);
-
+			const rect = element.getBoundingClientRect();
+			const visible = isVisible(element, rect);
 			let trail = trails.get(element);
+
 			if (!trail) {
-				// A cursor that just appeared (e.g. after switching editors) starts where
-				// the last one was, so the move between editors is animated too.
+				if (!visible) continue;
+				// A new cursor (e.g. in an editor that was just opened) starts where the
+				// last one was, so the move between editors is animated too.
 				trail = new Trail(animate && lastPosition ? lastPosition : rect);
 				trails.set(element, trail);
-			} else if (sameRect(trail.rect, rect)) {
+			} else if (visible !== trail.visible) {
+				// Blinking, or the editor gaining or losing focus: show or hide in place.
+				trail.visible = visible;
+				changed = true;
+				if (!visible || sameRect(trail.rect, rect)) continue;
+			} else if (!visible || sameRect(trail.rect, rect)) {
 				continue;
 			}
 
@@ -197,56 +237,66 @@
 			trail.moveTo(rect);
 			if (!animate) trail.snapTo(rect);
 			lastPosition = rect;
-			requestFrame();
+			changed = true;
 		}
 
+		// Forget cursors that were removed from the page.
 		for (const element of trails.keys()) {
-			if (!seen.has(element)) trails.delete(element);
+			if (!seen.has(element)) {
+				trails.delete(element);
+				changed = true;
+			}
 		}
+
+		return changed;
 	}
 
-	function queueCheck() {
-		if (checkQueued) return;
-		checkQueued = true;
-		requestAnimationFrame(check);
+	// Runs on the next frame. Called after DOM changes, and every frame while animating.
+	function schedule() {
+		if (scheduled) return;
+		scheduled = true;
+		requestAnimationFrame(tick);
 	}
 
-	function requestFrame() {
-		if (frameQueued) return;
-		frameQueued = true;
-		requestAnimationFrame(frame);
-	}
+	function tick(now) {
+		scheduled = false;
 
-	function frame(now) {
-		frameQueued = false;
+		// Checking and drawing in the same frame means a move shows up without delay.
+		// While animating this also re-reads positions every frame, which keeps up with
+		// VS Code's own smooth caret setting (a CSS transition that doesn't change the DOM).
+		const changed = check() || dirty;
+		dirty = false;
+		if (!changed && lastFrameTime === null) return;
+
 		const dt =
 			lastFrameTime === null
 				? 1 / 60
 				: Math.min(Math.max((now - lastFrameTime) / 1000, 0), MAX_STEP);
 		lastFrameTime = now;
 
-		// VS Code's own smooth caret setting moves the cursor with a CSS transition, which
-		// doesn't change the DOM on every frame, so re-read positions while animating.
-		check();
-
-		ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 		let moving = false;
 		for (const trail of trails.values()) {
-			if (trail.step(dt)) {
-				trail.draw();
-				moving = true;
-			}
+			if (trail.step(dt)) moving = true;
 		}
 
-		// Once everything has settled the canvas stays empty and VS Code's own cursor shows.
-		if (moving) requestFrame();
+		ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+		for (const trail of trails.values()) {
+			if (trail.visible) trail.draw();
+		}
+
+		// Once everything has settled, the last frame simply stays on the canvas.
+		if (moving) schedule();
 		else lastFrameTime = null;
+	}
+
+	function pauseWhileScrolling() {
+		scrollingUntil = performance.now() + SCROLL_PAUSE;
 	}
 
 	function start() {
 		setUpCanvas();
 
-		new MutationObserver(queueCheck).observe(document.body, {
+		new MutationObserver(schedule).observe(document.body, {
 			subtree: true,
 			childList: true,
 			attributes: true,
@@ -256,22 +306,18 @@
 		window.addEventListener("resize", () => {
 			resizeCanvas();
 			for (const [element, trail] of trails) {
-				const rect = element.getBoundingClientRect();
-				trail.rect = rect;
-				trail.snapTo(rect);
+				trail.snapTo(element.getBoundingClientRect());
 			}
+			dirty = true;
+			schedule();
 		});
 
 		// Content moves under the cursor while scrolling; follow it instantly instead.
-		window.addEventListener(
-			"wheel",
-			() => {
-				scrollingUntil = performance.now() + SCROLL_PAUSE;
-			},
-			{ capture: true, passive: true }
-		);
+		const passive = { capture: true, passive: true };
+		window.addEventListener("wheel", pauseWhileScrolling, passive);
+		document.addEventListener("scroll", pauseWhileScrolling, passive);
 
-		queueCheck();
+		schedule();
 	}
 
 	if (document.body) start();

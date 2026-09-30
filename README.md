@@ -58,7 +58,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.2.0.vsix
+code --install-extension stylesmith-1.2.1.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -94,7 +94,7 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 
 On by default. When the text cursor moves, it glides to its new place and leaves a short trail behind it, so it's easier to follow your cursor as you jump around a file.
 
-- It follows your theme's cursor color.
+- It uses your theme's cursor color, with a soft glow, and blinks along with VS Code's cursor.
 - It turns itself off if your system is set to reduce motion.
 - It doesn't animate while you scroll.
 - It does nothing while the cursor is still, so it doesn't use any CPU when you're not moving around.
