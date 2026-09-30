@@ -70,11 +70,12 @@ try {
 			throw new Error(`${font.archive}: SHA-256 is ${actual}, expected ${font.sha256}`);
 		}
 
+		// The verified archive goes straight to tar in memory; the download itself is never saved.
 		const folder = join(work, font.archive.replace(".tar.xz", ""));
 		mkdirSync(folder);
-		writeFileSync(join(folder, font.archive), archive);
-		execFileSync("tar", ["-xJf", font.archive, ...Object.keys(font.files), font.license], {
-			cwd: folder
+		execFileSync("tar", ["-xJf", "-", ...Object.keys(font.files), font.license], {
+			cwd: folder,
+			input: archive
 		});
 
 		for (const [source, target] of Object.entries(font.files)) {
@@ -85,12 +86,9 @@ try {
 		const licenseName = font.archive.replace(".tar.xz", ".txt");
 		writeFileSync(join(licenseDir, licenseName), readFileSync(join(folder, font.license)));
 	}
-	// Nerd Fonts' own license, which covers the patcher and lists the icon sets' licenses.
-	const license = await fetch(
-		`https://raw.githubusercontent.com/ryanoasis/nerd-fonts/${RELEASE}/LICENSE`
-	);
-	if (!license.ok) throw new Error(`Nerd Fonts LICENSE: HTTP ${license.status}`);
-	writeFileSync(join(licenseDir, "NerdFonts.txt"), await license.text());
+	// assets/fonts/licenses/NerdFonts.txt is Nerd Fonts' own LICENSE file from the release
+	// above. It isn't in the checksummed archives, so it's kept in the repository instead of
+	// being downloaded unverified. Update it by hand when changing RELEASE.
 } finally {
 	rmSync(work, { recursive: true, force: true });
 }
