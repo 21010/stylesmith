@@ -1,9 +1,11 @@
 /**
  * Pure transformations of VS Code's workbench HTML.
  *
- * Everything `patch` adds is wrapped in marker comments, and the Content-Security-Policy
- * is commented out instead of deleted, so `unpatch` restores the original file byte for byte.
+ * Everything `patch` adds is wrapped in marker comments. The original Content-Security-Policy
+ * is kept in a comment next to the extended one, so `unpatch` restores the file byte for byte.
  */
+
+import { extendPolicy, scriptHash } from "./csp";
 
 export type ImportKind = "css" | "js";
 
@@ -13,6 +15,7 @@ const BODY_START = "<!-- !! STYLESMITH-INDICATOR-START !! -->\n";
 const BODY_END = "<!-- !! STYLESMITH-INDICATOR-END !! -->\n";
 const CSP_START = "<!-- !! STYLESMITH-CSP ";
 const CSP_END = " !! -->";
+const CSP_META_START = '<meta http-equiv="Content-Security-Policy" data-stylesmith-csp content="';
 
 // Also match the "VSCODE-CUSTOM-CSS" markers of Custom CSS and JS Loader, so switching
 // from the original extension cleans up its patch.
@@ -20,8 +23,12 @@ const HEAD_BLOCK_RE =
 	/<!-- !! (STYLESMITH|VSCODE-CUSTOM-CSS)-START !! -->[\s\S]*?<!-- !! \1-END !! -->\n?/g;
 const BODY_BLOCK_RE =
 	/<!-- !! (STYLESMITH|VSCODE-CUSTOM-CSS)-INDICATOR-START !! -->[\s\S]*?<!-- !! \1-INDICATOR-END !! -->\n?/g;
-const CSP_COMMENT_RE = /<!-- !! (?:STYLESMITH|VSCODE-CUSTOM-CSS)-CSP ([\s\S]*?) !! -->/g;
+// The original policy in a comment, optionally followed by the extended policy that replaced it.
+const CSP_COMMENT_RE =
+	/<!-- !! (?:STYLESMITH|VSCODE-CUSTOM-CSS)-CSP ([\s\S]*?) !! -->(?:<meta http-equiv="Content-Security-Policy" data-stylesmith-csp [^>]*>)?/g;
 const CSP_META_RE = /<meta\s+http-equiv=["']?Content-Security-Policy["']?[^>]*>/gi;
+const CSP_CONTENT_RE = /\scontent\s*=\s*"([^"]*)"/i;
+const SCRIPT_RE = /<script>([\s\S]*?)<\/script>/g;
 
 // Left behind by Custom CSS and JS Loader <= 7.5.1, which deleted the CSP outright.
 const LEGACY_SESSION_RE = /<!-- !! VSCODE-CUSTOM-CSS-SESSION-ID ([\w-]+) !! -->\n*/;
@@ -34,9 +41,17 @@ const LEGACY_INDICATOR_RE =
  * and `bodyContent` before `</body>`. `pristine` must be unpatched HTML.
  */
 export function patch(pristine: string, headContent: string, bodyContent = ""): string {
+	// Allow exactly the scripts being added, by hash, and nothing else.
+	const hashes = [...(headContent + bodyContent).matchAll(SCRIPT_RE)].map(m => scriptHash(m[1]));
+
 	let html = pristine.replace(CSP_META_RE, meta => {
-		if (meta.includes("-->")) throw new Error("Unexpected Content-Security-Policy markup");
-		return CSP_START + meta + CSP_END;
+		const content = CSP_CONTENT_RE.exec(meta)?.[1];
+		if (content === undefined || meta.includes("-->")) {
+			throw new Error("Cannot read VS Code's Content-Security-Policy");
+		}
+		const policy = extendPolicy(content, hashes);
+		if (/["<>]/.test(policy)) throw new Error("Unexpected Content-Security-Policy content");
+		return `${CSP_START}${meta}${CSP_END}${CSP_META_START}${policy}">`;
 	});
 	html = insertBefore(html, html.indexOf("</head>"), HEAD_START + headContent + HEAD_END);
 	if (bodyContent) {

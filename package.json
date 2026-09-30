@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -70,17 +70,26 @@
 						"type": "string"
 					},
 					"default": [],
-					"markdownDescription": "URLs of `.css` and `.js` files to inject, e.g. `file:///C:/Users/me/custom.css` or `https://example.com/theme.css`. File URLs support variables such as `${userHome}`. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "URLs of `.css` and `.js` files to add to VS Code, e.g. `file:///C:/Users/me/custom.css`. File URLs support variables such as `${userHome}`. Only read from your user settings. Run **Stylesmith: Reload** after changing this.",
+					"scope": "application"
+				},
+				"stylesmith.allowRemoteImports": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "Allow `https://` URLs in `stylesmith.imports`. Off by default: remote files can change at any time, and they run with full access to your editor. `http://` is never allowed."
 				},
 				"stylesmith.effects.caretAnimation": {
 					"type": "boolean",
 					"default": true,
-					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. Run **Stylesmith: Reload** after changing this.",
+					"scope": "application"
 				},
 				"stylesmith.statusbar": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show a status bar icon while custom CSS/JS is active."
+					"description": "Show a status bar icon while custom CSS/JS is active.",
+					"scope": "application"
 				}
 			}
 		}
@@ -105,5 +114,12 @@
 		"prettier": "^3.9.9",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.71.0"
+	},
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true,
+			"description": "Stylesmith only reads user settings, and ${workspaceFolder} imports are skipped in untrusted workspaces."
+		},
+		"virtualWorkspaces": true
 	}
 }

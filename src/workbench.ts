@@ -1,5 +1,5 @@
-import { existsSync } from "node:fs";
-import { readdir, readFile, rename, rm, stat, unlink, writeFile } from "node:fs/promises";
+import { constants, existsSync } from "node:fs";
+import { copyFile, readdir, readFile, rename, rm, unlink, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import { getLegacySessionId, unpatch } from "./patch";
 
@@ -72,13 +72,18 @@ export async function removeLegacyBackups(workbench: Workbench): Promise<void> {
  * leave VS Code with a truncated workbench.
  */
 export async function writeFileAtomic(file: string, data: string): Promise<void> {
-	const { mode } = await stat(file);
 	const temp = `${file}.${process.pid}.tmp`;
+	let createdTemp = false;
 	try {
-		await writeFile(temp, data, { encoding: "utf-8", mode: mode & 0o777 });
+		// Copying keeps the original's permissions. COPYFILE_EXCL refuses to reuse an existing
+		// path, so nothing planted at the temp name (such as a symlink) is written through.
+		await copyFile(file, temp, constants.COPYFILE_EXCL);
+		createdTemp = true;
+		await writeFile(temp, data, "utf-8");
 		await rename(temp, file);
 	} catch (error) {
-		await rm(temp, { force: true }).catch(() => undefined);
+		// Only clean up a temp file we made; never delete someone else's file.
+		if (createdTemp) await rm(temp, { force: true }).catch(() => undefined);
 		if (!isPermissionError(error)) throw error;
 		// The directory may be read-only while the file itself is writable.
 		await writeFile(file, data, "utf-8");

@@ -47,26 +47,26 @@ async function enable(context: vscode.ExtensionContext): Promise<void> {
 	const workbench = findWorkbench();
 	if (!workbench) return;
 
-	const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
-	const imports = getImports(config);
-	const effects = EFFECTS.filter(effect => config.get<boolean>(effect.setting) === true);
+	const imports = getImports();
+	const effects = EFFECTS.filter(effect => userSetting(effect.setting, true));
 	if (imports.length === 0 && effects.length === 0) {
 		void vscode.window.showInformationMessage(messages.notConfigured);
 		return;
 	}
 
 	const current = await readFile(workbench.htmlPath, "utf-8");
+	const loadOptions = { allowRemote: userSetting("allowRemoteImports", false) };
 	const [pristine, effectContent, importContent, bodyContent] = await Promise.all([
 		readPristine(workbench, current),
 		readScripts(
 			context,
 			effects.map(effect => effect.script)
 		),
-		renderImports(imports, getVariables(), (entry, error) => {
+		renderImports(imports, getVariables(), loadOptions, (entry, error) => {
 			console.error(`stylesmith: cannot load ${entry}`, error);
 			void vscode.window.showWarningMessage(messages.cannotLoad(entry, error.message));
 		}),
-		config.get<boolean>("statusbar", true) ? readScripts(context, [STATUSBAR_SCRIPT]) : ""
+		userSetting("statusbar", true) ? readScripts(context, [STATUSBAR_SCRIPT]) : ""
 	]);
 
 	// Effects come first so that the user's own files can override them.
@@ -103,10 +103,19 @@ function findWorkbench(): Workbench | undefined {
 	return workbench;
 }
 
-function getImports(config: vscode.WorkspaceConfiguration): readonly unknown[] {
-	const own = config.get<unknown>("imports");
+/**
+ * Reads a setting from the user's settings only. Workspace settings are ignored on purpose:
+ * a cloned repository must never be able to choose what gets injected into VS Code.
+ */
+function userSetting<T>(key: string, fallback: T, section = CONFIG_SECTION): T {
+	const value = vscode.workspace.getConfiguration(section).inspect<T>(key)?.globalValue;
+	return value === undefined || typeof value !== typeof fallback ? fallback : value;
+}
+
+function getImports(): readonly unknown[] {
+	const own = userSetting<unknown[]>("imports", []);
 	if (Array.isArray(own) && own.length > 0) return own;
-	const legacy = vscode.workspace.getConfiguration(LEGACY_CONFIG_SECTION).get<unknown>("imports");
+	const legacy = userSetting<unknown[]>("imports", [], LEGACY_CONFIG_SECTION);
 	return Array.isArray(legacy) ? legacy : [];
 }
 
@@ -114,7 +123,10 @@ function getVariables(): Variables {
 	return {
 		cwd: process.cwd(),
 		userHome: os.homedir(),
-		workspaceFolder: vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? "",
+		// Files from an untrusted workspace must never be injected.
+		workspaceFolder: vscode.workspace.isTrusted
+			? (vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? "")
+			: undefined,
 		execPath: process.env.VSCODE_EXEC_PATH ?? process.execPath,
 		pathSeparator: path.sep,
 		env: process.env

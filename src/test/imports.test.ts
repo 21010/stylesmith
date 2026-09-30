@@ -4,7 +4,13 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { after, before, describe, it } from "node:test";
 import { pathToFileURL } from "node:url";
-import { importKind, renderImports, resolveVariables, type Variables } from "../imports";
+import {
+	importKind,
+	renderImports,
+	resolveVariables,
+	type LoadOptions,
+	type Variables
+} from "../imports";
 
 const VARS: Variables = {
 	cwd: "/cwd",
@@ -80,9 +86,58 @@ describe("renderImports", () => {
 				"ftp://x/a.css"
 			],
 			VARS,
+			{ allowRemote: false },
 			entry => errors.push(entry)
 		);
 		assert.equal(html, "<script>b()</script>\n<style>a{}</style>\n");
 		assert.equal(errors.length, 3);
+	});
+});
+
+describe("import security", () => {
+	let dir: string;
+
+	before(async () => {
+		dir = await mkdtemp(path.join(os.tmpdir(), "custom-css-"));
+		await writeFile(path.join(dir, "big.css"), "a".repeat(2048));
+	});
+
+	after(() => rm(dir, { recursive: true, force: true }));
+
+	async function loadError(
+		entry: string,
+		options: LoadOptions = { allowRemote: false },
+		vars = VARS
+	) {
+		let message = "";
+		const html = await renderImports([entry], vars, options, (_, error) => {
+			message = error.message;
+		});
+		assert.equal(html, "", "nothing should be injected");
+		return message;
+	}
+
+	it("never loads http://", async () => {
+		assert.match(
+			await loadError("http://example.com/a.css", { allowRemote: true }),
+			/http:\/\//
+		);
+	});
+
+	it("does not load https:// unless remote imports are allowed", async () => {
+		assert.match(await loadError("https://example.com/a.css"), /allowRemoteImports/);
+	});
+
+	it("refuses ${workspaceFolder} in an untrusted workspace", async () => {
+		const untrusted = { ...VARS, workspaceFolder: undefined };
+		assert.match(
+			await loadError("file://${workspaceFolder}/a.css", undefined, untrusted),
+			/trusted workspace/
+		);
+	});
+
+	it("refuses files over the size limit", async () => {
+		const big = pathToFileURL(path.join(dir, "big.css")).href;
+		assert.match(await loadError(big, { allowRemote: false, maxBytes: 1024 }), /larger/);
 	});
 });

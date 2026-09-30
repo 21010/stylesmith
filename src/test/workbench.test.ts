@@ -70,6 +70,16 @@ describe("writeFileAtomic", () => {
 		assert.deepEqual(await readdir(root), ["workbench.html"]);
 	});
 
+	it("does not write through a file planted at the temporary path", async () => {
+		const file = path.join(root, "workbench.html");
+		const planted = `${file}.${process.pid}.tmp`;
+		await writeFile(file, "old");
+		await writeFile(planted, "planted");
+		await assert.rejects(writeFileAtomic(file, "new"), { code: "EEXIST" });
+		assert.equal(await readFile(file, "utf-8"), "old");
+		assert.equal(await readFile(planted, "utf-8"), "planted");
+	});
+
 	it("fails when the target does not exist", async () => {
 		await assert.rejects(writeFileAtomic(path.join(root, "missing.html"), "x"), {
 			code: "ENOENT"
