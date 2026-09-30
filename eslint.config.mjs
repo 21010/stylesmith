@@ -14,6 +14,10 @@ export default defineConfig(
 		languageOptions: { sourceType: "script", globals: globals.browser }
 	},
 	{
+		files: ["scripts/**/*.mjs"],
+		languageOptions: { globals: globals.node }
+	},
+	{
 		files: ["src/extension.ts"],
 		languageOptions: { globals: globals.node },
 		rules: {

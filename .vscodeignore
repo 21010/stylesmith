@@ -10,3 +10,4 @@ tsconfig.json
 .prettierrc.yaml
 .gitignore
 images/logo.svg
+scripts/

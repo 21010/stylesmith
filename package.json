@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.3.0",
+	"version": "1.4.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -22,7 +22,13 @@
 		"custom css",
 		"theme",
 		"workbench",
-		"customization"
+		"customization",
+		"color theme",
+		"dark theme",
+		"cyberpunk",
+		"retro",
+		"neon",
+		"high contrast"
 	],
 	"repository": {
 		"type": "git",
@@ -116,17 +122,35 @@
 					"scope": "application"
 				}
 			}
-		}
+		},
+		"themes": [
+			{
+				"label": "Stylesmith Neon Night",
+				"uiTheme": "vs-dark",
+				"path": "./themes/neon-night-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Phosphor",
+				"uiTheme": "vs-dark",
+				"path": "./themes/phosphor-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Amber",
+				"uiTheme": "vs-dark",
+				"path": "./themes/amber-color-theme.json"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"lint": "eslint .",
-		"format": "prettier --write src assets eslint.config.mjs tsconfig.json package.json",
-		"format:check": "prettier --check src assets eslint.config.mjs tsconfig.json package.json",
+		"format": "prettier --write src assets scripts eslint.config.mjs tsconfig.json package.json",
+		"format:check": "prettier --check src assets scripts eslint.config.mjs tsconfig.json package.json",
 		"pretest": "npm run compile",
-		"test": "node --test \"out/test/**/*.test.js\""
+		"test": "node --test \"out/test/**/*.test.js\"",
+		"themes": "node scripts/build-themes.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.5",
