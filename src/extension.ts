@@ -3,6 +3,16 @@ import * as os from "node:os";
 import * as path from "node:path";
 import * as vscode from "vscode";
 import { EFFECTS, STATUSBAR, type Effect } from "./effects";
+import {
+	DEFAULT_FONT_ID,
+	findFont,
+	fontFaceCss,
+	planApply,
+	planRestore,
+	preloadScript,
+	type NerdFont,
+	type SavedSetting
+} from "./fonts";
 import { loadImports, type Variables } from "./imports";
 import { messages } from "./messages";
 import { patch, type Snippet } from "./patch";
@@ -19,6 +29,15 @@ const CONFIG_SECTION = "stylesmith";
 // Settings of the original Custom CSS and JS Loader, used until Stylesmith is configured.
 const LEGACY_CONFIG_SECTION = "vscode_custom_css";
 
+// Font settings Stylesmith puts its Nerd Font into. An empty terminal font already follows
+// the editor font, so it is left empty.
+const FONT_SETTINGS = [
+	{ key: "editor.fontFamily", leaveEmpty: false },
+	{ key: "terminal.integrated.fontFamily", leaveEmpty: true }
+] as const;
+// Where the user's own font settings are remembered, so Disable can put them back.
+const FONT_STATE = "stylesmith.fontSettings";
+
 export function activate(context: vscode.ExtensionContext): void {
 	// Every command rewrites the same file, so run them one at a time.
 	let queue = Promise.resolve();
@@ -33,7 +52,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	// Enabling always starts from the pristine file, so it doubles as "reload".
 	register("stylesmith.enable", () => enable(context));
 	register("stylesmith.reload", () => enable(context));
-	register("stylesmith.disable", disable);
+	register("stylesmith.disable", () => disable(context));
 }
 
 export function deactivate(): void {}
@@ -44,31 +63,38 @@ async function enable(context: vscode.ExtensionContext): Promise<void> {
 
 	const imports = getImports();
 	const effects = EFFECTS.filter(isOn);
-	if (imports.length === 0 && effects.length === 0) {
+	const font = userSetting("fonts.enabled", true)
+		? findFont(userSetting("fonts.family", DEFAULT_FONT_ID))
+		: undefined;
+	if (imports.length === 0 && effects.length === 0 && !font) {
 		void vscode.window.showInformationMessage(messages.notConfigured);
 		return;
 	}
 
 	const current = await readFile(workbench.htmlPath, "utf-8");
 	const loadOptions = { allowRemote: userSetting("allowRemoteImports", false) };
-	const [pristine, effectSnippets, importSnippets, bodySnippets] = await Promise.all([
-		readPristine(workbench, current),
-		readAssets(context, effects),
-		loadImports(imports, getVariables(), loadOptions, (entry, error) => {
-			console.error(`stylesmith: cannot load ${entry}`, error);
-			void vscode.window.showWarningMessage(messages.cannotLoad(entry, error.message));
-		}),
-		readAssets(context, isOn(STATUSBAR) ? [STATUSBAR] : [])
-	]);
+	const [pristine, fontSnippets, effectSnippets, importSnippets, bodySnippets] =
+		await Promise.all([
+			readPristine(workbench, current),
+			readFont(context, font),
+			readAssets(context, effects),
+			loadImports(imports, getVariables(), loadOptions, (entry, error) => {
+				console.error(`stylesmith: cannot load ${entry}`, error);
+				void vscode.window.showWarningMessage(messages.cannotLoad(entry, error.message));
+			}),
+			readAssets(context, isOn(STATUSBAR) ? [STATUSBAR] : [])
+		]);
 
-	// Effects come first so that the user's own files can override them.
-	const patched = patch(pristine, [...effectSnippets, ...importSnippets], bodySnippets);
+	// Built-in fonts and effects come first so that the user's own files can override them.
+	const head = [...fontSnippets, ...effectSnippets, ...importSnippets];
+	const patched = patch(pristine, head, bodySnippets);
 	if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
 	await removeLegacyBackups(workbench);
+	await (font ? applyFontSettings(context, font) : restoreFontSettings(context));
 	void promptRestart(messages.enabled);
 }
 
-async function disable(): Promise<void> {
+async function disable(context: vscode.ExtensionContext): Promise<void> {
 	const workbench = findWorkbench();
 	if (!workbench) return;
 
@@ -76,6 +102,7 @@ async function disable(): Promise<void> {
 	const pristine = await readPristine(workbench, current);
 	if (pristine !== current) await writeFileAtomic(workbench.htmlPath, pristine);
 	await removeLegacyBackups(workbench);
+	await restoreFontSettings(context);
 	void (pristine === current
 		? vscode.window.showInformationMessage(messages.alreadyDisabled)
 		: promptRestart(messages.disabled));
@@ -140,6 +167,65 @@ function readAssets(
 			source: await readFile(context.asAbsolutePath(file), "utf-8")
 		}))
 	);
+}
+
+/** The font's files as `@font-face` rules, plus a script that starts loading them early. */
+async function readFont(
+	context: vscode.ExtensionContext,
+	font: NerdFont | undefined
+): Promise<Snippet[]> {
+	if (!font) return [];
+	const faces = await Promise.all(
+		font.files.map(async ({ file, weight }) => ({
+			weight,
+			data: await readFile(context.asAbsolutePath(file))
+		}))
+	);
+	return [
+		{ kind: "css", source: fontFaceCss(font.family, faces) },
+		{
+			kind: "js",
+			source: preloadScript(
+				font.family,
+				faces.map(face => face.weight)
+			)
+		}
+	];
+}
+
+/** Puts the Nerd Font first in the user's editor and terminal font settings. */
+async function applyFontSettings(context: vscode.ExtensionContext, font: NerdFont): Promise<void> {
+	const state = context.globalState.get<Record<string, SavedSetting>>(FONT_STATE) ?? {};
+	const config = vscode.workspace.getConfiguration();
+	for (const { key, leaveEmpty } of FONT_SETTINGS) {
+		const info = config.inspect<string>(key);
+		const plan = planApply(
+			info?.globalValue,
+			info?.defaultValue,
+			state[key],
+			font.family,
+			leaveEmpty
+		);
+		if (!plan) continue;
+		if (plan.value !== info?.globalValue) {
+			await config.update(key, plan.value, vscode.ConfigurationTarget.Global);
+		}
+		state[key] = plan.saved;
+	}
+	await context.globalState.update(FONT_STATE, state);
+}
+
+/** Puts back the user's own font settings from before Stylesmith changed them. */
+async function restoreFontSettings(context: vscode.ExtensionContext): Promise<void> {
+	const state = context.globalState.get<Record<string, SavedSetting>>(FONT_STATE);
+	if (!state) return;
+	const config = vscode.workspace.getConfiguration();
+	for (const [key, saved] of Object.entries(state)) {
+		const current = config.inspect<string>(key)?.globalValue;
+		const value = planRestore(current, saved);
+		if (value !== current) await config.update(key, value, vscode.ConfigurationTarget.Global);
+	}
+	await context.globalState.update(FONT_STATE, undefined);
 }
 
 async function promptRestart(message: string): Promise<void> {

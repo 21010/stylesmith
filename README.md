@@ -14,7 +14,7 @@
 
 ## What it does
 
-VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with built-in [effects](#built-in-effects) in a cyberpunk, retro-console style (a gliding caret, neon highlights, CRT scanlines and typing sparks) and three matching, easy-to-read [color themes](#color-themes). The effects work with any theme.
+VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with built-in [effects](#built-in-effects) in a cyberpunk, retro-console style (a gliding caret, neon highlights, CRT scanlines and typing sparks), three matching, easy-to-read [color themes](#color-themes), and four [Nerd Fonts](#fonts) for the editor and terminal. The effects work with any theme.
 
 ## Why Stylesmith
 
@@ -58,7 +58,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.4.0.vsix
+code --install-extension stylesmith-1.5.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -143,6 +143,27 @@ The neon effects use your theme's focus color, so they match any theme. To chang
 
 Your own files are added after the built-in effects, so your values always win.
 
+## Fonts
+
+Stylesmith comes with four [Nerd Fonts](https://www.nerdfonts.com/): programming fonts with thousands of extra icons for file types, git, terminal prompts and more. When you run **Stylesmith: Enable**, it sets the editor and terminal to use the one you picked. This is on by default.
+
+| `stylesmith.fonts.family`    | Look                                                        | Weights         |
+| ---------------------------- | ----------------------------------------------------------- | --------------- |
+| `JetBrainsMono` (default)    | Modern and very readable, with ligatures (`=>` `!=` `===`)  | regular, bold   |
+| `BlexMono`                   | Classic IBM terminal feel (based on IBM Plex Mono)          | regular, bold   |
+| `ShureTechMono`              | Sci-fi, cyberpunk HUD look (based on Share Tech Mono)       | regular         |
+| `DepartureMono`              | Pixel-style retro terminal; sharpest at sizes like 11 or 22 | regular         |
+
+How it works:
+
+- **Nothing is installed on your system.** The font is built into Stylesmith and added to VS Code's window, the same way as the effects.
+- **Your fonts are kept.** Stylesmith puts the Nerd Font first in `editor.fontFamily` and `terminal.integrated.fontFamily` and keeps your current fonts after it, so if anything goes wrong, VS Code simply uses your old font. If your terminal font is empty, it already follows the editor font and is left alone.
+- **You can always go back.** **Stylesmith: Disable** puts your font settings back exactly as they were. If you changed a font setting yourself in the meantime, your change is kept.
+
+To use your own font instead, set `"stylesmith.fonts.enabled": false` and run **Stylesmith: Reload**.
+
+The fonts come from Nerd Fonts v3.5.1. The build downloads them from the official release and checks each file against the release's published SHA-256 checksums. All four are free fonts under the [SIL Open Font License](https://openfontlicense.org), and their licenses are included in `assets/fonts/licenses/`.
+
 ## Color themes
 
 Stylesmith comes with three dark themes in a retro and cyberpunk style. Pick one with **Preferences: Color Theme** (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>T</kbd>). They work on their own, without running **Stylesmith: Enable**, and the neon effects pick up each theme's accent color automatically.
@@ -181,6 +202,8 @@ Restart VS Code to see the change.
 | `stylesmith.imports`                | `[]`    | A list of `.css` and `.js` files to add, in order.        |
 | `stylesmith.allowRemoteImports`     | `false` | Allows `https://` links in `stylesmith.imports`.          |
 | `stylesmith.effects.*`              | varies  | Turns each [built-in effect](#built-in-effects) on or off. |
+| `stylesmith.fonts.enabled`          | `true`  | Uses a bundled [Nerd Font](#fonts) in the editor and terminal. |
+| `stylesmith.fonts.family`           | `"JetBrainsMono"` | Which Nerd Font to use.                     |
 | `stylesmith.statusbar`              | `true`  | Shows the paint-can icon while Stylesmith is on.          |
 
 Stylesmith only reads these from your **user settings**. Values in a project's `.vscode/settings.json` are ignored.
@@ -298,6 +321,7 @@ npm test          # build and run the tests
 npm run lint      # check the code with ESLint
 npm run format    # format the code with Prettier
 npm run themes    # rebuild the color themes from scripts/build-themes.mjs
+npm run fonts     # download, verify and rebuild the bundled Nerd Fonts
 ```
 
 ```
@@ -306,6 +330,7 @@ src/
 ├── patch.ts       # adding and removing changes in the HTML
 ├── csp.ts         # extending VS Code's security policy
 ├── effects.ts     # the list of built-in effects and their settings
+├── fonts.ts       # the bundled Nerd Fonts and the editor/terminal font settings
 ├── imports.ts     # reading your files and filling in variables
 ├── workbench.ts   # finding and saving VS Code's HTML file
 ├── messages.ts    # text shown to the user
@@ -313,6 +338,7 @@ src/
 themes/            # color themes (generated by scripts/build-themes.mjs)
 assets/
 ├── effects/       # built-in effects (CSS and JS)
+├── fonts/         # bundled Nerd Fonts (WOFF2) and their licenses
 └── statusbar.js   # the status bar icon
 ```
 
@@ -321,3 +347,5 @@ Only `extension.ts` uses the VS Code API, so everything else can be tested with 
 ## License
 
 [MIT](LICENSE.txt). Copyright © 2026 Grzegorz Ziolo. Contains code from Custom CSS and JS Loader, © 2016 Belleve Invis and © 2016 Roberto Huertas, used under the MIT License.
+
+The bundled fonts keep their own licenses (SIL Open Font License 1.1, plus the icon licenses listed by Nerd Fonts); see [assets/fonts/licenses](assets/fonts/licenses).

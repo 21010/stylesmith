@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -28,7 +28,9 @@
 		"cyberpunk",
 		"retro",
 		"neon",
-		"high contrast"
+		"high contrast",
+		"nerd font",
+		"font"
 	],
 	"repository": {
 		"type": "git",
@@ -115,6 +117,36 @@
 					"scope": "application",
 					"markdownDescription": "Throw small neon sparks from the cursor as you type. Set `--stylesmith-spark-colors` in your own CSS to change the colors. Run **Stylesmith: Reload** after changing this."
 				},
+				"stylesmith.fonts.enabled": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Use a bundled Nerd Font (with icons) in the editor and terminal. Stylesmith puts it first in `editor.fontFamily` and `terminal.integrated.fontFamily`, keeps your current fonts as fallbacks, and puts your settings back when you run **Stylesmith: Disable**. Nothing is installed on your system."
+				},
+				"stylesmith.fonts.family": {
+					"type": "string",
+					"default": "JetBrainsMono",
+					"scope": "application",
+					"enum": [
+						"JetBrainsMono",
+						"BlexMono",
+						"ShureTechMono",
+						"DepartureMono"
+					],
+					"enumItemLabels": [
+						"JetBrainsMono Nerd Font",
+						"BlexMono Nerd Font",
+						"ShureTechMono Nerd Font",
+						"DepartureMono Nerd Font"
+					],
+					"markdownEnumDescriptions": [
+						"Modern and very readable, with ligatures. Regular and bold. Based on JetBrains Mono.",
+						"Classic IBM terminal feel. Regular and bold. Based on IBM Plex Mono.",
+						"Sci-fi, cyberpunk HUD look. Based on Share Tech Mono.",
+						"Pixel-style retro terminal. Sharpest at font sizes that are multiples of 11. Based on Departure Mono."
+					],
+					"markdownDescription": "Which bundled Nerd Font to use when `stylesmith.fonts.enabled` is on. Run **Stylesmith: Reload** after changing this."
+				},
 				"stylesmith.statusbar": {
 					"type": "boolean",
 					"default": true,
@@ -150,7 +182,8 @@
 		"format:check": "prettier --check src assets scripts eslint.config.mjs tsconfig.json package.json",
 		"pretest": "npm run compile",
 		"test": "node --test \"out/test/**/*.test.js\"",
-		"themes": "node scripts/build-themes.mjs"
+		"themes": "node scripts/build-themes.mjs",
+		"fonts": "node scripts/build-fonts.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.5",
@@ -161,7 +194,8 @@
 		"globals": "^17.12.0",
 		"prettier": "^3.9.9",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.71.0"
+		"typescript-eslint": "^8.71.0",
+		"wawoff2": "^2.0.1"
 	},
 	"capabilities": {
 		"untrustedWorkspaces": {
