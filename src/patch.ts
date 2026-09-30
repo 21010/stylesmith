@@ -28,7 +28,6 @@ const CSP_COMMENT_RE =
 	/<!-- !! (?:STYLESMITH|VSCODE-CUSTOM-CSS)-CSP ([\s\S]*?) !! -->(?:<meta http-equiv="Content-Security-Policy" data-stylesmith-csp [^>]*>)?/g;
 const CSP_META_RE = /<meta\s+http-equiv=["']?Content-Security-Policy["']?[^>]*>/gi;
 const CSP_CONTENT_RE = /\scontent\s*=\s*"([^"]*)"/i;
-const SCRIPT_RE = /<script>([\s\S]*?)<\/script>/g;
 
 // Left behind by Custom CSS and JS Loader <= 7.5.1, which deleted the CSP outright.
 const LEGACY_SESSION_RE = /<!-- !! VSCODE-CUSTOM-CSS-SESSION-ID ([\w-]+) !! -->\n*/;
@@ -36,13 +35,29 @@ const LEGACY_SESSION_GLOBAL_RE = new RegExp(LEGACY_SESSION_RE.source, "g");
 const LEGACY_INDICATOR_RE =
 	/<script>\/\* eslint-env browser \*\/[\s\S]*?__CUSTOM_CSS_JS_INDICATOR_CLS[\s\S]*?<\/script>\n*/g;
 
+/** A stylesheet or script to add to the workbench. */
+export interface Snippet {
+	kind: ImportKind;
+	source: string;
+}
+
 /**
- * Injects `headContent` before `</head>` (so auxiliary windows, which clone the head, get it too)
- * and `bodyContent` before `</body>`. `pristine` must be unpatched HTML.
+ * Injects `head` before `</head>` (so auxiliary windows, which clone the head, get it too)
+ * and `body` before `</body>`. `pristine` must be unpatched HTML.
  */
-export function patch(pristine: string, headContent: string, bodyContent = ""): string {
-	// Allow exactly the scripts being added, by hash, and nothing else.
-	const hashes = [...(headContent + bodyContent).matchAll(SCRIPT_RE)].map(m => scriptHash(m[1]));
+export function patch(
+	pristine: string,
+	head: readonly Snippet[],
+	body: readonly Snippet[] = []
+): string {
+	const headTags = head.map(toTag);
+	const bodyTags = body.map(toTag);
+	const headContent = headTags.map(tag => tag.html).join("");
+	const bodyContent = bodyTags.map(tag => tag.html).join("");
+
+	// Allow exactly the scripts being added, by hash, and nothing else. The hashes come from
+	// the scripts' text as it is written into the page, not from parsing the HTML afterwards.
+	const hashes = [...headTags, ...bodyTags].flatMap(tag => (tag.hash ? [tag.hash] : []));
 
 	let html = pristine.replace(CSP_META_RE, meta => {
 		const content = CSP_CONTENT_RE.exec(meta)?.[1];
@@ -82,10 +97,17 @@ export function getLegacySessionId(html: string): string | undefined {
 
 /** Wraps a stylesheet or script as an inline tag that cannot close itself early. */
 export function wrapImport(kind: ImportKind, source: string): string {
+	return toTag({ kind, source }).html;
+}
+
+/** The inline tag for a snippet, plus the CSP hash of its content if it is a script. */
+function toTag({ kind, source }: Snippet): { html: string; hash?: string } {
 	const text = source.charCodeAt(0) === 0xfeff ? source.slice(1) : source; // strip BOM
-	return kind === "css"
-		? `<style>${text.replace(/<\/(style)/gi, "<\\/$1")}</style>\n`
-		: `<script>${text.replace(/<\/(script)/gi, "<\\/$1")}</script>\n`;
+	if (kind === "css") {
+		return { html: `<style>${text.replace(/<\/(style)/gi, "<\\/$1")}</style>\n` };
+	}
+	const script = text.replace(/<\/(script)/gi, "<\\/$1");
+	return { html: `<script>${script}</script>\n`, hash: scriptHash(script) };
 }
 
 function insertBefore(html: string, index: number, content: string): string {

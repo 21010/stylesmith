@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { describe, it } from "node:test";
-import { getLegacySessionId, patch, unpatch, wrapImport } from "../patch";
+import { getLegacySessionId, patch, unpatch, wrapImport, type Snippet } from "../patch";
+
+const css = (source: string): Snippet => ({ kind: "css", source });
+const js = (source: string): Snippet => ({ kind: "js", source });
+const sha256 = (text: string) => `'sha256-${createHash("sha256").update(text).digest("base64")}'`;
 
 const WORKBENCH = `<!-- Copyright (C) Microsoft Corporation. All rights reserved. -->
 <!DOCTYPE html>
@@ -25,27 +29,29 @@ const WORKBENCH = `<!-- Copyright (C) Microsoft Corporation. All rights reserved
 
 describe("patch", () => {
 	it("injects content into head and body", () => {
-		const html = patch(WORKBENCH, "<style>a{}</style>\n", "<script>b()</script>\n");
+		const html = patch(WORKBENCH, [css("a{}")], [js("b()")]);
 		assert.ok(html.indexOf("<style>a{}</style>") < html.indexOf("</head>"));
 		assert.ok(html.indexOf("<script>b()</script>") < html.indexOf("</body>"));
 	});
 
 	it("keeps the CSP and allows exactly the added scripts by hash", () => {
-		const html = patch(WORKBENCH, "<script>a()</script>\n", "<script>b()</script>\n");
-		const policy = activePolicy(html);
-		const hash = (s: string) => `'sha256-${createHash("sha256").update(s).digest("base64")}'`;
-
+		const policy = activePolicy(patch(WORKBENCH, [js("a()")], [js("b()")]));
 		assert.match(policy, /default-src 'none'/);
 		assert.match(policy, /require-trusted-types-for 'script'/);
 		assert.equal(
 			directive(policy, "script-src"),
-			`script-src 'self' 'unsafe-eval' ${hash("a()")} ${hash("b()")}`
+			`script-src 'self' 'unsafe-eval' ${sha256("a()")} ${sha256("b()")}`
 		);
 		assert.doesNotMatch(policy, /unsafe-inline/);
 	});
 
+	it("hashes scripts as they appear in the page, after escaping", () => {
+		const policy = activePolicy(patch(WORKBENCH, [js('x = "</script>"')]));
+		assert.ok(policy.includes(sha256('x = "<\\/script>"')));
+	});
+
 	it("allows web fonts and remote stylesheets but nothing else new", () => {
-		const policy = activePolicy(patch(WORKBENCH, "<style>a{}</style>\n"));
+		const policy = activePolicy(patch(WORKBENCH, [css("a{}")]));
 		// Missing directives inherit default-src 'none', which is dropped once sources are added.
 		assert.equal(directive(policy, "style-src"), "style-src https:");
 		assert.equal(directive(policy, "font-src"), "font-src https: data:");
@@ -57,40 +63,40 @@ describe("patch", () => {
 			"require-trusted-types-for 'script';",
 			"$& trusted-types amdLoader;"
 		);
-		const policy = activePolicy(patch(withList, ""));
+		const policy = activePolicy(patch(withList, []));
 		assert.equal(directive(policy, "trusted-types"), "trusted-types amdLoader stylesmith");
 	});
 
 	it("refuses to patch a CSP it cannot read", () => {
 		const unreadable = WORKBENCH.replace(/content="/, "content='").replace(`"/>`, `'/>`);
-		assert.throws(() => patch(unreadable, "x"), /Content-Security-Policy/);
+		assert.throws(() => patch(unreadable, [css("x")]), /Content-Security-Policy/);
 	});
 
 	it("is exactly reversible", () => {
-		const html = patch(WORKBENCH, "<style>a{}</style>\n", "<script>b()</script>\n");
+		const html = patch(WORKBENCH, [css("a{}")], [js("b()")]);
 		assert.equal(unpatch(html), WORKBENCH);
 	});
 
 	it("is exactly reversible with CRLF line endings", () => {
 		const crlf = WORKBENCH.replace(/\n/g, "\r\n");
-		assert.equal(unpatch(patch(crlf, "x", "y")), crlf);
+		assert.equal(unpatch(patch(crlf, [css("x")], [js("y")])), crlf);
 	});
 
 	it("keeps replacement patterns like $1 and $& literally", () => {
-		const content = `<script>s.replace(/(a)/, "$1 $& $' $\`")</script>`;
-		assert.ok(patch(WORKBENCH, content).includes(content));
+		const source = `s.replace(/(a)/, "$1 $& $' $\`")`;
+		assert.ok(patch(WORKBENCH, [js(source)]).includes(`<script>${source}</script>`));
 	});
 
 	it("omits the body block when there is no body content", () => {
-		assert.doesNotMatch(patch(WORKBENCH, "x"), /INDICATOR-START/);
+		assert.doesNotMatch(patch(WORKBENCH, [css("x")]), /INDICATOR-START/);
 	});
 
 	it("throws instead of writing unrecognisable HTML", () => {
-		assert.throws(() => patch("<html></html>", "x"), /unexpected structure/);
+		assert.throws(() => patch("<html></html>", [css("x")]), /unexpected structure/);
 	});
 
 	it("refuses content that would break unpatching", () => {
-		assert.throws(() => patch(WORKBENCH, "<!-- !! STYLESMITH-END !! -->"), /reversible/);
+		assert.throws(() => patch(WORKBENCH, [css("<!-- !! STYLESMITH-END !! -->")]), /reversible/);
 	});
 });
 
@@ -100,7 +106,10 @@ describe("unpatch", () => {
 	});
 
 	it("also understands the VSCODE-CUSTOM-CSS marker prefix", () => {
-		const legacy = patch(WORKBENCH, "x", "y").replace(/STYLESMITH/g, "VSCODE-CUSTOM-CSS");
+		const legacy = patch(WORKBENCH, [css("x")], [js("y")]).replace(
+			/STYLESMITH/g,
+			"VSCODE-CUSTOM-CSS"
+		);
 		assert.equal(unpatch(legacy), WORKBENCH);
 	});
 

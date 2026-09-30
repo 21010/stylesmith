@@ -2,9 +2,9 @@ import { readFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { renderImports, type Variables } from "./imports";
+import { loadImports, type Variables } from "./imports";
 import { messages } from "./messages";
-import { patch, wrapImport } from "./patch";
+import { patch, type Snippet } from "./patch";
 import {
 	isPermissionError,
 	locateWorkbench,
@@ -56,21 +56,21 @@ async function enable(context: vscode.ExtensionContext): Promise<void> {
 
 	const current = await readFile(workbench.htmlPath, "utf-8");
 	const loadOptions = { allowRemote: userSetting("allowRemoteImports", false) };
-	const [pristine, effectContent, importContent, bodyContent] = await Promise.all([
+	const [pristine, effectScripts, importSnippets, bodyScripts] = await Promise.all([
 		readPristine(workbench, current),
 		readScripts(
 			context,
 			effects.map(effect => effect.script)
 		),
-		renderImports(imports, getVariables(), loadOptions, (entry, error) => {
+		loadImports(imports, getVariables(), loadOptions, (entry, error) => {
 			console.error(`stylesmith: cannot load ${entry}`, error);
 			void vscode.window.showWarningMessage(messages.cannotLoad(entry, error.message));
 		}),
-		userSetting("statusbar", true) ? readScripts(context, [STATUSBAR_SCRIPT]) : ""
+		userSetting("statusbar", true) ? readScripts(context, [STATUSBAR_SCRIPT]) : []
 	]);
 
 	// Effects come first so that the user's own files can override them.
-	const patched = patch(pristine, effectContent + importContent, bodyContent);
+	const patched = patch(pristine, [...effectScripts, ...importSnippets], bodyScripts);
 	if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
 	await removeLegacyBackups(workbench);
 	void promptRestart(messages.enabled);
@@ -133,15 +133,15 @@ function getVariables(): Variables {
 	};
 }
 
-/** Reads scripts bundled with the extension and wraps each in a `<script>` tag. */
+/** Reads scripts bundled with the extension. */
 async function readScripts(
 	context: vscode.ExtensionContext,
 	scripts: readonly string[]
-): Promise<string> {
+): Promise<Snippet[]> {
 	const sources = await Promise.all(
 		scripts.map(script => readFile(context.asAbsolutePath(script), "utf-8"))
 	);
-	return sources.map(source => wrapImport("js", source)).join("");
+	return sources.map(source => ({ kind: "js", source }));
 }
 
 async function promptRestart(message: string): Promise<void> {

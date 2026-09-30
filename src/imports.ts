@@ -1,7 +1,7 @@
-import { readFile, stat } from "node:fs/promises";
+import { open } from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { wrapImport, type ImportKind } from "./patch";
+import type { ImportKind, Snippet } from "./patch";
 
 export interface Variables {
 	cwd: string;
@@ -72,11 +72,8 @@ export function importKind(url: URL): ImportKind {
 export async function fetchImport(url: URL, options: LoadOptions): Promise<string> {
 	const maxBytes = options.maxBytes ?? DEFAULT_MAX_BYTES;
 	switch (url.protocol) {
-		case "file:": {
-			const file = fileURLToPath(url);
-			if ((await stat(file)).size > maxBytes) throw tooLarge(maxBytes);
-			return readFile(file, "utf-8");
-		}
+		case "file:":
+			return readFileLimited(fileURLToPath(url), maxBytes);
 		case "https:": {
 			if (!options.allowRemote) {
 				throw new Error(
@@ -121,32 +118,55 @@ async function readLimited(response: Response, maxBytes: number): Promise<string
 	return Buffer.concat(chunks).toString("utf-8");
 }
 
+/**
+ * Reads a local file through a single open handle, giving up as soon as it grows past
+ * `maxBytes`. Checking the size separately first could be out of date by the time we read.
+ */
+async function readFileLimited(file: string, maxBytes: number): Promise<string> {
+	const handle = await open(file, "r");
+	try {
+		const chunks: Buffer[] = [];
+		let size = 0;
+		for (;;) {
+			const chunk = Buffer.alloc(64 * 1024);
+			const { bytesRead } = await handle.read(chunk, 0, chunk.length, null);
+			if (bytesRead === 0) break;
+			size += bytesRead;
+			if (size > maxBytes) throw tooLarge(maxBytes);
+			chunks.push(chunk.subarray(0, bytesRead));
+		}
+		return Buffer.concat(chunks).toString("utf-8");
+	} finally {
+		await handle.close();
+	}
+}
+
 function tooLarge(maxBytes: number): Error {
 	return new Error(`file is larger than ${maxBytes / 1024 / 1024} MB`);
 }
 
 /**
- * Loads all imports concurrently and returns their inline tags in configuration order.
+ * Loads all imports concurrently and returns them in configuration order.
  * An entry that fails is reported through `onError` and skipped.
  */
-export async function renderImports(
+export async function loadImports(
 	entries: readonly unknown[],
 	vars: Variables,
 	options: LoadOptions,
 	onError: (entry: string, error: Error) => void
-): Promise<string> {
-	const rendered = await Promise.all(
-		entries.map(async entry => {
-			if (typeof entry !== "string" || entry.trim() === "") return "";
+): Promise<Snippet[]> {
+	const loaded = await Promise.all(
+		entries.map(async (entry): Promise<Snippet[]> => {
+			if (typeof entry !== "string" || entry.trim() === "") return [];
 			try {
 				const url = new URL(resolveVariables(entry, vars));
 				const kind = importKind(url);
-				return wrapImport(kind, await fetchImport(url, options));
+				return [{ kind, source: await fetchImport(url, options) }];
 			} catch (error) {
 				onError(entry, error instanceof Error ? error : new Error(String(error)));
-				return "";
+				return [];
 			}
 		})
 	);
-	return rendered.join("");
+	return loaded.flat();
 }

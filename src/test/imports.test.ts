@@ -6,7 +6,7 @@ import { after, before, describe, it } from "node:test";
 import { pathToFileURL } from "node:url";
 import {
 	importKind,
-	renderImports,
+	loadImports,
 	resolveVariables,
 	type LoadOptions,
 	type Variables
@@ -63,7 +63,7 @@ describe("importKind", () => {
 	});
 });
 
-describe("renderImports", () => {
+describe("loadImports", () => {
 	let dir: string;
 
 	before(async () => {
@@ -74,9 +74,21 @@ describe("renderImports", () => {
 
 	after(() => rm(dir, { recursive: true, force: true }));
 
-	it("renders entries in order and reports failures without aborting", async () => {
+	it("loads a file that is exactly at the size limit", async () => {
+		const file = path.join(dir, "limit.css");
+		await writeFile(file, "a".repeat(1024));
+		const snippets = await loadImports(
+			[pathToFileURL(file).href],
+			VARS,
+			{ allowRemote: false, maxBytes: 1024 },
+			() => assert.fail("should load")
+		);
+		assert.equal(snippets[0].source.length, 1024);
+	});
+
+	it("loads entries in order and reports failures without aborting", async () => {
 		const errors: string[] = [];
-		const html = await renderImports(
+		const snippets = await loadImports(
 			[
 				pathToFileURL(path.join(dir, "b.js")).href,
 				"not a url",
@@ -89,7 +101,10 @@ describe("renderImports", () => {
 			{ allowRemote: false },
 			entry => errors.push(entry)
 		);
-		assert.equal(html, "<script>b()</script>\n<style>a{}</style>\n");
+		assert.deepEqual(snippets, [
+			{ kind: "js", source: "b()" },
+			{ kind: "css", source: "a{}" }
+		]);
 		assert.equal(errors.length, 3);
 	});
 });
@@ -110,10 +125,10 @@ describe("import security", () => {
 		vars = VARS
 	) {
 		let message = "";
-		const html = await renderImports([entry], vars, options, (_, error) => {
+		const snippets = await loadImports([entry], vars, options, (_, error) => {
 			message = error.message;
 		});
-		assert.equal(html, "", "nothing should be injected");
+		assert.deepEqual(snippets, [], "nothing should be injected");
 		return message;
 	}
 
