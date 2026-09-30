@@ -14,7 +14,7 @@
 
 ## What it does
 
-VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with a built-in [caret animation](#caret-animation) that works out of the box.
+VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with built-in [effects](#built-in-effects) in a cyberpunk, retro-console style: a gliding caret, neon highlights, CRT scanlines and typing sparks.
 
 ## Why Stylesmith
 
@@ -58,7 +58,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.2.1.vsix
+code --install-extension stylesmith-1.3.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -88,7 +88,17 @@ A paint-can icon appears in the status bar while Stylesmith is on.
 
 ## Built-in effects
 
-Stylesmith comes with effects you can use without writing any code. They're applied when you run **Stylesmith: Enable**, even if `stylesmith.imports` is empty.
+Stylesmith comes with effects you can use without writing any code. They're applied when you run **Stylesmith: Enable**, even if `stylesmith.imports` is empty. The subtle ones are on by default; the louder ones are waiting for you to turn them on.
+
+| Effect                                    | Setting                             | Default |
+| ----------------------------------------- | ----------------------------------- | ------- |
+| [Caret animation](#caret-animation)       | `stylesmith.effects.caretAnimation`  | on      |
+| [Neon current line](#neon-current-line)   | `stylesmith.effects.neonCurrentLine` | on      |
+| [Neon focus frame](#neon-focus-frame)     | `stylesmith.effects.neonFocusFrame`  | on      |
+| [CRT scanlines](#crt-scanlines)           | `stylesmith.effects.crtScanlines`    | off     |
+| [Typing sparks](#typing-sparks)           | `stylesmith.effects.typingSparks`    | off     |
+
+After changing any of them, run **Stylesmith: Reload**. None of the effects do any work while you're not typing or moving the cursor.
 
 ### Caret animation
 
@@ -102,6 +112,36 @@ On by default. When the text cursor moves, it glides to its new place and leaves
 To turn it off, set `"stylesmith.effects.caretAnimation": false` and run **Stylesmith: Reload**.
 
 The idea comes from [Neovide](https://github.com/neovide/neovide)'s cursor animation and [vscode-neovide-cursor](https://github.com/LengineerC/vscode-neovide-cursor). Stylesmith has its own version, written from scratch.
+
+### Neon current line
+
+On by default. The line with the cursor gets a glowing neon edge on the left, thin neon lines above and below, and a faint gradient, like a lit line on a HUD. Editors you're not typing in keep a dimmer edge, so you can still see where you left off.
+
+### Neon focus frame
+
+On by default. The editor you're typing in gets a soft neon frame, and its active tab gets a glowing underline and label.
+
+### CRT scanlines
+
+Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image, so it doesn't use any CPU.
+
+### Typing sparks
+
+Off by default. Each key you type throws a few small neon pixel sparks up from the cursor. They arc, fall and fade out in about half a second. Like the caret animation, it turns itself off if your system is set to reduce motion.
+
+### Colors and strength
+
+The neon effects use your theme's focus color, so they match any theme. To change the look, add a CSS file to `stylesmith.imports` with any of these:
+
+```css
+:root {
+	--stylesmith-neon: #ff2bd6; /* neon line and frame color */
+	--stylesmith-spark-colors: #00f0ff, #ff2bd6, #f5ff00; /* spark colors */
+	--stylesmith-scanlines: 0.2; /* scanline strength, 0.12 by default */
+}
+```
+
+Your own files are added after the built-in effects, so your values always win.
 
 ## Commands
 
@@ -119,7 +159,7 @@ Restart VS Code to see the change.
 | ----------------------------------- | ------- | --------------------------------------------------------- |
 | `stylesmith.imports`                | `[]`    | A list of `.css` and `.js` files to add, in order.        |
 | `stylesmith.allowRemoteImports`     | `false` | Allows `https://` links in `stylesmith.imports`.          |
-| `stylesmith.effects.caretAnimation` | `true`  | Turns the built-in caret animation on or off.             |
+| `stylesmith.effects.*`              | varies  | Turns each [built-in effect](#built-in-effects) on or off. |
 | `stylesmith.statusbar`              | `true`  | Shows the paint-can icon while Stylesmith is on.          |
 
 Stylesmith only reads these from your **user settings**. Values in a project's `.vscode/settings.json` are ignored.
@@ -243,12 +283,13 @@ src/
 ├── extension.ts   # commands, settings and messages in VS Code
 ├── patch.ts       # adding and removing changes in the HTML
 ├── csp.ts         # extending VS Code's security policy
+├── effects.ts     # the list of built-in effects and their settings
 ├── imports.ts     # reading your files and filling in variables
 ├── workbench.ts   # finding and saving VS Code's HTML file
 ├── messages.ts    # text shown to the user
 └── test/          # tests
 assets/
-├── effects/       # built-in effects, like the caret animation
+├── effects/       # built-in effects (CSS and JS)
 └── statusbar.js   # the status bar icon
 ```
 

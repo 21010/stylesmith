@@ -1,0 +1,28 @@
+/*
+ * Stylesmith neon current line: the line with the cursor gets a glowing neon edge on the
+ * left, thin neon lines above and below, and a faint gradient, like a lit HUD line.
+ *
+ * Color: your theme's focus color. Override it in one of your own CSS imports:
+ *   :root { --stylesmith-neon: #ff2bd6; }
+ */
+
+.monaco-editor.focused .view-overlays .current-line {
+	background: linear-gradient(
+		90deg,
+		color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 16%, transparent),
+		transparent 65%
+	) !important;
+	box-shadow:
+		inset 3px 0 0 var(--stylesmith-neon, var(--vscode-focusBorder)),
+		inset 0 1px 0
+			color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 35%, transparent),
+		inset 0 -1px 0
+			color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 35%, transparent),
+		0 0 14px -6px var(--stylesmith-neon, var(--vscode-focusBorder));
+}
+
+/* Editors without focus keep a dimmer version, so you can still see where you were. */
+.monaco-editor:not(.focused) .view-overlays .current-line {
+	box-shadow: inset 2px 0 0
+		color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 40%, transparent);
+}

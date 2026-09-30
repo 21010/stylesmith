@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.2.1",
+	"version": "1.3.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -84,6 +84,30 @@
 					"default": true,
 					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. Run **Stylesmith: Reload** after changing this.",
 					"scope": "application"
+				},
+				"stylesmith.effects.neonCurrentLine": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Give the line with the cursor a glowing neon edge. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.neonFocusFrame": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Give the editor you're typing in a soft neon frame and its active tab a glowing underline. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.crtScanlines": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "Show faint CRT scanlines over the whole window, like an old monitor. Set `--stylesmith-scanlines` (default `0.12`) in your own CSS to change the strength. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.typingSparks": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "Throw small neon sparks from the cursor as you type. Set `--stylesmith-spark-colors` in your own CSS to change the colors. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.statusbar": {
 					"type": "boolean",
