@@ -5,45 +5,38 @@
 <h1 align="center">Stylesmith</h1>
 
 <p align="center">
-  <strong>Forge your own VS Code.</strong><br>
-  Inject custom CSS and JavaScript into the VS Code workbench, and remove it cleanly.
+  Add your own CSS and JavaScript to VS Code.
 </p>
 
 > [!NOTE]
-> **Stylesmith is an independent fork of [Custom CSS and JS Loader](https://github.com/be5invis/vscode-custom-css)** by Belleve Invis, which itself built on work by Roberto Huertas.
-> It started from that codebase but is now a separate project with its own name, extension ID and settings. It is not affiliated with or endorsed by the original authors. Thanks to them for the idea and years of groundwork.
+> Stylesmith is a fork of [Custom CSS and JS Loader](https://github.com/be5invis/vscode-custom-css) by Belleve Invis, which was based on work by Roberto Huertas. Thank you both for the idea and the years of work behind it.
+> Stylesmith is a separate project. It has its own name, extension ID and settings, and it isn't connected to the original project.
 
----
+## What it does
 
-## Why Stylesmith?
+VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS.
 
-Stylesmith keeps what made the original useful: your styles and scripts go straight into VS Code's UI. It rebuilds everything underneath for safety, speed and maintainability.
+A few things about how it works:
 
-|                            | Custom CSS and JS Loader                              | Stylesmith                                                                                      |
-| -------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **Language**               | Plain JavaScript                                      | Strict **TypeScript**, small single-purpose modules                                            |
-| **Runtime dependencies**   | `uuid`, `node-fetch`, `file-url`                      | **None**. Only Node.js and VS Code built-ins                                                   |
-| **Startup cost**           | Activates in every window at startup (`*`)            | **Loads only when you run one of its commands**                                                |
-| **Undoing a patch**        | Restores from backup files, which pile up over time   | **Byte-exact revert**, no backup files needed                                                   |
-| **Content-Security-Policy** | Deleted permanently                                   | Commented out while active and **restored on disable**                                          |
-| **Writing VS Code's files** | In-place overwrite                                   | **Atomic write**, plus a check that the patch can be reverted before anything is written       |
-| **Loading your files**     | One after another; a bad URL aborts everything        | **In parallel**, with timeouts, HTTP error checks and per-file warnings                         |
-| **Your code**              | `$1`, `$&` in your JS could be silently rewritten     | Inserted verbatim; `</script>` / `</style>` inside files can't break the page                   |
-| **Quality**                | No tests, no CI                                       | Unit tests (`node:test`), ESLint 9 and Prettier, run in CI on every push                        |
+- **You can always undo it.** Stylesmith marks everything it adds. **Stylesmith: Disable** removes it and gives you back VS Code's original file.
+- **It checks before it writes.** Stylesmith only saves the change if it knows it can undo it later. It writes to a temporary file first, so a failed save won't leave VS Code broken.
+- **It stays out of your way.** It doesn't run when VS Code starts, only when you use one of its commands.
+- **One bad file doesn't stop the rest.** If a file can't be loaded, you get a warning and the other files still apply.
+- **It's written in TypeScript**, has no extra dependencies, and has tests that run on every push.
 
-## ⚠️ Before you start
+## Before you start
 
-Stylesmith works by **modifying VS Code's own installation files**. That has some consequences:
+Stylesmith changes VS Code's own files. Keep this in mind:
 
-- VS Code may say its installation **"appears to be corrupt"**. That's expected, because a file changed. Choose **Don't Show Again**.
-- A **VS Code update replaces the patched file**, so run **Stylesmith: Enable** again after each update.
-- **Anything you load runs with full access to your editor.** Only load files you trust, and prefer `file://` or `https://` URLs over `http://`.
+- VS Code may say its installation **"appears to be corrupt"**. This is expected, because one of its files has changed. Click **Don't Show Again**.
+- **VS Code updates undo Stylesmith.** After each update, run **Stylesmith: Enable** again.
+- **The files you add run inside your editor with full access.** Only use files you trust. Use `file://` or `https://` links, not `http://`.
 
-Use it at your own risk. **Stylesmith: Disable** always restores VS Code's original file.
+To go back to normal at any time, run **Stylesmith: Disable**.
 
-## Installation
+## Install
 
-Stylesmith isn't on the Marketplace yet. Build and install it from source:
+Stylesmith isn't on the Marketplace yet, so you build it yourself:
 
 ```sh
 git clone https://github.com/21010/stylesmith.git
@@ -53,11 +46,11 @@ npx @vscode/vsce package --no-dependencies
 code --install-extension stylesmith-1.0.0.vsix
 ```
 
-Or in VS Code: **Extensions** view → **⋯** → **Install from VSIX…** → pick the `.vsix` file.
+You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
 
 ## Quick start
 
-1. Create a stylesheet, for example `~/.vscode-styles/custom.css`:
+1. Create a CSS file, for example `~/.vscode-styles/custom.css`:
 
    ```css
    .monaco-workbench .part.statusbar {
@@ -65,7 +58,7 @@ Or in VS Code: **Extensions** view → **⋯** → **Install from VSIX…** → 
    }
    ```
 
-2. Point Stylesmith at it in your `settings.json`:
+2. Add it to your `settings.json`:
 
    ```json
    "stylesmith.imports": [
@@ -73,112 +66,112 @@ Or in VS Code: **Extensions** view → **⋯** → **Install from VSIX…** → 
    ]
    ```
 
-3. Run **Stylesmith: Enable** from the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).
-4. Click **Restart Visual Studio Code** when prompted.
+3. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) and run **Stylesmith: Enable**.
+4. Click **Restart Visual Studio Code** when asked.
 
-A paint-can icon in the status bar shows that Stylesmith is active.
+A paint-can icon appears in the status bar while Stylesmith is on.
 
 ## Commands
 
-| Command                                   | What it does                                                                     |
-| ----------------------------------------- | -------------------------------------------------------------------------------- |
-| **Stylesmith: Enable**  | Loads every file in `stylesmith.imports` and injects it into VS Code.           |
-| **Stylesmith: Reload**  | Same as Enable. Use it after editing your files or settings.                     |
-| **Stylesmith: Disable** | Restores VS Code's original workbench file exactly.                              |
+| Command                 | What it does                                                    |
+| ----------------------- | --------------------------------------------------------------- |
+| **Stylesmith: Enable**  | Adds the files from `stylesmith.imports` to VS Code.            |
+| **Stylesmith: Reload**  | Does the same as Enable. Use it after you change your files.    |
+| **Stylesmith: Disable** | Removes everything Stylesmith added.                            |
 
-Changes take effect after restarting VS Code.
+Restart VS Code to see the change.
 
 ## Settings
 
-| Setting                | Type       | Default | Description                                               |
-| ---------------------- | ---------- | ------- | --------------------------------------------------------- |
-| `stylesmith.imports`   | `string[]` | `[]`    | URLs of `.css` and `.js` files to inject, in order.       |
-| `stylesmith.statusbar` | `boolean`  | `true`  | Show a status bar icon while custom CSS/JS is active.     |
+| Setting                | Default | What it does                                          |
+| ---------------------- | ------- | ----------------------------------------------------- |
+| `stylesmith.imports`   | `[]`    | A list of `.css` and `.js` files to add, in order.    |
+| `stylesmith.statusbar` | `true`  | Shows the paint-can icon while Stylesmith is on.      |
 
-### Import URLs
+### File links
 
-Entries must be **URLs, not file paths**:
+Each entry must be a **link (URL), not a plain file path**:
 
-| Kind       | Example                                                  |
-| ---------- | -------------------------------------------------------- |
-| Windows    | `file:///C:/Users/me/styles/custom.css` (the `C:/` part is required) |
-| macOS      | `file:///Users/me/styles/custom.css`                     |
-| Linux      | `file:///home/me/styles/custom.css`                      |
-| Remote     | `https://example.com/theme.css`                          |
+| System  | Example                                                           |
+| ------- | ----------------------------------------------------------------- |
+| Windows | `file:///C:/Users/me/styles/custom.css` (include the `C:/` part)  |
+| macOS   | `file:///Users/me/styles/custom.css`                              |
+| Linux   | `file:///home/me/styles/custom.css`                               |
+| Web     | `https://example.com/theme.css`                                   |
 
-Only `.css` and `.js` files are supported. Files are injected in the order you list them. A file that fails to load is skipped with a warning, and the rest are still applied.
+Only `.css` and `.js` files work. They're added in the order you list them.
 
 ### Variables
 
-`file://` URLs can contain variables:
+You can use these in `file://` links:
 
-| Variable                      | Value                                                                  |
-| ----------------------------- | ---------------------------------------------------------------------- |
-| `${userHome}`                 | Your home directory                                                    |
-| `${workspaceFolder}`          | The first folder of the open workspace                                 |
-| `${cwd}`                      | The extension host's working directory                                 |
-| `${execPath}`                 | The VS Code executable                                                 |
-| `${pathSeparator}` or `${/}`  | `\` on Windows, `/` elsewhere                                          |
-| `${env:NAME}`                 | Environment variable `NAME` (empty if unset)                           |
-| `${env:NAME:fallback}`        | Environment variable `NAME`, or `fallback` if unset                    |
+| Variable                     | Becomes                                              |
+| ---------------------------- | ---------------------------------------------------- |
+| `${userHome}`                | Your home folder                                     |
+| `${workspaceFolder}`         | The first folder open in VS Code                     |
+| `${cwd}`                     | The current working folder                           |
+| `${execPath}`                | The path to the VS Code program                      |
+| `${pathSeparator}` or `${/}` | `\` on Windows, `/` everywhere else                  |
+| `${env:NAME}`                | The environment variable `NAME`, or nothing if unset |
+| `${env:NAME:default}`        | The environment variable `NAME`, or `default`        |
 
 ## Permissions
 
-Stylesmith needs write access to VS Code's installation.
+Stylesmith needs permission to change VS Code's files.
 
-- **Windows:** a per-user install (the default) usually just works. For a system-wide install under `Program Files`, run VS Code as Administrator when enabling or disabling.
-- **macOS / Linux:** VS Code must be able to modify itself. If you get a permission error, take ownership of the installation directory, for example:
+- **Windows:** the normal (per-user) install usually works as is. If VS Code is installed in `Program Files`, run it as Administrator when you enable or disable Stylesmith.
+- **macOS and Linux:** if you get a permission error, make yourself the owner of the VS Code folder:
 
   ```sh
-  sudo chown -R "$(whoami)" /usr/share/code                                  # most Linux distributions
-  sudo chown -R "$(whoami)" "/Applications/Visual Studio Code.app"         # macOS
+  sudo chown -R "$(whoami)" /usr/share/code                          # most Linux systems
+  sudo chown -R "$(whoami)" "/Applications/Visual Studio Code.app"  # macOS
   ```
 
-  Package-manager installs (Snap, Flatpak, some distribution packages) may be read-only, and Stylesmith can't patch those.
+  Some installs, like Snap and Flatpak, can't be changed at all, so Stylesmith won't work with them.
 
-## Migrating from Custom CSS and JS Loader
+## Coming from Custom CSS and JS Loader
 
-1. Install Stylesmith, then **uninstall Custom CSS and JS Loader**. Running both would make them fight over the same file.
-2. Rename `vscode_custom_css.imports` to `stylesmith.imports` in your settings. Until you do, Stylesmith falls back to the old setting.
+Your setup carries over:
+
+1. Install Stylesmith, then turn off or uninstall Custom CSS and JS Loader. Both change the same file, so use only one.
+2. In your settings, rename `vscode_custom_css.imports` to `stylesmith.imports`. Until you do, Stylesmith uses the old setting.
 3. Run **Stylesmith: Enable**.
 
-Stylesmith recognizes the original extension's patches, removes them, and deletes the backup files it left behind. If the original extension had already deleted VS Code's Content-Security-Policy, the next VS Code update will restore it.
+Stylesmith replaces the old extension's changes with its own and deletes the backup files it left behind. If VS Code's security policy line is missing after your earlier setup, the next VS Code update puts it back.
 
 ## How it works
 
-1. Stylesmith finds VS Code's `workbench.html`. It supports the old and new VS Code layouts, the ESM build and Cursor.
-2. It loads your files in parallel and inlines them as `<style>` and `<script>` tags in the page's `<head>`, so auxiliary windows get them too.
-3. VS Code's Content-Security-Policy would block inline code, so Stylesmith wraps it in a marked comment instead of deleting it.
-4. Before writing, it checks that removing its markers gives back the original file exactly. Then it replaces the file atomically.
-
-Disabling removes the markers, which gives back the original file byte for byte.
+1. Stylesmith finds VS Code's main HTML file (`workbench.html`). This works with older and newer VS Code versions, and with Cursor.
+2. It loads your files and adds them to the page's `<head>` as `<style>` and `<script>` tags. Extra VS Code windows get them too.
+3. VS Code's security policy (Content-Security-Policy) would block your code. Stylesmith turns it into a comment while it's on and brings it back when you disable it.
+4. Before saving, Stylesmith checks that removing its changes gives back the original file.
 
 ## Development
 
-Requires Node.js 22+.
+You need Node.js 22 or newer.
 
 ```sh
 npm install
-npm run compile        # TypeScript → out/
-npm run watch          # recompile on change
-npm test               # compile + unit tests
-npm run lint           # ESLint
-npm run format         # Prettier
+npm run compile   # build TypeScript into out/
+npm run watch     # rebuild when files change
+npm test          # build and run the tests
+npm run lint      # check the code with ESLint
+npm run format    # format the code with Prettier
 ```
 
 ```
 src/
-├── extension.ts   # VS Code entry point: commands, settings, notifications
-├── patch.ts       # pure HTML transforms: patch / unpatch / wrapImport
-├── imports.ts     # URL variables and loading CSS/JS from file:// and https://
-├── workbench.ts   # finding VS Code's workbench, atomic writes, legacy cleanup
-├── messages.ts    # user-facing strings
-└── test/          # unit tests (node:test)
-assets/statusbar.js  # status bar indicator injected into the workbench
+├── extension.ts   # commands, settings and messages in VS Code
+├── patch.ts       # adding and removing changes in the HTML
+├── imports.ts     # reading your files and filling in variables
+├── workbench.ts   # finding and saving VS Code's HTML file
+├── messages.ts    # text shown to the user
+└── test/          # tests
+assets/statusbar.js  # the status bar icon
 ```
 
-Only `extension.ts` depends on the VS Code API. Everything else is plain Node.js and fully unit-testable.
+Only `extension.ts` uses the VS Code API, so everything else can be tested with plain Node.js.
 
 ## License
 
-[MIT](LICENSE.txt). Copyright © 2026 Grzegorz Ziolo. Includes code from Custom CSS and JS Loader, © 2016 Belleve Invis and © 2016 Roberto Huertas, used under the MIT License.
+[MIT](LICENSE.txt). Copyright © 2026 Grzegorz Ziolo. Contains code from Custom CSS and JS Loader, © 2016 Belleve Invis and © 2016 Roberto Huertas, used under the MIT License.
