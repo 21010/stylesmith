@@ -5,3 +5,4 @@ out
 .vsixmanifest
 .staging-custom-css
 *.vsix
+.playwright-mcp

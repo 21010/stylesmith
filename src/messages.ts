@@ -9,7 +9,7 @@ export const messages = {
 	somethingWrong: "Stylesmith: something went wrong: ",
 	restartIde: "Restart Visual Studio Code",
 	notConfigured:
-		'Stylesmith has nothing to load. Add CSS/JS file URLs to "stylesmith.imports" in your user settings.',
+		'Stylesmith has nothing to add. Add CSS/JS file URLs to "stylesmith.imports", or turn on a built-in effect such as "stylesmith.effects.caretAnimation".',
 	unableToLocateVsCodeInstallationPath:
 		"Stylesmith could not locate the VS Code installation, so it cannot apply your styles.",
 	cannotLoad: (url: string, reason: string) =>

@@ -18,6 +18,12 @@ const CONFIG_SECTION = "stylesmith";
 // Settings of the original Custom CSS and JS Loader, used until Stylesmith is configured.
 const LEGACY_CONFIG_SECTION = "vscode_custom_css";
 
+// Built-in effects: each one is a script in assets/ that is turned on by a boolean setting.
+const EFFECTS = [
+	{ setting: "effects.caretAnimation", script: "assets/effects/caret-animation.js" }
+] as const;
+const STATUSBAR_SCRIPT = "assets/statusbar.js";
+
 export function activate(context: vscode.ExtensionContext): void {
 	// Every command rewrites the same file, so run them one at a time.
 	let queue = Promise.resolve();
@@ -42,23 +48,29 @@ async function enable(context: vscode.ExtensionContext): Promise<void> {
 	if (!workbench) return;
 
 	const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
-	const entries = getImports(config);
-	if (!Array.isArray(entries) || entries.length === 0) {
+	const imports = getImports(config);
+	const effects = EFFECTS.filter(effect => config.get<boolean>(effect.setting) === true);
+	if (imports.length === 0 && effects.length === 0) {
 		void vscode.window.showInformationMessage(messages.notConfigured);
 		return;
 	}
 
 	const current = await readFile(workbench.htmlPath, "utf-8");
-	const [pristine, headContent, bodyContent] = await Promise.all([
+	const [pristine, effectContent, importContent, bodyContent] = await Promise.all([
 		readPristine(workbench, current),
-		renderImports(entries, getVariables(), (entry, error) => {
+		readScripts(
+			context,
+			effects.map(effect => effect.script)
+		),
+		renderImports(imports, getVariables(), (entry, error) => {
 			console.error(`stylesmith: cannot load ${entry}`, error);
 			void vscode.window.showWarningMessage(messages.cannotLoad(entry, error.message));
 		}),
-		config.get<boolean>("statusbar", true) ? readIndicator(context) : ""
+		config.get<boolean>("statusbar", true) ? readScripts(context, [STATUSBAR_SCRIPT]) : ""
 	]);
 
-	const patched = patch(pristine, headContent, bodyContent);
+	// Effects come first so that the user's own files can override them.
+	const patched = patch(pristine, effectContent + importContent, bodyContent);
 	if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
 	await removeLegacyBackups(workbench);
 	void promptRestart(messages.enabled);
@@ -91,10 +103,11 @@ function findWorkbench(): Workbench | undefined {
 	return workbench;
 }
 
-function getImports(config: vscode.WorkspaceConfiguration): unknown {
+function getImports(config: vscode.WorkspaceConfiguration): readonly unknown[] {
 	const own = config.get<unknown>("imports");
 	if (Array.isArray(own) && own.length > 0) return own;
-	return vscode.workspace.getConfiguration(LEGACY_CONFIG_SECTION).get<unknown>("imports") ?? own;
+	const legacy = vscode.workspace.getConfiguration(LEGACY_CONFIG_SECTION).get<unknown>("imports");
+	return Array.isArray(legacy) ? legacy : [];
 }
 
 function getVariables(): Variables {
@@ -108,9 +121,15 @@ function getVariables(): Variables {
 	};
 }
 
-async function readIndicator(context: vscode.ExtensionContext): Promise<string> {
-	const source = await readFile(context.asAbsolutePath("assets/statusbar.js"), "utf-8");
-	return wrapImport("js", source);
+/** Reads scripts bundled with the extension and wraps each in a `<script>` tag. */
+async function readScripts(
+	context: vscode.ExtensionContext,
+	scripts: readonly string[]
+): Promise<string> {
+	const sources = await Promise.all(
+		scripts.map(script => readFile(context.asAbsolutePath(script), "utf-8"))
+	);
+	return sources.map(source => wrapImport("js", source)).join("");
 }
 
 async function promptRestart(message: string): Promise<void> {

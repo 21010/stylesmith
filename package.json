@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -71,6 +71,11 @@
 					},
 					"default": [],
 					"markdownDescription": "URLs of `.css` and `.js` files to inject, e.g. `file:///C:/Users/me/custom.css` or `https://example.com/theme.css`. File URLs support variables such as `${userHome}`. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.caretAnimation": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.statusbar": {
 					"type": "boolean",

@@ -14,7 +14,7 @@
 
 ## What it does
 
-VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS.
+VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with a built-in [caret animation](#caret-animation) that works out of the box.
 
 A few things about how it works:
 
@@ -43,7 +43,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.0.0.vsix
+code --install-extension stylesmith-1.1.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -71,6 +71,23 @@ You can also install the `.vsix` file from VS Code: open the **Extensions** view
 
 A paint-can icon appears in the status bar while Stylesmith is on.
 
+## Built-in effects
+
+Stylesmith comes with effects you can use without writing any code. They're applied when you run **Stylesmith: Enable**, even if `stylesmith.imports` is empty.
+
+### Caret animation
+
+On by default. When the text cursor moves, it glides to its new place and leaves a short trail behind it, so it's easier to follow your cursor as you jump around a file.
+
+- It follows your theme's cursor color.
+- It turns itself off if your system is set to reduce motion.
+- It doesn't animate while you scroll.
+- It does nothing while the cursor is still, so it doesn't use any CPU when you're not moving around.
+
+To turn it off, set `"stylesmith.effects.caretAnimation": false` and run **Stylesmith: Reload**.
+
+The idea comes from [Neovide](https://github.com/neovide/neovide)'s cursor animation and [vscode-neovide-cursor](https://github.com/LengineerC/vscode-neovide-cursor). Stylesmith has its own version, written from scratch.
+
 ## Commands
 
 | Command                 | What it does                                                    |
@@ -86,6 +103,7 @@ Restart VS Code to see the change.
 | Setting                | Default | What it does                                          |
 | ---------------------- | ------- | ----------------------------------------------------- |
 | `stylesmith.imports`   | `[]`    | A list of `.css` and `.js` files to add, in order.    |
+| `stylesmith.effects.caretAnimation` | `true` | Turns the built-in caret animation on or off. |
 | `stylesmith.statusbar` | `true`  | Shows the paint-can icon while Stylesmith is on.      |
 
 ### File links
@@ -167,7 +185,9 @@ src/
 ├── workbench.ts   # finding and saving VS Code's HTML file
 ├── messages.ts    # text shown to the user
 └── test/          # tests
-assets/statusbar.js  # the status bar icon
+assets/
+├── effects/       # built-in effects, like the caret animation
+└── statusbar.js   # the status bar icon
 ```
 
 Only `extension.ts` uses the VS Code API, so everything else can be tested with plain Node.js.
