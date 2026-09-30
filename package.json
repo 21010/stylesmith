@@ -1,81 +1,104 @@
 {
-	"name": "vscode-custom-css",
-	"displayName": "Custom CSS and JS Loader",
-	"description": "Custom CSS and JS for Visual Studio Code",
-	"version": "7.5.1",
-	"publisher": "be5invis",
+	"name": "stylesmith",
+	"displayName": "Stylesmith",
+	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
+	"version": "1.0.0",
+	"publisher": "21010",
 	"author": {
-		"email": "belleve@typeof.net",
-		"name": "Belleve Invis",
-		"url": "https://typeof.net"
+		"name": "Grzegorz Ziolo",
+		"url": "https://github.com/21010"
 	},
+	"license": "MIT",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
 	"categories": [
-		"Other",
-		"Themes"
+		"Themes",
+		"Other"
+	],
+	"keywords": [
+		"css",
+		"javascript",
+		"custom css",
+		"theme",
+		"workbench",
+		"customization"
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/be5invis/vscode-custom-css"
+		"url": "https://github.com/21010/stylesmith"
 	},
 	"bugs": {
-		"url": "https://github.com/be5invis/vscode-custom-css/issues"
+		"url": "https://github.com/21010/stylesmith/issues"
 	},
+	"homepage": "https://github.com/21010/stylesmith#readme",
 	"preview": true,
 	"icon": "images/logo.png",
 	"galleryBanner": {
-		"color": "#EEEEEE"
+		"color": "#4F46E5",
+		"theme": "dark"
 	},
-	"activationEvents": [
-		"*"
+	"activationEvents": [],
+	"main": "./out/extension.js",
+	"extensionKind": [
+		"ui"
 	],
-	"main": "./src/extension",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.installCustomCSS",
-				"title": "Enable Custom CSS and JS"
+				"command": "stylesmith.enable",
+				"title": "Enable",
+				"category": "Stylesmith"
 			},
 			{
-				"command": "extension.uninstallCustomCSS",
-				"title": "Disable Custom CSS and JS"
+				"command": "stylesmith.disable",
+				"title": "Disable",
+				"category": "Stylesmith"
 			},
 			{
-				"command": "extension.updateCustomCSS",
-				"title": "Reload Custom CSS and JS"
+				"command": "stylesmith.reload",
+				"title": "Reload",
+				"category": "Stylesmith"
 			}
 		],
 		"configuration": {
-			"title": "Custom CSS/JS Configuration",
+			"title": "Stylesmith",
 			"properties": {
-				"vscode_custom_css.imports": {
-					"description": "Custom CSS/JS files, as an array of URLs, not file paths",
+				"stylesmith.imports": {
 					"type": "array",
-					"default": []
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"markdownDescription": "URLs of `.css` and `.js` files to inject, e.g. `file:///C:/Users/me/custom.css` or `https://example.com/theme.css`. File URLs support variables such as `${userHome}`. Run **Stylesmith: Reload** after changing this."
 				},
-				"vscode_custom_css.statusbar": {
-					"description": "Enable Status Indicator",
+				"stylesmith.statusbar": {
 					"type": "boolean",
-					"default": true
+					"default": true,
+					"description": "Show a status bar icon while custom CSS/JS is active."
 				}
 			}
 		}
 	},
-	"devDependencies": {
-		"eslint": "^8.21.0",
-		"eslint-config-prettier": "^8.5.0"
-	},
-	"dependencies": {
-		"file-url": "^3.0.0",
-		"node-fetch": "^2.0.0",
-		"uuid": "^14.0.0"
-	},
-	"extensionKind": [
-		"ui"
-	],
 	"scripts": {
-		"vscode:prepublish": "npx -y rimraf node_modules && npm install --prod"
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"lint": "eslint .",
+		"format": "prettier --write src assets eslint.config.mjs tsconfig.json package.json",
+		"format:check": "prettier --check src assets eslint.config.mjs tsconfig.json package.json",
+		"pretest": "npm run compile",
+		"test": "node --test \"out/test/**/*.test.js\""
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.39.5",
+		"@types/node": "^20.19.43",
+		"@types/vscode": "~1.93.0",
+		"eslint": "^9.39.5",
+		"eslint-config-prettier": "^10.1.8",
+		"globals": "^17.12.0",
+		"prettier": "^3.9.9",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.71.0"
 	}
 }

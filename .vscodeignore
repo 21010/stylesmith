@@ -1,3 +1,12 @@
-.vscode/
 .github/
+.vscode/
+src/
+out/test/
+**/*.map
+**/*.ts
+node_modules/
+eslint.config.mjs
+tsconfig.json
 .prettierrc.yaml
+.gitignore
+images/logo.svg

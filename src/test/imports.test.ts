@@ -1,0 +1,88 @@
+import assert from "node:assert/strict";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import * as os from "node:os";
+import * as path from "node:path";
+import { after, before, describe, it } from "node:test";
+import { pathToFileURL } from "node:url";
+import { importKind, renderImports, resolveVariables, type Variables } from "../imports";
+
+const VARS: Variables = {
+	cwd: "/cwd",
+	userHome: "/home/me",
+	workspaceFolder: "/ws",
+	execPath: "/bin/code",
+	pathSeparator: "/",
+	env: { THEME: "dark" }
+};
+
+describe("resolveVariables", () => {
+	it("replaces known variables in file URLs", () => {
+		assert.equal(
+			resolveVariables("file://${userHome}${/}${workspaceFolder}/a.css", VARS),
+			"file:///home/me//ws/a.css"
+		);
+	});
+
+	it("supports env variables with fallbacks that contain colons", () => {
+		assert.equal(resolveVariables("file:///${env:THEME}.css", VARS), "file:///dark.css");
+		assert.equal(resolveVariables("file:///${env:NOPE:C:/x}.css", VARS), "file:///C:/x.css");
+		assert.equal(resolveVariables("file:///${env:NOPE}a.css", VARS), "file:///a.css");
+	});
+
+	it("keeps unknown variables and ignores non-file URLs", () => {
+		assert.equal(resolveVariables("file:///${nope}.css", VARS), "file:///${nope}.css");
+		assert.equal(
+			resolveVariables("https://x/${userHome}.css", VARS),
+			"https://x/${userHome}.css"
+		);
+	});
+
+	it("percent-encodes URL-significant characters in substituted values", () => {
+		const vars = { ...VARS, userHome: "/home/a#b?c%d" };
+		assert.equal(
+			resolveVariables("file://${userHome}/a.css", vars),
+			"file:///home/a%23b%3Fc%25d/a.css"
+		);
+	});
+});
+
+describe("importKind", () => {
+	it("detects CSS and JS regardless of case, query or hash", () => {
+		assert.equal(importKind(new URL("https://x/a.CSS?v=1#h")), "css");
+		assert.equal(importKind(new URL("file:///a.js")), "js");
+	});
+
+	it("rejects other file types", () => {
+		assert.throws(() => importKind(new URL("file:///a.txt")), /Unsupported file type/);
+	});
+});
+
+describe("renderImports", () => {
+	let dir: string;
+
+	before(async () => {
+		dir = await mkdtemp(path.join(os.tmpdir(), "custom-css-"));
+		await writeFile(path.join(dir, "a.css"), "a{}");
+		await writeFile(path.join(dir, "b.js"), "b()");
+	});
+
+	after(() => rm(dir, { recursive: true, force: true }));
+
+	it("renders entries in order and reports failures without aborting", async () => {
+		const errors: string[] = [];
+		const html = await renderImports(
+			[
+				pathToFileURL(path.join(dir, "b.js")).href,
+				"not a url",
+				42,
+				pathToFileURL(path.join(dir, "missing.css")).href,
+				pathToFileURL(path.join(dir, "a.css")).href,
+				"ftp://x/a.css"
+			],
+			VARS,
+			entry => errors.push(entry)
+		);
+		assert.equal(html, "<script>b()</script>\n<style>a{}</style>\n");
+		assert.equal(errors.length, 3);
+	});
+});
