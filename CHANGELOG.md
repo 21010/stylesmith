@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.14.4 (2026-10-01)
+
+### Added
+
+- A **Sponsor** button on Stylesmith's page in VS Code and on GitHub. Stylesmith stays free and open source; sponsoring is a way to support its development: [github.com/sponsors/21010](https://github.com/sponsors/21010).
+
 ## 1.14.3 (2026-10-01)
 
 ### Changed

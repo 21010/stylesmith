@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.14.3",
+	"version": "1.14.4",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -46,6 +46,9 @@
 	"homepage": "https://stylesmith.dev",
 	"pricing": "Free",
 	"qna": "https://github.com/21010/stylesmith/issues",
+	"sponsor": {
+		"url": "https://github.com/sponsors/21010"
+	},
 	"icon": "images/logo.png",
 	"galleryBanner": {
 		"color": "#4F46E5",

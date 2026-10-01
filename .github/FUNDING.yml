@@ -1,0 +1,3 @@
+# Shows a "Sponsor" button on the repository. The extension's own Sponsor button in VS Code
+# comes from "sponsor" in package.json.
+github: 21010
