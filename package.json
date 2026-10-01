@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.8.0",
+	"version": "1.9.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -132,6 +132,12 @@
 					"default": true,
 					"scope": "application",
 					"markdownDescription": "Highlight the code inside the brackets around your cursor with a neon line on the left and a soft tint. Turns on VS Code's bracket pair guides (`editor.guides.bracketPairs`) while it's on, and puts your setting back afterwards. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.diagnosticHighlights": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Give code with an error a soft red-ish background and code with a warning a soft amber-ish one, using your theme's error and warning colors. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",

@@ -37,7 +37,7 @@ Everything you need for a retro or cyberpunk VS Code, ready to use:
 - **[Themes](#color-themes):** six color themes (Neon Night, Phosphor, Amber, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
 - **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
 - **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
-- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
+- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, error and warning highlights, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
 - **[Presets](#presets):** a complete look in one step, such as Night City or Phosphor Terminal.
 
 Each part works on its own. The effects follow any theme, including ones that aren't from Stylesmith, and the themes and icons work even without running **Stylesmith: Enable**.
@@ -69,7 +69,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.8.0.vsix
+code --install-extension stylesmith-1.9.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -137,6 +137,7 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Neon focus frame](#neon-focus-frame)     | `stylesmith.effects.neonFocusFrame`  | on      |
 | [Neon selections](#neon-selections)       | `stylesmith.effects.neonSelections`  | on      |
 | [Neon code blocks](#neon-code-blocks)     | `stylesmith.effects.neonBlocks`      | on      |
+| [Error and warning highlights](#error-and-warning-highlights) | `stylesmith.effects.diagnosticHighlights` | on |
 | [CRT scanlines](#crt-scanlines)           | `stylesmith.effects.crtScanlines`    | off     |
 | [Typing sparks](#typing-sparks)           | `stylesmith.effects.typingSparks`    | off     |
 | [Boot sequence](#boot-sequence)           | `stylesmith.effects.bootSequence`    | off     |
@@ -174,6 +175,14 @@ On by default. Selected text, search matches and matching brackets get a soft ne
 On by default. The code inside the brackets around your cursor (`()`, `[]` or `{}`) gets a glowing neon line on the left and a soft tint, so you can see at a glance which block you're in. Each nesting level uses its own color from your theme's bracket colors.
 
 It builds on VS Code's bracket pair guides. While the effect is on, Stylesmith sets `"editor.guides.bracketPairs": "active"`, unless you already have bracket guides on. It remembers your own value and puts it back when you turn the effect off or run **Stylesmith: Disable**.
+
+### Error and warning highlights
+
+On by default. Code with an error gets a soft red-ish background, and code with a warning a soft amber-ish one, on top of VS Code's usual squiggly underline. That makes problems easy to spot when you scroll through a file.
+
+- The colors come from your theme's error and warning colors, so it works with any theme.
+- The tint is lighter in light themes. High contrast light themes get a thin outline instead, so text keeps its full contrast.
+- Stylesmith's tests check that code stays readable on the highlights in every Stylesmith theme.
 
 ### CRT scanlines
 
@@ -255,6 +264,8 @@ Code text also stays below 16:1 and never uses pure white on pure black, which c
 The high contrast themes use VS Code's own high contrast mode, with a clear border around every part of the window. In them, all text reaches at least 7:1, and markers such as the cursor and focus outline at least 4.5:1.
 
 Nested brackets are colored in six neon colors taken from each theme, and every one of them passes the same contrast checks as code text.
+
+The [error and warning highlights](#error-and-warning-highlights) are checked too: every syntax color stays readable on them.
 
 ### Color blindness
 

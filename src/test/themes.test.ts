@@ -88,6 +88,52 @@ function colorDifference(a: string, b: string, m: number[]): number {
 	return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
 }
 
+// How strongly the error and warning highlights tint the background, read from the effect's
+// CSS so the test always checks what is shipped.
+const HIGHLIGHTS = readFileSync(
+	path.join(ROOT, "assets", "effects", "diagnostic-highlights.css"),
+	"utf-8"
+);
+/** The tint for "squiggly-error" or "squiggly-warning" in a theme type; 0 means no tint. */
+function tintPercent(squiggle: string, themeType: string): number {
+	// Light and high contrast light themes have their own rules; the rest use the plain one.
+	const scope =
+		themeType === "light"
+			? ".monaco-workbench.vs "
+			: themeType === "hcLight"
+				? ".monaco-workbench.hc-light "
+				: "";
+	const rules = [...HIGHLIGHTS.matchAll(/([^{}]+)\{([^}]*)\}/g)].map(m => ({
+		selector: m[1].replace(/\/\*[\s\S]*?\*\//g, "").trim(),
+		body: m[2]
+	}));
+	const rule = rules.find(
+		r => r.selector === `${scope}.monaco-editor .view-overlays .${squiggle}`
+	);
+	assert.ok(rule, `rule for ${squiggle} in ${themeType || "dark"} themes`);
+	if (/background-color:\s*transparent/.test(rule.body)) return 0;
+	const match = /color-mix\(in srgb, var\([^)]+\) (\d+)%, transparent\)/.exec(rule.body);
+	assert.ok(match, `tint for ${squiggle} found`);
+	return Number(match[1]);
+}
+
+/** CSS color-mix(in srgb, color p%, background): what the tinted background looks like. */
+function mix(color: string, background: string, percent: number): string {
+	const channels = (hex: string) => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+	const [a, b] = [channels(color), channels(background)];
+	const t = percent / 100;
+	return (
+		"#" +
+		a
+			.map((v, i) =>
+				Math.round(v * t + b[i] * (1 - t))
+					.toString(16)
+					.padStart(2, "0")
+			)
+			.join("")
+	);
+}
+
 const files = readdirSync(THEMES_DIR).filter(file => file.endsWith("-color-theme.json"));
 const contributed: { label: string; uiTheme: string; path: string }[] = JSON.parse(
 	readFileSync(path.join(ROOT, "package.json"), "utf-8")
@@ -233,6 +279,26 @@ describe("color themes", () => {
 				c["editor.lineHighlightBackground"],
 				text
 			]);
+		}
+
+		// Code must stay readable on the error and warning highlights.
+		for (const [label, key, tint] of [
+			[
+				"error highlight",
+				"editorError.foreground",
+				tintPercent("squiggly-error", theme.type)
+			],
+			[
+				"warning highlight",
+				"editorWarning.foreground",
+				tintPercent("squiggly-warning", theme.type)
+			]
+		] as const) {
+			const tinted = mix(c[key].slice(0, 7), background.slice(0, 7), tint);
+			checks.push([`editor text on the ${label}`, c["editor.foreground"], tinted, strong]);
+			for (const [scope, color] of syntax) {
+				checks.push([`syntax: ${scope} on the ${label}`, color, tinted, text]);
+			}
 		}
 
 		// Colors that tell things apart must stay apart with color blindness.

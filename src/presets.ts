@@ -21,7 +21,8 @@ const BASE = {
 	"effects.neonCurrentLine": true,
 	"effects.neonFocusFrame": true,
 	"effects.neonSelections": true,
-	"effects.neonBlocks": true
+	"effects.neonBlocks": true,
+	"effects.diagnosticHighlights": true
 };
 
 export const PRESETS: readonly Preset[] = [

@@ -67,6 +67,13 @@ export const EFFECTS: readonly Effect[] = [
 		]
 	},
 	{
+		setting: "effects.diagnosticHighlights",
+		label: "Error and warning highlights",
+		file: "assets/effects/diagnostic-highlights.css",
+		kind: "css",
+		enabledByDefault: true
+	},
+	{
 		setting: "effects.crtScanlines",
 		label: "CRT scanlines",
 		file: "assets/effects/crt-scanlines.css",
