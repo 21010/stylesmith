@@ -226,11 +226,61 @@ describe("remote imports (https)", () => {
 		assert.ok(requests.at(-1)?.signal, "the request can time out");
 	});
 
+	/** Makes fetch answer like real servers: each URL with its own response or redirect. */
+	function route(responses: Record<string, string | { redirect: string }>): void {
+		globalThis.fetch = (input, options) => {
+			const url = String(input);
+			requests.push({ url, signal: options?.signal });
+			assert.equal(options?.redirect, "manual", "redirects are followed one by one");
+			const answer = responses[url];
+			if (answer === undefined) return Promise.resolve(new Response("", { status: 404 }));
+			if (typeof answer === "string") return Promise.resolve(new Response(answer));
+			return Promise.resolve(
+				new Response(null, { status: 302, headers: { location: answer.redirect } })
+			);
+		};
+	}
+
 	it("refuses a redirect to plain http", async () => {
-		serve("a{}", {}, "http://evil.example/a.css");
+		route({ "https://example.com/a.css": { redirect: "http://evil.example/a.css" } });
 		await assert.rejects(
 			fetchImport(new URL("https://example.com/a.css"), remote),
-			/insecure URL/
+			/insecure URL: http:\/\/evil\.example/
+		);
+	});
+
+	it("refuses a chain that passes through plain http, even if it ends on https", async () => {
+		// Anyone on the network can rewrite the plain-http step to point anywhere.
+		route({
+			"https://example.com/a.css": { redirect: "http://example.com/moved.css" },
+			"http://example.com/moved.css": { redirect: "https://attacker.example/evil.css" },
+			"https://attacker.example/evil.css": "/* evil */"
+		});
+		await assert.rejects(
+			fetchImport(new URL("https://example.com/a.css"), remote),
+			/insecure URL: http:\/\/example\.com\/moved\.css/
+		);
+		assert.ok(!requests.some(r => r.url.startsWith("http:")), "never connects over plain http");
+	});
+
+	it("follows redirects that stay on https, including relative ones", async () => {
+		route({
+			"https://example.com/a.css": { redirect: "https://cdn.example.com/v2/a.css" },
+			"https://cdn.example.com/v2/a.css": { redirect: "../v3/a.css" },
+			"https://cdn.example.com/v3/a.css": ".ok{}"
+		});
+		assert.equal(await fetchImport(new URL("https://example.com/a.css"), remote), ".ok{}");
+	});
+
+	it("gives up after five redirects", async () => {
+		const loop: Record<string, { redirect: string }> = {};
+		for (let i = 0; i < 10; i++) {
+			loop[`https://example.com/${i}.css`] = { redirect: `https://example.com/${i + 1}.css` };
+		}
+		route(loop);
+		await assert.rejects(
+			fetchImport(new URL("https://example.com/0.css"), remote),
+			/more than 5 redirects/
 		);
 	});
 
@@ -263,6 +313,35 @@ describe("remote imports (https)", () => {
 			(await fetchImport(new URL("https://example.com/a.css"), remote)).length,
 			1024
 		);
+	});
+
+	it("refuses a pinned stylesheet that loads files from the network", async () => {
+		for (const css of [
+			'@import url("https://cdn.example/mutable.css");',
+			"@import '//cdn.example/x.css';",
+			".a { background: url( http://x.example/y.png ) }"
+		]) {
+			serve(css);
+			const pin = createHash("sha256").update(css).digest("base64");
+			await assert.rejects(
+				fetchImport(new URL(`https://example.com/a.css#sha256-${pin}`), remote),
+				/pinned stylesheet can't load files from the network/,
+				css
+			);
+		}
+	});
+
+	it("allows a pinned stylesheet with local and data: references, and unpinned ones", async () => {
+		const css = '@import url("./base.css"); .a { background: url(data:image/png;base64,AA) }';
+		serve(css);
+		const pin = createHash("sha256").update(css).digest("base64");
+		assert.equal(
+			await fetchImport(new URL(`https://example.com/a.css#sha256-${pin}`), remote),
+			css
+		);
+		const remoteFont = '@import url("https://fonts.example/css");';
+		serve(remoteFont);
+		assert.equal(await fetchImport(new URL("https://example.com/b.css"), remote), remoteFont);
 	});
 
 	it("checks a sha256 pin on remote files too", async () => {

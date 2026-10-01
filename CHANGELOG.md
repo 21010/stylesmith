@@ -2,6 +2,17 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.16.3 (2026-10-01)
+
+### Security
+
+Fixes from a red-team review of Stylesmith:
+
+- Remote imports (`stylesmith.allowRemoteImports`, off by default) followed a redirect through plain `http://` if the chain ended on `https://` again. Someone on the network could change that step and point the import to their own file. Redirects are now followed one at a time, and every step must use `https://`.
+- A pinned stylesheet could load other files from the web with `@import` or `url()`, which the pin doesn't cover. Stylesmith now refuses that. Local and `data:` references are still fine.
+- A problem's message can contain text from the file, and VS Code drew `$(…)` in it as icons in the Problem Lens status bar item, so a repository could show a fake badge there. The text is now shown as written.
+- Saved settings in Stylesmith's state file are read into an object without a prototype, so a damaged or edited file can't change shared objects.
+
 ## 1.16.2 (2026-10-01)
 
 ### Documentation

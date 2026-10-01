@@ -200,6 +200,20 @@ describe("ManagedSettings", () => {
 		assert.equal(settings.has("editor.fontFamily"), false, "no empty font list is left");
 	});
 
+	it("treats a __proto__ key in the state file as an ordinary setting name", async () => {
+		await writeFile(
+			path.join(root, "state.json"),
+			'{"effectSettings": {"__proto__": {"previous": "mine", "applied": "polluted"}}}'
+		);
+		await managed.update(EFFECT_GROUP, new Map());
+		assert.equal(
+			({} as Record<string, unknown>).applied,
+			undefined,
+			"no shared prototype changed"
+		);
+		assert.equal(settings.has("__proto__"), false, "nothing was written for it");
+	});
+
 	it("skips damaged entries in the state file instead of failing Disable", async () => {
 		settings.set("editor.fontFamily", "Hack");
 		await writeFile(

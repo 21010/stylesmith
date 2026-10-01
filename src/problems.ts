@@ -67,10 +67,15 @@ export function inlineText(problem: LineProblem, maxLength = 120): string {
 	return `▸ ${TAGS[problem.severity]}  ${shorten(firstLine(problem.message), maxLength)}${more}`;
 }
 
-/** The text of the status bar item, next to the line and column numbers. */
+/**
+ * The text of the status bar item, next to the line and column numbers. VS Code draws
+ * "$(name)" in status bar text as an icon, and a problem's message can contain text from the
+ * file (TypeScript quotes string literals, for example), so it's escaped to show as written.
+ */
 export function statusText(problem: LineProblem, maxLength = 60): string {
 	const more = problem.more > 0 ? ` +${problem.more}` : "";
-	return `${TAGS[problem.severity]} ${shorten(firstLine(problem.message), maxLength)}${more}`;
+	const message = shorten(firstLine(problem.message), maxLength).replace(/\$\(/g, "\\$(");
+	return `${TAGS[problem.severity]} ${message}${more}`;
 }
 
 /** What a screen reader says for the status bar item. */

@@ -81,7 +81,8 @@ export function planRestore(current: unknown, saved: SavedValue, group: Group): 
  * bad entry must not stop Disable from restoring the others; it's dropped instead.
  */
 function validEntries(saved: unknown): Record<string, SavedValue> {
-	const valid: Record<string, SavedValue> = {};
+	// No prototype: a "__proto__" key in a damaged or hand-edited file is just an ordinary key.
+	const valid = Object.create(null) as Record<string, SavedValue>;
 	if (typeof saved !== "object" || saved === null || Array.isArray(saved)) return valid;
 	for (const [key, value] of Object.entries(saved as Record<string, unknown>)) {
 		if (typeof value === "object" && value !== null && "applied" in value) {

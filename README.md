@@ -454,7 +454,7 @@ Each entry must be a **link (URL), not a plain file path**:
 
 Only `.css` and `.js` files work, up to 5 MB each. They're added in the order you list them.
 
-Web links are off by default because a file on a server can change at any time, and the new version would run in your editor the next time you reload. If you turn them on, only `https://` works: `http://` links and redirects to `http://` are refused. Network paths (`file://server/share/...`) are refused too.
+Web links are off by default because a file on a server can change at any time, and the new version would run in your editor the next time you reload. If you turn them on, only `https://` works: `http://` links are refused, and so is a redirect that passes through `http://` at any step, even if it ends on `https://` again. Network paths (`file://server/share/...`) are refused too.
 
 #### Pinning a file
 
@@ -467,6 +467,8 @@ To make sure a file is exactly the one you checked, add its SHA-256 fingerprint 
 ```
 
 If the file changes, Stylesmith refuses it and shows its new fingerprint, so you can check the change and update the pin. This works for local files too, and it's a good idea for every web link.
+
+A pin covers the file itself, not what it loads later. So a pinned stylesheet can't load other files from the web with `@import` or `url()`: Stylesmith refuses it, because those files could change. Local and `data:` references are fine. A pinned script can still fetch things when it runs, so only pin scripts you've read.
 
 ### Variables
 
@@ -542,6 +544,8 @@ A policy name can only be used once, so if you have several scripts, create the 
 
 Scripts can't load other scripts from the web. CSS can load images over `https://`, as VS Code itself allows. Fonts and stylesheets from the web need `stylesmith.allowRemoteImports`.
 
+Keep in mind that a stylesheet from the web can load images from anywhere, so its server can see when you use VS Code. Only use web links you trust, and pin them.
+
 ### Automatic checks
 
 Every push and pull request runs:
@@ -588,7 +592,8 @@ npm run screenshots        # retake the preset screenshots for the website
 1. Update `version` in `package.json` and add the version to `CHANGELOG.md`.
 2. Commit, then tag and push: `git tag v1.2.3 && git push origin main v1.2.3`.
 3. The release workflow runs all of CI, builds the `.vsix` with a signed build provenance, and creates the GitHub release.
-4. Download the `.vsix` from the release and upload it on the [Marketplace's publisher page](https://marketplace.visualstudio.com/manage): **⋯** next to Stylesmith → **Update**.
+4. Download the `.vsix` from the release and check it was built by the release workflow: `gh attestation verify stylesmith-1.2.3.vsix --repo 21010/stylesmith`.
+5. Upload that file on the [Marketplace's publisher page](https://marketplace.visualstudio.com/manage): **⋯** next to Stylesmith → **Update**. Upload only a file that passed step 4.
 
 The browser tests need Chromium once: `npx playwright-core install chromium-headless-shell`. For the end-to-end test on the oldest supported VS Code, set `VSCODE_VERSION=1.93.0`.
 

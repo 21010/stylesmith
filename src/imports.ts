@@ -35,6 +35,7 @@ export interface LoadOptions {
 }
 
 const DEFAULT_TIMEOUT_MS = 30_000;
+const MAX_REDIRECTS = 5;
 const DEFAULT_MAX_BYTES = 5 * 1024 * 1024;
 
 /**
@@ -92,6 +93,8 @@ export function importKind(url: URL): ImportKind {
 // file:///C:/styles/theme.css#sha256-<base64 hash>. A pinned file must match it exactly.
 const PIN_PREFIX = "#sha256-";
 const PIN_RE = /^#sha256-([A-Za-z0-9+/]{43}=)$/;
+// @import or url() that loads from the network: https://, http:// or protocol-relative //.
+const REMOTE_REFERENCE = /(?:@import|url\()\s*(?:url\()?\s*["']?\s*(?:https?:)?\/\//i;
 
 /**
  * Reads one import, from a local file or (if allowed) over https, within the size limit,
@@ -106,8 +109,35 @@ export async function fetchImport(url: URL, options: LoadOptions): Promise<strin
 		if (actual !== pin) {
 			throw new Error(`the content doesn't match its pin (it is sha256-${actual})`);
 		}
+		if (importKind(url) === "css" && REMOTE_REFERENCE.test(bytes.toString("utf-8"))) {
+			throw new Error(
+				"a pinned stylesheet can't load files from the network (@import or url()), because the pin can't cover them"
+			);
+		}
 	}
 	return bytes.toString("utf-8");
+}
+
+/**
+ * Fetches over https, following redirects one at a time. Every step must stay on https:
+ * checking only where the chain ends isn't enough, because anyone on the network can change a
+ * redirect that passes through plain http on the way.
+ */
+async function fetchHttps(url: URL, options: LoadOptions): Promise<Response> {
+	const signal = AbortSignal.timeout(options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
+	let current = url;
+	for (let redirects = 0; ; redirects++) {
+		const response = await fetch(current, { redirect: "manual", signal });
+		const location = response.headers.get("location");
+		if (response.status < 300 || response.status >= 400 || location === null) return response;
+		await response.body?.cancel();
+		if (redirects >= MAX_REDIRECTS) throw new Error(`more than ${MAX_REDIRECTS} redirects`);
+		const next = new URL(location, current);
+		if (next.protocol !== "https:") {
+			throw new Error(`redirected to an insecure URL: ${next.href}`);
+		}
+		current = next;
+	}
 }
 
 async function fetchBytes(url: URL, options: LoadOptions): Promise<Buffer> {
@@ -126,13 +156,7 @@ async function fetchBytes(url: URL, options: LoadOptions): Promise<Buffer> {
 					"remote imports are turned off; set stylesmith.allowRemoteImports to use https://"
 				);
 			}
-			const response = await fetch(url, {
-				signal: AbortSignal.timeout(options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
-			});
-			// A redirect must not downgrade the connection to plain http.
-			if (new URL(response.url).protocol !== "https:") {
-				throw new Error(`redirected to an insecure URL: ${response.url}`);
-			}
+			const response = await fetchHttps(url, options);
 			if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
 			return readLimited(response, maxBytes);
 		}

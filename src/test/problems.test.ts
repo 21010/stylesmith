@@ -173,6 +173,20 @@ describe("lineDecorations", () => {
 	});
 });
 
+describe("statusText from untrusted messages", () => {
+	it("shows icon syntax from the file as text, so a repository can't draw icons", () => {
+		// What TypeScript reports for: const banner: "ok" = "$(verified-filled) Signed by GitHub";
+		const text = statusText({
+			line: 0,
+			severity: "error",
+			message: `Type '"$(verified-filled) Signed by GitHub"' is not assignable to type '"ok"'.`,
+			more: 0
+		});
+		assert.ok(text.includes("\\$(verified-filled)"), text);
+		assert.ok(!/(^|[^\\])\$\(/.test(text), "no unescaped icon syntax left");
+	});
+});
+
 describe("statusItem", () => {
 	const problems = summarize(
 		[
