@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { EFFECTS, STATUSBAR } from "../effects";
+import { EFFECTS } from "../effects";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
@@ -11,7 +11,7 @@ const settings: Record<string, { type?: string; default?: unknown; scope?: strin
 ).contributes.configuration.properties;
 
 describe("built-in effects", () => {
-	for (const effect of [...EFFECTS, STATUSBAR]) {
+	for (const effect of EFFECTS) {
 		describe(effect.setting, () => {
 			const setting = settings[`stylesmith.${effect.setting}`];
 

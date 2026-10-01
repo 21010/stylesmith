@@ -4,6 +4,8 @@ import type { ImportKind } from "./patch";
 export interface Effect {
 	/** Setting under `stylesmith.`, e.g. `effects.caretAnimation`. */
 	setting: string;
+	/** Name shown in the Stylesmith menu. */
+	label: string;
 	/** Path relative to the extension root. */
 	file: string;
 	kind: ImportKind;
@@ -15,39 +17,58 @@ export interface Effect {
 export const EFFECTS: readonly Effect[] = [
 	{
 		setting: "effects.caretAnimation",
+		label: "Caret animation",
 		file: "assets/effects/caret-animation.js",
 		kind: "js",
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonCurrentLine",
+		label: "Neon current line",
 		file: "assets/effects/neon-current-line.css",
 		kind: "css",
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonFocusFrame",
+		label: "Neon focus frame",
 		file: "assets/effects/neon-focus-frame.css",
 		kind: "css",
 		enabledByDefault: true
 	},
 	{
+		setting: "effects.neonSelections",
+		label: "Neon selections",
+		file: "assets/effects/neon-selections.css",
+		kind: "css",
+		enabledByDefault: true
+	},
+	{
 		setting: "effects.crtScanlines",
+		label: "CRT scanlines",
 		file: "assets/effects/crt-scanlines.css",
 		kind: "css",
 		enabledByDefault: false
 	},
 	{
 		setting: "effects.typingSparks",
+		label: "Typing sparks",
 		file: "assets/effects/typing-sparks.js",
+		kind: "js",
+		enabledByDefault: false
+	},
+	{
+		setting: "effects.bootSequence",
+		label: "Boot sequence",
+		file: "assets/effects/boot-sequence.js",
+		kind: "js",
+		enabledByDefault: false
+	},
+	{
+		setting: "effects.glitchOnSave",
+		label: "Glitch on save",
+		file: "assets/effects/glitch-on-save.js",
 		kind: "js",
 		enabledByDefault: false
 	}
 ];
-
-export const STATUSBAR: Effect = {
-	setting: "statusbar",
-	file: "assets/statusbar.js",
-	kind: "js",
-	enabledByDefault: true
-};

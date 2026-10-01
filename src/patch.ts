@@ -9,7 +9,9 @@ import { extendPolicy, scriptHash } from "./csp";
 
 export type ImportKind = "css" | "js";
 
-const HEAD_START = "<!-- !! STYLESMITH-START !! -->\n";
+/** Found near the top of every patched workbench file. */
+export const PATCH_MARKER = "<!-- !! STYLESMITH-START !! -->";
+const HEAD_START = `${PATCH_MARKER}\n`;
 const HEAD_END = "<!-- !! STYLESMITH-END !! -->\n";
 const BODY_START = "<!-- !! STYLESMITH-INDICATOR-START !! -->\n";
 const BODY_END = "<!-- !! STYLESMITH-INDICATOR-END !! -->\n";

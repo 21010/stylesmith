@@ -3,7 +3,13 @@ import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promis
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import { locateWorkbench, readPristine, removeLegacyBackups, writeFileAtomic } from "../workbench";
+import {
+	isPatched,
+	locateWorkbench,
+	readPristine,
+	removeLegacyBackups,
+	writeFileAtomic
+} from "../workbench";
 
 let root: string;
 
@@ -58,6 +64,21 @@ describe("removeLegacyBackups", () => {
 		await writeFile(path.join(root, "workbench.html"), "");
 		await removeLegacyBackups({ dir: root, htmlPath: "" });
 		assert.deepEqual(await readdir(root), ["workbench.html"]);
+	});
+});
+
+describe("isPatched", () => {
+	it("finds the marker near the start of a large patched file", async () => {
+		const htmlPath = path.join(root, "workbench.html");
+		const head = "<html><head><meta charset='utf-8'>" + "x".repeat(4000);
+		const fonts = "y".repeat(3 * 1024 * 1024);
+		await writeFile(htmlPath, `${head}<!-- !! STYLESMITH-START !! -->\n${fonts}</head></html>`);
+		assert.equal(await isPatched({ dir: root, htmlPath }), true);
+	});
+
+	it("reports an unpatched file", async () => {
+		const htmlPath = await touch("workbench.html");
+		assert.equal(await isPatched({ dir: root, htmlPath }), false);
 	});
 });
 

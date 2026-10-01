@@ -12,6 +12,12 @@ export const messages = {
 		'Stylesmith has nothing to add. Add CSS/JS file URLs to "stylesmith.imports", or turn on a built-in effect such as "stylesmith.effects.caretAnimation".',
 	unableToLocateVsCodeInstallationPath:
 		"Stylesmith could not locate the VS Code installation, so it cannot apply your styles.",
+	statusActive: "Stylesmith is on. Click for presets, effects and fonts.",
+	statusInactive: "Stylesmith is off. Click for presets, effects and fonts.",
+	reapply:
+		"A VS Code update removed Stylesmith's changes. Re-apply them now? VS Code restarts afterwards.",
+	reapplyNow: "Re-apply",
+	dontAskAgain: "Don't Ask Again",
 	cannotLoad: (url: string, reason: string) =>
 		`Stylesmith cannot load '${url}' (${reason}). Skipping.`
 } as const;

@@ -14,7 +14,7 @@
 
 ## What it does
 
-VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with built-in [effects](#built-in-effects) in a cyberpunk, retro-console style (a gliding caret, neon highlights, CRT scanlines and typing sparks), three matching, easy-to-read [color themes](#color-themes), and four [Nerd Fonts](#fonts) for the editor and terminal. The effects work with any theme.
+VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with built-in [effects](#built-in-effects) in a cyberpunk, retro-console style (a gliding caret, neon highlights, CRT scanlines and typing sparks), six easy-to-read [color themes](#color-themes) (dark, light and high contrast), [pixel file icons](#pixel-icons), four [Nerd Fonts](#fonts), and [presets](#presets) that set up a complete look in one step. The effects work with any theme.
 
 ## Why Stylesmith
 
@@ -58,7 +58,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.5.0.vsix
+code --install-extension stylesmith-1.6.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -84,7 +84,36 @@ You can also install the `.vsix` file from VS Code: open the **Extensions** view
 3. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) and run **Stylesmith: Enable**.
 4. Click **Restart Visual Studio Code** when asked.
 
-A paint-can icon appears in the status bar while Stylesmith is on.
+A paint-can button appears in the status bar. Click it for the Stylesmith menu.
+
+## Presets
+
+A preset sets up a complete look in one step: a color theme, the pixel icons, a Nerd Font and a set of effects. Run **Stylesmith: Apply Preset…**, or pick **Apply a preset…** in the status bar menu.
+
+| Preset                | Theme                 | Font           | Extra effects                               |
+| --------------------- | --------------------- | -------------- | ------------------------------------------- |
+| **Night City**        | Neon Night            | JetBrainsMono  | typing sparks, boot sequence, glitch on save |
+| **Phosphor Terminal** | Phosphor              | DepartureMono  | CRT scanlines, boot sequence                |
+| **Amber Monitor**     | Amber                 | BlexMono       | CRT scanlines                               |
+| **Daylight**          | Daylight              | JetBrainsMono  | none                                        |
+| **High Contrast**     | Neon High Contrast    | JetBrainsMono  | none, and no caret animation                |
+
+Every preset also turns on the subtle effects (neon current line, focus frame and selections). Afterwards you can still change anything on its own.
+
+## Status bar menu
+
+Click the paint-can button (`$(paintcan)`) in the status bar to:
+
+- apply a preset
+- turn each effect on or off
+- pick a font, or go back to your own
+- reload, disable, or open Stylesmith's settings
+
+The button shows **off** when Stylesmith isn't active. To hide it, set `"stylesmith.statusbar": false`.
+
+## After VS Code updates
+
+Every VS Code update replaces the file Stylesmith changes, so its changes disappear. When that happens, Stylesmith notices after VS Code starts and asks whether to re-apply them. One click, and VS Code restarts with your setup back. It only asks and never changes anything on its own. To stop the question, choose **Don't Ask Again** or set `"stylesmith.remindAfterUpdate": false`.
 
 ## Built-in effects
 
@@ -95,8 +124,11 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Caret animation](#caret-animation)       | `stylesmith.effects.caretAnimation`  | on      |
 | [Neon current line](#neon-current-line)   | `stylesmith.effects.neonCurrentLine` | on      |
 | [Neon focus frame](#neon-focus-frame)     | `stylesmith.effects.neonFocusFrame`  | on      |
+| [Neon selections](#neon-selections)       | `stylesmith.effects.neonSelections`  | on      |
 | [CRT scanlines](#crt-scanlines)           | `stylesmith.effects.crtScanlines`    | off     |
 | [Typing sparks](#typing-sparks)           | `stylesmith.effects.typingSparks`    | off     |
+| [Boot sequence](#boot-sequence)           | `stylesmith.effects.bootSequence`    | off     |
+| [Glitch on save](#glitch-on-save)         | `stylesmith.effects.glitchOnSave`    | off     |
 
 After changing any of them, run **Stylesmith: Reload**. None of the effects do any work while you're not typing or moving the cursor.
 
@@ -121,6 +153,10 @@ On by default. The line with the cursor gets a glowing neon edge on the left, th
 
 On by default. The editor you're typing in gets a soft neon frame, and its active tab gets a glowing underline and label.
 
+### Neon selections
+
+On by default. Selected text, search matches and matching brackets get a soft neon glow, so they're easy to spot.
+
 ### CRT scanlines
 
 Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image, so it doesn't use any CPU.
@@ -128,6 +164,14 @@ Off by default. Faint horizontal lines and slightly darker edges over the whole 
 ### Typing sparks
 
 Off by default. Each key you type throws a few small neon pixel sparks up from the cursor. They arc, fall and fade out in about half a second. Like the caret animation, it turns itself off if your system is set to reduce motion.
+
+### Boot sequence
+
+Off by default. When VS Code starts, a short retro boot log (`> INIT NEURAL LINK ... OK`) types itself out over the window and fades away after about a second and a half. It never blocks your clicks, any key skips it, and it's skipped when your system is set to reduce motion.
+
+### Glitch on save
+
+Off by default. When you save a file, the editor glitches for a moment with a quick red and cyan split. It works for every kind of save: the keyboard, the menu and auto-save. It happens at most every 0.4 seconds, and it's skipped when your system is set to reduce motion.
 
 ### Colors and strength
 
@@ -173,6 +217,9 @@ Stylesmith comes with three dark themes in a retro and cyberpunk style. Pick one
 | **Stylesmith Neon Night** | Cyberpunk: deep indigo night, cyan and magenta neon, yellow strings |
 | **Stylesmith Phosphor**   | Retro green CRT terminal, with amber numbers                        |
 | **Stylesmith Amber**      | Retro amber monochrome monitor                                      |
+| **Stylesmith Daylight**   | Retro paper and ink for bright rooms, teal and magenta accents      |
+| **Stylesmith Neon High Contrast** | Maximum contrast on black for low vision, with neon accents |
+| **Stylesmith Daylight High Contrast** | Maximum contrast on white for low vision                |
 
 ### Easy on the eyes
 
@@ -187,11 +234,35 @@ The themes are made for long sessions. Neon is used for accents, and text stays 
 
 Code text also stays below 16:1 and never uses pure white on pure black, which can glare. Comments are at 6:1 or more in every theme, where many themes go well below 4.5:1.
 
+The high contrast themes use VS Code's own high contrast mode, with a clear border around every part of the window. In them, all text reaches at least 7:1, and markers such as the cursor and focus outline at least 4.5:1.
+
+Nested brackets are colored in six neon colors taken from each theme, and every one of them passes the same contrast checks as code text.
+
+### Color blindness
+
+Colors that tell you something must stay apart for everyone. For each theme, a test simulates the three main kinds of color blindness (protanopia, deuteranopia and tritanopia) and checks that these pairs still look clearly different:
+
+- added, modified and deleted lines (in the gutter and in git colors)
+- errors and warnings
+- red and green in the terminal
+
+That's why the themes mark added lines in teal, modified lines in violet and deleted lines in orange-red, instead of the usual green and red.
+
+## Pixel icons
+
+**Stylesmith Pixel** is a file icon theme with retro 16×16 pixel icons: a page with a colored band and a short pixel label (`JS`, `TS`, `PY`, `</>` and so on), and pixel folders. It covers about 90 file types and common files like `package.json`, `Dockerfile` and `.gitignore`. Pick it with **Preferences: File Icon Theme**.
+
+Each icon has a version for dark and for light themes, and every icon keeps at least 3:1 contrast on the side bar.
+
+## Commands
+
 | Command                 | What it does                                                    |
 | ----------------------- | --------------------------------------------------------------- |
 | **Stylesmith: Enable**  | Adds the files from `stylesmith.imports` to VS Code.            |
 | **Stylesmith: Reload**  | Does the same as Enable. Use it after you change your files.    |
 | **Stylesmith: Disable** | Removes everything Stylesmith added.                            |
+| **Stylesmith: Apply Preset…** | Sets a complete look: theme, icons, font and effects.     |
+| **Stylesmith: Show Menu** | Opens the Stylesmith menu, the same as the status bar button. |
 
 Restart VS Code to see the change.
 
@@ -204,7 +275,8 @@ Restart VS Code to see the change.
 | `stylesmith.effects.*`              | varies  | Turns each [built-in effect](#built-in-effects) on or off. |
 | `stylesmith.fonts.enabled`          | `true`  | Uses a bundled [Nerd Font](#fonts) in the editor and terminal. |
 | `stylesmith.fonts.family`           | `"JetBrainsMono"` | Which Nerd Font to use.                     |
-| `stylesmith.statusbar`              | `true`  | Shows the paint-can icon while Stylesmith is on.          |
+| `stylesmith.statusbar`              | `true`  | Shows the Stylesmith button in the status bar.           |
+| `stylesmith.remindAfterUpdate`      | `true`  | Offers to re-apply Stylesmith after a VS Code update.     |
 
 Stylesmith only reads these from your **user settings**. Values in a project's `.vscode/settings.json` are ignored.
 
@@ -322,6 +394,7 @@ npm run lint      # check the code with ESLint
 npm run format    # format the code with Prettier
 npm run themes    # rebuild the color themes from scripts/build-themes.mjs
 npm run fonts     # download, verify and rebuild the bundled Nerd Fonts
+npm run icons     # rebuild the pixel icon theme from scripts/build-icons.mjs
 ```
 
 ```
@@ -333,9 +406,11 @@ src/
 ├── fonts.ts       # the bundled Nerd Fonts and the editor/terminal font settings
 ├── imports.ts     # reading your files and filling in variables
 ├── workbench.ts   # finding and saving VS Code's HTML file
+├── presets.ts     # the presets and what each one turns on
 ├── messages.ts    # text shown to the user
 └── test/          # tests
 themes/            # color themes (generated by scripts/build-themes.mjs)
+icons/             # pixel icon theme (generated by scripts/build-icons.mjs)
 assets/
 ├── effects/       # built-in effects (CSS and JS)
 ├── fonts/         # bundled Nerd Fonts (WOFF2) and their licenses

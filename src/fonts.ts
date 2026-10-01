@@ -6,6 +6,8 @@
 export interface NerdFont {
 	/** Value of the `stylesmith.fonts.family` setting. */
 	id: string;
+	/** Name shown in the Stylesmith menu. */
+	label: string;
 	/** The font's family name, exactly as Nerd Fonts publishes it. */
 	family: string;
 	files: readonly { file: string; weight: number }[];
@@ -14,6 +16,7 @@ export interface NerdFont {
 export const FONTS: readonly NerdFont[] = [
 	{
 		id: "JetBrainsMono",
+		label: "JetBrainsMono Nerd Font",
 		family: "JetBrainsMono Nerd Font Mono",
 		files: [
 			{ file: "assets/fonts/JetBrainsMonoNerdFontMono-Regular.woff2", weight: 400 },
@@ -22,6 +25,7 @@ export const FONTS: readonly NerdFont[] = [
 	},
 	{
 		id: "BlexMono",
+		label: "BlexMono Nerd Font",
 		family: "BlexMono Nerd Font Mono",
 		files: [
 			{ file: "assets/fonts/BlexMonoNerdFontMono-Regular.woff2", weight: 400 },
@@ -30,11 +34,13 @@ export const FONTS: readonly NerdFont[] = [
 	},
 	{
 		id: "ShureTechMono",
+		label: "ShureTechMono Nerd Font",
 		family: "ShureTechMono Nerd Font Mono",
 		files: [{ file: "assets/fonts/ShureTechMonoNerdFontMono-Regular.woff2", weight: 400 }]
 	},
 	{
 		id: "DepartureMono",
+		label: "DepartureMono Nerd Font",
 		family: "DepartureMono Nerd Font Mono",
 		files: [{ file: "assets/fonts/DepartureMonoNerdFontMono-Regular.woff2", weight: 400 }]
 	}

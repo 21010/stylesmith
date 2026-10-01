@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Inject your own CSS and JavaScript into the VS Code workbench. A modern TypeScript fork of Custom CSS and JS Loader.",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -30,7 +30,11 @@
 		"neon",
 		"high contrast",
 		"nerd font",
-		"font"
+		"font",
+		"light theme",
+		"accessibility",
+		"icon theme",
+		"presets"
 	],
 	"repository": {
 		"type": "git",
@@ -46,7 +50,9 @@
 		"color": "#4F46E5",
 		"theme": "dark"
 	},
-	"activationEvents": [],
+	"activationEvents": [
+		"onStartupFinished"
+	],
 	"main": "./out/extension.js",
 	"extensionKind": [
 		"ui"
@@ -66,6 +72,16 @@
 			{
 				"command": "stylesmith.reload",
 				"title": "Reload",
+				"category": "Stylesmith"
+			},
+			{
+				"command": "stylesmith.applyPreset",
+				"title": "Apply Preset…",
+				"category": "Stylesmith"
+			},
+			{
+				"command": "stylesmith.menu",
+				"title": "Show Menu",
 				"category": "Stylesmith"
 			}
 		],
@@ -105,6 +121,12 @@
 					"scope": "application",
 					"markdownDescription": "Give the editor you're typing in a soft neon frame and its active tab a glowing underline. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
 				},
+				"stylesmith.effects.neonSelections": {
+					"type": "boolean",
+					"scope": "application",
+					"markdownDescription": "Give selected text, search matches and matching brackets a soft neon glow. Run **Stylesmith: Reload** after changing this.",
+					"default": true
+				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",
 					"default": false,
@@ -116,6 +138,18 @@
 					"default": false,
 					"scope": "application",
 					"markdownDescription": "Throw small neon sparks from the cursor as you type. Set `--stylesmith-spark-colors` in your own CSS to change the colors. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.bootSequence": {
+					"type": "boolean",
+					"scope": "application",
+					"markdownDescription": "Show a short retro boot log when VS Code starts. Any key skips it; it's skipped when your system is set to reduce motion. Run **Stylesmith: Reload** after changing this.",
+					"default": false
+				},
+				"stylesmith.effects.glitchOnSave": {
+					"type": "boolean",
+					"scope": "application",
+					"markdownDescription": "Make the editor glitch for a moment (a quick red/cyan split) when you save a file. Skipped when your system is set to reduce motion. Run **Stylesmith: Reload** after changing this.",
+					"default": false
 				},
 				"stylesmith.fonts.enabled": {
 					"type": "boolean",
@@ -150,8 +184,14 @@
 				"stylesmith.statusbar": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show a status bar icon while custom CSS/JS is active.",
+					"description": "Show the Stylesmith button in the status bar. It opens a menu with presets, effects and fonts.",
 					"scope": "application"
+				},
+				"stylesmith.remindAfterUpdate": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "After a VS Code update removes Stylesmith's changes, offer to re-apply them."
 				}
 			}
 		},
@@ -170,6 +210,28 @@
 				"label": "Stylesmith Amber",
 				"uiTheme": "vs-dark",
 				"path": "./themes/amber-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Daylight",
+				"uiTheme": "vs",
+				"path": "./themes/daylight-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Neon High Contrast",
+				"uiTheme": "hc-black",
+				"path": "./themes/neon-high-contrast-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Daylight High Contrast",
+				"uiTheme": "hc-light",
+				"path": "./themes/daylight-high-contrast-color-theme.json"
+			}
+		],
+		"iconThemes": [
+			{
+				"id": "stylesmith-pixel",
+				"label": "Stylesmith Pixel",
+				"path": "./icons/pixel-icon-theme.json"
 			}
 		]
 	},
@@ -183,7 +245,8 @@
 		"pretest": "npm run compile",
 		"test": "node --test \"out/test/**/*.test.js\"",
 		"themes": "node scripts/build-themes.mjs",
-		"fonts": "node scripts/build-fonts.mjs"
+		"fonts": "node scripts/build-fonts.mjs",
+		"icons": "node scripts/build-icons.mjs"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.5",

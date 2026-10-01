@@ -44,8 +44,9 @@ const palettes = [
 			error: "#ff6b8b",
 			warning: "#ffcc66",
 			info: "#5fe0ff",
-			added: "#7df2b8",
-			deleted: "#ff6b8b"
+			added: "#5ee6c4",
+			modified: "#b69cff",
+			deleted: "#ff7a70"
 		},
 		ansi: {
 			black: "#262b4a",
@@ -101,8 +102,9 @@ const palettes = [
 			error: "#ff7a6b",
 			warning: "#ffcf73",
 			info: "#8fe3d0",
-			added: "#6dff9a",
-			deleted: "#ff7a6b"
+			added: "#5ee6c4",
+			modified: "#b69cff",
+			deleted: "#ff8a6b"
 		},
 		ansi: {
 			black: "#1f3826",
@@ -158,7 +160,8 @@ const palettes = [
 			error: "#ff7f66",
 			warning: "#ffcc4d",
 			info: "#ffe6b8",
-			added: "#d9e27a",
+			added: "#8fd9c0",
+			modified: "#c4a8ff",
 			deleted: "#ff7f66"
 		},
 		ansi: {
@@ -179,17 +182,211 @@ const palettes = [
 			brightCyan: "#f7e3bd",
 			brightWhite: "#ffe2b3"
 		}
+	},
+	{
+		id: "daylight",
+		name: "Stylesmith Daylight",
+		kind: "light",
+		// Retro paper and ink for bright rooms, with teal and magenta accents.
+		bg: "#f7f2e4",
+		bgDark: "#efe8d6",
+		bgRaised: "#fbf8ef",
+		lineHighlight: "#ece4cf",
+		border: "#d8ccb0",
+		fg: "#1e2230",
+		fgStrong: "#0f1220",
+		muted: "#4f5569",
+		lineNumber: "#5f6479",
+		accent: "#006a8a",
+		accentAlt: "#a8137a",
+		onAccent: "#fbf8ef",
+		selection: "#7fb8cc66",
+		findMatch: "#f5b94266",
+		tokens: {
+			comment: "#5c604c",
+			keyword: "#a0127a",
+			function: "#005c80",
+			string: "#6e5200",
+			number: "#a63c16",
+			type: "#6b3fa0",
+			property: "#1f5a94",
+			regexp: "#146a44",
+			tag: "#a0127a",
+			attribute: "#005c80",
+			operator: "#3a4460"
+		},
+		status: {
+			error: "#b8203a",
+			warning: "#5c3d00",
+			info: "#005c80",
+			added: "#006b5a",
+			modified: "#6b3fa0",
+			deleted: "#b33d00"
+		},
+		ansi: {
+			black: "#1e2230",
+			red: "#a7212f",
+			green: "#0d7351",
+			yellow: "#6e5000",
+			blue: "#1f5a94",
+			magenta: "#a0127a",
+			cyan: "#006a8a",
+			white: "#8a8fa0",
+			brightBlack: "#4f5569",
+			brightRed: "#a51b33",
+			brightGreen: "#17602f",
+			brightYellow: "#634800",
+			brightBlue: "#1b5086",
+			brightMagenta: "#8f106d",
+			brightCyan: "#005e7b",
+			brightWhite: "#a3a7b5"
+		}
+	},
+	{
+		id: "neon-high-contrast",
+		name: "Stylesmith Neon High Contrast",
+		kind: "hc-dark",
+		// Maximum contrast for low vision, keeping the neon accents.
+		bg: "#000000",
+		bgDark: "#000000",
+		bgRaised: "#0b0b16",
+		lineHighlight: "#000000",
+		border: "#6fe6ff",
+		contrastBorder: "#6fe6ff",
+		contrastActiveBorder: "#ff8ce0",
+		fg: "#ffffff",
+		fgStrong: "#ffffff",
+		muted: "#e3e5f5",
+		lineNumber: "#d0d3ec",
+		accent: "#6fe6ff",
+		accentAlt: "#ff8ce0",
+		onAccent: "#000000",
+		selection: "#1f5fa8b3",
+		findMatch: "#ff8ce066",
+		tokens: {
+			comment: "#c5cbee",
+			keyword: "#ff9ce6",
+			function: "#8cedff",
+			string: "#fff29a",
+			number: "#ffc98a",
+			type: "#dccfff",
+			property: "#c6d8ff",
+			regexp: "#a8f9d2",
+			tag: "#ff9ce6",
+			attribute: "#8cedff",
+			operator: "#e0e8ff"
+		},
+		status: {
+			error: "#ff9fb3",
+			warning: "#ffdd94",
+			info: "#8cedff",
+			added: "#7ff0d8",
+			modified: "#c8b4ff",
+			deleted: "#ff8a7a"
+		},
+		ansi: {
+			black: "#3a3f5c",
+			red: "#ff8a7a",
+			green: "#a8f9d2",
+			yellow: "#fff29a",
+			blue: "#b0c8ff",
+			magenta: "#ff9ce6",
+			cyan: "#8cedff",
+			white: "#e3e5f5",
+			brightBlack: "#c5cbee",
+			brightRed: "#ffc2cf",
+			brightGreen: "#c9fce3",
+			brightYellow: "#fff7c2",
+			brightBlue: "#d0ddff",
+			brightMagenta: "#ffc4ef",
+			brightCyan: "#baf4ff",
+			brightWhite: "#ffffff"
+		}
+	},
+	{
+		id: "daylight-high-contrast",
+		name: "Stylesmith Daylight High Contrast",
+		kind: "hc-light",
+		// Maximum contrast on white for low vision, with deep teal and magenta accents.
+		bg: "#ffffff",
+		bgDark: "#ffffff",
+		bgRaised: "#ffffff",
+		lineHighlight: "#ffffff",
+		border: "#0f4a6e",
+		contrastBorder: "#0f4a6e",
+		contrastActiveBorder: "#8a0066",
+		fg: "#000000",
+		fgStrong: "#000000",
+		muted: "#1f2433",
+		lineNumber: "#2b3040",
+		accent: "#0f4a6e",
+		accentAlt: "#8a0066",
+		onAccent: "#ffffff",
+		selection: "#0f4a6e40",
+		findMatch: "#8a006640",
+		tokens: {
+			comment: "#35392a",
+			keyword: "#7a005c",
+			function: "#003f60",
+			string: "#4f3700",
+			number: "#7f2800",
+			type: "#44207a",
+			property: "#123a66",
+			regexp: "#0a4a2a",
+			tag: "#7a005c",
+			attribute: "#003f60",
+			operator: "#1c2236"
+		},
+		status: {
+			error: "#970038",
+			warning: "#724f00",
+			info: "#003f60",
+			added: "#00594a",
+			modified: "#4a1f85",
+			deleted: "#9a2a00"
+		},
+		ansi: {
+			black: "#000000",
+			red: "#a40021",
+			green: "#08632e",
+			yellow: "#533500",
+			blue: "#123a66",
+			magenta: "#7a005c",
+			cyan: "#003f60",
+			white: "#4a4f60",
+			brightBlack: "#1f2433",
+			brightRed: "#80001a",
+			brightGreen: "#08451f",
+			brightYellow: "#452c00",
+			brightBlue: "#0e3056",
+			brightMagenta: "#66004d",
+			brightCyan: "#003350",
+			brightWhite: "#5c6172"
+		}
 	}
 ];
 
+// VS Code's theme "type" for each kind of palette.
+const TYPES = { dark: "dark", light: "light", "hc-dark": "hc", "hc-light": "hcLight" };
+
 function theme(p) {
 	const t = p.tokens;
+	const kind = p.kind ?? "dark";
+	const highContrast = kind.startsWith("hc-");
+	// Bracket pairs cycle through six colors from the theme's own syntax colors.
+	const brackets = [p.accent, t.keyword, t.string, t.type, t.number, t.regexp];
 	return {
 		$schema: "vscode://schemas/color-theme",
 		name: p.name,
-		type: "dark",
+		type: TYPES[kind],
 		semanticHighlighting: true,
 		colors: {
+			// High contrast themes draw a clear border around every part and focused element.
+			...(highContrast && {
+				contrastBorder: p.contrastBorder,
+				contrastActiveBorder: p.contrastActiveBorder
+			}),
+
 			// Base
 			focusBorder: p.accent,
 			foreground: p.fg,
@@ -197,7 +394,7 @@ function theme(p) {
 			errorForeground: p.status.error,
 			"icon.foreground": p.fg,
 			"widget.border": p.border,
-			"widget.shadow": "#00000080",
+			"widget.shadow": kind === "dark" ? "#00000080" : "#00000026",
 			"selection.background": p.selection,
 			"textLink.foreground": p.accent,
 			"textLink.activeForeground": p.accentAlt,
@@ -213,7 +410,7 @@ function theme(p) {
 			"editorLineNumber.activeForeground": p.fgStrong,
 			"editorCursor.foreground": p.accent,
 			"editor.lineHighlightBackground": p.lineHighlight,
-			"editor.lineHighlightBorder": "#00000000",
+			"editor.lineHighlightBorder": highContrast ? p.contrastBorder : "#00000000",
 			"editor.selectionBackground": p.selection,
 			"editor.inactiveSelectionBackground": `${p.selection.slice(0, 7)}40`,
 			"editor.selectionHighlightBackground": `${p.accent}26`,
@@ -229,12 +426,19 @@ function theme(p) {
 			"editorRuler.foreground": p.border,
 			"editorBracketMatch.background": `${p.accent}26`,
 			"editorBracketMatch.border": p.accent,
+			...Object.fromEntries(
+				brackets.flatMap((color, i) => [
+					[`editorBracketHighlight.foreground${i + 1}`, color],
+					[`editorBracketPairGuide.activeBackground${i + 1}`, `${color}99`]
+				])
+			),
+			"editorBracketHighlight.unexpectedBracket.foreground": p.status.error,
 			"editorLink.activeForeground": p.accent,
 			"editorError.foreground": p.status.error,
 			"editorWarning.foreground": p.status.warning,
 			"editorInfo.foreground": p.status.info,
 			"editorGutter.addedBackground": p.status.added,
-			"editorGutter.modifiedBackground": p.accent,
+			"editorGutter.modifiedBackground": p.status.modified,
 			"editorGutter.deletedBackground": p.status.deleted,
 			"editorOverviewRuler.border": "#00000000",
 			"editorWidget.background": p.bgRaised,
@@ -346,7 +550,7 @@ function theme(p) {
 
 			// Git
 			"gitDecoration.addedResourceForeground": p.status.added,
-			"gitDecoration.modifiedResourceForeground": p.accent,
+			"gitDecoration.modifiedResourceForeground": p.status.modified,
 			"gitDecoration.deletedResourceForeground": p.status.deleted,
 			"gitDecoration.untrackedResourceForeground": p.status.added,
 			"gitDecoration.ignoredResourceForeground": p.lineNumber,

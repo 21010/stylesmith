@@ -1,7 +1,7 @@
 import { constants, existsSync } from "node:fs";
-import { copyFile, readdir, readFile, rename, rm, unlink, writeFile } from "node:fs/promises";
+import { copyFile, open, readdir, readFile, rename, rm, unlink, writeFile } from "node:fs/promises";
 import * as path from "node:path";
-import { getLegacySessionId, unpatch } from "./patch";
+import { getLegacySessionId, PATCH_MARKER, unpatch } from "./patch";
 
 export interface Workbench {
 	dir: string;
@@ -97,4 +97,19 @@ export function isPermissionError(error: unknown): boolean {
 
 function errorCode(error: unknown): string | undefined {
 	return (error as NodeJS.ErrnoException | undefined)?.code;
+}
+
+/**
+ * Whether the workbench is patched by Stylesmith. Only the start of the file is read: the
+ * marker comes right after VS Code's own few kilobytes of head, before any embedded fonts.
+ */
+export async function isPatched(workbench: Workbench, bytes = 64 * 1024): Promise<boolean> {
+	const handle = await open(workbench.htmlPath, "r");
+	try {
+		const buffer = Buffer.alloc(bytes);
+		const { bytesRead } = await handle.read(buffer, 0, bytes, 0);
+		return buffer.toString("utf-8", 0, bytesRead).includes(PATCH_MARKER);
+	} finally {
+		await handle.close();
+	}
 }
