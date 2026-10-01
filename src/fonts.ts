@@ -52,6 +52,7 @@ export const FONTS: readonly NerdFont[] = [
 
 export const DEFAULT_FONT_ID = "JetBrainsMono";
 
+/** The bundled font with this id; the default font for an unknown id. */
 export function findFont(id: string): NerdFont {
 	return FONTS.find(font => font.id === id) ?? FONTS.find(font => font.id === DEFAULT_FONT_ID)!;
 }

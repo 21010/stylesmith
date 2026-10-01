@@ -2,6 +2,17 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.14.0 (2026-10-01)
+
+### Added
+
+- When you change an effect, the font or your imports in Settings, Stylesmith now offers to reload so the change takes effect. Before, nothing happened until you ran **Stylesmith: Reload** yourself. Changes made through Stylesmith's menu and presets reload by themselves, as before.
+
+### Changed
+
+- The code is reorganized so that Enable, Disable and the startup check don't depend on VS Code's API, and are now tested directly. All of Stylesmith's UI is in one place. Nothing changes in how Stylesmith works.
+- Stricter TypeScript checks. They found no bugs in Stylesmith itself, but they did find a theme test that had silently stopped checking the terminal colors; it checks them again.
+
 ## 1.13.0 (2026-10-01)
 
 ### Added

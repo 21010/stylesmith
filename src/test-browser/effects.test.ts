@@ -187,6 +187,7 @@ describe("caret animation", () => {
 		await page.$eval("#cursor", el => ((el as HTMLElement).style.left = "300px"));
 		await sleep(100);
 		const [canvas] = await canvasSizes(page);
+		assert.ok(canvas, "the caret animation has a canvas");
 		assert.ok(canvas.width > 0 && canvas.height > 0, "something is drawn");
 		const viewport = page.viewportSize()!;
 		assert.ok(
@@ -226,7 +227,7 @@ describe("typing sparks", () => {
 		await page.focus("#input");
 		await page.keyboard.press("a");
 		await sleep(80);
-		assert.ok((await canvasSizes(page))[0].width > 0, "sparks are drawn");
+		assert.ok(((await canvasSizes(page))[0]?.width ?? 0) > 0, "sparks are drawn");
 		await waitUntilIdle(page);
 		assert.deepEqual(await canvasSizes(page), [{ width: 0, height: 0 }], "canvas freed");
 		await page.close();

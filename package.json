@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.13.0",
+	"version": "1.14.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -94,7 +94,7 @@
 						"type": "string"
 					},
 					"default": [],
-					"markdownDescription": "URLs of `.css` and `.js` files to add to VS Code, e.g. `file:///C:/Users/me/custom.css`. File URLs support variables such as `${userHome}`. Only read from your user settings. Run **Stylesmith: Reload** after changing this.",
+					"markdownDescription": "URLs of `.css` and `.js` files to add to VS Code, e.g. `file:///C:/Users/me/custom.css`. File URLs support variables such as `${userHome}`. Only read from your user settings. When you change this, Stylesmith offers to reload so it takes effect.",
 					"scope": "application"
 				},
 				"stylesmith.allowRemoteImports": {
@@ -106,73 +106,73 @@
 				"stylesmith.effects.caretAnimation": {
 					"type": "boolean",
 					"default": true,
-					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. Run **Stylesmith: Reload** after changing this.",
+					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. When you change this, Stylesmith offers to reload so it takes effect.",
 					"scope": "application"
 				},
 				"stylesmith.effects.neonCurrentLine": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Give the line with the cursor thin neon lines and a faint gradient, and a glowing line number with a neon marker in the gutter. Nothing is drawn over your code. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Give the line with the cursor thin neon lines and a faint gradient, and a glowing line number with a neon marker in the gutter. Nothing is drawn over your code. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.neonFocusFrame": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Give the editor you're typing in a soft neon frame and its active tab a glowing underline. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Give the editor you're typing in a soft neon frame and its active tab a glowing underline. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.neonSelections": {
 					"type": "boolean",
 					"scope": "application",
-					"markdownDescription": "Give selected text, search matches and matching brackets a soft neon glow. Run **Stylesmith: Reload** after changing this.",
+					"markdownDescription": "Give selected text, search matches and matching brackets a soft neon glow. When you change this, Stylesmith offers to reload so it takes effect.",
 					"default": true
 				},
 				"stylesmith.effects.neonBlocks": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Highlight the code inside the brackets around your cursor with a neon line on the left and a soft tint. Turns on VS Code's bracket pair guides (`editor.guides.bracketPairs`) while it's on, and puts your setting back afterwards. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Highlight the code inside the brackets around your cursor with a neon line on the left and a soft tint. Turns on VS Code's bracket pair guides (`editor.guides.bracketPairs`) while it's on, and puts your setting back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.diagnosticHighlights": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.neonGlow": {
 					"type": "boolean",
 					"default": false,
 					"scope": "application",
-					"markdownDescription": "Make highlighted code glow in its own color, like a neon sign. Only in dark themes. Change the strength with `--stylesmith-glow` (default `60%`) and the size with `--stylesmith-glow-size` (default `6px`) in one of your own CSS imports. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Make highlighted code glow in its own color, like a neon sign. Only in dark themes. Change the strength with `--stylesmith-glow` (default `60%`) and the size with `--stylesmith-glow-size` (default `6px`) in one of your own CSS imports. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.classicLayout": {
 					"type": "boolean",
 					"default": false,
 					"scope": "application",
-					"markdownDescription": "Square corners and tabs that look like tabs, instead of VS Code's rounded modern look. Turns on VS Code's compact layout density (`window.density.layout`) while it's on, and puts your setting back afterwards. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Square corners and tabs that look like tabs, instead of VS Code's rounded modern look. Turns on VS Code's compact layout density (`window.density.layout`) while it's on, and puts your setting back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",
 					"default": false,
 					"scope": "application",
-					"markdownDescription": "Show faint CRT scanlines over the whole window, like an old monitor. Set `--stylesmith-scanlines` (default `0.12`) in your own CSS to change the strength. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Show faint CRT scanlines over the whole window, like an old monitor. Set `--stylesmith-scanlines` (default `0.12`) in your own CSS to change the strength. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.typingSparks": {
 					"type": "boolean",
 					"default": false,
 					"scope": "application",
-					"markdownDescription": "Throw small neon sparks from the cursor as you type. Set `--stylesmith-spark-colors` in your own CSS to change the colors. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Throw small neon sparks from the cursor as you type. Set `--stylesmith-spark-colors` in your own CSS to change the colors. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.bootSequence": {
 					"type": "boolean",
 					"scope": "application",
-					"markdownDescription": "Show a short retro boot log when VS Code starts. Any key skips it; it's skipped when your system is set to reduce motion. Run **Stylesmith: Reload** after changing this.",
+					"markdownDescription": "Show a short retro boot log when VS Code starts. Any key skips it; it's skipped when your system is set to reduce motion. When you change this, Stylesmith offers to reload so it takes effect.",
 					"default": false
 				},
 				"stylesmith.effects.glitchOnSave": {
 					"type": "boolean",
 					"scope": "application",
-					"markdownDescription": "Make the editor glitch for a moment (a quick red/cyan split) when you save a file. Skipped when your system is set to reduce motion. Run **Stylesmith: Reload** after changing this.",
+					"markdownDescription": "Make the editor glitch for a moment (a quick red/cyan split) when you save a file. Skipped when your system is set to reduce motion. When you change this, Stylesmith offers to reload so it takes effect.",
 					"default": false
 				},
 				"stylesmith.fonts.enabled": {
@@ -203,7 +203,7 @@
 						"Sci-fi, cyberpunk HUD look. Based on Share Tech Mono.",
 						"Pixel-style retro terminal. Sharpest at font sizes that are multiples of 11. Based on Departure Mono."
 					],
-					"markdownDescription": "Which bundled Nerd Font to use when `stylesmith.fonts.enabled` is on. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Which bundled Nerd Font to use when `stylesmith.fonts.enabled` is on. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.problems.enabled": {
 					"type": "boolean",

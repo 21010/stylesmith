@@ -8,15 +8,7 @@
  */
 
 import { withFontFirst, withoutStylesmithFonts } from "./fonts";
-import type { StateFile } from "./store";
-
-/** What Stylesmith remembers about a setting it changed. */
-export interface SavedValue {
-	/** The user's own value before Stylesmith changed it; undefined if it wasn't set. */
-	previous: unknown;
-	/** The value Stylesmith wrote. */
-	applied: unknown;
-}
+import type { SavedValue, StateFile } from "./store";
 
 /** Works out Stylesmith's value from the user's own value; undefined leaves the setting alone. */
 export type Wanted = (userValue: unknown) => unknown;

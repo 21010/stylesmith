@@ -165,8 +165,9 @@ function activePolicy(html: string): string {
 	const metas = [
 		...active.matchAll(/http-equiv="Content-Security-Policy"[^>]*content="([^"]*)"/g)
 	];
-	assert.equal(metas.length, 1, "exactly one active policy");
-	return metas[0][1];
+	const [only] = metas;
+	assert.ok(metas.length === 1 && only?.[1] !== undefined, "exactly one active policy");
+	return only[1];
 }
 
 function directive(policy: string, name: string): string | undefined {

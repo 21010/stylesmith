@@ -39,7 +39,7 @@ export function extendPolicy(
 		.map(directive => directive.trim().split(/\s+/).filter(Boolean))
 		.filter(tokens => tokens.length > 0);
 
-	const find = (name: string) => directives.find(tokens => tokens[0].toLowerCase() === name);
+	const find = (name: string) => directives.find(tokens => tokens[0]?.toLowerCase() === name);
 
 	const addSources = (name: string, sources: readonly string[]) => {
 		if (sources.length === 0) return;

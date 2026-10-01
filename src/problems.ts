@@ -80,7 +80,7 @@ export function accessibleLabel(problem: LineProblem): string {
 }
 
 function firstLine(message: string): string {
-	return message.split(/\r?\n/)[0].replace(/\s+/g, " ").trim();
+	return (message.split(/\r?\n/)[0] ?? "").replace(/\s+/g, " ").trim();
 }
 
 function shorten(text: string, maxLength: number): string {

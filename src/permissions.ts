@@ -18,6 +18,7 @@ export class PermissionDeniedError extends Error {
 	}
 }
 
+/** Steps for the user, and the command that fixes it when there is one. */
 export interface PermissionHelp {
 	/** One line: what's wrong. */
 	summary: string;
@@ -32,6 +33,7 @@ export function shellQuote(text: string): string {
 	return `'${text.replace(/'/g, `'\\''`)}'`;
 }
 
+/** What to do when `folder` can't be written to, on this platform and kind of install. */
 export function permissionHelp(platform: NodeJS.Platform, folder: string): PermissionHelp {
 	const posix = folder.replace(/\\/g, "/");
 	const summary = `Stylesmith can't change VS Code's files in ${folder}.`;

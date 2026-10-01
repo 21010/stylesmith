@@ -1,3 +1,5 @@
+/** The presets: complete looks (theme, icons, font and effects) applied in one step. */
+
 import { EFFECTS } from "./effects";
 
 /** A complete look: a color theme, the pixel icons, a font and a set of effects. */

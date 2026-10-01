@@ -11,12 +11,20 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import * as path from "node:path";
-import type { SavedValue } from "./managed";
 
 // Updates to the same file, across every StateFile in this process, run one after another:
 // two updates at once would both start from the old state, and one would undo the other.
 const pending = new Map<string, Promise<void>>();
 
+/** What Stylesmith remembers about a setting it changed. */
+export interface SavedValue {
+	/** The user's own value before Stylesmith changed it; undefined if it wasn't set. */
+	previous: unknown;
+	/** The value Stylesmith wrote. */
+	applied: unknown;
+}
+
+/** Everything in the state file. */
 export interface StoredState {
 	fontSettings?: Record<string, SavedValue>;
 	effectSettings?: Record<string, SavedValue>;

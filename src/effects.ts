@@ -1,3 +1,8 @@
+/**
+ * The built-in effects: one entry per effect, with its setting, its file, and any VS Code
+ * settings it needs.
+ */
+
 import type { ImportKind } from "./patch";
 
 /** A built-in effect: a stylesheet or script in assets/, turned on by a boolean setting. */

@@ -30,16 +30,16 @@ describe("permission help", () => {
 				"Flatpak"
 			],
 			["/tmp/.mount_CodeXyz/resources/app/out", "AppImage"]
-		]) {
+		] as const) {
 			const help = permissionHelp("linux", folder);
 			assert.equal(help.command, undefined, `${kind}: no command can fix it`);
-			assert.ok(help.steps[0].includes(kind), kind);
+			assert.ok(help.steps[0]?.includes(kind), kind);
 		}
 	});
 
 	it("asks macOS users for the App Management permission first", () => {
 		const help = permissionHelp("darwin", MAC_DIR);
-		assert.match(help.steps[0], /App Management/);
+		assert.match(help.steps[0] ?? "", /App Management/);
 		assert.equal(help.command, `sudo chown -R "$(whoami)" '${MAC_DIR}'`);
 	});
 
@@ -58,7 +58,7 @@ describe("permission help", () => {
 			String.raw`C:\Program Files\Microsoft VS Code\resources\app\out\vs\code\electron-browser\workbench`
 		);
 		assert.equal(help.command, undefined);
-		assert.match(help.steps[0], /installed for all users/);
+		assert.match(help.steps[0] ?? "", /installed for all users/);
 		assert.ok(help.steps.some(step => step.includes("Run as administrator")));
 	});
 

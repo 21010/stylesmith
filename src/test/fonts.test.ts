@@ -23,13 +23,14 @@ const DEFAULT = "Consolas, 'Courier New', monospace";
 describe("bundled fonts", () => {
 	it("match the stylesmith.fonts.family setting", () => {
 		const setting = settings["stylesmith.fonts.family"];
+		assert.ok(setting, "stylesmith.fonts.family is declared");
 		assert.deepEqual(
 			setting.enum,
 			FONTS.map(font => font.id)
 		);
 		assert.equal(setting.default, DEFAULT_FONT_ID);
 		assert.equal(setting.scope, "application");
-		assert.equal(settings["stylesmith.fonts.enabled"].scope, "application");
+		assert.equal(settings["stylesmith.fonts.enabled"]?.scope, "application");
 	});
 
 	for (const font of FONTS) {

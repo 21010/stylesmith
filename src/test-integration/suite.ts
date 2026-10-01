@@ -49,8 +49,12 @@ function activePolicy(html: string): string {
 	const policies = [
 		...active.matchAll(/http-equiv="Content-Security-Policy"[^>]*content="([^"]*)"/g)
 	];
-	assert.equal(policies.length, 1, "exactly one active Content-Security-Policy");
-	return policies[0][1];
+	const [only] = policies;
+	assert.ok(
+		policies.length === 1 && only?.[1] !== undefined,
+		"exactly one active Content-Security-Policy"
+	);
+	return only[1];
 }
 
 function userValue(section: string, key: string): unknown {
@@ -171,7 +175,7 @@ export async function run(): Promise<void> {
 			vscode.workspace.getConfiguration(section).update(key, undefined, true);
 		await reset("workbench", "colorTheme");
 		await reset("workbench", "iconTheme");
-		for (const key of Object.keys(PRESETS[0].effects)) await reset("stylesmith", key);
+		for (const key of Object.keys(PRESETS[0]?.effects ?? {})) await reset("stylesmith", key);
 		await reset("stylesmith", "fonts.enabled");
 		await reset("stylesmith", "fonts.family");
 	});

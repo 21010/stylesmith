@@ -1,18 +1,19 @@
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { SettingChanges, markingOwnChanges } from "./changes";
 import { vscodeConfig, vscodeSettings } from "./config";
-import { checkAfterStartup, disable, enable, type Services } from "./lifecycle";
+import { ReloadOffer, checkAfterStartup, disable, enable, type Services } from "./lifecycle";
 import { ManagedSettings } from "./managed";
-import { applyPreset, createStatusButton, showMenu } from "./menu";
 import { messages } from "./messages";
-import { PermissionDeniedError, permissionHelp } from "./permissions";
+import { PermissionDeniedError } from "./permissions";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
-import { isPermissionError } from "./workbench";
+import { applyPreset, createStatusButton, showMenu, showPermissionHelp, vscodeUi } from "./ui";
+import { isPermissionError, locateWorkbench } from "./workbench";
 
 /**
- * Stylesmith's entry point: it only connects the parts. Changing VS Code lives in
- * lifecycle.ts, the menu in menu.ts, settings in config.ts and managed.ts.
+ * Stylesmith's entry point: it only connects the parts. What Stylesmith does lives in
+ * lifecycle.ts, its UI in ui.ts, and settings in config.ts and managed.ts.
  */
 
 // Where Stylesmith versions up to 1.9 kept their state in VS Code's globalState. It's read
@@ -24,6 +25,11 @@ const LEGACY_STATE_KEYS = {
 	reapplyAskedAt: "stylesmith.reapplyAskedAt"
 } as const;
 
+// How long to wait after the last settings change before offering to reload, so that
+// changing several settings in a row asks only once.
+const RELOAD_OFFER_DELAY = 1000; // ms
+
+/** Called by VS Code once it has started: builds the parts and registers the commands. */
 export function activate(context: vscode.ExtensionContext): void {
 	const store = new StateFile(path.join(context.globalStorageUri.fsPath, "state.json"), () =>
 		Object.fromEntries(
@@ -33,10 +39,13 @@ export function activate(context: vscode.ExtensionContext): void {
 			])
 		)
 	);
+	const changes = new SettingChanges();
 	const services: Services = {
-		config: vscodeConfig,
+		config: markingOwnChanges(vscodeConfig, changes),
 		managed: new ManagedSettings(vscodeSettings, store),
 		store,
+		ui: vscodeUi,
+		findWorkbench: () => locateWorkbench(vscodeAppDirs()),
 		asAbsolutePath: relativePath => context.asAbsolutePath(relativePath)
 	};
 
@@ -56,6 +65,8 @@ export function activate(context: vscode.ExtensionContext): void {
 		);
 
 	const status = createStatusButton(context, services.config);
+	const reloadOffer = new ReloadOffer(services);
+	let offerTimer: ReturnType<typeof setTimeout> | undefined;
 
 	context.subscriptions.push(
 		// Enabling always starts from the pristine file, so it doubles as "reload".
@@ -68,13 +79,32 @@ export function activate(context: vscode.ExtensionContext): void {
 		direct("stylesmith.applyPreset", id => applyPreset(services.config, id)),
 		direct("stylesmith.menu", () => showMenu(services.config)),
 		// Live, through VS Code's API: it needs no Enable and no restart.
-		new ProblemLens(context, () => services.config.problemLens())
+		new ProblemLens(context, () => services.config.problemLens()),
+		vscode.workspace.onDidChangeConfiguration(event => {
+			if (!changes.needsReload(section => event.affectsConfiguration(section))) return;
+			clearTimeout(offerTimer);
+			offerTimer = setTimeout(
+				() => void reportErrors(() => reloadOffer.offer()),
+				RELOAD_OFFER_DELAY
+			);
+		}),
+		{ dispose: () => clearTimeout(offerTimer) }
 	);
 
-	void reportErrors(() => checkAfterStartup(services, status));
+	void reportErrors(async () => status.show(await checkAfterStartup(services)));
 }
 
+/** Nothing to do: everything is registered in context.subscriptions, which VS Code disposes. */
 export function deactivate(): void {}
+
+/** Where VS Code's application files are, in the order to try them. */
+function vscodeAppDirs(): string[] {
+	return [
+		require.main && path.dirname(require.main.filename),
+		(globalThis as { _VSCODE_FILE_ROOT?: string })._VSCODE_FILE_ROOT,
+		path.join(vscode.env.appRoot, "out")
+	].filter((dir): dir is string => Boolean(dir));
+}
 
 async function reportErrors(task: () => Promise<void>): Promise<void> {
 	try {
@@ -84,29 +114,12 @@ async function reportErrors(task: () => Promise<void>): Promise<void> {
 		if (error instanceof PermissionDeniedError) {
 			void showPermissionHelp(error.folder);
 		} else {
-			void vscode.window.showErrorMessage(
+			vscodeUi.error(
 				isPermissionError(error)
 					? messages.admin
 					: messages.somethingWrong +
 							(error instanceof Error ? error.message : String(error))
 			);
 		}
-	}
-}
-
-/** Explains how to let Stylesmith change VS Code's files, for this system and install. */
-async function showPermissionHelp(folder: string): Promise<void> {
-	const help = permissionHelp(process.platform, folder);
-	const steps = help.steps.map((step, i) => `${i + 1}. ${step}`);
-	const detail = [...steps, ...(help.command ? [help.command] : [])].join("\n\n");
-	const buttons = help.command ? [messages.copyCommand] : [];
-	const choice = await vscode.window.showErrorMessage(
-		help.summary,
-		{ modal: true, detail },
-		...buttons
-	);
-	if (choice === messages.copyCommand && help.command) {
-		await vscode.env.clipboard.writeText(help.command);
-		void vscode.window.showInformationMessage(messages.commandCopied);
 	}
 }

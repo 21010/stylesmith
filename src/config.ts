@@ -1,3 +1,9 @@
+/**
+ * Stylesmith's settings, read from and written to VS Code. The Config and SettingsAccess
+ * interfaces are what the rest of Stylesmith uses; the vscode* objects here are their VS Code
+ * versions, and tests pass in their own.
+ */
+
 import * as os from "node:os";
 import * as path from "node:path";
 import * as vscode from "vscode";

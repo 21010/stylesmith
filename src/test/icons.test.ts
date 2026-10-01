@@ -15,7 +15,9 @@ function editorBackgrounds(): Record<"dark" | "light", string[]> {
 	for (const file of readdirSync(path.join(ROOT, "themes"))) {
 		const theme = readJson<ColorTheme>("themes", file);
 		const variant = theme.type === "light" || theme.type === "hcLight" ? "light" : "dark";
-		result[variant].push(theme.colors["editor.background"].slice(0, 7));
+		const background = theme.colors["editor.background"];
+		assert.ok(background, `${file} defines editor.background`);
+		result[variant].push(background.slice(0, 7));
 	}
 	return result;
 }
@@ -33,6 +35,7 @@ describe("problem gutter icons", () => {
 				);
 				assert.equal(fills.size, 1, "one color, so the shape carries the meaning");
 				const [fill] = fills;
+				assert.ok(fill);
 				for (const background of backgrounds[variant]) {
 					const ratio = contrast(fill, background);
 					assert.ok(ratio >= 3, `${fill} on ${background}: ${ratio.toFixed(2)}:1`);

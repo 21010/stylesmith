@@ -1,9 +1,17 @@
+/**
+ * Loading the user's own CSS and JS files (stylesmith.imports), with the checks that keep it
+ * safe: no http://, https:// only when allowed, no network paths, no files from untrusted
+ * workspaces, a size limit, and optional #sha256 pins. A file that fails is reported and
+ * skipped; it never stops the others.
+ */
+
 import { createHash } from "node:crypto";
 import { open } from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ImportKind, Snippet } from "./patch";
 
+/** Values for the ${...} placeholders in file:// imports. */
 export interface Variables {
 	/**
 	 * Undefined when the workspace isn't trusted: the working folder can be the folder VS Code
@@ -18,6 +26,7 @@ export interface Variables {
 	env: NodeJS.ProcessEnv;
 }
 
+/** How imports may be loaded. */
 export interface LoadOptions {
 	/** Whether https:// imports are allowed. http:// is never allowed. */
 	allowRemote: boolean;
@@ -44,7 +53,7 @@ export function resolveVariables(url: string, vars: Variables): string {
 function lookupVariable(key: string, vars: Variables): string | undefined {
 	if (key.startsWith("env:")) {
 		// ${env:NAME} or ${env:NAME:fallback}; the fallback may itself contain colons.
-		const [name, ...fallback] = key.slice("env:".length).split(":");
+		const [name = "", ...fallback] = key.slice("env:".length).split(":");
 		return vars.env[name] ?? fallback.join(":");
 	}
 	switch (key) {
@@ -71,6 +80,7 @@ function trusted(name: string, value: string | undefined): string {
 	return value;
 }
 
+/** Whether a file is CSS or JS, from its name; anything else is refused. */
 export function importKind(url: URL): ImportKind {
 	const ext = path.posix.extname(url.pathname).toLowerCase();
 	if (ext === ".css") return "css";
@@ -83,6 +93,10 @@ export function importKind(url: URL): ImportKind {
 const PIN_PREFIX = "#sha256-";
 const PIN_RE = /^#sha256-([A-Za-z0-9+/]{43}=)$/;
 
+/**
+ * Reads one import, from a local file or (if allowed) over https, within the size limit,
+ * and checks its #sha256 pin if it has one. Throws with a clear reason when it can't.
+ */
 export async function fetchImport(url: URL, options: LoadOptions): Promise<string> {
 	const bytes = await fetchBytes(url, options);
 	if (url.hash.startsWith(PIN_PREFIX)) {

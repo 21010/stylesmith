@@ -1,3 +1,9 @@
+/**
+ * VS Code's workbench HTML file and the files next to it: finding it in the different VS Code
+ * layouts, writing it without ever leaving a half-written file, the font folder, and cleaning
+ * up after older versions and Custom CSS and JS Loader.
+ */
+
 import { constants, existsSync } from "node:fs";
 import {
 	copyFile,
@@ -13,6 +19,7 @@ import {
 import * as path from "node:path";
 import { getLegacySessionId, PATCH_MARKER, unpatch } from "./patch";
 
+/** Where VS Code's workbench HTML file is. */
 export interface Workbench {
 	dir: string;
 	htmlPath: string;
@@ -103,6 +110,7 @@ export async function writeFileAtomic(file: string, data: string): Promise<void>
 	}
 }
 
+/** Whether a file system error means "not allowed" (EACCES or EPERM). */
 export function isPermissionError(error: unknown): boolean {
 	const code = errorCode(error);
 	return code === "EACCES" || code === "EPERM";

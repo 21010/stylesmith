@@ -1,6 +1,10 @@
+/**
+ * Enable, Disable and the checks around them: what Stylesmith does to VS Code's files and
+ * settings. It doesn't use VS Code's API itself: how to show messages (Ui) and where VS Code
+ * is (findWorkbench) are passed in, so all of this is tested with plain Node.js.
+ */
+
 import { readFile } from "node:fs/promises";
-import * as path from "node:path";
-import * as vscode from "vscode";
 import type { Config } from "./config";
 import { EFFECTS, type Effect } from "./effects";
 import { fontFaceCss, preloadScript, type NerdFont } from "./fonts";
@@ -22,7 +26,6 @@ import {
 	cleanUp,
 	isPatched,
 	isPermissionError,
-	locateWorkbench,
 	readPristine,
 	removeFonts,
 	removeLegacyBackups,
@@ -31,17 +34,29 @@ import {
 	type Workbench
 } from "./workbench";
 
+/** How Stylesmith talks to the user. In VS Code these are notifications (see ui.ts). */
+export interface Ui {
+	info(message: string): void;
+	warn(message: string): void;
+	error(message: string): void;
+	/** Shows a message with buttons; resolves to the button chosen, if any. */
+	ask(message: string, ...choices: string[]): Promise<string | undefined>;
+	/** Tells the user a restart is needed, and offers to restart VS Code. */
+	offerRestart(message: string): void;
+	/** Runs one of Stylesmith's commands, such as "stylesmith.enable". */
+	run(command: string): Promise<void>;
+}
+
 /** What enabling and disabling Stylesmith needs. Passed in, so nothing hides in globals. */
 export interface Services {
 	config: Config;
 	managed: ManagedSettings;
 	store: StateFile;
+	ui: Ui;
+	/** Finds VS Code's workbench file; undefined if it can't be found. */
+	findWorkbench(): Workbench | undefined;
 	/** The full path of a file bundled with the extension. */
 	asAbsolutePath(relativePath: string): string;
-}
-
-export interface StatusButton {
-	show(active: boolean): void;
 }
 
 // Font settings Stylesmith puts its Nerd Font into. An empty terminal font already follows
@@ -53,15 +68,15 @@ const FONT_SETTINGS = [
 
 /** Patches VS Code with the configured font, effects and imports. True if it was patched. */
 export async function enable(services: Services): Promise<boolean> {
-	const { config, managed, store } = services;
-	const workbench = findWorkbench();
+	const { config, managed, store, ui } = services;
+	const workbench = findWorkbench(services);
 	if (!workbench) return false;
 
 	const imports = config.imports();
 	const effects = EFFECTS.filter(effect => config.isOn(effect));
 	const font = config.font();
 	if (imports.length === 0 && effects.length === 0 && !font) {
-		void vscode.window.showInformationMessage(messages.notConfigured);
+		ui.info(messages.notConfigured);
 		return false;
 	}
 
@@ -72,7 +87,7 @@ export async function enable(services: Services): Promise<boolean> {
 		readAssets(services, effects),
 		loadImports(imports, config.variables(), { allowRemote }, (entry, error) => {
 			console.error(`stylesmith: cannot load ${entry}`, error);
-			void vscode.window.showWarningMessage(messages.cannotLoad(entry, error.message));
+			ui.warn(messages.cannotLoad(entry, error.message));
 		})
 	]);
 
@@ -98,49 +113,73 @@ export async function enable(services: Services): Promise<boolean> {
 	await managed.update(FONT_GROUP, fontSettings(font));
 	await managed.update(EFFECT_GROUP, effectSettings(effects));
 	await store.update({ enabled: true });
-	void promptRestart(messages.enabled);
+	ui.offerRestart(messages.enabled);
 	return true;
 }
 
 /** Restores VS Code and the user's settings. */
 export async function disable(services: Services): Promise<void> {
-	const workbench = findWorkbench();
+	const workbench = findWorkbench(services);
 	if (!workbench) return;
 
 	const wasPatched = await writingTo(workbench, () => cleanUp(workbench));
 	await services.managed.update(FONT_GROUP, new Map());
 	await services.managed.update(EFFECT_GROUP, new Map());
 	await services.store.update({ enabled: false });
-	void (wasPatched
-		? promptRestart(messages.disabled)
-		: vscode.window.showInformationMessage(messages.alreadyDisabled));
+	if (wasPatched) services.ui.offerRestart(messages.disabled);
+	else services.ui.info(messages.alreadyDisabled);
 }
 
 /**
- * After startup: show whether Stylesmith is active, and if a VS Code update removed its
- * changes, offer to re-apply them. It only asks, and only reads the start of one file.
+ * After startup: if a VS Code update removed Stylesmith's changes, offer to re-apply them.
+ * It only asks, and only reads the start of one file. Returns whether VS Code is patched.
  */
-export async function checkAfterStartup(services: Services, status: StatusButton): Promise<void> {
-	const { config, store } = services;
-	const workbench = findWorkbench(false);
-	if (!workbench) return;
+export async function checkAfterStartup(services: Services): Promise<boolean> {
+	const { config, store, ui } = services;
+	const workbench = findWorkbench(services, false);
+	if (!workbench) return false;
 	const patched = await isPatched(workbench);
-	status.show(patched);
 
 	const state = await store.read();
-	if (patched || !state.enabled) return;
-	if (!config.get("remindAfterUpdate", true)) return;
-	if (Date.now() - (state.reapplyAskedAt ?? 0) < 60_000) return; // another window just asked
+	if (patched || !state.enabled) return patched;
+	if (!config.get("remindAfterUpdate", true)) return patched;
+	if (Date.now() - (state.reapplyAskedAt ?? 0) < 60_000) return patched; // another window asked
 	await store.update({ reapplyAskedAt: Date.now() });
-	const choice = await vscode.window.showInformationMessage(
-		messages.reapply,
-		messages.reapplyNow,
-		messages.dontAskAgain
-	);
-	if (choice === messages.reapplyNow) {
-		await vscode.commands.executeCommand("stylesmith.enable");
-	} else if (choice === messages.dontAskAgain) {
-		await config.set("remindAfterUpdate", false);
+	// Not awaited: the answer can come much later, and startup shouldn't wait for it.
+	void ui
+		.ask(messages.reapply, messages.reapplyNow, messages.dontAskAgain)
+		.then(async choice => {
+			if (choice === messages.reapplyNow) await ui.run("stylesmith.enable");
+			else if (choice === messages.dontAskAgain) await config.set("remindAfterUpdate", false);
+		})
+		.catch((error: unknown) => {
+			ui.error(
+				messages.somethingWrong + (error instanceof Error ? error.message : String(error))
+			);
+		});
+	return patched;
+}
+
+/**
+ * Offers to reload after the user changed a setting that needs it (an effect, the font, or
+ * the imports) somewhere other than Stylesmith's menu. One question at a time, and only
+ * while Stylesmith is enabled.
+ */
+export class ReloadOffer {
+	private asking = false;
+
+	constructor(private readonly services: Services) {}
+
+	async offer(): Promise<void> {
+		if (this.asking) return;
+		if (!(await this.services.store.read()).enabled) return;
+		this.asking = true;
+		try {
+			const choice = await this.services.ui.ask(messages.settingsChanged, messages.reloadNow);
+			if (choice === messages.reloadNow) await this.services.ui.run("stylesmith.reload");
+		} finally {
+			this.asking = false;
+		}
 	}
 }
 
@@ -155,16 +194,10 @@ async function writingTo<T>(workbench: Workbench, task: () => Promise<T>): Promi
 	}
 }
 
-function findWorkbench(reportMissing = true): Workbench | undefined {
-	const appDirs = [
-		require.main && path.dirname(require.main.filename),
-		(globalThis as { _VSCODE_FILE_ROOT?: string })._VSCODE_FILE_ROOT,
-		path.join(vscode.env.appRoot, "out")
-	].filter((dir): dir is string => Boolean(dir));
-
-	const workbench = locateWorkbench(appDirs);
+function findWorkbench(services: Services, reportMissing = true): Workbench | undefined {
+	const workbench = services.findWorkbench();
 	if (!workbench && reportMissing) {
-		void vscode.window.showErrorMessage(messages.unableToLocateVsCodeInstallationPath);
+		services.ui.error(messages.unableToLocateVsCodeInstallationPath);
 	}
 	if (workbench) {
 		// So the uninstall cleanup can find it later, when VS Code's API isn't available.
@@ -215,11 +248,4 @@ function effectSettings(effects: readonly Effect[]): Map<string, Wanted> {
 			.flatMap(effect => effect.editorSettings ?? [])
 			.map(setting => [setting.key, toggleWanted(setting.value, setting.isOn)])
 	);
-}
-
-async function promptRestart(message: string): Promise<void> {
-	const choice = await vscode.window.showInformationMessage(message, messages.restartIde);
-	if (choice === messages.restartIde) {
-		await vscode.commands.executeCommand("workbench.action.reloadWindow");
-	}
 }

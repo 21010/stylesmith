@@ -29,8 +29,8 @@ describe("state file", () => {
 		await store.update({ enabled: true });
 		const state = await store.read();
 		assert.equal(state.enabled, true);
-		assert.equal(state.fontSettings?.["editor.fontFamily"].previous, "Hack");
-		assert.equal(state.effectSettings?.["editor.guides.bracketPairs"].applied, "active");
+		assert.equal(state.fontSettings?.["editor.fontFamily"]?.previous, "Hack");
+		assert.equal(state.effectSettings?.["editor.guides.bracketPairs"]?.applied, "active");
 	});
 
 	it("removes a value that is set to undefined", async () => {

@@ -85,7 +85,7 @@ describe("loadImports", () => {
 			{ allowRemote: false, maxBytes: 1024 },
 			() => assert.fail("should load")
 		);
-		assert.equal(snippets[0].source.length, 1024);
+		assert.equal(snippets[0]?.source.length, 1024);
 	});
 
 	it("loads entries in order and reports failures without aborting", async () => {

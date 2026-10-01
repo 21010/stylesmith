@@ -20,11 +20,11 @@ describe("built-in effects", () => {
 			});
 
 			it("has the same default in code and package.json", () => {
-				assert.equal(setting.default, effect.enabledByDefault);
+				assert.equal(setting?.default, effect.enabledByDefault);
 			});
 
 			it("can only be set in user settings", () => {
-				assert.equal(setting.scope, "application");
+				assert.equal(setting?.scope, "application");
 			});
 
 			it("has its file in the package", () => {

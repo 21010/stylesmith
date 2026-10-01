@@ -95,6 +95,7 @@ You can also install the `.vsix` file from VS Code: open the **Extensions** view
 
 3. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) and run **Stylesmith: Enable**.
 4. Click **Restart Visual Studio Code** when asked.
+5. After you edit your CSS file, run **Stylesmith: Reload**. When you change Stylesmith's settings, it offers to reload by itself.
 
 A paint-can button appears in the status bar. Click it for the Stylesmith menu.
 
@@ -152,7 +153,7 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Boot sequence](#boot-sequence)         | `stylesmith.effects.bootSequence`         | off     |
 | [Glitch on save](#glitch-on-save)       | `stylesmith.effects.glitchOnSave`         | off     |
 
-After changing any of them, run **Stylesmith: Reload**. None of the effects do any work while you're not typing or moving the cursor.
+When you change any of them in Settings, Stylesmith offers to reload so the change takes effect. None of the effects do any work while you're not typing or moving the cursor.
 
 ### Caret animation
 
@@ -163,7 +164,7 @@ On by default. When the text cursor moves, it glides to its new place and leaves
 - It doesn't animate while you scroll.
 - It does nothing while the cursor is still, so it doesn't use any CPU when you're not moving around.
 
-To turn it off, set `"stylesmith.effects.caretAnimation": false` and run **Stylesmith: Reload**.
+To turn it off, set `"stylesmith.effects.caretAnimation": false` and choose **Reload** when Stylesmith asks.
 
 The idea comes from [Neovide](https://github.com/neovide/neovide)'s cursor animation and [vscode-neovide-cursor](https://github.com/LengineerC/vscode-neovide-cursor). Stylesmith has its own version, written from scratch.
 
@@ -282,7 +283,7 @@ How it works:
 - **Your fonts are kept.** Stylesmith puts the Nerd Font first in `editor.fontFamily` and `terminal.integrated.fontFamily` and keeps your current fonts after it, so if anything goes wrong, VS Code simply uses your old font. If your terminal font is empty, it already follows the editor font and is left alone.
 - **You can always go back.** **Stylesmith: Disable** puts your font settings back exactly as they were. If you changed a font setting yourself in the meantime, your change is kept.
 
-To use your own font instead, set `"stylesmith.fonts.enabled": false` and run **Stylesmith: Reload**.
+To use your own font instead, set `"stylesmith.fonts.enabled": false` and choose **Reload** when Stylesmith asks.
 
 The fonts come from Nerd Fonts v3.5.1. The build downloads them from the official release and checks each file against the release's published SHA-256 checksums. All four are free fonts under the [SIL Open Font License](https://openfontlicense.org), and their licenses are included in `assets/fonts/licenses/`.
 
@@ -506,8 +507,10 @@ The browser tests need Chromium once: `npx playwright-core install chromium-head
 ```
 src/
 ├── extension.ts    # starts Stylesmith: connects the parts and registers the commands
-├── lifecycle.ts    # Enable, Disable, and the check after VS Code updates
-├── menu.ts         # the status bar button, the menu, and the font and preset pickers
+├── lifecycle.ts    # Enable, Disable, the check after VS Code updates, and the offer to reload
+├── ui.ts           # notifications, the status bar button, the menu and pickers, permission help
+├── changes.ts      # which setting changes need a reload, and which ones you made
+├── permissions.ts  # the steps to fix a permission problem, for each system and install
 ├── config.ts       # reading and writing Stylesmith's settings
 ├── managed.ts      # changing VS Code settings for you and putting yours back
 ├── store.ts        # Stylesmith's own state file
@@ -535,7 +538,7 @@ themes/             # color themes (generated)
 icons/              # pixel icons (generated)
 ```
 
-Only `extension.ts`, `lifecycle.ts`, `menu.ts`, `config.ts` and `problemLens.ts` use the VS Code API. Everything else is plain TypeScript and is tested with Node.js alone.
+Only `extension.ts`, `ui.ts`, `config.ts` and `problemLens.ts` use the VS Code API. Everything else is plain TypeScript and is tested with Node.js alone.
 
 ## License
 

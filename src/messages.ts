@@ -1,3 +1,5 @@
+/** The text Stylesmith shows in notifications, in one place. */
+
 export const messages = {
 	admin: "Stylesmith: run VS Code with admin privileges so the changes can be applied.",
 	enabled:
@@ -20,6 +22,8 @@ export const messages = {
 		"A VS Code update removed Stylesmith's changes. Re-apply them now? VS Code restarts afterwards.",
 	reapplyNow: "Re-apply",
 	dontAskAgain: "Don't Ask Again",
+	settingsChanged: "Stylesmith: your settings changed. Reload to apply them?",
+	reloadNow: "Reload",
 	cannotLoad: (url: string, reason: string) =>
 		`Stylesmith cannot load '${url}' (${reason}). Skipping.`
 } as const;
