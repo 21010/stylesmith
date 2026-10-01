@@ -61,7 +61,11 @@
 					effects.
 				</p>
 				<p class="actions">
-					<a class="button" href="#install">Install</a>
+					<a
+						class="button"
+						href="https://marketplace.visualstudio.com/items?itemName=21010.stylesmith"
+						>Install</a
+					>
 					<a class="button ghost" href="https://github.com/21010/stylesmith"
 						>View on GitHub</a
 					>
@@ -237,19 +241,30 @@
 			<section id="install" aria-labelledby="install-title">
 				<h2 id="install-title"><span aria-hidden="true">04 //</span> Install</h2>
 				<p>
-					Stylesmith isn't on the Marketplace yet. Build the package and install it in VS
-					Code:
+					Get Stylesmith from the
+					<a href="https://marketplace.visualstudio.com/items?itemName=21010.stylesmith"
+						>VS Code Marketplace</a
+					>: search for "Stylesmith" in the Extensions view, or run:
 				</p>
-				<pre><code>git clone https://github.com/21010/stylesmith.git
-cd stylesmith
-npm install
-npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-&lt;version&gt;.vsix</code></pre>
+				<pre><code>code --install-extension 21010.stylesmith</code></pre>
+				<p class="actions">
+					<a
+						class="button"
+						href="https://marketplace.visualstudio.com/items?itemName=21010.stylesmith"
+						>Get it on the Marketplace</a
+					>
+				</p>
 				<p>
 					Then open the Command Palette and run <strong>Stylesmith: Enable</strong>, or
 					click the paint-can button in the status bar and pick a preset. The
 					<a href="https://github.com/21010/stylesmith#readme">README</a> explains every
 					setting.
+				</p>
+				<p>
+					Each version is also on
+					<a href="https://github.com/21010/stylesmith/releases">GitHub</a> as a
+					<code>.vsix</code> file with a signed build provenance, so you can check that it
+					was built from the public source.
 				</p>
 			</section>
 		</main>

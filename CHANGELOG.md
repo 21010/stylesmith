@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.14.3 (2026-10-01)
+
+### Changed
+
+- The Marketplace package is now the one built by the release workflow, with a signed build provenance. Version 1.14.2 on the Marketplace was uploaded from a local build with the same code. Nothing changes in how Stylesmith works.
+
 ## 1.14.2 (2026-10-01)
 
 ### Added
