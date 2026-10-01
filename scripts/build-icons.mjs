@@ -198,7 +198,7 @@ function contrast(a, b) {
 
 // Darkens (light version) or lightens (dark version) a color until it has enough contrast
 // against every side bar color of that kind.
-function fit(color, kind) {
+function fit(color, kind, backgrounds = SIDEBAR[kind]) {
 	const channels = [1, 3, 5].map(i => parseInt(color.slice(i, i + 2), 16));
 	for (let step = 0; step <= 100; step++) {
 		const t = step / 100;
@@ -206,7 +206,7 @@ function fit(color, kind) {
 			Math.round(kind === "dark" ? c + (255 - c) * t : c * (1 - t))
 		);
 		const hex = "#" + mixed.map(c => c.toString(16).padStart(2, "0")).join("");
-		if (SIDEBAR[kind].every(bg => contrast(hex, bg) >= MIN_CONTRAST)) return hex;
+		if (backgrounds.every(bg => contrast(hex, bg) >= MIN_CONTRAST)) return hex;
 	}
 	throw new Error(`cannot fit ${color} for ${kind}`);
 }
@@ -341,3 +341,93 @@ for (const kind of ["dark", "light"]) {
 
 writeFileSync(join(root, "pixel-icon-theme.json"), JSON.stringify(theme, null, "\t") + "\n");
 console.log(`wrote ${Object.keys(theme.iconDefinitions).length} icons`);
+
+// Gutter icons for the Problem Lens. Each kind has its own shape, so it isn't told apart by
+// color alone: a square with an X, a triangle with "!", and a circle with "i".
+const PROBLEM_ICONS = {
+	error: {
+		color: { dark: "#ff6b8b", light: "#b8203a" },
+		map: [
+			"................",
+			".##############.",
+			".#............#.",
+			".#.##......##.#.",
+			".#..##....##..#.",
+			".#...##..##...#.",
+			".#....####....#.",
+			".#.....##.....#.",
+			".#....####....#.",
+			".#...##..##...#.",
+			".#..##....##..#.",
+			".#.##......##.#.",
+			".#............#.",
+			".##############.",
+			"................",
+			"................"
+		]
+	},
+	warning: {
+		color: { dark: "#ffcc66", light: "#7a5000" },
+		map: [
+			"................",
+			".......##.......",
+			"......####......",
+			"......#..#......",
+			".....##..##.....",
+			".....#.##.#.....",
+			"....##.##.##....",
+			"....#..##..#....",
+			"...##..##..##...",
+			"...#........#...",
+			"..##...##...##..",
+			"..#....##....#..",
+			".##..........##.",
+			".##############.",
+			"................",
+			"................"
+		]
+	},
+	info: {
+		color: { dark: "#5fe0ff", light: "#005c80" },
+		map: [
+			"................",
+			".....######.....",
+			"....#......#....",
+			"...#...##...#...",
+			"..#....##....#..",
+			"..#..........#..",
+			"..#...###....#..",
+			"..#....##....#..",
+			"..#....##....#..",
+			"..#....##....#..",
+			"...#..####..#...",
+			"....#......#....",
+			".....######.....",
+			"................",
+			"................",
+			"................"
+		]
+	}
+};
+
+// Editor backgrounds the problem icons are checked against: VS Code's defaults and Stylesmith's.
+const EDITOR = {
+	dark: ["#1e1e1e", "#1f1f1f", "#0f1120", "#0b130d", "#140f07", "#000000"],
+	light: ["#ffffff", "#f7f2e4", "#f3f3f3"]
+};
+
+const problemDir = join(root, "problems");
+rmSync(problemDir, { recursive: true, force: true });
+mkdirSync(problemDir, { recursive: true });
+for (const [name, icon] of Object.entries(PROBLEM_ICONS)) {
+	for (const kind of ["dark", "light"]) {
+		const color = fit(icon.color[kind], kind, EDITOR[kind]);
+		const pixels = [];
+		icon.map.forEach((row, y) => {
+			for (let x = 0; x < row.length; x++)
+				if (row[x] === "#") pixels.push([x, y, 1, 1, color]);
+		});
+		writeFileSync(join(problemDir, `${name}-${kind}.svg`), svg(pixels));
+	}
+}
+console.log("wrote problem gutter icons");

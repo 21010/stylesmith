@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.10.0",
+	"version": "1.11.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -137,7 +137,7 @@
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Give code with an error a soft red-ish background and code with a warning a soft amber-ish one, using your theme's error and warning colors. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",
@@ -192,6 +192,46 @@
 						"Pixel-style retro terminal. Sharpest at font sizes that are multiples of 11. Based on Departure Mono."
 					],
 					"markdownDescription": "Which bundled Nerd Font to use when `stylesmith.fonts.enabled` is on. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.problems.enabled": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Show errors and warnings right on their line: a soft tint, a pixel icon in the gutter, and a terminal-style message at the end of the line, like \"Error Lens\". Works without **Stylesmith: Enable** and updates live."
+				},
+				"stylesmith.problems.minimumSeverity": {
+					"type": "string",
+					"enum": [
+						"error",
+						"warning",
+						"info"
+					],
+					"enumDescriptions": [
+						"Only errors.",
+						"Errors and warnings.",
+						"Errors, warnings and info messages."
+					],
+					"default": "warning",
+					"scope": "application",
+					"description": "The least severe kind of problem the Problem Lens shows."
+				},
+				"stylesmith.problems.inlineMessages": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "Show the problem's message at the end of its line."
+				},
+				"stylesmith.problems.gutterIcons": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "Show a pixel icon in the gutter: a square with an X for errors, a triangle for warnings, a circle for info."
+				},
+				"stylesmith.problems.statusBar": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "Show the problem on the cursor's line in the status bar, next to the line and column numbers."
 				},
 				"stylesmith.statusbar": {
 					"type": "boolean",

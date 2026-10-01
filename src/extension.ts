@@ -16,6 +16,8 @@ import {
 import { loadImports, type Variables } from "./imports";
 import { messages } from "./messages";
 import { patch, type Snippet } from "./patch";
+import { ProblemLens } from "./problemLens";
+import type { Severity } from "./problems";
 import { ICON_THEME, PRESETS, presetEffects, type Preset } from "./presets";
 import { planReset, planSet } from "./settings";
 import { StateFile } from "./store";
@@ -77,6 +79,17 @@ export function activate(context: vscode.ExtensionContext): void {
 	};
 
 	const status = createStatusButton(context);
+
+	// Live, through VS Code's API: it needs no Enable and no restart.
+	context.subscriptions.push(
+		new ProblemLens(context, () => ({
+			enabled: userSetting("problems.enabled", true),
+			minimumSeverity: severitySetting(),
+			inlineMessages: userSetting("problems.inlineMessages", true),
+			gutterIcons: userSetting("problems.gutterIcons", true),
+			statusBar: userSetting("problems.statusBar", true)
+		}))
+	);
 
 	// Enabling always starts from the pristine file, so it doubles as "reload".
 	register("stylesmith.enable", async () => status.show(await enable(context)));
@@ -475,4 +488,9 @@ async function reportErrors(task: () => Promise<void>): Promise<void> {
 				: messages.somethingWrong + (error instanceof Error ? error.message : String(error))
 		);
 	}
+}
+
+function severitySetting(): Severity {
+	const value = userSetting<string>("problems.minimumSeverity", "warning");
+	return value === "error" || value === "info" ? value : "warning";
 }

@@ -68,7 +68,7 @@ export const EFFECTS: readonly Effect[] = [
 	},
 	{
 		setting: "effects.diagnosticHighlights",
-		label: "Error and warning highlights",
+		label: "Problem outlines (no underline)",
 		file: "assets/effects/diagnostic-highlights.css",
 		kind: "css",
 		enabledByDefault: true

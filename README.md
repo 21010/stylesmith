@@ -37,7 +37,8 @@ Everything you need for a retro or cyberpunk VS Code, ready to use:
 - **[Themes](#color-themes):** six color themes (Neon Night, Phosphor, Amber, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
 - **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
 - **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
-- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, error and warning highlights, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
+- **[Problem Lens](#problem-lens):** errors and warnings right on their line, with pixel gutter icons and terminal-style messages.
+- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, problem outlines, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
 - **[Presets](#presets):** a complete look in one step, such as Night City or Phosphor Terminal.
 
 Each part works on its own. The effects follow any theme, including ones that aren't from Stylesmith, and the themes and icons work even without running **Stylesmith: Enable**.
@@ -69,7 +70,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.10.0.vsix
+code --install-extension stylesmith-1.11.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -137,7 +138,7 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Neon focus frame](#neon-focus-frame)     | `stylesmith.effects.neonFocusFrame`  | on      |
 | [Neon selections](#neon-selections)       | `stylesmith.effects.neonSelections`  | on      |
 | [Neon code blocks](#neon-code-blocks)     | `stylesmith.effects.neonBlocks`      | on      |
-| [Error and warning highlights](#error-and-warning-highlights) | `stylesmith.effects.diagnosticHighlights` | on |
+| [Problem outlines](#problem-outlines)     | `stylesmith.effects.diagnosticHighlights` | on |
 | [CRT scanlines](#crt-scanlines)           | `stylesmith.effects.crtScanlines`    | off     |
 | [Typing sparks](#typing-sparks)           | `stylesmith.effects.typingSparks`    | off     |
 | [Boot sequence](#boot-sequence)           | `stylesmith.effects.bootSequence`    | off     |
@@ -176,13 +177,9 @@ On by default. The code inside the brackets around your cursor (`()`, `[]` or `{
 
 It builds on VS Code's bracket pair guides. While the effect is on, Stylesmith sets `"editor.guides.bracketPairs": "active"`, unless you already have bracket guides on. It remembers your own value and puts it back when you turn the effect off or run **Stylesmith: Disable**.
 
-### Error and warning highlights
+### Problem outlines
 
-On by default. Code with an error gets a soft red-ish background, and code with a warning a soft amber-ish one, on top of VS Code's usual squiggly underline. That makes problems easy to spot when you scroll through a file.
-
-- The colors come from your theme's error and warning colors, so it works with any theme.
-- The tint is lighter in light themes. High contrast light themes get a thin outline instead, so text keeps its full contrast.
-- Stylesmith's tests check that code stays readable on the highlights in every Stylesmith theme.
+On by default. Replaces VS Code's squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. Together with the [Problem Lens](#problem-lens), which marks the whole line, you still see exactly where each problem is. An outline doesn't change the text's background, so code keeps its full contrast.
 
 ### CRT scanlines
 
@@ -213,6 +210,40 @@ The neon effects use your theme's focus color, so they match any theme. To chang
 ```
 
 Your own files are added after the built-in effects, so your values always win.
+
+## Problem Lens
+
+Errors and warnings, shown right where they are, in the style of the "Error Lens" extension:
+
+```
+ ✖  4      const port: number = "2077";     ▸ ERR  Type 'string' is not assignable to type 'number'.
+ ⚠  5      let unusedVar = deck.status;      ▸ WARN  'unusedVar' is declared but its value is never read.
+ ✖  7      return deck.connect(prot);        ▸ ERR  Cannot find name 'prot'.  +1
+```
+
+- **The whole line** gets a soft tint in the theme's error or warning color.
+- **A pixel icon in the gutter** shows the kind of problem by its shape: a square with an X for errors, a triangle for warnings, a circle for info.
+- **The message** appears at the end of the line, like a terminal log: `▸ ERR`, `▸ WARN` or `▸ INFO`, the message, and `+2` if the line has more problems.
+- **The status bar** shows the problem on the cursor's line, right next to `Ln 12, Col 5`. Click it to open the Problems panel.
+
+It works through VS Code's own API, so it updates live as you type, works with any theme, and doesn't need **Stylesmith: Enable**. Only the [problem outlines](#problem-outlines) that replace the squiggly underline need Enable.
+
+Settings, all on by default except info messages:
+
+| Setting                               | What it does                                               |
+| ------------------------------------- | ---------------------------------------------------------- |
+| `stylesmith.problems.enabled`         | Turns the Problem Lens on or off.                           |
+| `stylesmith.problems.minimumSeverity` | `"error"`, `"warning"` (default) or `"info"`.               |
+| `stylesmith.problems.inlineMessages`  | The message at the end of the line.                        |
+| `stylesmith.problems.gutterIcons`     | The pixel icon in the gutter.                              |
+| `stylesmith.problems.statusBar`       | The problem on the cursor's line in the status bar.        |
+
+Made with accessibility in mind:
+
+- **Never color alone.** Every problem also has a shape (the icon) and a word (ERR, WARN, INFO).
+- **Readable.** Stylesmith's tests check every Stylesmith theme: code and the message stay readable on the tinted line (4.5:1, or 7:1 in high contrast themes), and the icons stand out from the background (3:1).
+- **High contrast themes get no tint,** so text keeps its full contrast; the icon and the message mark the line.
+- **Screen readers** hear the status bar item as a full sentence, such as "Error on line 12: Cannot find name 'prot'".
 
 ## Fonts
 
@@ -265,7 +296,7 @@ The high contrast themes use VS Code's own high contrast mode, with a clear bord
 
 Nested brackets are colored in six neon colors taken from each theme, and every one of them passes the same contrast checks as code text.
 
-The [error and warning highlights](#error-and-warning-highlights) are checked too: every syntax color stays readable on them.
+The [Problem Lens](#problem-lens) is checked too: on a problem's tinted line, every syntax color and the inline message stay readable, and the outline around the exact code stays visible.
 
 ### Color blindness
 

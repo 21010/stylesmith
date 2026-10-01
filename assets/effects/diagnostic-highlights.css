@@ -1,44 +1,33 @@
 /*
- * Stylesmith error and warning highlights: code with an error gets a soft red-ish background,
- * code with a warning a soft amber-ish one, on top of VS Code's usual squiggly underline.
+ * Stylesmith problem outlines: the squiggly underline under errors, warnings and info messages
+ * is replaced by a thin outline around the exact code, in the same color. The Problem Lens
+ * marks the whole line (tint, gutter icon, message); the outline still shows exactly where
+ * the problem is.
  *
- * Colors come from your theme's error and warning colors, so this works with any theme. The
- * tint is lighter in light themes, and high contrast light themes get an outline instead, so
- * code stays readable on it. Stylesmith's tests check every one of its themes against this.
+ * Colors come from your theme's error, warning and info colors, so this works with any theme.
+ * An outline doesn't change the text's background, so code keeps its contrast. Stylesmith's
+ * tests check that the outline itself is visible (3:1) in every Stylesmith theme.
  *
- * VS Code draws the squiggle as a background image on the same element, so only the
- * background color is set here, and the squiggle stays on top of it.
+ * VS Code draws the squiggle as a background image, so only that image is removed here.
  */
 
-/* Dark and high contrast dark themes. */
 .monaco-editor .view-overlays .squiggly-error {
-	background-color: color-mix(in srgb, var(--vscode-editorError-foreground) 12%, transparent);
+	background-image: none;
+	outline: 1px solid var(--vscode-editorError-foreground);
+	outline-offset: -1px;
 	border-radius: 2px;
 }
 
 .monaco-editor .view-overlays .squiggly-warning {
-	background-color: color-mix(in srgb, var(--vscode-editorWarning-foreground) 12%, transparent);
+	background-image: none;
+	outline: 1px solid var(--vscode-editorWarning-foreground);
+	outline-offset: -1px;
 	border-radius: 2px;
 }
 
-/* Light themes. */
-.monaco-workbench.vs .monaco-editor .view-overlays .squiggly-error {
-	background-color: color-mix(in srgb, var(--vscode-editorError-foreground) 8%, transparent);
-}
-
-.monaco-workbench.vs .monaco-editor .view-overlays .squiggly-warning {
-	background-color: color-mix(in srgb, var(--vscode-editorWarning-foreground) 8%, transparent);
-}
-
-/* High contrast light themes: an outline, so text keeps its full contrast. */
-.monaco-workbench.hc-light .monaco-editor .view-overlays .squiggly-error {
-	background-color: transparent;
-	outline: 1px solid var(--vscode-editorError-foreground);
+.monaco-editor .view-overlays .squiggly-info {
+	background-image: none;
+	outline: 1px solid var(--vscode-editorInfo-foreground);
 	outline-offset: -1px;
-}
-
-.monaco-workbench.hc-light .monaco-editor .view-overlays .squiggly-warning {
-	background-color: transparent;
-	outline: 1px solid var(--vscode-editorWarning-foreground);
-	outline-offset: -1px;
+	border-radius: 2px;
 }

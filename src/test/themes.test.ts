@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
+import { LINE_TINT } from "../problems";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
@@ -88,34 +89,13 @@ function colorDifference(a: string, b: string, m: number[]): number {
 	return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
 }
 
-// How strongly the error and warning highlights tint the background, read from the effect's
-// CSS so the test always checks what is shipped.
-const HIGHLIGHTS = readFileSync(
-	path.join(ROOT, "assets", "effects", "diagnostic-highlights.css"),
-	"utf-8"
-);
-/** The tint for "squiggly-error" or "squiggly-warning" in a theme type; 0 means no tint. */
-function tintPercent(squiggle: string, themeType: string): number {
-	// Light and high contrast light themes have their own rules; the rest use the plain one.
-	const scope =
-		themeType === "light"
-			? ".monaco-workbench.vs "
-			: themeType === "hcLight"
-				? ".monaco-workbench.hc-light "
-				: "";
-	const rules = [...HIGHLIGHTS.matchAll(/([^{}]+)\{([^}]*)\}/g)].map(m => ({
-		selector: m[1].replace(/\/\*[\s\S]*?\*\//g, "").trim(),
-		body: m[2]
-	}));
-	const rule = rules.find(
-		r => r.selector === `${scope}.monaco-editor .view-overlays .${squiggle}`
-	);
-	assert.ok(rule, `rule for ${squiggle} in ${themeType || "dark"} themes`);
-	if (/background-color:\s*transparent/.test(rule.body)) return 0;
-	const match = /color-mix\(in srgb, var\([^)]+\) (\d+)%, transparent\)/.exec(rule.body);
-	assert.ok(match, `tint for ${squiggle} found`);
-	return Number(match[1]);
-}
+// How strongly the Problem Lens tints a problem's line, for each kind of theme.
+const PROBLEM_TINT: Record<string, number> = {
+	dark: LINE_TINT.dark,
+	light: LINE_TINT.light,
+	hc: LINE_TINT["hc-dark"],
+	hcLight: LINE_TINT["hc-light"]
+};
 
 /** CSS color-mix(in srgb, color p%, background): what the tinted background looks like. */
 function mix(color: string, background: string, percent: number): string {
@@ -281,23 +261,17 @@ describe("color themes", () => {
 			]);
 		}
 
-		// Code must stay readable on the error and warning highlights.
-		for (const [label, key, tint] of [
-			[
-				"error highlight",
-				"editorError.foreground",
-				tintPercent("squiggly-error", theme.type)
-			],
-			[
-				"warning highlight",
-				"editorWarning.foreground",
-				tintPercent("squiggly-warning", theme.type)
-			]
-		] as const) {
-			const tinted = mix(c[key].slice(0, 7), background.slice(0, 7), tint);
-			checks.push([`editor text on the ${label}`, c["editor.foreground"], tinted, strong]);
-			for (const [scope, color] of syntax) {
-				checks.push([`syntax: ${scope} on the ${label}`, color, tinted, text]);
+		// The Problem Lens: code and the inline message must stay readable on a problem's tinted
+		// line, and the outline around the exact code must stay visible on it.
+		for (const kind of ["Error", "Warning", "Info"]) {
+			const color = c[`editor${kind}.foreground`].slice(0, 7);
+			const line = mix(color, background.slice(0, 7), PROBLEM_TINT[theme.type]);
+			const label = `${kind.toLowerCase()} line`;
+			checks.push([`editor text on an ${label}`, c["editor.foreground"], line, strong]);
+			checks.push([`the ${kind.toLowerCase()} message on its line`, color, line, text]);
+			checks.push([`the ${kind.toLowerCase()} outline on its line`, color, line, nonText]);
+			for (const [scope, syntaxColor] of syntax) {
+				checks.push([`syntax: ${scope} on an ${label}`, syntaxColor, line, text]);
 			}
 		}
 
