@@ -1,15 +1,17 @@
 import * as vscode from "vscode";
 import {
 	LINE_TINT,
-	accessibleLabel,
-	inlineText,
-	statusText,
-	summarize,
+	SEVERITIES,
+	documentProblems,
+	lineDecorations,
+	statusItem,
 	type LineProblem,
-	type Problem,
+	type ProblemLensOptions,
 	type Severity,
 	type ThemeKind
 } from "./problems";
+
+export type { ProblemLensOptions } from "./problems";
 
 /**
  * The Problem Lens: errors and warnings shown right on their line, like "Error Lens" but in
@@ -18,15 +20,6 @@ import {
  * terminal-style message at the end; the status bar shows the problem on the cursor's line.
  */
 
-export interface ProblemLensOptions {
-	enabled: boolean;
-	minimumSeverity: Severity;
-	inlineMessages: boolean;
-	gutterIcons: boolean;
-	statusBar: boolean;
-}
-
-const SEVERITIES: readonly Severity[] = ["error", "warning", "info"];
 const COLOR: Record<Severity, string> = { error: "Error", warning: "Warning", info: "Info" };
 const STATUS_ICON: Record<Severity, string> = {
 	error: "$(error)",
@@ -141,69 +134,48 @@ export class ProblemLens implements vscode.Disposable {
 	}
 
 	private decorate(editor: vscode.TextEditor): void {
-		const lines = this.options.enabled ? this.problems(editor.document) : [];
+		const document = editor.document;
+		const lines = lineDecorations(this.problems(document), this.options);
 		for (const severity of SEVERITIES) {
-			const options = lines
-				.filter(problem => problem.severity === severity)
-				.map((problem): vscode.DecorationOptions => ({
-					range: editor.document.lineAt(problem.line).range,
-					renderOptions: this.options.inlineMessages
-						? { after: { contentText: inlineText(problem) } }
-						: undefined
-				}));
+			const options = lines[severity].map(({ line, text }): vscode.DecorationOptions => ({
+				range: document.lineAt(line).range,
+				renderOptions: text === undefined ? undefined : { after: { contentText: text } }
+			}));
 			editor.setDecorations(this.types.get(severity)!, options);
 		}
 	}
 
 	private updateStatus(): void {
 		const editor = vscode.window.activeTextEditor;
-		if (!editor || !this.options.enabled || !this.options.statusBar) {
+		const line = editor?.selection.active.line ?? -1;
+		// Only the cursor's line: also past the cap on decorated lines in huge files.
+		const item = editor
+			? statusItem(this.problems(editor.document, line), line, this.options)
+			: undefined;
+		if (!item) {
 			this.status.hide();
 			return;
 		}
-		const line = editor.selection.active.line;
-		const problem = this.problems(editor.document).find(p => p.line === line);
-		if (!problem) {
-			this.status.hide();
-			return;
-		}
-		this.status.text = `${STATUS_ICON[problem.severity]} ${statusText(problem)}`;
-		this.status.tooltip = `${accessibleLabel(problem)}\nClick to open the Problems panel.`;
-		this.status.accessibilityInformation = { label: accessibleLabel(problem) };
+		this.status.text = `${STATUS_ICON[item.severity]} ${item.text}`;
+		this.status.tooltip = `${item.label}
+Click to open the Problems panel.`;
+		this.status.accessibilityInformation = { label: item.label };
 		this.status.backgroundColor =
-			problem.severity === "error"
+			item.severity === "error"
 				? new vscode.ThemeColor("statusBarItem.errorBackground")
-				: problem.severity === "warning"
+				: item.severity === "warning"
 					? new vscode.ThemeColor("statusBarItem.warningBackground")
 					: undefined;
 		this.status.show();
 	}
 
-	private problems(document: vscode.TextDocument): LineProblem[] {
-		const problems: Problem[] = [];
-		for (const diagnostic of vscode.languages.getDiagnostics(document.uri)) {
-			const severity = toSeverity(diagnostic.severity);
-			if (!severity || diagnostic.range.start.line >= document.lineCount) continue;
-			problems.push({
-				line: diagnostic.range.start.line,
-				severity,
-				message: diagnostic.message
-			});
-		}
-		return summarize(problems, this.options.minimumSeverity);
-	}
-}
-
-function toSeverity(severity: vscode.DiagnosticSeverity): Severity | undefined {
-	switch (severity) {
-		case vscode.DiagnosticSeverity.Error:
-			return "error";
-		case vscode.DiagnosticSeverity.Warning:
-			return "warning";
-		case vscode.DiagnosticSeverity.Information:
-			return "info";
-		default:
-			return undefined; // hints are left to VS Code
+	/** The document's problems; only those on `onLine` if given. */
+	private problems(document: vscode.TextDocument, onLine?: number): LineProblem[] {
+		const diagnostics = vscode.languages
+			.getDiagnostics(document.uri)
+			.filter(d => onLine === undefined || d.range.start.line === onLine)
+			.map(d => ({ line: d.range.start.line, severity: d.severity, message: d.message }));
+		return documentProblems(diagnostics, document.lineCount, this.options.minimumSeverity);
 	}
 }
 

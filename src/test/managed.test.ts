@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
@@ -163,5 +163,48 @@ describe("ManagedSettings", () => {
 		assert.equal(settings.get("editor.guides.bracketPairs"), true, "the user's value is kept");
 		await managed.update(EFFECT_GROUP, new Map());
 		assert.equal(settings.get("editor.guides.bracketPairs"), true, "and not reset on Disable");
+	});
+
+	it("restores state saved by older versions, where JSON dropped an unset 'previous'", async () => {
+		const applied = `'${JB}', ${DEFAULT_FONT}`;
+		settings.set("editor.fontFamily", applied);
+		await writeFile(
+			path.join(root, "state.json"),
+			JSON.stringify({ fontSettings: { "editor.fontFamily": { applied } } })
+		);
+		await managed.update(FONT_GROUP, new Map());
+		assert.equal(settings.has("editor.fontFamily"), false, "the setting is removed again");
+	});
+
+	it("keeps a setting the user removed after Stylesmith changed it", async () => {
+		const fonts = new Map([["editor.fontFamily", fontWanted(JB, false)]]);
+		settings.set("editor.fontFamily", "Hack");
+		await managed.update(FONT_GROUP, fonts);
+		settings.delete("editor.fontFamily");
+		await managed.update(FONT_GROUP, new Map());
+		assert.equal(settings.has("editor.fontFamily"), false, "not brought back");
+	});
+
+	it("removes a font list that holds only Stylesmith's font", async () => {
+		const fonts = new Map([["editor.fontFamily", fontWanted(JB, false)]]);
+		settings.set("editor.fontFamily", "Hack");
+		await managed.update(FONT_GROUP, fonts);
+		settings.set("editor.fontFamily", `'${JB}'`); // the user deleted their own fonts
+		await managed.update(FONT_GROUP, new Map());
+		assert.equal(settings.has("editor.fontFamily"), false, "no empty font list is left");
+	});
+
+	it("skips damaged entries in the state file instead of failing Disable", async () => {
+		settings.set("editor.fontFamily", "Hack");
+		await writeFile(
+			path.join(root, "state.json"),
+			JSON.stringify({
+				fontSettings: { "editor.fontFamily": null, "terminal.integrated.fontFamily": "x" },
+				effectSettings: ["not", "an", "object"]
+			})
+		);
+		await managed.update(FONT_GROUP, new Map());
+		await managed.update(EFFECT_GROUP, new Map());
+		assert.equal(settings.get("editor.fontFamily"), "Hack", "the user's setting is untouched");
 	});
 });

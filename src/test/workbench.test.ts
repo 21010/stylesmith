@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import {
+	cleanUp,
 	isPatched,
+	isPermissionError,
 	removeFonts,
 	locateWorkbench,
 	readPristine,
@@ -12,6 +14,7 @@ import {
 	writeFileAtomic,
 	writeFonts
 } from "../workbench";
+import { patch } from "../patch";
 
 let root: string;
 
@@ -148,4 +151,70 @@ describe("writeFileAtomic", () => {
 			code: "ENOENT"
 		});
 	});
+});
+
+// Folder permissions only work this way on Unix, and root ignores them.
+const noUnixPermissions = process.platform === "win32" || process.getuid?.() === 0;
+
+describe("writing VS Code's file without full permissions", () => {
+	afterEach(() => chmod(root, 0o755));
+
+	it("recognizes permission errors, and only those", () => {
+		for (const code of ["EACCES", "EPERM"]) {
+			assert.ok(isPermissionError(Object.assign(new Error(code), { code })));
+		}
+		for (const error of [
+			Object.assign(new Error(), { code: "ENOENT" }),
+			new Error(),
+			"EACCES",
+			undefined
+		]) {
+			assert.ok(!isPermissionError(error));
+		}
+	});
+
+	it(
+		"writes in place when only the folder is read-only",
+		{ skip: noUnixPermissions },
+		async () => {
+			const file = path.join(root, "workbench.html");
+			await writeFile(file, "old");
+			await chmod(root, 0o555);
+			await writeFileAtomic(file, "new");
+			assert.equal(await readFile(file, "utf-8"), "new");
+			assert.deepEqual(await readdir(root), ["workbench.html"]);
+		}
+	);
+
+	it(
+		"fails with a permission error and leaves VS Code's file intact",
+		{ skip: noUnixPermissions },
+		async () => {
+			const file = path.join(root, "workbench.html");
+			await writeFile(file, "original");
+			await chmod(file, 0o444);
+			await chmod(root, 0o555);
+			await assert.rejects(writeFileAtomic(file, "new"), error => isPermissionError(error));
+			assert.equal(await readFile(file, "utf-8"), "original");
+			assert.deepEqual(await readdir(root), ["workbench.html"], "no temporary file left");
+		}
+	);
+
+	it(
+		"Disable reports a permission error without changing anything",
+		{ skip: noUnixPermissions },
+		async () => {
+			const html = path.join(root, "workbench.html");
+			const pristine =
+				`<html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none';"/>` +
+				"</head><body></body></html>";
+			await writeFile(html, patch(pristine, [{ kind: "css", source: "a{}" }]));
+			const before = await readFile(html, "utf-8");
+			await chmod(html, 0o444);
+			await chmod(root, 0o555);
+			const workbench = { dir: root, htmlPath: html };
+			await assert.rejects(cleanUp(workbench), error => isPermissionError(error));
+			assert.equal(await readFile(html, "utf-8"), before);
+		}
+	);
 });

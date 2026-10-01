@@ -8,9 +8,14 @@
  * is read fresh every time, so several VS Code windows also see each other's changes.
  */
 
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import type { SavedValue } from "./managed";
+
+// Updates to the same file, across every StateFile in this process, run one after another:
+// two updates at once would both start from the old state, and one would undo the other.
+const pending = new Map<string, Promise<void>>();
 
 export interface StoredState {
 	fontSettings?: Record<string, SavedValue>;
@@ -45,15 +50,32 @@ export class StateFile {
 	}
 
 	/** Changes some values; `undefined` removes one. */
-	async update(change: Partial<StoredState>): Promise<void> {
+	update(change: Partial<StoredState>): Promise<void> {
+		const key = path.resolve(this.file);
+		const next = (pending.get(key) ?? Promise.resolve())
+			.catch(() => undefined) // a failed update doesn't block the next one
+			.then(() => this.write(change));
+		pending.set(key, next);
+		return next.finally(() => {
+			if (pending.get(key) === next) pending.delete(key);
+		});
+	}
+
+	private async write(change: Partial<StoredState>): Promise<void> {
 		const state: Record<string, unknown> = { ...(await this.read()), ...change };
 		for (const key of Object.keys(state)) {
 			if (state[key] === undefined) delete state[key];
 		}
 		await mkdir(path.dirname(this.file), { recursive: true });
-		// Write a temporary file and rename it, so a crash can't leave half a file behind.
-		const temp = `${this.file}.${process.pid}.tmp`;
-		await writeFile(temp, JSON.stringify(state, null, "\t"));
-		await rename(temp, this.file);
+		// Write a temporary file and rename it, so a crash can't leave half a file behind. Each
+		// write has its own temporary file, so two writes can never mix their contents.
+		const temp = `${this.file}.${randomUUID()}.tmp`;
+		try {
+			await writeFile(temp, JSON.stringify(state, null, "\t"), { flag: "wx" });
+			await rename(temp, this.file);
+		} catch (error) {
+			await rm(temp, { force: true });
+			throw error;
+		}
 	}
 }

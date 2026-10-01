@@ -5,8 +5,7 @@ import type { Effect } from "./effects";
 import { DEFAULT_FONT_ID, findFont, type NerdFont } from "./fonts";
 import type { Variables } from "./imports";
 import type { SettingsAccess } from "./managed";
-import type { ProblemLensOptions } from "./problemLens";
-import type { Severity } from "./problems";
+import type { ProblemLensOptions, Severity } from "./problems";
 
 export const CONFIG_SECTION = "stylesmith";
 // Settings of the original Custom CSS and JS Loader, used until Stylesmith is configured.

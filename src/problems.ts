@@ -86,3 +86,79 @@ function firstLine(message: string): string {
 function shorten(text: string, maxLength: number): string {
 	return text.length <= maxLength ? text : `${text.slice(0, maxLength - 1)}…`;
 }
+
+export interface ProblemLensOptions {
+	enabled: boolean;
+	minimumSeverity: Severity;
+	inlineMessages: boolean;
+	gutterIcons: boolean;
+	statusBar: boolean;
+}
+
+export const SEVERITIES: readonly Severity[] = ["error", "warning", "info"];
+
+/** A diagnostic as VS Code reports it; `severity` is vscode.DiagnosticSeverity (0 to 3). */
+export interface Diagnostic {
+	line: number;
+	severity: number;
+	message: string;
+}
+
+/**
+ * The problems to show for a document. Hints (severity 3) are left to VS Code, and a problem
+ * past the end of the document (reported for an older version of it) is skipped.
+ */
+export function documentProblems(
+	diagnostics: readonly Diagnostic[],
+	lineCount: number,
+	minimum: Severity
+): LineProblem[] {
+	const problems: Problem[] = [];
+	for (const { line, severity, message } of diagnostics) {
+		const kind = SEVERITIES[severity];
+		if (kind === undefined || line < 0 || line >= lineCount) continue;
+		problems.push({ line, severity: kind, message });
+	}
+	return summarize(problems, minimum);
+}
+
+/** A line to decorate, with its inline message if inline messages are on. */
+export interface LineDecoration {
+	line: number;
+	text?: string;
+}
+
+/**
+ * The lines to decorate, per severity. Every severity is always present, so decorations
+ * that are no longer needed (when a problem is fixed or the lens is turned off) are cleared.
+ */
+export function lineDecorations(
+	problems: readonly LineProblem[],
+	options: ProblemLensOptions
+): Record<Severity, LineDecoration[]> {
+	const result: Record<Severity, LineDecoration[]> = { error: [], warning: [], info: [] };
+	if (!options.enabled) return result;
+	for (const problem of problems) {
+		result[problem.severity].push({
+			line: problem.line,
+			text: options.inlineMessages ? inlineText(problem) : undefined
+		});
+	}
+	return result;
+}
+
+/** The status bar item for the cursor's line, or undefined to hide it. */
+export function statusItem(
+	problems: readonly LineProblem[],
+	cursorLine: number,
+	options: ProblemLensOptions
+): { severity: Severity; text: string; label: string } | undefined {
+	if (!options.enabled || !options.statusBar) return undefined;
+	const problem = problems.find(p => p.line === cursorLine);
+	if (!problem) return undefined;
+	return {
+		severity: problem.severity,
+		text: statusText(problem),
+		label: accessibleLabel(problem)
+	};
+}

@@ -7,9 +7,12 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import * as os from "node:os";
 import * as path from "node:path";
+import { pathToFileURL } from "node:url";
 import * as vscode from "vscode";
+import { EFFECTS } from "../effects";
 import { PRESETS } from "../presets";
 import { uninstall } from "../uninstall";
 import { locateWorkbench } from "../workbench";
@@ -69,6 +72,8 @@ async function withTimeout(work: Thenable<unknown>, what: string, ms = 60_000): 
 		clearTimeout(timer);
 	}
 }
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function step(name: string, check: () => Promise<void>): Promise<void> {
 	await check();
@@ -159,6 +164,98 @@ export async function run(): Promise<void> {
 		await reset("stylesmith", "fonts.enabled");
 		await reset("stylesmith", "fonts.family");
 	});
+
+	const setUser = (section: string, key: string, value: unknown) =>
+		vscode.workspace.getConfiguration(section).update(key, value, true);
+
+	await step("An unknown preset id changes nothing", async () => {
+		await withTimeout(
+			vscode.commands.executeCommand("stylesmith.applyPreset", "no-such-preset"),
+			"the unknown preset"
+		);
+		assert.equal(userValue("workbench", "colorTheme"), undefined);
+		assert.equal(await readFile(workbench.htmlPath, "utf-8"), original);
+	});
+
+	await step("Enable with nothing turned on leaves VS Code alone", async () => {
+		for (const effect of EFFECTS) await setUser("stylesmith", effect.setting, false);
+		await setUser("stylesmith", "fonts.enabled", false);
+		await vscode.commands.executeCommand("stylesmith.enable");
+		assert.equal(await readFile(workbench.htmlPath, "utf-8"), original);
+		assert.ok(!existsSync(fonts));
+		assert.equal(userValue("editor", "fontFamily"), undefined);
+	});
+
+	await step(
+		"The user's own CSS and JS load; a missing import doesn't stop the rest",
+		async () => {
+			const dir = await mkdtemp(path.join(os.tmpdir(), "stylesmith-imports-"));
+			const css = path.join(dir, "mine.css");
+			const js = path.join(dir, "mine.js");
+			await writeFile(css, ".mine{color:red}");
+			await writeFile(js, "window.stylesmithMine = 1;");
+			await setUser("stylesmith", "imports", [
+				pathToFileURL(css).href,
+				pathToFileURL(path.join(dir, "missing.css")).href,
+				pathToFileURL(js).href
+			]);
+			await vscode.commands.executeCommand("stylesmith.enable");
+			const html = await readFile(workbench.htmlPath, "utf-8");
+			assert.ok(html.includes(".mine{color:red}"), "the CSS import is in the page");
+			assert.ok(html.includes("window.stylesmithMine = 1;"), "the JS import is in the page");
+			assert.ok(activePolicy(html).includes(sha256("window.stylesmithMine = 1;")));
+
+			await vscode.commands.executeCommand("stylesmith.disable");
+			assert.equal(await readFile(workbench.htmlPath, "utf-8"), original);
+			await setUser("stylesmith", "imports", undefined);
+			for (const effect of EFFECTS) await setUser("stylesmith", effect.setting, undefined);
+			await setUser("stylesmith", "fonts.enabled", undefined);
+			await rm(dir, { recursive: true, force: true });
+		}
+	);
+
+	await step(
+		"The Problem Lens follows diagnostics and its settings without failing",
+		async () => {
+			const document = await vscode.workspace.openTextDocument({ content: "a\nb\nc\n" });
+			const editor = await vscode.window.showTextDocument(document);
+			const diagnostics = vscode.languages.createDiagnosticCollection("stylesmith-test");
+			const at = (line: number) => new vscode.Range(line, 0, line, 1);
+			diagnostics.set(document.uri, [
+				new vscode.Diagnostic(at(0), "an error", vscode.DiagnosticSeverity.Error),
+				new vscode.Diagnostic(at(1), "a warning", vscode.DiagnosticSeverity.Warning),
+				new vscode.Diagnostic(at(1), "a hint", vscode.DiagnosticSeverity.Hint),
+				// Reported for an older, longer version of the document.
+				new vscode.Diagnostic(at(40), "stale", vscode.DiagnosticSeverity.Error)
+			]);
+			editor.selection = new vscode.Selection(0, 0, 0, 0);
+			await sleep(300);
+			for (const [key, value] of [
+				["problems.minimumSeverity", "error"],
+				["problems.inlineMessages", false],
+				["problems.gutterIcons", false],
+				["problems.statusBar", false],
+				["problems.enabled", false]
+			] as const) {
+				await setUser("stylesmith", key, value);
+			}
+			await sleep(300);
+			for (const key of [
+				"minimumSeverity",
+				"inlineMessages",
+				"gutterIcons",
+				"statusBar",
+				"enabled"
+			]) {
+				await setUser("stylesmith", `problems.${key}`, undefined);
+			}
+			diagnostics.dispose();
+			await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+			assert.ok(extension.isActive, "Stylesmith is still running");
+			// Its commands still work afterwards.
+			await withTimeout(vscode.commands.executeCommand("stylesmith.disable"), "Disable");
+		}
+	);
 
 	await step("The uninstall cleanup restores VS Code without Disable", async () => {
 		await vscode.commands.executeCommand("stylesmith.enable");

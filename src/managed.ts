@@ -84,6 +84,21 @@ export function planRestore(current: unknown, saved: SavedValue, group: Group): 
 	return current === saved.applied ? saved.previous : group.userPart(current);
 }
 
+/**
+ * The saved values that are usable. The state file can be damaged or edited by hand, and a
+ * bad entry must not stop Disable from restoring the others; it's dropped instead.
+ */
+function validEntries(saved: unknown): Record<string, SavedValue> {
+	const valid: Record<string, SavedValue> = {};
+	if (typeof saved !== "object" || saved === null || Array.isArray(saved)) return valid;
+	for (const [key, value] of Object.entries(saved)) {
+		if (typeof value === "object" && value !== null && "applied" in value) {
+			valid[key] = { previous: (value as SavedValue).previous, applied: value.applied };
+		}
+	}
+	return valid;
+}
+
 /** Reads and writes the user's (global) settings. */
 export interface SettingsAccess {
 	read(key: string): { user: unknown; default: unknown };
@@ -101,7 +116,7 @@ export class ManagedSettings {
 	 * setting the group managed before but doesn't need now. An empty map restores them all.
 	 */
 	async update(group: Group, wanted: ReadonlyMap<string, Wanted>): Promise<void> {
-		const state: Record<string, SavedValue> = { ...(await this.store.read())[group.name] };
+		const state = validEntries((await this.store.read())[group.name]);
 
 		for (const [key, want] of wanted) {
 			const { user, default: defaultValue } = this.settings.read(key);
