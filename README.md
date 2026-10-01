@@ -5,7 +5,8 @@
 <h1 align="center">Stylesmith</h1>
 
 <p align="center">
-  Add your own CSS and JavaScript to VS Code, without turning off its security.
+  <strong>A safe way to customize VS Code:</strong> your own CSS and JS, with its security policy kept on.<br>
+  <strong>A retro and cyberpunk style kit:</strong> themes, icons, fonts and effects.
 </p>
 
 > [!NOTE]
@@ -14,13 +15,11 @@
 
 ## What it does
 
-VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files straight into VS Code's main HTML file, so you can change fonts, colors, spacing, or anything else you can reach with CSS. It also comes with built-in [effects](#built-in-effects) in a cyberpunk, retro-console style (a gliding caret, neon highlights, CRT scanlines and typing sparks), six easy-to-read [color themes](#color-themes) (dark, light and high contrast), [pixel file icons](#pixel-icons), four [Nerd Fonts](#fonts), and [presets](#presets) that set up a complete look in one step. The effects work with any theme.
+### A safe way to customize VS Code
 
-## Why Stylesmith
+VS Code doesn't let extensions change its interface with your own CSS. Stylesmith adds your CSS and JS files to VS Code's window, so you can change fonts, colors, spacing, or anything else you can reach with CSS.
 
-Adding code to VS Code's main window is powerful, and that's exactly why it has to be done with security in mind. Code running there can see everything you open in VS Code. This is the main reason Stylesmith exists.
-
-To make your code run, tools like this usually switch off VS Code's security policy (its Content-Security-Policy) for as long as they're active. That doesn't just let your code in. It lets **any** script in.
+Code in VS Code's window can see everything you open in VS Code, so this has to be done with security in mind. To make custom code run, tools like this usually switch off VS Code's security policy (its Content-Security-Policy) for as long as they're active. That doesn't just let your code in. It lets **any** script in.
 
 Stylesmith keeps VS Code's security policy on:
 
@@ -31,13 +30,25 @@ Stylesmith keeps VS Code's security policy on:
 
 The [Security](#security) section has the details.
 
+### A retro and cyberpunk style kit
+
+Everything you need for a retro or cyberpunk VS Code, ready to use:
+
+- **[Themes](#color-themes):** six color themes (Neon Night, Phosphor, Amber, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
+- **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
+- **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
+- **[Effects](#built-in-effects):** a gliding caret, neon highlights, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
+- **[Presets](#presets):** a complete look in one step, such as Night City or Phosphor Terminal.
+
+Each part works on its own. The effects follow any theme, including ones that aren't from Stylesmith, and the themes and icons work even without running **Stylesmith: Enable**.
+
 ## More about how it works
 
 - **You can always undo it.** Stylesmith marks everything it adds. **Stylesmith: Disable** removes it and gives you back VS Code's original file.
 - **It checks before it writes.** Stylesmith only saves the change if it knows it can undo it later. It writes to a temporary file first, so a failed save won't leave VS Code broken.
-- **It stays out of your way.** It doesn't run when VS Code starts, only when you use one of its commands.
+- **It stays out of your way.** At startup it only reads the beginning of one file, to show whether it's on and to notice VS Code updates. The effects do nothing while you're not typing or moving the cursor.
 - **One bad file doesn't stop the rest.** If a file can't be loaded, you get a warning and the other files still apply.
-- **It's written in TypeScript**, has no extra dependencies, and has tests that run on every push.
+- **It's written in TypeScript**, has no runtime dependencies, and has tests that run on every push.
 
 ## Before you start
 
