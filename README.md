@@ -118,12 +118,14 @@ To switch presets with a keyboard shortcut, add a key binding (**Preferences: Op
 
 ## Status bar menu
 
-Click the paint-can button (`$(paintcan)`) in the status bar to:
+Click the paint-can button at the right end of the status bar to:
 
 - apply a preset
 - turn each effect on or off
 - pick a font, or go back to your own
 - reload, disable, or open Stylesmith's settings
+
+![The Stylesmith menu, opened from the paint-can button in the status bar](images/menu.png)
 
 The button shows **off** when Stylesmith isn't active. To hide it, set `"stylesmith.statusbar": false`.
 
@@ -363,17 +365,81 @@ Reload the window (**Developer: Reload Window**) to see the change.
 
 ## Settings
 
-| Setting                         | Default           | What it does                                                   |
-| ------------------------------- | ----------------- | -------------------------------------------------------------- |
-| `stylesmith.imports`            | `[]`              | A list of `.css` and `.js` files to add, in order.             |
-| `stylesmith.allowRemoteImports` | `false`           | Allows `https://` links in `stylesmith.imports`.               |
-| `stylesmith.effects.*`          | varies            | Turns each [built-in effect](#built-in-effects) on or off.     |
-| `stylesmith.fonts.enabled`      | `true`            | Uses a bundled [Nerd Font](#fonts) in the editor and terminal. |
-| `stylesmith.fonts.family`       | `"JetBrainsMono"` | Which Nerd Font to use.                                        |
-| `stylesmith.statusbar`          | `true`            | Shows the Stylesmith button in the status bar.                 |
-| `stylesmith.remindAfterUpdate`  | `true`            | Offers to re-apply Stylesmith after a VS Code update.          |
+| Setting                         | Default           | What it does                                                            |
+| ------------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| `stylesmith.imports`            | `[]`              | A list of `.css` and `.js` files to add, in order.                      |
+| `stylesmith.allowRemoteImports` | `false`           | Allows `https://` links in `stylesmith.imports`.                        |
+| `stylesmith.effects.*`          | varies            | Turns each [built-in effect](#built-in-effects) on or off.              |
+| `stylesmith.fonts.enabled`      | `true`            | Uses a bundled [Nerd Font](#fonts) in the editor and terminal.          |
+| `stylesmith.fonts.family`       | `"JetBrainsMono"` | Which Nerd Font to use.                                                 |
+| `stylesmith.problems.*`         | varies            | The [Problem Lens](#problem-lens): what it shows, and from which level. |
+| `stylesmith.statusbar`          | `true`            | Shows the Stylesmith button in the status bar.                          |
+| `stylesmith.remindAfterUpdate`  | `true`            | Offers to re-apply Stylesmith after a VS Code update.                   |
 
 Stylesmith only reads these from your **user settings**. Values in a project's `.vscode/settings.json` are ignored.
+
+### All settings in settings.json
+
+You can also set everything in your `settings.json` (**Preferences: Open User Settings (JSON)**). Here is every Stylesmith setting with its default value:
+
+```jsonc
+{
+	// Your own CSS and JS files, added in this order.
+	"stylesmith.imports": [
+		// "file://${userHome}/.vscode-styles/custom.css"
+	],
+	"stylesmith.allowRemoteImports": false, // allow https:// links in imports (off: only files on your computer)
+
+	// Built-in effects
+	"stylesmith.effects.caretAnimation": true, // the cursor glides to where it moves
+	"stylesmith.effects.neonCurrentLine": true, // a neon edge on the cursor's line number
+	"stylesmith.effects.neonFocusFrame": true, // a neon frame around the editor you're typing in
+	"stylesmith.effects.neonSelections": true, // selections and matching brackets glow
+	"stylesmith.effects.neonBlocks": true, // the code block around the cursor gets a neon line
+	"stylesmith.effects.diagnosticHighlights": true, // solid problem underlines instead of squiggles
+	"stylesmith.effects.neonGlow": false, // highlighted code glows (dark themes)
+	"stylesmith.effects.classicLayout": false, // square corners instead of VS Code's rounded look
+	"stylesmith.effects.neonTerminal": true, // a neon frame around the terminal you're typing in
+	"stylesmith.effects.terminalGlow": false, // the terminal's text glows (dark themes)
+	"stylesmith.effects.retroTerminalCursor": false, // a blinking block cursor in the terminal
+	"stylesmith.effects.crtScanlines": false, // faint scanlines over the window, like an old monitor
+	"stylesmith.effects.typingSparks": false, // neon sparks fly from the cursor as you type
+	"stylesmith.effects.bootSequence": false, // a retro boot log when VS Code starts
+	"stylesmith.effects.glitchOnSave": false, // the editor glitches for a moment when you save
+
+	// Fonts
+	"stylesmith.fonts.enabled": true, // use a bundled Nerd Font in the editor and terminal
+	"stylesmith.fonts.family": "JetBrainsMono", // JetBrainsMono, BlexMono, ShureTechMono or DepartureMono
+
+	// Problem Lens (applies right away, no reload needed)
+	"stylesmith.problems.enabled": true, // show errors and warnings on their line
+	"stylesmith.problems.minimumSeverity": "warning", // "error", "warning" or "info"
+	"stylesmith.problems.inlineMessages": true, // the message at the end of the line
+	"stylesmith.problems.gutterIcons": true, // the pixel icon next to the line number
+	"stylesmith.problems.statusBar": true, // the problem on the cursor's line, in the status bar
+
+	// Other
+	"stylesmith.statusbar": true, // the paint-can button that opens the menu
+	"stylesmith.remindAfterUpdate": true, // offer to re-apply after a VS Code update
+
+	// Stylesmith's themes and icons (a preset sets these for you)
+	"workbench.colorTheme": "Stylesmith Neon Night",
+	"workbench.iconTheme": "stylesmith-pixel"
+}
+```
+
+When you change an effect, the font or your imports, Stylesmith offers to reload so the change takes effect.
+
+### Settings Stylesmith changes for you
+
+Some effects need one of VS Code's own settings. Stylesmith turns it on while the effect is on, remembers your own value, and puts it back when you turn the effect off or run **Stylesmith: Disable**. You don't need to add these yourself:
+
+| VS Code setting                                                         | Changed by                                       |
+| ----------------------------------------------------------------------- | ------------------------------------------------ |
+| `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled` (the Nerd Font first) |
+| `editor.guides.bracketPairs`                                            | `stylesmith.effects.neonBlocks`                  |
+| `window.density.layout`                                                 | `stylesmith.effects.classicLayout`               |
+| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.retroTerminalCursor`         |
 
 ### File links
 

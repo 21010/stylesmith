@@ -2,6 +2,13 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.16.2 (2026-10-01)
+
+### Documentation
+
+- The README shows every Stylesmith setting in a `settings.json` example, with a short comment on each line, and lists the VS Code settings Stylesmith changes for you. A test keeps the example in step with the extension's settings.
+- A screenshot of the Stylesmith menu, opened from the paint-can button in the status bar.
+
 ## 1.16.1 (2026-10-01)
 
 ### Changed

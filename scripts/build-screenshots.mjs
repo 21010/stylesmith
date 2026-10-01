@@ -47,6 +47,8 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"daylight"
 ];
 const SIZE = { width: 1280, height: 760 };
+// The preset whose window is also used for the screenshot of the open menu.
+const MENU_PRESET = "night-city";
 
 const SAMPLE = {
 	"src/server.ts": `import { createServer } from "node:http";
@@ -98,6 +100,24 @@ function installPackage(executable) {
 		execFileSync(cli, all, { stdio: "ignore" });
 	}
 	return extensions;
+}
+
+/** The Stylesmith menu, opened from the paint-can button, for the README and the website. */
+async function shootMenu(page) {
+	const button = ".statusbar-item:has(.codicon-paintcan)";
+	await page.click(button);
+	// Outline the button in the theme's focus color, so the picture shows what opens the menu.
+	await page.addStyleTag({
+		content: `${button} { outline: 2px solid var(--vscode-focusBorder); outline-offset: -2px; }`
+	});
+	await page.waitForSelector(".quick-input-widget .monaco-list-row", { timeout: 10_000 });
+	await page.mouse.move(5, 5); // no hover highlight or tooltip
+	await page.waitForTimeout(600);
+	for (const file of [join(OUT, "menu.png"), join(ROOT, "images", "menu.png")]) {
+		await page.screenshot({ path: file });
+		console.log(`wrote ${file}`);
+	}
+	await page.keyboard.press("Escape");
 }
 
 async function shoot(executable, workbench, extensions, preset) {
@@ -175,6 +195,11 @@ async function shoot(executable, workbench, extensions, preset) {
 			JSON.stringify({
 				"workbench.colorTheme": preset.theme,
 				"workbench.iconTheme": ICON_THEME,
+				// The preset's own choices, as Apply Preset writes them, so the menu shows them.
+				...Object.fromEntries(
+					Object.entries(preset.effects).map(([key, on]) => [`stylesmith.${key}`, on])
+				),
+				"stylesmith.fonts.family": preset.font,
 				...Object.fromEntries(settings),
 				"editor.fontSize": 14,
 				"editor.minimap.enabled": false,
@@ -223,6 +248,7 @@ async function shoot(executable, workbench, extensions, preset) {
 		const file = join(OUT, `${preset.id}.png`);
 		await page.screenshot({ path: file });
 		console.log(`wrote ${file}`);
+		if (preset.id === MENU_PRESET) await shootMenu(page);
 	} finally {
 		await app?.close().catch(() => {});
 		await disable(services);
