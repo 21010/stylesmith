@@ -63,17 +63,13 @@ To go back to normal at any time, run **Stylesmith: Disable**.
 
 ## Install
 
-Stylesmith isn't on the Marketplace yet, so you build it yourself:
+Install **Stylesmith** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=21010.stylesmith): search for "Stylesmith" in the **Extensions** view, or run:
 
 ```sh
-git clone https://github.com/21010/stylesmith.git
-cd stylesmith
-npm install
-npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-<version>.vsix   # the file vsce just made
+code --install-extension 21010.stylesmith
 ```
 
-You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
+Each version is also attached to its [GitHub release](https://github.com/21010/stylesmith/releases) as a `.vsix` file, built by GitHub Actions with a signed build provenance. To check that a file was built from this repository, run `gh attestation verify stylesmith-<version>.vsix --repo 21010/stylesmith`. To install it, open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
 
 ## Quick start
 
@@ -502,6 +498,13 @@ npm run icons              # rebuild the pixel icons
 npm run fonts              # download, verify and rebuild the bundled Nerd Fonts
 npm run screenshots        # retake the preset screenshots for the website
 ```
+
+### Releasing
+
+1. Update `version` in `package.json` and add the version to `CHANGELOG.md`.
+2. Commit, then tag and push: `git tag v1.2.3 && git push origin main v1.2.3`.
+3. The release workflow runs all of CI, builds the `.vsix` with a signed build provenance, and creates the GitHub release.
+4. Download the `.vsix` from the release and upload it on the [Marketplace's publisher page](https://marketplace.visualstudio.com/manage): **⋯** next to Stylesmith → **Update**.
 
 The browser tests need Chromium once: `npx playwright-core install chromium-headless-shell`. For the end-to-end test on the oldest supported VS Code, set `VSCODE_VERSION=1.93.0`.
 

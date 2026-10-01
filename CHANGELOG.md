@@ -2,6 +2,18 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.14.2 (2026-10-01)
+
+### Added
+
+- Stylesmith is on the VS Code Marketplace.
+- Every version is built by GitHub Actions with a signed build provenance and attached to its GitHub release.
+- A website: [stylesmith.dev](https://stylesmith.dev).
+
+### Changed
+
+- No longer marked as a preview.
+
 ## 1.14.1 (2026-10-01)
 
 ### Changed
