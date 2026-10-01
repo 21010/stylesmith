@@ -2,6 +2,13 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.16.1 (2026-10-01)
+
+### Changed
+
+- Cleaner Problem Lens gutter icons: a bold X for errors, without the square around it, a bold ! for warnings, without the triangle, and a bold i for info, without the circle. The colors stay the same, and each kind of problem still has its own shape.
+- Problem outlines are now **solid problem underlines**: a calm, solid underline under the exact code instead of a box around it, in the same colors. The setting stays `stylesmith.effects.diagnosticHighlights`.
+
 ## 1.16.0 (2026-10-01)
 
 ### Added

@@ -199,7 +199,7 @@ describe("color themes", () => {
 		}
 
 		// The Problem Lens: code and the inline message must stay readable on a problem's tinted
-		// line, and the outline around the exact code must stay visible on it.
+		// line, and the underline under the exact code must stay visible on it.
 		for (const kind of ["Error", "Warning", "Info"]) {
 			const color = c(`editor${kind}.foreground`).slice(0, 7);
 			const tint = PROBLEM_TINT[theme.type] ?? assert.fail(`no tint for ${theme.type}`);
@@ -207,7 +207,7 @@ describe("color themes", () => {
 			const label = `${kind.toLowerCase()} line`;
 			checks.push([`editor text on an ${label}`, c("editor.foreground"), line, strong]);
 			checks.push([`the ${kind.toLowerCase()} message on its line`, color, line, text]);
-			checks.push([`the ${kind.toLowerCase()} outline on its line`, color, line, nonText]);
+			checks.push([`the ${kind.toLowerCase()} underline on its line`, color, line, nonText]);
 			for (const [scope, syntaxColor] of syntax) {
 				checks.push([`syntax: ${scope} on an ${label}`, syntaxColor, line, text]);
 			}

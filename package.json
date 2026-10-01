@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.16.0",
+	"version": "1.16.1",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -141,7 +141,7 @@
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. When you change this, Stylesmith offers to reload so it takes effect."
+					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a calm, solid underline in the same color. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.neonGlow": {
 					"type": "boolean",

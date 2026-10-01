@@ -73,7 +73,7 @@ export const EFFECTS: readonly Effect[] = [
 	},
 	{
 		setting: "effects.diagnosticHighlights",
-		label: "Problem outlines (no underline)",
+		label: "Solid problem underlines",
 		asset: { file: "assets/effects/diagnostic-highlights.css", kind: "css" },
 		enabledByDefault: true
 	},

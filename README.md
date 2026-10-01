@@ -38,7 +38,7 @@ Everything you need for a retro or cyberpunk VS Code, ready to use:
 - **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
 - **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
 - **[Problem Lens](#problem-lens):** errors and warnings right on their line, with pixel gutter icons and terminal-style messages.
-- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, problem outlines, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
+- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, solid problem underlines, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
 - **[Presets](#presets):** a complete look in one step, such as Night City or Phosphor Terminal.
 
 Each part works on its own. The effects follow any theme, including ones that aren't from Stylesmith, and the themes and icons work even without running **Stylesmith: Enable**.
@@ -135,23 +135,23 @@ Every VS Code update replaces the file Stylesmith changes, so its changes disapp
 
 Stylesmith comes with effects you can use without writing any code. They're applied when you run **Stylesmith: Enable**, even if `stylesmith.imports` is empty. The subtle ones are on by default; the louder ones are waiting for you to turn them on.
 
-| Effect                                          | Setting                                   | Default |
-| ----------------------------------------------- | ----------------------------------------- | ------- |
-| [Caret animation](#caret-animation)             | `stylesmith.effects.caretAnimation`       | on      |
-| [Neon current line](#neon-current-line)         | `stylesmith.effects.neonCurrentLine`      | on      |
-| [Neon focus frame](#neon-focus-frame)           | `stylesmith.effects.neonFocusFrame`       | on      |
-| [Neon selections](#neon-selections)             | `stylesmith.effects.neonSelections`       | on      |
-| [Neon code blocks](#neon-code-blocks)           | `stylesmith.effects.neonBlocks`           | on      |
-| [Problem outlines](#problem-outlines)           | `stylesmith.effects.diagnosticHighlights` | on      |
-| [Neon glow on code](#neon-glow-on-code)         | `stylesmith.effects.neonGlow`             | off     |
-| [Classic layout](#classic-layout)               | `stylesmith.effects.classicLayout`        | off     |
-| [Neon terminal frame](#neon-terminal-frame)     | `stylesmith.effects.neonTerminal`         | on      |
-| [Terminal glow](#terminal-glow)                 | `stylesmith.effects.terminalGlow`         | off     |
-| [Retro terminal cursor](#retro-terminal-cursor) | `stylesmith.effects.retroTerminalCursor`  | off     |
-| [CRT scanlines](#crt-scanlines)                 | `stylesmith.effects.crtScanlines`         | off     |
-| [Typing sparks](#typing-sparks)                 | `stylesmith.effects.typingSparks`         | off     |
-| [Boot sequence](#boot-sequence)                 | `stylesmith.effects.bootSequence`         | off     |
-| [Glitch on save](#glitch-on-save)               | `stylesmith.effects.glitchOnSave`         | off     |
+| Effect                                                | Setting                                   | Default |
+| ----------------------------------------------------- | ----------------------------------------- | ------- |
+| [Caret animation](#caret-animation)                   | `stylesmith.effects.caretAnimation`       | on      |
+| [Neon current line](#neon-current-line)               | `stylesmith.effects.neonCurrentLine`      | on      |
+| [Neon focus frame](#neon-focus-frame)                 | `stylesmith.effects.neonFocusFrame`       | on      |
+| [Neon selections](#neon-selections)                   | `stylesmith.effects.neonSelections`       | on      |
+| [Neon code blocks](#neon-code-blocks)                 | `stylesmith.effects.neonBlocks`           | on      |
+| [Solid problem underlines](#solid-problem-underlines) | `stylesmith.effects.diagnosticHighlights` | on      |
+| [Neon glow on code](#neon-glow-on-code)               | `stylesmith.effects.neonGlow`             | off     |
+| [Classic layout](#classic-layout)                     | `stylesmith.effects.classicLayout`        | off     |
+| [Neon terminal frame](#neon-terminal-frame)           | `stylesmith.effects.neonTerminal`         | on      |
+| [Terminal glow](#terminal-glow)                       | `stylesmith.effects.terminalGlow`         | off     |
+| [Retro terminal cursor](#retro-terminal-cursor)       | `stylesmith.effects.retroTerminalCursor`  | off     |
+| [CRT scanlines](#crt-scanlines)                       | `stylesmith.effects.crtScanlines`         | off     |
+| [Typing sparks](#typing-sparks)                       | `stylesmith.effects.typingSparks`         | off     |
+| [Boot sequence](#boot-sequence)                       | `stylesmith.effects.bootSequence`         | off     |
+| [Glitch on save](#glitch-on-save)                     | `stylesmith.effects.glitchOnSave`         | off     |
 
 When you change any of them in Settings, Stylesmith offers to reload so the change takes effect. None of the effects do any work while you're not typing or moving the cursor.
 
@@ -186,9 +186,9 @@ On by default. The code inside the brackets around your cursor (`()`, `[]` or `{
 
 It builds on VS Code's bracket pair guides. While the effect is on, Stylesmith sets `"editor.guides.bracketPairs": "active"`, unless you already have bracket guides on. It remembers your own value and puts it back when you turn the effect off or run **Stylesmith: Disable**.
 
-### Problem outlines
+### Solid problem underlines
 
-On by default. Replaces VS Code's squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. Together with the [Problem Lens](#problem-lens), which marks the whole line, you still see exactly where each problem is. An outline doesn't change the text's background, so code keeps its full contrast.
+On by default. Replaces VS Code's squiggly underline under errors, warnings and info messages with a calm, solid underline in the same color. Together with the [Problem Lens](#problem-lens), which marks the whole line, you still see exactly where each problem is. An underline doesn't change the text's background, so code keeps its full contrast.
 
 ### Neon glow on code
 
@@ -256,11 +256,11 @@ Errors and warnings, shown right where they are, in the style of the "Error Lens
 ```
 
 - **The whole line** gets a soft tint in the theme's error or warning color.
-- **A pixel icon in the gutter** shows the kind of problem by its shape: a square with an X for errors, a triangle for warnings, a circle for info.
+- **A pixel icon in the gutter** shows the kind of problem by its shape: a bold X for errors, a bold ! for warnings, a bold i for info.
 - **The message** appears at the end of the line, like a terminal log: `▸ ERR`, `▸ WARN` or `▸ INFO`, the message, and `+2` if the line has more problems.
 - **The status bar** shows the problem on the cursor's line, right next to `Ln 12, Col 5`. Click it to open the Problems panel.
 
-It works through VS Code's own API, so it updates live as you type, works with any theme, and doesn't need **Stylesmith: Enable**. Only the [problem outlines](#problem-outlines) that replace the squiggly underline need Enable.
+It works through VS Code's own API, so it updates live as you type, works with any theme, and doesn't need **Stylesmith: Enable**. Only the [solid problem underlines](#solid-problem-underlines) that replace the squiggly ones need Enable.
 
 Settings, all on by default except info messages:
 
@@ -331,7 +331,7 @@ The high contrast themes use VS Code's own high contrast mode, with a clear bord
 
 Nested brackets are colored in six neon colors taken from each theme, and every one of them passes the same contrast checks as code text.
 
-The [Problem Lens](#problem-lens) is checked too: on a problem's tinted line, every syntax color and the inline message stay readable, and the outline around the exact code stays visible.
+The [Problem Lens](#problem-lens) is checked too: on a problem's tinted line, every syntax color and the inline message stay readable, and the underline under the exact code stays visible.
 
 ### Color blindness
 
