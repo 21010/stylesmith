@@ -1,14 +1,13 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { EFFECTS } from "../effects";
+import { manifest } from "./files";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
-const settings: Record<string, { type?: string; default?: unknown; scope?: string }> = JSON.parse(
-	readFileSync(path.join(ROOT, "package.json"), "utf-8")
-).contributes.configuration.properties;
+const settings = manifest().contributes.configuration.properties;
 
 describe("built-in effects", () => {
 	for (const effect of EFFECTS) {

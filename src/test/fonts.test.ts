@@ -11,11 +11,11 @@ import {
 	withFontFirst,
 	withoutStylesmithFonts
 } from "../fonts";
+import { manifest } from "./files";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
-const settings = JSON.parse(readFileSync(path.join(ROOT, "package.json"), "utf-8")).contributes
-	.configuration.properties;
+const settings = manifest().contributes.configuration.properties;
 
 const JB = "JetBrainsMono Nerd Font Mono";
 const DEFAULT = "Consolas, 'Courier New', monospace";

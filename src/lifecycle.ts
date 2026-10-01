@@ -153,7 +153,7 @@ function findWorkbench(reportMissing = true): Workbench | undefined {
 	}
 	if (workbench) {
 		// So the uninstall cleanup can find it later, when VS Code's API isn't available.
-		rememberWorkbench(workbench).catch(error =>
+		rememberWorkbench(workbench).catch((error: unknown) =>
 			console.warn("stylesmith: could not remember the workbench location", error)
 		);
 	}

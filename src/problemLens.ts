@@ -11,8 +11,6 @@ import {
 	type ThemeKind
 } from "./problems";
 
-export type { ProblemLensOptions } from "./problems";
-
 /**
  * The Problem Lens: errors and warnings shown right on their line, like "Error Lens" but in
  * Stylesmith's style. It uses VS Code's own decoration API, so it updates live and works even
@@ -28,6 +26,11 @@ const STATUS_ICON: Record<Severity, string> = {
 };
 const UPDATE_DELAY = 150; // ms; problems change quickly while typing
 
+/**
+ * Keeps the decorations and the status bar item in step with VS Code's diagnostics. What to
+ * show is decided in problems.ts; this class only applies it through VS Code's API. Dispose
+ * it to remove everything it added.
+ */
 export class ProblemLens implements vscode.Disposable {
 	private types = new Map<Severity, vscode.TextEditorDecorationType>();
 	private readonly status: vscode.StatusBarItem;

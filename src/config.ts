@@ -27,6 +27,8 @@ export interface Config {
 	problemLens(): ProblemLensOptions;
 	/** Values for ${...} placeholders in file:// imports. */
 	variables(): Variables;
+	/** Sets VS Code's color theme and file icon theme, in the user's settings. */
+	setThemes(colorTheme: string, iconTheme: string): Promise<void>;
 }
 
 function userValue<T>(section: string, key: string, fallback: T): T {
@@ -73,6 +75,12 @@ export const vscodeConfig: Config = {
 		gutterIcons: get("problems.gutterIcons", true),
 		statusBar: get("problems.statusBar", true)
 	}),
+
+	async setThemes(colorTheme, iconTheme) {
+		const workbench = vscode.workspace.getConfiguration("workbench");
+		await workbench.update("colorTheme", colorTheme, vscode.ConfigurationTarget.Global);
+		await workbench.update("iconTheme", iconTheme, vscode.ConfigurationTarget.Global);
+	},
 
 	variables: () => {
 		// Files from an untrusted workspace must never be injected; the working folder may be one.

@@ -185,7 +185,7 @@ describe("caret animation", () => {
 		);
 		await waitUntilIdle(page);
 		const pixel = await page.$eval("canvas", c => {
-			const ctx = (c as HTMLCanvasElement).getContext("2d")!;
+			const ctx = c.getContext("2d")!;
 			return Array.from(ctx.getImageData(0, 0, c.width, c.height).data).some(
 				value => value > 0
 			);
@@ -249,9 +249,9 @@ describe("glitch on save", () => {
 		await page.$eval("#tab", el => el.classList.remove("dirty"));
 		await sleep(30);
 		const group = ".editor-group-container";
-		assert.ok(await page.$eval(group, el => el.className.includes("stylesmith-glitch")));
+		assert.ok(await page.$eval(group, el => el.classList.contains("stylesmith-glitch")));
 		await sleep(400);
-		assert.ok(!(await page.$eval(group, el => el.className.includes("stylesmith-glitch"))));
+		assert.ok(!(await page.$eval(group, el => el.classList.contains("stylesmith-glitch"))));
 		await page.close();
 	});
 
@@ -261,7 +261,7 @@ describe("glitch on save", () => {
 		await sleep(30);
 		assert.ok(
 			!(await page.$eval(".editor-group-container", el =>
-				el.className.includes("stylesmith-glitch")
+				el.classList.contains("stylesmith-glitch")
 			))
 		);
 		await page.close();

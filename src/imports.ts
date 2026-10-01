@@ -132,7 +132,7 @@ async function fetchBytes(url: URL, options: LoadOptions): Promise<Buffer> {
 /** Reads a response body, giving up as soon as it grows past `maxBytes`. */
 async function readLimited(response: Response, maxBytes: number): Promise<Buffer> {
 	if (Number(response.headers.get("content-length")) > maxBytes) throw tooLarge(maxBytes);
-	const reader = response.body?.getReader();
+	const reader: ReadableStreamDefaultReader<Uint8Array> | undefined = response.body?.getReader();
 	if (!reader) return Buffer.alloc(0);
 
 	const chunks: Uint8Array[] = [];

@@ -38,7 +38,7 @@ export async function uninstall(locationFile = LOCATION_FILE): Promise<boolean> 
 }
 
 if (require.main === module) {
-	uninstall().catch(error => {
+	uninstall().catch((error: unknown) => {
 		// An uninstall must never fail because of this; the next VS Code update cleans up too.
 		console.error("stylesmith: cleanup after uninstall failed", error);
 	});

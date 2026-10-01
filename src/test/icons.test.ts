@@ -3,6 +3,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { contrast } from "../color";
+import { readJson, type ColorTheme, type IconTheme } from "./files";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
@@ -12,7 +13,7 @@ const ICONS = path.join(ROOT, "icons");
 function editorBackgrounds(): Record<"dark" | "light", string[]> {
 	const result = { dark: ["#1e1e1e", "#1f1f1f"], light: ["#ffffff", "#f3f3f3"] };
 	for (const file of readdirSync(path.join(ROOT, "themes"))) {
-		const theme = JSON.parse(readFileSync(path.join(ROOT, "themes", file), "utf-8"));
+		const theme = readJson<ColorTheme>("themes", file);
 		const variant = theme.type === "light" || theme.type === "hcLight" ? "light" : "dark";
 		result[variant].push(theme.colors["editor.background"].slice(0, 7));
 	}
@@ -43,10 +44,8 @@ describe("problem gutter icons", () => {
 
 describe("pixel icon theme", () => {
 	it("refers only to icons that exist", () => {
-		const theme = JSON.parse(readFileSync(path.join(ICONS, "pixel-icon-theme.json"), "utf-8"));
-		for (const [id, definition] of Object.entries<{ iconPath: string }>(
-			theme.iconDefinitions
-		)) {
+		const theme = readJson<IconTheme>("icons", "pixel-icon-theme.json");
+		for (const [id, definition] of Object.entries(theme.iconDefinitions)) {
 			assert.ok(
 				existsSync(path.join(ICONS, definition.iconPath)),
 				`${id}: ${definition.iconPath}`

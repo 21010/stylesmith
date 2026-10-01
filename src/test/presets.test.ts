@@ -1,14 +1,11 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import * as path from "node:path";
 import { describe, it } from "node:test";
 import { EFFECTS } from "../effects";
 import { FONTS } from "../fonts";
 import { ICON_THEME, PRESETS, presetEffects } from "../presets";
+import { manifest } from "./files";
 
-// Tests run from out/test, two levels below the project root.
-const ROOT = path.join(__dirname, "..", "..");
-const contributes = JSON.parse(readFileSync(path.join(ROOT, "package.json"), "utf-8")).contributes;
+const contributes = manifest().contributes;
 
 describe("presets", () => {
 	it("have unique ids", () => {

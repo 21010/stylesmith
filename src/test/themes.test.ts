@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { colorDifference, contrast, mix, VISION } from "../color";
 import { LINE_TINT } from "../problems";
+import { manifest, readJson } from "./files";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
@@ -47,9 +48,7 @@ const PROBLEM_TINT: Record<string, number> = {
 };
 
 const files = readdirSync(THEMES_DIR).filter(file => file.endsWith("-color-theme.json"));
-const contributed: { label: string; uiTheme: string; path: string }[] = JSON.parse(
-	readFileSync(path.join(ROOT, "package.json"), "utf-8")
-).contributes.themes;
+const contributed = manifest().contributes.themes;
 
 describe("color themes", () => {
 	it("are all listed in package.json", () => {
@@ -61,7 +60,7 @@ describe("color themes", () => {
 	});
 
 	for (const file of files) {
-		const theme: Theme = JSON.parse(readFileSync(path.join(THEMES_DIR, file), "utf-8"));
+		const theme = readJson<Theme>("themes", file);
 		const c = theme.colors;
 		const background = c["editor.background"];
 		const highContrast = theme.type === "hc" || theme.type === "hcLight";

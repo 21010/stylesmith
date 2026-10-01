@@ -75,7 +75,7 @@ async function withTimeout(work: Thenable<unknown>, what: string, ms = 60_000): 
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-async function step(name: string, check: () => Promise<void>): Promise<void> {
+async function step(name: string, check: () => Promise<void> | void): Promise<void> {
 	await check();
 	console.log(`  ✔ ${name}`);
 }
@@ -115,7 +115,7 @@ export async function run(): Promise<void> {
 		}
 	});
 
-	await step("Enable puts the Nerd Font next to the workbench and in the settings", async () => {
+	await step("Enable puts the Nerd Font next to the workbench and in the settings", () => {
 		assert.ok(existsSync(path.join(fonts, "JetBrainsMonoNerdFontMono-Regular.woff2")));
 		assert.match(
 			String(userValue("editor", "fontFamily")),

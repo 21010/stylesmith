@@ -207,12 +207,12 @@ describe("remote imports (https)", () => {
 		init: ResponseInit = {},
 		finalUrl?: string
 	): void {
-		globalThis.fetch = async (input, options) => {
+		globalThis.fetch = (input, options) => {
 			const url = String(input);
 			requests.push({ url, signal: options?.signal });
 			const response = new Response(body, init);
 			Object.defineProperty(response, "url", { value: finalUrl ?? url });
-			return response;
+			return Promise.resolve(response);
 		};
 	}
 

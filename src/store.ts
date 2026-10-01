@@ -24,6 +24,7 @@ export interface StoredState {
 	reapplyAskedAt?: number;
 }
 
+/** Reads and updates the state file. Every read is fresh; updates never overlap. */
 export class StateFile {
 	/**
 	 * @param file Where the state is kept.
@@ -43,7 +44,7 @@ export class StateFile {
 		}
 		try {
 			const state: unknown = JSON.parse(text);
-			return typeof state === "object" && state !== null ? (state as StoredState) : {};
+			return typeof state === "object" && state !== null ? state : {};
 		} catch {
 			return {}; // a damaged file shouldn't break Stylesmith
 		}

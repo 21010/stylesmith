@@ -103,10 +103,11 @@ describe("ManagedSettings", () => {
 				user: settings.get(key),
 				default: DEFAULTS[key] ?? false
 			}),
-			write: async (key, value) => {
+			write: (key, value) => {
 				writes++;
 				if (value === undefined) settings.delete(key);
 				else settings.set(key, value);
+				return Promise.resolve();
 			}
 		};
 		managed = new ManagedSettings(access, new StateFile(path.join(root, "state.json")));

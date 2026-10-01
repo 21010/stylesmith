@@ -79,19 +79,19 @@ You can also install the `.vsix` file from VS Code: open the **Extensions** view
 
 1. Create a CSS file, for example `~/.vscode-styles/custom.css`:
 
-   ```css
-   .monaco-workbench .part.statusbar {
-   	font-weight: 600;
-   }
-   ```
+    ```css
+    .monaco-workbench .part.statusbar {
+    	font-weight: 600;
+    }
+    ```
 
 2. Add it to your `settings.json`:
 
-   ```json
-   "stylesmith.imports": [
-   	"file://${userHome}/.vscode-styles/custom.css"
-   ]
-   ```
+    ```json
+    "stylesmith.imports": [
+    	"file://${userHome}/.vscode-styles/custom.css"
+    ]
+    ```
 
 3. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) and run **Stylesmith: Enable**.
 4. Click **Restart Visual Studio Code** when asked.
@@ -102,13 +102,13 @@ A paint-can button appears in the status bar. Click it for the Stylesmith menu.
 
 A preset sets up a complete look in one step: a color theme, the pixel icons, a Nerd Font and a set of effects. Run **Stylesmith: Apply Preset…**, or pick **Apply a preset…** in the status bar menu.
 
-| Preset                | Theme                 | Font           | Extra effects                               |
-| --------------------- | --------------------- | -------------- | ------------------------------------------- |
-| **Night City**        | Neon Night            | JetBrainsMono  | typing sparks, boot sequence, glitch on save |
-| **Phosphor Terminal** | Phosphor              | DepartureMono  | CRT scanlines, boot sequence                |
-| **Amber Monitor**     | Amber                 | BlexMono       | CRT scanlines                               |
-| **Daylight**          | Daylight              | JetBrainsMono  | none                                        |
-| **High Contrast**     | Neon High Contrast    | JetBrainsMono  | none, and no caret animation                |
+| Preset                | Theme              | Font          | Extra effects                                |
+| --------------------- | ------------------ | ------------- | -------------------------------------------- |
+| **Night City**        | Neon Night         | JetBrainsMono | typing sparks, boot sequence, glitch on save |
+| **Phosphor Terminal** | Phosphor           | DepartureMono | CRT scanlines, boot sequence                 |
+| **Amber Monitor**     | Amber              | BlexMono      | CRT scanlines                                |
+| **Daylight**          | Daylight           | JetBrainsMono | none                                         |
+| **High Contrast**     | Neon High Contrast | JetBrainsMono | none, and no caret animation                 |
 
 Every preset also turns on the subtle effects (neon current line, focus frame and selections). Afterwards you can still change anything on its own.
 
@@ -137,18 +137,18 @@ Every VS Code update replaces the file Stylesmith changes, so its changes disapp
 
 Stylesmith comes with effects you can use without writing any code. They're applied when you run **Stylesmith: Enable**, even if `stylesmith.imports` is empty. The subtle ones are on by default; the louder ones are waiting for you to turn them on.
 
-| Effect                                    | Setting                             | Default |
-| ----------------------------------------- | ----------------------------------- | ------- |
-| [Caret animation](#caret-animation)       | `stylesmith.effects.caretAnimation`  | on      |
-| [Neon current line](#neon-current-line)   | `stylesmith.effects.neonCurrentLine` | on      |
-| [Neon focus frame](#neon-focus-frame)     | `stylesmith.effects.neonFocusFrame`  | on      |
-| [Neon selections](#neon-selections)       | `stylesmith.effects.neonSelections`  | on      |
-| [Neon code blocks](#neon-code-blocks)     | `stylesmith.effects.neonBlocks`      | on      |
-| [Problem outlines](#problem-outlines)     | `stylesmith.effects.diagnosticHighlights` | on |
-| [CRT scanlines](#crt-scanlines)           | `stylesmith.effects.crtScanlines`    | off     |
-| [Typing sparks](#typing-sparks)           | `stylesmith.effects.typingSparks`    | off     |
-| [Boot sequence](#boot-sequence)           | `stylesmith.effects.bootSequence`    | off     |
-| [Glitch on save](#glitch-on-save)         | `stylesmith.effects.glitchOnSave`    | off     |
+| Effect                                  | Setting                                   | Default |
+| --------------------------------------- | ----------------------------------------- | ------- |
+| [Caret animation](#caret-animation)     | `stylesmith.effects.caretAnimation`       | on      |
+| [Neon current line](#neon-current-line) | `stylesmith.effects.neonCurrentLine`      | on      |
+| [Neon focus frame](#neon-focus-frame)   | `stylesmith.effects.neonFocusFrame`       | on      |
+| [Neon selections](#neon-selections)     | `stylesmith.effects.neonSelections`       | on      |
+| [Neon code blocks](#neon-code-blocks)   | `stylesmith.effects.neonBlocks`           | on      |
+| [Problem outlines](#problem-outlines)   | `stylesmith.effects.diagnosticHighlights` | on      |
+| [CRT scanlines](#crt-scanlines)         | `stylesmith.effects.crtScanlines`         | off     |
+| [Typing sparks](#typing-sparks)         | `stylesmith.effects.typingSparks`         | off     |
+| [Boot sequence](#boot-sequence)         | `stylesmith.effects.bootSequence`         | off     |
+| [Glitch on save](#glitch-on-save)       | `stylesmith.effects.glitchOnSave`         | off     |
 
 After changing any of them, run **Stylesmith: Reload**. None of the effects do any work while you're not typing or moving the cursor.
 
@@ -236,13 +236,13 @@ It works through VS Code's own API, so it updates live as you type, works with a
 
 Settings, all on by default except info messages:
 
-| Setting                               | What it does                                               |
-| ------------------------------------- | ---------------------------------------------------------- |
-| `stylesmith.problems.enabled`         | Turns the Problem Lens on or off.                           |
-| `stylesmith.problems.minimumSeverity` | `"error"`, `"warning"` (default) or `"info"`.               |
-| `stylesmith.problems.inlineMessages`  | The message at the end of the line.                        |
-| `stylesmith.problems.gutterIcons`     | The pixel icon in the gutter.                              |
-| `stylesmith.problems.statusBar`       | The problem on the cursor's line in the status bar.        |
+| Setting                               | What it does                                        |
+| ------------------------------------- | --------------------------------------------------- |
+| `stylesmith.problems.enabled`         | Turns the Problem Lens on or off.                   |
+| `stylesmith.problems.minimumSeverity` | `"error"`, `"warning"` (default) or `"info"`.       |
+| `stylesmith.problems.inlineMessages`  | The message at the end of the line.                 |
+| `stylesmith.problems.gutterIcons`     | The pixel icon in the gutter.                       |
+| `stylesmith.problems.statusBar`       | The problem on the cursor's line in the status bar. |
 
 Made with accessibility in mind:
 
@@ -255,12 +255,12 @@ Made with accessibility in mind:
 
 Stylesmith comes with four [Nerd Fonts](https://www.nerdfonts.com/): programming fonts with thousands of extra icons for file types, git, terminal prompts and more. When you run **Stylesmith: Enable**, it sets the editor and terminal to use the one you picked. This is on by default.
 
-| `stylesmith.fonts.family`    | Look                                                        | Weights         |
-| ---------------------------- | ----------------------------------------------------------- | --------------- |
-| `JetBrainsMono` (default)    | Modern and very readable, with ligatures (`=>` `!=` `===`)  | regular, bold   |
-| `BlexMono`                   | Classic IBM terminal feel (based on IBM Plex Mono)          | regular, bold   |
-| `ShureTechMono`              | Sci-fi, cyberpunk HUD look (based on Share Tech Mono)       | regular         |
-| `DepartureMono`              | Pixel-style retro terminal; sharpest at sizes like 11 or 22 | regular         |
+| `stylesmith.fonts.family` | Look                                                        | Weights       |
+| ------------------------- | ----------------------------------------------------------- | ------------- |
+| `JetBrainsMono` (default) | Modern and very readable, with ligatures (`=>` `!=` `===`)  | regular, bold |
+| `BlexMono`                | Classic IBM terminal feel (based on IBM Plex Mono)          | regular, bold |
+| `ShureTechMono`           | Sci-fi, cyberpunk HUD look (based on Share Tech Mono)       | regular       |
+| `DepartureMono`           | Pixel-style retro terminal; sharpest at sizes like 11 or 22 | regular       |
 
 How it works:
 
@@ -276,25 +276,25 @@ The fonts come from Nerd Fonts v3.5.1. The build downloads them from the officia
 
 Stylesmith comes with three dark themes in a retro and cyberpunk style. Pick one with **Preferences: Color Theme** (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>T</kbd>). They work on their own, without running **Stylesmith: Enable**, and the neon effects pick up each theme's accent color automatically.
 
-| Theme                     | Style                                                               |
-| ------------------------- | ------------------------------------------------------------------- |
-| **Stylesmith Neon Night** | Cyberpunk: deep indigo night, cyan and magenta neon, yellow strings |
-| **Stylesmith Phosphor**   | Retro green CRT terminal, with amber numbers                        |
-| **Stylesmith Amber**      | Retro amber monochrome monitor                                      |
-| **Stylesmith Daylight**   | Retro paper and ink for bright rooms, teal and magenta accents      |
-| **Stylesmith Neon High Contrast** | Maximum contrast on black for low vision, with neon accents |
-| **Stylesmith Daylight High Contrast** | Maximum contrast on white for low vision                |
+| Theme                                 | Style                                                               |
+| ------------------------------------- | ------------------------------------------------------------------- |
+| **Stylesmith Neon Night**             | Cyberpunk: deep indigo night, cyan and magenta neon, yellow strings |
+| **Stylesmith Phosphor**               | Retro green CRT terminal, with amber numbers                        |
+| **Stylesmith Amber**                  | Retro amber monochrome monitor                                      |
+| **Stylesmith Daylight**               | Retro paper and ink for bright rooms, teal and magenta accents      |
+| **Stylesmith Neon High Contrast**     | Maximum contrast on black for low vision, with neon accents         |
+| **Stylesmith Daylight High Contrast** | Maximum contrast on white for low vision                            |
 
 ### Easy on the eyes
 
 The themes are made for long sessions. Neon is used for accents, and text stays calm and very readable. Every theme is checked automatically against the [WCAG 2](https://www.w3.org/TR/WCAG22/) contrast rules on every change:
 
-| What                                                          | Minimum contrast            |
-| ------------------------------------------------------------- | --------------------------- |
-| Code text, active line number, tabs, sidebar, inputs          | 7:1 (AAA)                   |
-| Every syntax color (including comments), on the current line too | 4.5:1 (AA)               |
-| Line numbers, status bar, buttons, badges, terminal colors    | 4.5:1 (AA)                  |
-| Cursor, focus outline, active markers, matching brackets      | 3:1 (non-text contrast)     |
+| What                                                             | Minimum contrast        |
+| ---------------------------------------------------------------- | ----------------------- |
+| Code text, active line number, tabs, sidebar, inputs             | 7:1 (AAA)               |
+| Every syntax color (including comments), on the current line too | 4.5:1 (AA)              |
+| Line numbers, status bar, buttons, badges, terminal colors       | 4.5:1 (AA)              |
+| Cursor, focus outline, active markers, matching brackets         | 3:1 (non-text contrast) |
 
 Code text also stays below 16:1 and never uses pure white on pure black, which can glare. Comments are at 6:1 or more in every theme, where many themes go well below 4.5:1.
 
@@ -322,27 +322,27 @@ Each icon has a version for dark and for light themes, and every icon keeps at l
 
 ## Commands
 
-| Command                 | What it does                                                    |
-| ----------------------- | --------------------------------------------------------------- |
-| **Stylesmith: Enable**  | Adds the files from `stylesmith.imports` to VS Code.            |
-| **Stylesmith: Reload**  | Does the same as Enable. Use it after you change your files.    |
-| **Stylesmith: Disable** | Removes everything Stylesmith added.                            |
-| **Stylesmith: Apply Preset…** | Sets a complete look: theme, icons, font and effects.     |
-| **Stylesmith: Show Menu** | Opens the Stylesmith menu, the same as the status bar button. |
+| Command                       | What it does                                                  |
+| ----------------------------- | ------------------------------------------------------------- |
+| **Stylesmith: Enable**        | Adds the files from `stylesmith.imports` to VS Code.          |
+| **Stylesmith: Reload**        | Does the same as Enable. Use it after you change your files.  |
+| **Stylesmith: Disable**       | Removes everything Stylesmith added.                          |
+| **Stylesmith: Apply Preset…** | Sets a complete look: theme, icons, font and effects.         |
+| **Stylesmith: Show Menu**     | Opens the Stylesmith menu, the same as the status bar button. |
 
 Restart VS Code to see the change.
 
 ## Settings
 
-| Setting                             | Default | What it does                                              |
-| ----------------------------------- | ------- | --------------------------------------------------------- |
-| `stylesmith.imports`                | `[]`    | A list of `.css` and `.js` files to add, in order.        |
-| `stylesmith.allowRemoteImports`     | `false` | Allows `https://` links in `stylesmith.imports`.          |
-| `stylesmith.effects.*`              | varies  | Turns each [built-in effect](#built-in-effects) on or off. |
-| `stylesmith.fonts.enabled`          | `true`  | Uses a bundled [Nerd Font](#fonts) in the editor and terminal. |
-| `stylesmith.fonts.family`           | `"JetBrainsMono"` | Which Nerd Font to use.                     |
-| `stylesmith.statusbar`              | `true`  | Shows the Stylesmith button in the status bar.           |
-| `stylesmith.remindAfterUpdate`      | `true`  | Offers to re-apply Stylesmith after a VS Code update.     |
+| Setting                         | Default           | What it does                                                   |
+| ------------------------------- | ----------------- | -------------------------------------------------------------- |
+| `stylesmith.imports`            | `[]`              | A list of `.css` and `.js` files to add, in order.             |
+| `stylesmith.allowRemoteImports` | `false`           | Allows `https://` links in `stylesmith.imports`.               |
+| `stylesmith.effects.*`          | varies            | Turns each [built-in effect](#built-in-effects) on or off.     |
+| `stylesmith.fonts.enabled`      | `true`            | Uses a bundled [Nerd Font](#fonts) in the editor and terminal. |
+| `stylesmith.fonts.family`       | `"JetBrainsMono"` | Which Nerd Font to use.                                        |
+| `stylesmith.statusbar`          | `true`            | Shows the Stylesmith button in the status bar.                 |
+| `stylesmith.remindAfterUpdate`  | `true`            | Offers to re-apply Stylesmith after a VS Code update.          |
 
 Stylesmith only reads these from your **user settings**. Values in a project's `.vscode/settings.json` are ignored.
 
@@ -350,11 +350,11 @@ Stylesmith only reads these from your **user settings**. Values in a project's `
 
 Each entry must be a **link (URL), not a plain file path**:
 
-| System  | Example                                                           |
-| ------- | ----------------------------------------------------------------- |
-| Windows | `file:///C:/Users/me/styles/custom.css` (include the `C:/` part)  |
-| macOS   | `file:///Users/me/styles/custom.css`                              |
-| Linux   | `file:///home/me/styles/custom.css`                               |
+| System  | Example                                                                 |
+| ------- | ----------------------------------------------------------------------- |
+| Windows | `file:///C:/Users/me/styles/custom.css` (include the `C:/` part)        |
+| macOS   | `file:///Users/me/styles/custom.css`                                    |
+| Linux   | `file:///home/me/styles/custom.css`                                     |
 | Web     | `https://example.com/theme.css` (needs `stylesmith.allowRemoteImports`) |
 
 Only `.css` and `.js` files work, up to 5 MB each. They're added in the order you list them.
@@ -377,15 +377,15 @@ If the file changes, Stylesmith refuses it and shows its new fingerprint, so you
 
 You can use these in `file://` links:
 
-| Variable                     | Becomes                                              |
-| ---------------------------- | ---------------------------------------------------- |
-| `${userHome}`                | Your home folder                                     |
+| Variable                     | Becomes                                                    |
+| ---------------------------- | ---------------------------------------------------------- |
+| `${userHome}`                | Your home folder                                           |
 | `${workspaceFolder}`         | The first folder open in VS Code (trusted workspaces only) |
-| `${cwd}`                     | The current working folder (trusted workspaces only) |
-| `${execPath}`                | The path to the VS Code program                      |
-| `${pathSeparator}` or `${/}` | `\` on Windows, `/` everywhere else                  |
-| `${env:NAME}`                | The environment variable `NAME`, or nothing if unset |
-| `${env:NAME:default}`        | The environment variable `NAME`, or `default`        |
+| `${cwd}`                     | The current working folder (trusted workspaces only)       |
+| `${execPath}`                | The path to the VS Code program                            |
+| `${pathSeparator}` or `${/}` | `\` on Windows, `/` everywhere else                        |
+| `${env:NAME}`                | The environment variable `NAME`, or nothing if unset       |
+| `${env:NAME:default}`        | The environment variable `NAME`, or `default`              |
 
 ## Uninstalling
 
@@ -398,12 +398,12 @@ Stylesmith needs permission to change VS Code's files.
 - **Windows:** the normal (per-user) install usually works as is. If VS Code is installed in `Program Files`, run it as Administrator when you enable or disable Stylesmith.
 - **macOS and Linux:** if you get a permission error, make yourself the owner of the VS Code folder:
 
-  ```sh
-  sudo chown -R "$(whoami)" /usr/share/code                          # most Linux systems
-  sudo chown -R "$(whoami)" "/Applications/Visual Studio Code.app"  # macOS
-  ```
+    ```sh
+    sudo chown -R "$(whoami)" /usr/share/code                          # most Linux systems
+    sudo chown -R "$(whoami)" "/Applications/Visual Studio Code.app"  # macOS
+    ```
 
-  Some installs, like Snap and Flatpak, can't be changed at all, so Stylesmith won't work with them.
+    Some installs, like Snap and Flatpak, can't be changed at all, so Stylesmith won't work with them.
 
 ## Coming from Custom CSS and JS Loader
 
@@ -428,12 +428,12 @@ Stylesmith replaces the old extension's changes with its own and deletes the bac
 
 Stylesmith keeps VS Code's Content-Security-Policy and adds only this:
 
-| Rule          | What's added           | Why                                                     |
-| ------------- | ---------------------- | ------------------------------------------------------- |
-| `script-src`  | a hash of each script  | Lets exactly Stylesmith's scripts run, and nothing else |
-| `font-src`    | `data:`                | Lets your CSS use fonts embedded in the CSS itself      |
-| `style-src`   | `https:`, only with `stylesmith.allowRemoteImports` | Lets your CSS load stylesheets from the web |
-| `font-src`    | `https:`, only with `stylesmith.allowRemoteImports` | Lets your CSS use web fonts            |
+| Rule            | What's added                                         | Why                                                          |
+| --------------- | ---------------------------------------------------- | ------------------------------------------------------------ |
+| `script-src`    | a hash of each script                                | Lets exactly Stylesmith's scripts run, and nothing else      |
+| `font-src`      | `data:`                                              | Lets your CSS use fonts embedded in the CSS itself           |
+| `style-src`     | `https:`, only with `stylesmith.allowRemoteImports`  | Lets your CSS load stylesheets from the web                  |
+| `font-src`      | `https:`, only with `stylesmith.allowRemoteImports`  | Lets your CSS use web fonts                                  |
 | `trusted-types` | `stylesmith`, only when you add your own `.js` files | Lets your scripts create HTML in an approved way (see below) |
 
 Everything else stays exactly as VS Code set it. **Stylesmith: Disable** puts the original policy back.
@@ -453,13 +453,20 @@ Scripts can't load other scripts from the web. CSS can load images over `https:/
 
 ### Automatic checks
 
-- **CodeQL**, GitHub's code scanner, with its extended security rules. Runs on every push, every pull request, and weekly.
-- **End-to-end test**, which runs Stylesmith inside a real VS Code (the oldest supported version and the current one) and checks that Enable keeps the security policy, and that Disable and uninstalling restore VS Code byte for byte. Runs on every push and pull request.
-- **npm audit**, which checks dependencies for known security problems and verifies package signatures. Runs on every push and pull request.
-- **Dependency review**, which blocks pull requests that add a dependency with a known security problem.
-- **OpenSSF Scorecard**, which checks the project's supply-chain practices. Runs on every push to `main` and weekly.
+Every push and pull request runs:
 
-On top of that, Dependabot keeps dependencies and GitHub Actions up to date, and every GitHub Action is pinned to an exact version.
+- **Unit tests** (about 1,700 checks) for the parts that change VS Code: the security policy and script fingerprints, the checks on your files, writing and restoring VS Code's file, and restoring your settings. They also check every theme and icon for contrast (WCAG) and color blindness.
+- **Browser tests**, which run the built-in effects in headless Chromium under VS Code's security policy. They check that the effects run without errors, that a changed script is blocked, and that the effects do no work while you're idle.
+- **End-to-end test**, which runs Stylesmith inside a real VS Code (the oldest supported version and the current one). It checks that Enable keeps the security policy, that your own files load, and that Disable and uninstalling restore VS Code byte for byte.
+- **Type checks and linting** of all code, including the effect scripts, with rules that catch promises that are never awaited and values without a type.
+- **npm audit**, which checks dependencies for known security problems and verifies package signatures.
+- **CodeQL**, GitHub's code scanner, with its extended security rules. It also runs weekly.
+
+On top of that:
+
+- **Dependency review** blocks pull requests that add a dependency with a known security problem.
+- **OpenSSF Scorecard** checks the project's supply-chain practices on every push to `main` and weekly.
+- **Dependabot** keeps dependencies and GitHub Actions up to date, and every GitHub Action is pinned to an exact version.
 
 ### Reporting a problem
 
@@ -471,38 +478,54 @@ You need Node.js 22 or newer.
 
 ```sh
 npm install
-npm run compile   # build TypeScript into out/
-npm run watch     # rebuild when files change
-npm test          # build and run the tests
-npm run test:integration  # run Stylesmith inside a downloaded VS Code (VSCODE_VERSION=1.93.0 for the oldest)
-npm run lint      # check the code with ESLint
-npm run format    # format the code with Prettier
-npm run themes    # rebuild the color themes from scripts/build-themes.mjs
-npm run fonts     # download, verify and rebuild the bundled Nerd Fonts
-npm run icons     # rebuild the pixel icon theme from scripts/build-icons.mjs
+npm run compile            # build TypeScript into out/
+npm run watch              # rebuild when files change
+npm test                   # build and run the unit tests
+npm run test:browser       # run the effects in headless Chromium
+npm run test:integration   # run Stylesmith inside a downloaded VS Code
+npm run lint               # check the code with ESLint
+npm run typecheck:effects  # type-check the effect scripts
+npm run format             # format the code with Prettier
+npm run themes             # rebuild the color themes
+npm run icons              # rebuild the pixel icons
+npm run fonts              # download, verify and rebuild the bundled Nerd Fonts
 ```
+
+The browser tests need Chromium once: `npx playwright-core install chromium-headless-shell`. For the end-to-end test on the oldest supported VS Code, set `VSCODE_VERSION=1.93.0`.
 
 ```
 src/
-├── extension.ts   # commands, settings and messages in VS Code
-├── patch.ts       # adding and removing changes in the HTML
-├── csp.ts         # extending VS Code's security policy
-├── effects.ts     # the list of built-in effects and their settings
-├── fonts.ts       # the bundled Nerd Fonts and the editor/terminal font settings
-├── imports.ts     # reading your files and filling in variables
-├── workbench.ts   # finding and saving VS Code's HTML file
-├── presets.ts     # the presets and what each one turns on
-├── messages.ts    # text shown to the user
-└── test/          # tests
-themes/            # color themes (generated by scripts/build-themes.mjs)
-icons/             # pixel icon theme (generated by scripts/build-icons.mjs)
+├── extension.ts    # starts Stylesmith: connects the parts and registers the commands
+├── lifecycle.ts    # Enable, Disable, and the check after VS Code updates
+├── menu.ts         # the status bar button, the menu, and the font and preset pickers
+├── config.ts       # reading and writing Stylesmith's settings
+├── managed.ts      # changing VS Code settings for you and putting yours back
+├── store.ts        # Stylesmith's own state file
+├── patch.ts        # adding and removing changes in VS Code's HTML file
+├── csp.ts          # extending VS Code's security policy
+├── imports.ts      # reading your files, checking them, and filling in variables
+├── workbench.ts    # finding and writing VS Code's HTML file and the font folder
+├── uninstall.ts    # the cleanup that runs when Stylesmith is uninstalled
+├── effects.ts      # the list of built-in effects and their settings
+├── presets.ts      # the presets and what each one turns on
+├── fonts.ts        # the bundled Nerd Fonts and font lists
+├── problems.ts     # the Problem Lens: what to show for each problem
+├── problemLens.ts  # the Problem Lens: showing it in the editor and status bar
+├── color.ts        # contrast and color math, used by the tests and the icon generator
+├── messages.ts     # text shown to you
+├── test/              # unit tests
+├── test-browser/      # browser tests of the effects
+└── test-integration/  # the end-to-end test in a real VS Code
 assets/
-├── effects/       # built-in effects (CSS and JS)
-├── fonts/         # bundled Nerd Fonts (WOFF2) and their licenses
-└── statusbar.js   # the status bar icon
+├── effects/        # built-in effects (CSS and JS)
+└── fonts/          # bundled Nerd Fonts (WOFF2) and their licenses
+scripts/            # generators for the themes, icons and fonts
+└── data/           # the theme palettes and the pixel art of the icons
+themes/             # color themes (generated)
+icons/              # pixel icons (generated)
 ```
 
-Only `extension.ts` uses the VS Code API, so everything else can be tested with plain Node.js.
+Only `extension.ts`, `lifecycle.ts`, `menu.ts`, `config.ts` and `problemLens.ts` use the VS Code API. Everything else is plain TypeScript and is tested with Node.js alone.
 
 ## License
 

@@ -91,9 +91,10 @@ export function planRestore(current: unknown, saved: SavedValue, group: Group): 
 function validEntries(saved: unknown): Record<string, SavedValue> {
 	const valid: Record<string, SavedValue> = {};
 	if (typeof saved !== "object" || saved === null || Array.isArray(saved)) return valid;
-	for (const [key, value] of Object.entries(saved)) {
+	for (const [key, value] of Object.entries(saved as Record<string, unknown>)) {
 		if (typeof value === "object" && value !== null && "applied" in value) {
-			valid[key] = { previous: (value as SavedValue).previous, applied: value.applied };
+			const entry = value as Partial<SavedValue>;
+			valid[key] = { previous: entry.previous, applied: entry.applied };
 		}
 	}
 	return valid;
@@ -105,6 +106,11 @@ export interface SettingsAccess {
 	write(key: string, value: unknown): Promise<void>;
 }
 
+/**
+ * Applies and restores managed settings, remembering the user's own values in the state file.
+ * Each group (fonts, effect settings) is kept separately, so updating one never touches the
+ * other.
+ */
 export class ManagedSettings {
 	constructor(
 		private readonly settings: SettingsAccess,

@@ -96,7 +96,7 @@ async function pickFont(config: Config): Promise<void> {
 		...FONTS.map(font => ({
 			label: font.label,
 			description: font.id === current ? "current" : undefined,
-			id: font.id as string | undefined
+			id: font.id
 		})),
 		{ label: "Use my own font", description: current ? undefined : "current", id: undefined }
 	];
@@ -133,9 +133,7 @@ export async function applyPreset(config: Config, id?: unknown): Promise<void> {
 }
 
 async function usePreset(config: Config, preset: Preset): Promise<void> {
-	const workbench = vscode.workspace.getConfiguration("workbench");
-	await workbench.update("colorTheme", preset.theme, vscode.ConfigurationTarget.Global);
-	await workbench.update("iconTheme", ICON_THEME, vscode.ConfigurationTarget.Global);
+	await config.setThemes(preset.theme, ICON_THEME);
 	await config.set("fonts.enabled", true);
 	await config.set("fonts.family", preset.font);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);
