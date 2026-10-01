@@ -34,7 +34,7 @@ const WORKBENCH = `<!DOCTYPE html>
 		"/>
 	</head>
 	<body>
-		<div class="monaco-workbench"><div class="part editor"><div class="editor-group-container">
+		<div class="monaco-workbench vs-dark modern-ui-tabs" id="workbench"><div class="part editor"><div class="editor-group-container">
 			<div class="tab dirty" id="tab">main.ts</div>
 			<div class="editor-container">
 				<div class="monaco-editor focused" style="position:absolute;left:100px;top:100px;width:600px;height:400px">
@@ -43,9 +43,19 @@ const WORKBENCH = `<!DOCTYPE html>
 							style="position:absolute;left:10px;top:10px;width:2px;height:18px;background:#5fe0ff"></div>
 					</div>
 					<textarea id="input" style="position:absolute;left:0;top:0;opacity:0"></textarea>
+					<div class="view-lines"><div class="view-line">
+						<span class="mtk1" id="plain">let x = </span><span class="mtk6" id="keyword" style="color:#ff72d8">await</span>
+					</div></div>
 				</div>
 			</div>
-		</div></div></div>
+		</div></div>
+		<div id="card" style="border-radius: var(--vscode-cornerRadius-large)"></div>
+		<div id="badge" style="border-radius: var(--vscode-cornerRadius-circle)"></div>
+		</div>
+		<!-- VS Code defines its design tokens in a style that loads after Stylesmith's. -->
+		<style>
+			.monaco-workbench { --vscode-cornerRadius-large: 8px; --vscode-cornerRadius-circle: 9999px; }
+		</style>
 	</body>
 </html>
 `;
@@ -290,6 +300,53 @@ describe("boot sequence", () => {
 	it("doesn't show with reduced motion", async () => {
 		const page = await openWorkbench(["bootSequence"], true);
 		assert.equal(await page.locator("pre").count(), 0);
+		await page.close();
+	});
+});
+
+describe("neon glow", () => {
+	const shadow = (page: Page, selector: string) =>
+		page.$eval(selector, el => getComputedStyle(el).textShadow);
+
+	it("makes highlighted code glow in its own color, but not plain text", async () => {
+		const page = await openWorkbench(["neonGlow"]);
+		assert.match(
+			await shadow(page, "#keyword"),
+			/color\(srgb 1 0\.447\d* 0\.847\d* \/ 0\.6\)/,
+			"glows in the keyword's color (#ff72d8, at 60%)"
+		);
+		assert.equal(await shadow(page, "#plain"), "none");
+		await page.close();
+	});
+
+	it("doesn't glow in light and high contrast themes", async () => {
+		const page = await openWorkbench(["neonGlow"]);
+		for (const kind of ["vs", "hc-black", "hc-light"]) {
+			await page.$eval(
+				"#workbench",
+				(el, k) => {
+					el.setAttribute("class", `monaco-workbench ${k}`);
+				},
+				kind
+			);
+			assert.equal(await shadow(page, "#keyword"), "none", kind);
+		}
+		await page.close();
+	});
+});
+
+describe("classic layout", () => {
+	const radius = (page: Page, selector: string) =>
+		page.$eval(selector, el => getComputedStyle(el).borderTopLeftRadius);
+
+	it("squares VS Code's rounded corners, even though VS Code sets them later", async () => {
+		const before = await openWorkbench([]);
+		assert.equal(await radius(before, "#card"), "8px", "the fake workbench is rounded");
+		await before.close();
+
+		const page = await openWorkbench(["classicLayout"]);
+		assert.equal(await radius(page, "#card"), "0px");
+		assert.equal(await radius(page, "#badge"), "9999px", "circles stay round");
 		await page.close();
 	});
 });

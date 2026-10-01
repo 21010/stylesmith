@@ -56,7 +56,7 @@ Each part works on its own. The effects follow any theme, including ones that ar
 Stylesmith changes VS Code's own files. Keep this in mind:
 
 - VS Code may say its installation **"appears to be corrupt"**. This is expected, because one of its files has changed. Click **Don't Show Again**.
-- **VS Code updates undo Stylesmith.** After each update, run **Stylesmith: Enable** again.
+- **VS Code updates undo Stylesmith.** After an update, Stylesmith offers to apply your changes again.
 - **The files you add run inside your editor with full access.** Only use files you trust, and prefer files on your own computer.
 
 To go back to normal at any time, run **Stylesmith: Disable**.
@@ -102,13 +102,13 @@ A paint-can button appears in the status bar. Click it for the Stylesmith menu.
 
 A preset sets up a complete look in one step: a color theme, the pixel icons, a Nerd Font and a set of effects. Run **Stylesmith: Apply Preset…**, or pick **Apply a preset…** in the status bar menu.
 
-| Preset                | Theme              | Font          | Extra effects                                |
-| --------------------- | ------------------ | ------------- | -------------------------------------------- |
-| **Night City**        | Neon Night         | JetBrainsMono | typing sparks, boot sequence, glitch on save |
-| **Phosphor Terminal** | Phosphor           | DepartureMono | CRT scanlines, boot sequence                 |
-| **Amber Monitor**     | Amber              | BlexMono      | CRT scanlines                                |
-| **Daylight**          | Daylight           | JetBrainsMono | none                                         |
-| **High Contrast**     | Neon High Contrast | JetBrainsMono | none, and no caret animation                 |
+| Preset                | Theme              | Font          | Extra effects                                           |
+| --------------------- | ------------------ | ------------- | ------------------------------------------------------- |
+| **Night City**        | Neon Night         | JetBrainsMono | neon glow, typing sparks, boot sequence, glitch on save |
+| **Phosphor Terminal** | Phosphor           | DepartureMono | CRT scanlines, boot sequence, classic layout            |
+| **Amber Monitor**     | Amber              | BlexMono      | CRT scanlines, classic layout                           |
+| **Daylight**          | Daylight           | JetBrainsMono | none                                                    |
+| **High Contrast**     | Neon High Contrast | JetBrainsMono | none, and no caret animation                            |
 
 Every preset also turns on the subtle effects (neon current line, focus frame and selections). Afterwards you can still change anything on its own.
 
@@ -145,6 +145,8 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Neon selections](#neon-selections)     | `stylesmith.effects.neonSelections`       | on      |
 | [Neon code blocks](#neon-code-blocks)   | `stylesmith.effects.neonBlocks`           | on      |
 | [Problem outlines](#problem-outlines)   | `stylesmith.effects.diagnosticHighlights` | on      |
+| [Neon glow on code](#neon-glow-on-code) | `stylesmith.effects.neonGlow`             | off     |
+| [Classic layout](#classic-layout)       | `stylesmith.effects.classicLayout`        | off     |
 | [CRT scanlines](#crt-scanlines)         | `stylesmith.effects.crtScanlines`         | off     |
 | [Typing sparks](#typing-sparks)         | `stylesmith.effects.typingSparks`         | off     |
 | [Boot sequence](#boot-sequence)         | `stylesmith.effects.bootSequence`         | off     |
@@ -187,6 +189,16 @@ It builds on VS Code's bracket pair guides. While the effect is on, Stylesmith s
 
 On by default. Replaces VS Code's squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. Together with the [Problem Lens](#problem-lens), which marks the whole line, you still see exactly where each problem is. An outline doesn't change the text's background, so code keeps its full contrast.
 
+### Neon glow on code
+
+Off by default. Highlighted code (keywords, strings, names and so on) glows softly in its own color, like a neon sign. Plain text doesn't glow, and a thin dark edge keeps every letter sharp. It only works in dark themes, because on a light background a glow just blurs the text. Change the strength and size under [Colors and strength](#colors-and-strength).
+
+### Classic layout
+
+Off by default. Since version 1.129, VS Code has a rounded "modern" look, with gaps between the panels and tabs that look like buttons. The classic layout brings back square corners, panels side by side, and tabs that look like tabs.
+
+It uses VS Code's own compact layout density (`window.density.layout`) for the gaps, so Stylesmith turns that setting on while the effect is on and puts your setting back afterwards. In VS Code versions without the modern look, it changes nothing.
+
 ### CRT scanlines
 
 Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image on its own GPU layer, so it doesn't use any CPU. On very large screens, blending it over the window costs a little GPU time while you scroll.
@@ -212,6 +224,8 @@ The neon effects use your theme's focus color, so they match any theme. To chang
 	--stylesmith-neon: #ff2bd6; /* neon line and frame color */
 	--stylesmith-spark-colors: #00f0ff, #ff2bd6, #f5ff00; /* spark colors */
 	--stylesmith-scanlines: 0.2; /* scanline strength, 0.12 by default */
+	--stylesmith-glow: 40%; /* neon glow strength, 60% by default */
+	--stylesmith-glow-size: 4px; /* neon glow size, 6px by default */
 }
 ```
 
@@ -393,17 +407,13 @@ You don't have to run **Stylesmith: Disable** before uninstalling. When VS Code 
 
 ## Permissions
 
-Stylesmith needs permission to change VS Code's files.
+Stylesmith needs permission to change VS Code's files. If it can't, it shows what to do on your system, with the exact folder, and a **Copy Command** button when a terminal command fixes it. Stylesmith never runs these commands itself.
 
-- **Windows:** the normal (per-user) install usually works as is. If VS Code is installed in `Program Files`, run it as Administrator when you enable or disable Stylesmith.
-- **macOS and Linux:** if you get a permission error, make yourself the owner of the VS Code folder:
+- **Windows:** the normal (per-user) install works as is. If VS Code is installed for all users (in `Program Files`), run it once as administrator, run **Stylesmith: Enable**, and then open VS Code normally again.
+- **macOS:** allow Visual Studio Code under **System Settings > Privacy & Security > App Management** (macOS 13 and newer). If that's not enough, make yourself the owner of VS Code's workbench folder; Stylesmith shows the command. If you started VS Code from the Downloads folder, move it to Applications first.
+- **Linux:** make yourself the owner of VS Code's workbench folder; Stylesmith shows the command, which changes only that folder. A VS Code update from your package manager may change the owner back.
 
-    ```sh
-    sudo chown -R "$(whoami)" /usr/share/code                          # most Linux systems
-    sudo chown -R "$(whoami)" "/Applications/Visual Studio Code.app"  # macOS
-    ```
-
-    Some installs, like Snap and Flatpak, can't be changed at all, so Stylesmith won't work with them.
+Snap, Flatpak and AppImage installs can't be changed at all, so Stylesmith doesn't work with them. Install VS Code from [code.visualstudio.com](https://code.visualstudio.com) instead.
 
 ## Coming from Custom CSS and JS Loader
 

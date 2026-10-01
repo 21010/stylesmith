@@ -101,9 +101,14 @@ describe("ManagedSettings", () => {
 		const access: SettingsAccess = {
 			read: key => ({
 				user: settings.get(key),
-				default: DEFAULTS[key] ?? false
+				default: DEFAULTS[key] ?? false,
+				known: !key.startsWith("unknown.")
 			}),
 			write: (key, value) => {
+				// Like VS Code, which refuses to write a setting it doesn't have.
+				if (key.startsWith("unknown.")) {
+					return Promise.reject(new Error(`${key} is not a registered configuration`));
+				}
 				writes++;
 				if (value === undefined) settings.delete(key);
 				else settings.set(key, value);
@@ -207,5 +212,21 @@ describe("ManagedSettings", () => {
 		await managed.update(FONT_GROUP, new Map());
 		await managed.update(EFFECT_GROUP, new Map());
 		assert.equal(settings.get("editor.fontFamily"), "Hack", "the user's setting is untouched");
+	});
+
+	it("skips a setting this VS Code version doesn't have, instead of failing", async () => {
+		const wanted = new Map([
+			["unknown.newSetting", toggleWanted("compact", value => value === "compact")],
+			["editor.guides.bracketPairs", toggleWanted("active", guidesOn)]
+		]);
+		await managed.update(EFFECT_GROUP, wanted);
+		assert.equal(settings.has("unknown.newSetting"), false, "not written");
+		assert.equal(
+			settings.get("editor.guides.bracketPairs"),
+			"active",
+			"the others still apply"
+		);
+		await managed.update(EFFECT_GROUP, new Map());
+		assert.equal(settings.has("editor.guides.bracketPairs"), false);
 	});
 });

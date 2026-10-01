@@ -74,6 +74,28 @@ export const EFFECTS: readonly Effect[] = [
 		enabledByDefault: true
 	},
 	{
+		setting: "effects.neonGlow",
+		label: "Neon glow on code",
+		file: "assets/effects/neon-glow.css",
+		kind: "css",
+		enabledByDefault: false
+	},
+	{
+		setting: "effects.classicLayout",
+		label: "Classic layout (square corners)",
+		file: "assets/effects/classic-layout.css",
+		kind: "css",
+		enabledByDefault: false,
+		editorSettings: [
+			{
+				// VS Code's own way to remove the gaps between panels (VS Code 1.129 and newer).
+				key: "window.density.layout",
+				value: "compact",
+				isOn: value => value === "compact"
+			}
+		]
+	},
+	{
 		setting: "effects.crtScanlines",
 		label: "CRT scanlines",
 		file: "assets/effects/crt-scanlines.css",

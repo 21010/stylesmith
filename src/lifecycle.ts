@@ -15,11 +15,13 @@ import {
 } from "./managed";
 import { messages } from "./messages";
 import { patch, type Snippet } from "./patch";
+import { PermissionDeniedError } from "./permissions";
 import type { StateFile } from "./store";
 import { rememberWorkbench } from "./uninstall";
 import {
 	cleanUp,
 	isPatched,
+	isPermissionError,
 	locateWorkbench,
 	readPristine,
 	removeFonts,
@@ -80,17 +82,19 @@ export async function enable(services: Services): Promise<boolean> {
 		allowRemote,
 		userScripts: importSnippets.some(snippet => snippet.kind === "js")
 	});
-	// The font files go next to the HTML file first, so they're there when it refers to them.
-	if (font) {
-		await writeFonts(
-			workbench,
-			font.files.map(({ file }) => services.asAbsolutePath(file))
-		);
-	} else {
-		await removeFonts(workbench);
-	}
-	if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
-	await removeLegacyBackups(workbench);
+	await writingTo(workbench, async () => {
+		// The font files go next to the HTML file first, so they're there when it refers to them.
+		if (font) {
+			await writeFonts(
+				workbench,
+				font.files.map(({ file }) => services.asAbsolutePath(file))
+			);
+		} else {
+			await removeFonts(workbench);
+		}
+		if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
+		await removeLegacyBackups(workbench);
+	});
 	await managed.update(FONT_GROUP, fontSettings(font));
 	await managed.update(EFFECT_GROUP, effectSettings(effects));
 	await store.update({ enabled: true });
@@ -103,7 +107,7 @@ export async function disable(services: Services): Promise<void> {
 	const workbench = findWorkbench();
 	if (!workbench) return;
 
-	const wasPatched = await cleanUp(workbench);
+	const wasPatched = await writingTo(workbench, () => cleanUp(workbench));
 	await services.managed.update(FONT_GROUP, new Map());
 	await services.managed.update(EFFECT_GROUP, new Map());
 	await services.store.update({ enabled: false });
@@ -137,6 +141,17 @@ export async function checkAfterStartup(services: Services, status: StatusButton
 		await vscode.commands.executeCommand("stylesmith.enable");
 	} else if (choice === messages.dontAskAgain) {
 		await config.set("remindAfterUpdate", false);
+	}
+}
+
+/** Runs `task`, reporting a permission problem as one with VS Code's workbench folder. */
+async function writingTo<T>(workbench: Workbench, task: () => Promise<T>): Promise<T> {
+	try {
+		return await task();
+	} catch (error) {
+		if (isPermissionError(error))
+			throw new PermissionDeniedError(workbench.dir, { cause: error });
+		throw error;
 	}
 }
 

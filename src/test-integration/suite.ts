@@ -143,11 +143,22 @@ export async function run(): Promise<void> {
 			"the first preset"
 		);
 		assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Phosphor");
+		// Its classic layout turns on VS Code's compact density, in versions that have it
+		// (1.129 and newer); older versions are skipped without an error.
+		const hasDensity =
+			vscode.workspace.getConfiguration("window").inspect("density.layout")?.defaultValue !==
+			undefined;
+		assert.equal(userValue("window", "density.layout"), hasDensity ? "compact" : undefined);
 		await withTimeout(
 			vscode.commands.executeCommand("stylesmith.applyPreset", "night-city"),
 			"the second preset"
 		);
 		assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Neon Night");
+		assert.equal(
+			userValue("window", "density.layout"),
+			undefined,
+			"put back once a preset without the classic layout is applied"
+		);
 		assert.equal(userValue("workbench", "iconTheme"), "stylesmith-pixel");
 		assert.equal(userValue("stylesmith", "effects.typingSparks"), true);
 		// The preset's Reload really ran: the second preset's font is the one in place.

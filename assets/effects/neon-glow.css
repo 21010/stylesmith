@@ -1,0 +1,18 @@
+/*
+ * Stylesmith neon glow: highlighted code glows in its own color, like a neon sign.
+ *
+ * Only in dark themes: on a light background a glow just blurs the text. Plain text
+ * doesn't glow, only highlighted code (keywords, strings, names and so on). A thin dark
+ * inner shadow keeps the letters crisp.
+ *
+ * Strength and size: override them in one of your own CSS imports:
+ *   :root { --stylesmith-glow: 60%; --stylesmith-glow-size: 6px; }
+ */
+
+/* VS Code gives each color in the code its own class, mtk1 to mtkN; mtk1 is plain text. */
+.monaco-workbench.vs-dark .monaco-editor .view-line span[class*="mtk"]:not(.mtk1) {
+	text-shadow:
+		0 0 1px rgb(0 0 0 / 0.7),
+		0 0 var(--stylesmith-glow-size, 6px)
+			color-mix(in srgb, currentColor var(--stylesmith-glow, 60%), transparent);
+}

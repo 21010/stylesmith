@@ -2,6 +2,18 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.13.0 (2026-10-01)
+
+### Added
+
+- **Neon glow on code**: highlighted code glows softly in its own color, like a neon sign, in dark themes. Off by default and part of the Night City preset. Strength and size can be changed with `--stylesmith-glow` and `--stylesmith-glow-size`.
+- **Classic layout**: square corners, panels side by side and tabs that look like tabs, instead of VS Code's rounded modern look (VS Code 1.129 and newer). It turns on VS Code's compact layout density while it's on and puts your setting back afterwards. Off by default and part of the Phosphor Terminal and Amber Monitor presets.
+- **Help when VS Code's files can't be changed**: instead of "run as administrator", Stylesmith shows the steps for your system and install, with the exact folder, and can copy the command that fixes it. It recognizes Snap, Flatpak and AppImage installs, macOS's App Management permission, VS Code started from the Downloads folder on macOS, and installs for all users on Windows. Stylesmith never runs these commands itself.
+
+### Fixed
+
+- A setting an effect needs that doesn't exist in your VS Code version is now skipped, instead of making Enable fail.
+
 ## 1.12.1 (2026-10-01)
 
 ### Fixed

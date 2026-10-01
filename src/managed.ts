@@ -102,7 +102,8 @@ function validEntries(saved: unknown): Record<string, SavedValue> {
 
 /** Reads and writes the user's (global) settings. */
 export interface SettingsAccess {
-	read(key: string): { user: unknown; default: unknown };
+	/** `known` is false for a setting this VS Code version doesn't have; it can't be written. */
+	read(key: string): { user: unknown; default: unknown; known: boolean };
 	write(key: string, value: unknown): Promise<void>;
 }
 
@@ -125,7 +126,9 @@ export class ManagedSettings {
 		const state = validEntries((await this.store.read())[group.name]);
 
 		for (const [key, want] of wanted) {
-			const { user, default: defaultValue } = this.settings.read(key);
+			const { user, default: defaultValue, known } = this.settings.read(key);
+			// A setting from a newer VS Code version (like window.density.layout) is skipped.
+			if (!known) continue;
 			const plan = planApply(user, defaultValue, state[key], want, group);
 			if (plan) {
 				if (plan.applied !== user) await this.settings.write(key, plan.applied);
@@ -147,7 +150,9 @@ export class ManagedSettings {
 	}
 
 	private async restore(key: string, saved: SavedValue, group: Group): Promise<void> {
-		const { user } = this.settings.read(key);
+		const { user, known } = this.settings.read(key);
+		if (!known) return; // gone after a VS Code downgrade: nothing to put back
+
 		const value = planRestore(user, saved, group);
 		if (value !== user) await this.settings.write(key, value);
 	}

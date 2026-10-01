@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.12.1",
+	"version": "1.13.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -138,6 +138,18 @@
 					"default": true,
 					"scope": "application",
 					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a thin outline around the exact code, in the same color. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.neonGlow": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "Make highlighted code glow in its own color, like a neon sign. Only in dark themes. Change the strength with `--stylesmith-glow` (default `60%`) and the size with `--stylesmith-glow-size` (default `6px`) in one of your own CSS imports. Run **Stylesmith: Reload** after changing this."
+				},
+				"stylesmith.effects.classicLayout": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "Square corners and tabs that look like tabs, instead of VS Code's rounded modern look. Turns on VS Code's compact layout density (`window.density.layout`) while it's on, and puts your setting back afterwards. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",

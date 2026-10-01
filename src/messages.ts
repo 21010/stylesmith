@@ -7,6 +7,8 @@ export const messages = {
 	disabled: "Stylesmith disabled and VS Code restored to default. Restart to take effect.",
 	alreadyDisabled: "Stylesmith is already disabled.",
 	somethingWrong: "Stylesmith: something went wrong: ",
+	copyCommand: "Copy Command",
+	commandCopied: "Stylesmith: the command is copied. Paste it into a terminal.",
 	restartIde: "Restart Visual Studio Code",
 	notConfigured:
 		'Stylesmith has nothing to add. Add CSS/JS file URLs to "stylesmith.imports", or turn on a built-in effect such as "stylesmith.effects.caretAnimation".',

@@ -102,7 +102,12 @@ export const vscodeConfig: Config = {
 export const vscodeSettings: SettingsAccess = {
 	read(key) {
 		const info = vscode.workspace.getConfiguration().inspect(key);
-		return { user: info?.globalValue, default: info?.defaultValue };
+		return {
+			user: info?.globalValue,
+			default: info?.defaultValue,
+			// VS Code only knows a default for settings it has registered.
+			known: info?.defaultValue !== undefined
+		};
 	},
 	async write(key, value) {
 		await vscode.workspace

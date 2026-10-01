@@ -29,7 +29,8 @@ export const PRESETS: readonly Preset[] = [
 	{
 		id: "night-city",
 		label: "Night City",
-		description: "Cyberpunk neon: Neon Night, JetBrains Mono, sparks, boot sequence and glitch",
+		description:
+			"Cyberpunk neon: Neon Night, JetBrains Mono, glowing code, sparks, boot sequence and glitch",
 		theme: "Stylesmith Neon Night",
 		font: "JetBrainsMono",
 		effects: {
@@ -37,13 +38,16 @@ export const PRESETS: readonly Preset[] = [
 			"effects.crtScanlines": false,
 			"effects.typingSparks": true,
 			"effects.bootSequence": true,
-			"effects.glitchOnSave": true
+			"effects.glitchOnSave": true,
+			"effects.neonGlow": true,
+			"effects.classicLayout": false
 		}
 	},
 	{
 		id: "phosphor-terminal",
 		label: "Phosphor Terminal",
-		description: "Green CRT terminal: Phosphor, Departure Mono, scanlines and boot sequence",
+		description:
+			"Green CRT terminal: Phosphor, Departure Mono, scanlines, boot sequence, square layout",
 		theme: "Stylesmith Phosphor",
 		font: "DepartureMono",
 		effects: {
@@ -51,13 +55,15 @@ export const PRESETS: readonly Preset[] = [
 			"effects.crtScanlines": true,
 			"effects.typingSparks": false,
 			"effects.bootSequence": true,
-			"effects.glitchOnSave": false
+			"effects.glitchOnSave": false,
+			"effects.neonGlow": false,
+			"effects.classicLayout": true
 		}
 	},
 	{
 		id: "amber-monitor",
 		label: "Amber Monitor",
-		description: "Amber monochrome monitor: Amber, BlexMono and scanlines",
+		description: "Amber monochrome monitor: Amber, BlexMono, scanlines and square layout",
 		theme: "Stylesmith Amber",
 		font: "BlexMono",
 		effects: {
@@ -65,7 +71,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.crtScanlines": true,
 			"effects.typingSparks": false,
 			"effects.bootSequence": false,
-			"effects.glitchOnSave": false
+			"effects.glitchOnSave": false,
+			"effects.neonGlow": false,
+			"effects.classicLayout": true
 		}
 	},
 	{
@@ -79,7 +87,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.crtScanlines": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": false,
-			"effects.glitchOnSave": false
+			"effects.glitchOnSave": false,
+			"effects.neonGlow": false,
+			"effects.classicLayout": false
 		}
 	},
 	{
@@ -94,7 +104,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.crtScanlines": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": false,
-			"effects.glitchOnSave": false
+			"effects.glitchOnSave": false,
+			"effects.neonGlow": false,
+			"effects.classicLayout": false
 		}
 	}
 ];

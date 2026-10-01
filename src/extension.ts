@@ -5,6 +5,7 @@ import { checkAfterStartup, disable, enable, type Services } from "./lifecycle";
 import { ManagedSettings } from "./managed";
 import { applyPreset, createStatusButton, showMenu } from "./menu";
 import { messages } from "./messages";
+import { PermissionDeniedError, permissionHelp } from "./permissions";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
 import { isPermissionError } from "./workbench";
@@ -80,10 +81,32 @@ async function reportErrors(task: () => Promise<void>): Promise<void> {
 		await task();
 	} catch (error) {
 		console.error("stylesmith:", error);
-		void vscode.window.showErrorMessage(
-			isPermissionError(error)
-				? messages.admin
-				: messages.somethingWrong + (error instanceof Error ? error.message : String(error))
-		);
+		if (error instanceof PermissionDeniedError) {
+			void showPermissionHelp(error.folder);
+		} else {
+			void vscode.window.showErrorMessage(
+				isPermissionError(error)
+					? messages.admin
+					: messages.somethingWrong +
+							(error instanceof Error ? error.message : String(error))
+			);
+		}
+	}
+}
+
+/** Explains how to let Stylesmith change VS Code's files, for this system and install. */
+async function showPermissionHelp(folder: string): Promise<void> {
+	const help = permissionHelp(process.platform, folder);
+	const steps = help.steps.map((step, i) => `${i + 1}. ${step}`);
+	const detail = [...steps, ...(help.command ? [help.command] : [])].join("\n\n");
+	const buttons = help.command ? [messages.copyCommand] : [];
+	const choice = await vscode.window.showErrorMessage(
+		help.summary,
+		{ modal: true, detail },
+		...buttons
+	);
+	if (choice === messages.copyCommand && help.command) {
+		await vscode.env.clipboard.writeText(help.command);
+		void vscode.window.showInformationMessage(messages.commandCopied);
 	}
 }
