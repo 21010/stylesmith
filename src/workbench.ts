@@ -141,14 +141,15 @@ export function isWorkbenchLocation(value: unknown): value is Workbench {
  * Puts the given font files in the font folder next to the workbench HTML file, replacing any
  * that were there. The workbench loads them from there, which VS Code's security policy allows.
  */
-export async function writeFonts(workbench: Workbench, files: readonly string[]): Promise<void> {
-	if (await hasFonts(workbench, files)) return; // already there, nothing to copy
+export async function writeFonts(workbench: Workbench, files: readonly string[]): Promise<boolean> {
+	if (await hasFonts(workbench, files)) return false; // already there, nothing to copy
 	await removeFonts(workbench);
 	const folder = path.join(workbench.dir, FONT_FOLDER);
 	await mkdir(folder);
 	for (const file of files) {
 		await copyFile(file, path.join(folder, path.basename(file)), constants.COPYFILE_EXCL);
 	}
+	return true;
 }
 
 /** Whether the font folder holds exactly these files, with the same content. */

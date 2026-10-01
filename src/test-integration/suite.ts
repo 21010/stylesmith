@@ -19,6 +19,26 @@ function sha256(text: string): string {
 	return `'sha256-${createHash("sha256").update(text, "utf8").digest("base64")}'`;
 }
 
+/**
+ * The contents of the inline script tags Stylesmith wrote. Stylesmith always writes them as
+ * exactly "<script>" and "</script>" (VS Code's own tags have attributes), so plain text search
+ * finds them reliably.
+ */
+function stylesmithScripts(html: string): string[] {
+	const scripts: string[] = [];
+	for (
+		let start = html.indexOf("<script>");
+		start >= 0;
+		start = html.indexOf("<script>", start)
+	) {
+		const end = html.indexOf("</script>", start);
+		assert.ok(end > start, "every script tag is closed");
+		scripts.push(html.slice(start + "<script>".length, end));
+		start = end;
+	}
+	return scripts;
+}
+
 /** The policy VS Code enforces: the one outside Stylesmith's backup comment. */
 function activePolicy(html: string): string {
 	const active = html.replace(/<!-- !! STYLESMITH-CSP [\s\S]*? !! -->/g, "");
@@ -63,7 +83,7 @@ export async function run(): Promise<void> {
 		assert.ok(scriptSrc, "script-src is kept");
 		assert.doesNotMatch(scriptSrc, /unsafe-inline/);
 
-		const scripts = [...patched.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+		const scripts = stylesmithScripts(patched);
 		assert.ok(scripts.length > 0, "built-in effects were added");
 		for (const script of scripts) {
 			assert.ok(
