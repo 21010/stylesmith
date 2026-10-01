@@ -24,8 +24,10 @@ import {
 	isPermissionError,
 	locateWorkbench,
 	readPristine,
+	removeFonts,
 	removeLegacyBackups,
 	writeFileAtomic,
+	writeFonts,
 	type Workbench
 } from "./workbench";
 
@@ -45,6 +47,8 @@ const FONT_STATE = "stylesmith.fontSettings";
 const ENABLED_STATE = "stylesmith.enabled";
 // VS Code settings that effects turned on, remembered so they can be put back.
 const EFFECT_SETTINGS_STATE = "stylesmith.effectSettings";
+// When the re-apply question was last asked, so several open windows ask only once.
+const REAPPLY_ASKED_STATE = "stylesmith.reapplyAskedAt";
 
 export function activate(context: vscode.ExtensionContext): void {
 	// Every command that rewrites VS Code's file runs one at a time.
@@ -118,6 +122,9 @@ async function checkAfterStartup(
 
 	if (patched || !context.globalState.get<boolean>(ENABLED_STATE)) return;
 	if (!userSetting("remindAfterUpdate", true)) return;
+	const asked = context.globalState.get<number>(REAPPLY_ASKED_STATE) ?? 0;
+	if (Date.now() - asked < 60_000) return;
+	await context.globalState.update(REAPPLY_ASKED_STATE, Date.now());
 	const choice = await vscode.window.showInformationMessage(
 		messages.reapply,
 		messages.reapplyNow,
@@ -147,9 +154,8 @@ async function enable(context: vscode.ExtensionContext): Promise<boolean> {
 
 	const current = await readFile(workbench.htmlPath, "utf-8");
 	const loadOptions = { allowRemote: userSetting("allowRemoteImports", false) };
-	const [pristine, fontSnippets, effectSnippets, importSnippets] = await Promise.all([
+	const [pristine, effectSnippets, importSnippets] = await Promise.all([
 		readPristine(workbench, current),
-		readFont(context, font),
 		readAssets(context, effects),
 		loadImports(imports, getVariables(), loadOptions, (entry, error) => {
 			console.error(`stylesmith: cannot load ${entry}`, error);
@@ -158,7 +164,20 @@ async function enable(context: vscode.ExtensionContext): Promise<boolean> {
 	]);
 
 	// Built-in fonts and effects come first so that the user's own files can override them.
-	const patched = patch(pristine, [...fontSnippets, ...effectSnippets, ...importSnippets]);
+	const head = [...fontSnippets(font), ...effectSnippets, ...importSnippets];
+	const patched = patch(pristine, head, [], {
+		allowRemote: loadOptions.allowRemote,
+		userScripts: importSnippets.some(snippet => snippet.kind === "js")
+	});
+	// The font files go next to the HTML file first, so they're there when it refers to them.
+	if (font) {
+		await writeFonts(
+			workbench,
+			font.files.map(({ file }) => context.asAbsolutePath(file))
+		);
+	} else {
+		await removeFonts(workbench);
+	}
 	if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
 	await removeLegacyBackups(workbench);
 	await (font ? applyFontSettings(context, font) : restoreFontSettings(context));
@@ -175,6 +194,7 @@ async function disable(context: vscode.ExtensionContext): Promise<void> {
 	const current = await readFile(workbench.htmlPath, "utf-8");
 	const pristine = await readPristine(workbench, current);
 	if (pristine !== current) await writeFileAtomic(workbench.htmlPath, pristine);
+	await removeFonts(workbench);
 	await removeLegacyBackups(workbench);
 	await restoreFontSettings(context);
 	await updateEffectSettings(context, []);
@@ -314,7 +334,8 @@ function getImports(): readonly unknown[] {
 
 function getVariables(): Variables {
 	return {
-		cwd: process.cwd(),
+		// Like the workspace folder, the working folder may be an untrusted project.
+		cwd: vscode.workspace.isTrusted ? process.cwd() : undefined,
 		userHome: os.homedir(),
 		// Files from an untrusted workspace must never be injected.
 		workspaceFolder: vscode.workspace.isTrusted
@@ -343,25 +364,16 @@ function readAssets(
 	);
 }
 
-/** The font's files as `@font-face` rules, plus a script that starts loading them early. */
-async function readFont(
-	context: vscode.ExtensionContext,
-	font: NerdFont | undefined
-): Promise<Snippet[]> {
+/** The font's `@font-face` rules, plus a script that starts loading the font early. */
+function fontSnippets(font: NerdFont | undefined): Snippet[] {
 	if (!font) return [];
-	const faces = await Promise.all(
-		font.files.map(async ({ file, weight }) => ({
-			weight,
-			data: await readFile(context.asAbsolutePath(file))
-		}))
-	);
 	return [
-		{ kind: "css", source: fontFaceCss(font.family, faces) },
+		{ kind: "css", source: fontFaceCss(font) },
 		{
 			kind: "js",
 			source: preloadScript(
 				font.family,
-				faces.map(face => face.weight)
+				font.files.map(face => face.weight)
 			)
 		}
 	];

@@ -143,12 +143,18 @@ describe("import security", () => {
 		assert.match(await loadError("https://example.com/a.css"), /allowRemoteImports/);
 	});
 
-	it("refuses ${workspaceFolder} in an untrusted workspace", async () => {
-		const untrusted = { ...VARS, workspaceFolder: undefined };
-		assert.match(
-			await loadError("file://${workspaceFolder}/a.css", undefined, untrusted),
-			/trusted workspace/
-		);
+	it("refuses ${workspaceFolder} and ${cwd} in an untrusted workspace", async () => {
+		const untrusted = { ...VARS, workspaceFolder: undefined, cwd: undefined };
+		for (const variable of ["${workspaceFolder}", "${cwd}"]) {
+			assert.match(
+				await loadError(`file://${variable}/a.css`, undefined, untrusted),
+				/trusted workspace/
+			);
+		}
+	});
+
+	it("refuses network paths in file:// imports", async () => {
+		assert.match(await loadError("file://server/share/a.css"), /network paths/);
 	});
 
 	it("refuses files over the size limit", async () => {

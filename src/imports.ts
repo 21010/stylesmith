@@ -4,7 +4,11 @@ import { fileURLToPath } from "node:url";
 import type { ImportKind, Snippet } from "./patch";
 
 export interface Variables {
-	cwd: string;
+	/**
+	 * Undefined when the workspace isn't trusted: the working folder can be the folder VS Code
+	 * was started from, which may be an untrusted project.
+	 */
+	cwd: string | undefined;
 	userHome: string;
 	/** Undefined when the workspace isn't trusted, so its files can't be injected. */
 	workspaceFolder: string | undefined;
@@ -44,14 +48,11 @@ function lookupVariable(key: string, vars: Variables): string | undefined {
 	}
 	switch (key) {
 		case "cwd":
-			return vars.cwd;
+			return trusted("cwd", vars.cwd);
 		case "userHome":
 			return vars.userHome;
 		case "workspaceFolder":
-			if (vars.workspaceFolder === undefined) {
-				throw new Error("${workspaceFolder} can only be used in a trusted workspace");
-			}
-			return vars.workspaceFolder;
+			return trusted("workspaceFolder", vars.workspaceFolder);
 		case "execPath":
 			return vars.execPath;
 		case "pathSeparator":
@@ -60,6 +61,13 @@ function lookupVariable(key: string, vars: Variables): string | undefined {
 		default:
 			return undefined;
 	}
+}
+
+function trusted(name: string, value: string | undefined): string {
+	if (value === undefined) {
+		throw new Error("${" + name + "} can only be used in a trusted workspace");
+	}
+	return value;
 }
 
 export function importKind(url: URL): ImportKind {
@@ -73,6 +81,11 @@ export async function fetchImport(url: URL, options: LoadOptions): Promise<strin
 	const maxBytes = options.maxBytes ?? DEFAULT_MAX_BYTES;
 	switch (url.protocol) {
 		case "file:":
+			// Only files on this computer. A network path (file://server/share/...) would make the
+			// system connect to another machine and could send it your login credentials.
+			if (url.hostname !== "" && url.hostname !== "localhost") {
+				throw new Error("network paths are not allowed; use a file on this computer");
+			}
 			return readFileLimited(fileURLToPath(url), maxBytes);
 		case "https:": {
 			if (!options.allowRemote) {

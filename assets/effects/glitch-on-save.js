@@ -4,13 +4,14 @@
 // jitter, about 180 ms. A save is noticed when an editor tab stops being "dirty" (unsaved),
 // so saving from the keyboard, the menu or auto-save all count.
 //
-// Nothing runs between saves; the script only reacts to VS Code changing a tab's class.
+// Nothing runs between saves; the script only watches class changes in the editor area.
 (function () {
 	"use strict";
 
 	const DURATION = 180; // ms
 	const MIN_GAP = 400; // ms between glitches, so auto-save can't make it flicker
 	const CLASS = "stylesmith-glitch";
+	const EDITOR_AREA = ".monaco-workbench .part.editor";
 
 	const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 	let lastGlitch = 0;
@@ -47,6 +48,24 @@
 		style.textContent = STYLE;
 		document.head.appendChild(style);
 
+		// Tabs only exist in the editor area, so watch only that, not the whole page. VS Code
+		// builds it after this script runs: look for it as the page is built, then stop looking.
+		const area = document.querySelector(EDITOR_AREA);
+		if (area) {
+			watch(area);
+			return;
+		}
+		const finder = new MutationObserver(() => {
+			const found = document.querySelector(EDITOR_AREA);
+			if (found) {
+				finder.disconnect();
+				watch(found);
+			}
+		});
+		finder.observe(document.body, { childList: true, subtree: true });
+	}
+
+	function watch(area) {
 		new MutationObserver(mutations => {
 			for (const m of mutations) {
 				const tab = m.target;
@@ -60,7 +79,7 @@
 					return;
 				}
 			}
-		}).observe(document.body, {
+		}).observe(area, {
 			subtree: true,
 			attributes: true,
 			attributeFilter: ["class"],

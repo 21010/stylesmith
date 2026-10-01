@@ -22,10 +22,10 @@ Only the latest release gets security fixes.
 
 These are the protections Stylesmith is built to keep, so a way around any of them counts as a security problem:
 
-- **Only your scripts run.** VS Code's Content-Security-Policy stays on. Stylesmith allows exactly the scripts it adds, by their SHA-256 hash, and nothing else.
+- **Only your scripts run.** VS Code's Content-Security-Policy stays on. Stylesmith allows exactly the scripts it adds, by their SHA-256 hash, and nothing else. It loosens the policy only as far as your settings need: web stylesheets and fonts only with remote imports on, and its Trusted Types policy name only when you add your own scripts.
 - **Only you choose what's added.** Stylesmith reads its settings from your user settings only. A project you open can't add code through its workspace settings.
-- **Untrusted projects can't add code.** `${workspaceFolder}` imports are skipped in workspaces you haven't trusted.
-- **Remote code is off by default.** `https://` imports need `stylesmith.allowRemoteImports`. `http://` is never allowed, and a redirect to `http://` is refused.
+- **Untrusted projects can't add code.** `${workspaceFolder}` and `${cwd}` imports are skipped in workspaces you haven't trusted.
+- **Remote code is off by default.** `https://` imports need `stylesmith.allowRemoteImports`. `http://` is never allowed, and a redirect to `http://` is refused. `file://` imports must be on this computer: network paths are refused.
 - **Changes can always be undone.** Stylesmith only writes a change it has checked it can revert, and it writes through a temporary file so a failed write can't damage VS Code.
 
 ## What is out of scope

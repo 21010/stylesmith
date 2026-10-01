@@ -1,6 +1,17 @@
 import { constants, existsSync } from "node:fs";
-import { copyFile, open, readdir, readFile, rename, rm, unlink, writeFile } from "node:fs/promises";
+import {
+	copyFile,
+	mkdir,
+	open,
+	readdir,
+	readFile,
+	rename,
+	rm,
+	unlink,
+	writeFile
+} from "node:fs/promises";
 import * as path from "node:path";
+import { FONT_FOLDER } from "./fonts";
 import { getLegacySessionId, PATCH_MARKER, unpatch } from "./patch";
 
 export interface Workbench {
@@ -97,6 +108,24 @@ export function isPermissionError(error: unknown): boolean {
 
 function errorCode(error: unknown): string | undefined {
 	return (error as NodeJS.ErrnoException | undefined)?.code;
+}
+
+/**
+ * Puts the given font files in the font folder next to the workbench HTML file, replacing any
+ * that were there. The workbench loads them from there, which VS Code's security policy allows.
+ */
+export async function writeFonts(workbench: Workbench, files: readonly string[]): Promise<void> {
+	await removeFonts(workbench);
+	const folder = path.join(workbench.dir, FONT_FOLDER);
+	await mkdir(folder);
+	for (const file of files) {
+		await copyFile(file, path.join(folder, path.basename(file)), constants.COPYFILE_EXCL);
+	}
+}
+
+/** Removes the font folder next to the workbench HTML file, if there is one. */
+export async function removeFonts(workbench: Workbench): Promise<void> {
+	await rm(path.join(workbench.dir, FONT_FOLDER), { recursive: true, force: true });
 }
 
 /**

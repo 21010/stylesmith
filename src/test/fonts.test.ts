@@ -65,18 +65,18 @@ describe("bundled fonts", () => {
 });
 
 describe("fontFaceCss", () => {
-	it("embeds each weight as a WOFF2 data URL", () => {
-		const css = fontFaceCss(JB, [
-			{ weight: 400, data: Buffer.from("regular") },
-			{ weight: 700, data: Buffer.from("bold") }
-		]);
+	it("loads each weight from the font folder next to the workbench", () => {
+		const css = fontFaceCss(findFont("JetBrainsMono"));
 		assert.match(css, /font-family: "JetBrainsMono Nerd Font Mono"/);
 		assert.match(
 			css,
-			/url\(data:font\/woff2;base64,cmVndWxhcg==\) format\("woff2"\); font-weight: 400/
+			/url\("stylesmith-fonts\/JetBrainsMonoNerdFontMono-Regular\.woff2"\) format\("woff2"\); font-weight: 400/
 		);
-		assert.match(css, /font-weight: 700/);
-		assert.doesNotMatch(css, /<\/style/i);
+		assert.match(
+			css,
+			/JetBrainsMonoNerdFontMono-Bold\.woff2"\) format\("woff2"\); font-weight: 700/
+		);
+		assert.doesNotMatch(css, /data:|<\/style/i);
 	});
 });
 

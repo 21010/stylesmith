@@ -5,10 +5,12 @@ import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import {
 	isPatched,
+	removeFonts,
 	locateWorkbench,
 	readPristine,
 	removeLegacyBackups,
-	writeFileAtomic
+	writeFileAtomic,
+	writeFonts
 } from "../workbench";
 
 let root: string;
@@ -64,6 +66,30 @@ describe("removeLegacyBackups", () => {
 		await writeFile(path.join(root, "workbench.html"), "");
 		await removeLegacyBackups({ dir: root, htmlPath: "" });
 		assert.deepEqual(await readdir(root), ["workbench.html"]);
+	});
+});
+
+describe("font folder", () => {
+	it("holds exactly the selected font's files, and is removed on disable", async () => {
+		const dir = path.join(root, "wb");
+		await mkdir(dir);
+		const workbench = { dir, htmlPath: path.join(dir, "workbench.html") };
+		const source = path.join(root, "src");
+		await mkdir(source);
+		for (const name of ["A-Regular.woff2", "A-Bold.woff2", "B-Regular.woff2"]) {
+			await writeFile(path.join(source, name), name);
+		}
+
+		await writeFonts(workbench, [
+			path.join(source, "A-Regular.woff2"),
+			path.join(source, "A-Bold.woff2")
+		]);
+		await writeFonts(workbench, [path.join(source, "B-Regular.woff2")]);
+		assert.deepEqual(await readdir(path.join(dir, "stylesmith-fonts")), ["B-Regular.woff2"]);
+
+		await removeFonts(workbench);
+		assert.deepEqual(await readdir(dir), []);
+		await removeFonts(workbench); // removing again is fine
 	});
 });
 

@@ -1,7 +1,12 @@
 /**
- * Nerd Fonts bundled with Stylesmith. They're added to VS Code's page as web fonts (so nothing
- * is installed on the system), and the editor and terminal font settings put them first.
+ * Nerd Fonts bundled with Stylesmith. The selected font's files are copied next to VS Code's
+ * workbench HTML file and loaded from there as web fonts (so nothing is installed on the
+ * system, and the HTML file stays small), and the editor and terminal font settings put them
+ * first.
  */
+
+/** Folder next to the workbench HTML file that holds the selected font's files. */
+export const FONT_FOLDER = "stylesmith-fonts";
 
 export interface NerdFont {
 	/** Value of the `stylesmith.fonts.family` setting. */
@@ -53,18 +58,20 @@ export function findFont(id: string): NerdFont {
 }
 
 /** `@font-face` rules that embed the font files, so no file or network access is needed. */
-export function fontFaceCss(
-	family: string,
-	faces: readonly { weight: number; data: Uint8Array }[]
-): string {
-	return faces
+export function fontFaceCss(font: NerdFont): string {
+	return font.files
 		.map(
-			({ weight, data }) =>
-				`@font-face { font-family: ${JSON.stringify(family)}; ` +
-				`src: url(data:font/woff2;base64,${Buffer.from(data).toString("base64")}) format("woff2"); ` +
+			({ file, weight }) =>
+				`@font-face { font-family: ${JSON.stringify(font.family)}; ` +
+				`src: url("${FONT_FOLDER}/${fontFileName(file)}") format("woff2"); ` +
 				`font-weight: ${weight}; font-style: normal; font-display: block; }`
 		)
 		.join("\n");
+}
+
+/** The name a font file gets in the font folder. */
+export function fontFileName(file: string): string {
+	return file.slice(file.lastIndexOf("/") + 1);
 }
 
 /**

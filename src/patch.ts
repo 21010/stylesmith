@@ -5,7 +5,7 @@
  * is kept in a comment next to the extended one, so `unpatch` restores the file byte for byte.
  */
 
-import { extendPolicy, scriptHash } from "./csp";
+import { extendPolicy, scriptHash, type PolicyOptions } from "./csp";
 
 export type ImportKind = "css" | "js";
 
@@ -50,7 +50,8 @@ export interface Snippet {
 export function patch(
 	pristine: string,
 	head: readonly Snippet[],
-	body: readonly Snippet[] = []
+	body: readonly Snippet[] = [],
+	options?: PolicyOptions
 ): string {
 	const headTags = head.map(toTag);
 	const bodyTags = body.map(toTag);
@@ -66,7 +67,7 @@ export function patch(
 		if (content === undefined || meta.includes("-->")) {
 			throw new Error("Cannot read VS Code's Content-Security-Policy");
 		}
-		const policy = extendPolicy(content, hashes);
+		const policy = extendPolicy(content, hashes, options);
 		if (/["<>]/.test(policy)) throw new Error("Unexpected Content-Security-Policy content");
 		return `${CSP_START}${meta}${CSP_END}${CSP_META_START}${policy}">`;
 	});

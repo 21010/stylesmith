@@ -5,15 +5,23 @@ import { createHash } from "node:crypto";
  *
  * - `script-src` gets the SHA-256 hash of each script Stylesmith adds, so exactly those
  *   scripts can run, and no other inline or injected script can.
- * - `style-src` and `font-src` allow `https:` (and `data:` fonts), so custom CSS can use
- *   web fonts and remote stylesheets. Neither can run code.
- * - `trusted-types` allows one extra policy name, for user scripts that need to set HTML.
+ * - `font-src` allows `data:` fonts, which can't load anything.
+ * - Only with remote imports turned on: `style-src` and `font-src` allow `https:`, so
+ *   custom CSS can use web fonts and remote stylesheets.
+ * - Only when the user adds their own scripts: `trusted-types` allows one extra policy name,
+ *   for scripts that need to set HTML.
  */
 
 export const TRUSTED_TYPES_POLICY = "stylesmith";
 
-const STYLE_SOURCES = ["https:"];
-const FONT_SOURCES = ["https:", "data:"];
+export interface PolicyOptions {
+	/** Whether remote imports are on; only then are https: styles and fonts allowed. */
+	allowRemote: boolean;
+	/** Whether the user's own scripts are added; only then is the Trusted Types name allowed. */
+	userScripts: boolean;
+}
+
+const STRICT: PolicyOptions = { allowRemote: false, userScripts: false };
 
 /** The CSP source expression that allows an inline script with this exact content. */
 export function scriptHash(source: string): string {
@@ -21,7 +29,11 @@ export function scriptHash(source: string): string {
 }
 
 /** Returns `policy` with Stylesmith's additions. Everything else is kept as it was. */
-export function extendPolicy(policy: string, scriptHashes: readonly string[]): string {
+export function extendPolicy(
+	policy: string,
+	scriptHashes: readonly string[],
+	options: PolicyOptions = STRICT
+): string {
 	const directives = policy
 		.split(";")
 		.map(directive => directive.trim().split(/\s+/).filter(Boolean))
@@ -46,11 +58,11 @@ export function extendPolicy(policy: string, scriptHashes: readonly string[]): s
 	};
 
 	addSources("script-src", scriptHashes);
-	addSources("style-src", STYLE_SOURCES);
-	addSources("font-src", FONT_SOURCES);
+	addSources("style-src", options.allowRemote ? ["https:"] : []);
+	addSources("font-src", options.allowRemote ? ["https:", "data:"] : ["data:"]);
 
 	const trustedTypes = find("trusted-types");
-	if (trustedTypes && !trustedTypes.includes(TRUSTED_TYPES_POLICY)) {
+	if (options.userScripts && trustedTypes && !trustedTypes.includes(TRUSTED_TYPES_POLICY)) {
 		trustedTypes.push(TRUSTED_TYPES_POLICY);
 	}
 

@@ -50,20 +50,31 @@ describe("patch", () => {
 		assert.ok(policy.includes(sha256('x = "<\\/script>"')));
 	});
 
-	it("allows web fonts and remote stylesheets but nothing else new", () => {
+	it("adds only data: fonts by default", () => {
 		const policy = activePolicy(patch(WORKBENCH, [css("a{}")]));
+		assert.equal(directive(policy, "style-src"), undefined);
+		assert.equal(directive(policy, "font-src"), "font-src data:");
+		assert.doesNotMatch(policy, /https:/);
+	});
+
+	it("allows web fonts and remote stylesheets only with remote imports on", () => {
+		const options = { allowRemote: true, userScripts: false };
+		const policy = activePolicy(patch(WORKBENCH, [css("a{}")], [], options));
 		// Missing directives inherit default-src 'none', which is dropped once sources are added.
 		assert.equal(directive(policy, "style-src"), "style-src https:");
 		assert.equal(directive(policy, "font-src"), "font-src https: data:");
 		assert.equal(directive(policy, "script-src"), "script-src 'self' 'unsafe-eval'");
 	});
 
-	it("allows the stylesmith Trusted Types policy name", () => {
+	it("allows the stylesmith Trusted Types policy name only for the user's own scripts", () => {
 		const withList = WORKBENCH.replace(
 			"require-trusted-types-for 'script';",
 			"$& trusted-types amdLoader;"
 		);
-		const policy = activePolicy(patch(withList, []));
+		const strict = activePolicy(patch(withList, []));
+		assert.equal(directive(strict, "trusted-types"), "trusted-types amdLoader");
+		const options = { allowRemote: false, userScripts: true };
+		const policy = activePolicy(patch(withList, [], [], options));
 		assert.equal(directive(policy, "trusted-types"), "trusted-types amdLoader stylesmith");
 	});
 

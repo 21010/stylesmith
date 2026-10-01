@@ -69,7 +69,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.7.0.vsix
+code --install-extension stylesmith-1.8.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -218,7 +218,7 @@ Stylesmith comes with four [Nerd Fonts](https://www.nerdfonts.com/): programming
 
 How it works:
 
-- **Nothing is installed on your system.** The font is built into Stylesmith and added to VS Code's window, the same way as the effects.
+- **Nothing is installed on your system.** The font is built into Stylesmith. On **Stylesmith: Enable**, the selected font's files are copied into a `stylesmith-fonts` folder next to VS Code's main HTML file and loaded from there. **Stylesmith: Disable** removes the folder again.
 - **Your fonts are kept.** Stylesmith puts the Nerd Font first in `editor.fontFamily` and `terminal.integrated.fontFamily` and keeps your current fonts after it, so if anything goes wrong, VS Code simply uses your old font. If your terminal font is empty, it already follows the editor font and is left alone.
 - **You can always go back.** **Stylesmith: Disable** puts your font settings back exactly as they were. If you changed a font setting yourself in the meantime, your change is kept.
 
@@ -321,7 +321,7 @@ You can use these in `file://` links:
 | ---------------------------- | ---------------------------------------------------- |
 | `${userHome}`                | Your home folder                                     |
 | `${workspaceFolder}`         | The first folder open in VS Code (trusted workspaces only) |
-| `${cwd}`                     | The current working folder                           |
+| `${cwd}`                     | The current working folder (trusted workspaces only) |
 | `${execPath}`                | The path to the VS Code program                      |
 | `${pathSeparator}` or `${/}` | `\` on Windows, `/` everywhere else                  |
 | `${env:NAME}`                | The environment variable `NAME`, or nothing if unset |
@@ -367,9 +367,10 @@ Stylesmith keeps VS Code's Content-Security-Policy and adds only this:
 | Rule          | What's added           | Why                                                     |
 | ------------- | ---------------------- | ------------------------------------------------------- |
 | `script-src`  | a hash of each script  | Lets exactly Stylesmith's scripts run, and nothing else |
-| `style-src`   | `https:`               | Lets your CSS load stylesheets from the web             |
-| `font-src`    | `https:` and `data:`   | Lets your CSS use web fonts                             |
-| `trusted-types` | `stylesmith`         | Lets your scripts create HTML in an approved way (see below) |
+| `font-src`    | `data:`                | Lets your CSS use fonts embedded in the CSS itself      |
+| `style-src`   | `https:`, only with `stylesmith.allowRemoteImports` | Lets your CSS load stylesheets from the web |
+| `font-src`    | `https:`, only with `stylesmith.allowRemoteImports` | Lets your CSS use web fonts            |
+| `trusted-types` | `stylesmith`, only when you add your own `.js` files | Lets your scripts create HTML in an approved way (see below) |
 
 Everything else stays exactly as VS Code set it. **Stylesmith: Disable** puts the original policy back.
 
@@ -384,7 +385,7 @@ element.innerHTML = policy.createHTML("<b>Hello</b>");
 
 A policy name can only be used once, so if you have several scripts, create the policy in one of them and share it.
 
-Scripts can't load other scripts from the web. CSS can load images, fonts and stylesheets over `https://`.
+Scripts can't load other scripts from the web. CSS can load images over `https://`, as VS Code itself allows. Fonts and stylesheets from the web need `stylesmith.allowRemoteImports`.
 
 ### Automatic checks
 

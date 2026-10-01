@@ -189,21 +189,57 @@
 			: style.color;
 	}
 
+	// The canvas only covers the cursors and their trail, not the whole window, so it stays
+	// small: a full-window canvas would take tens of megabytes on a 4K screen.
+	const PADDING = GLOW_BLUR * 2 + 2; // room for the glow around the shape
+	const GRID = 64; // canvas sizes snap to this, so it isn't resized on every frame
+	let area = { x: 0, y: 0, width: 0, height: 0 };
+
 	function setUpCanvas() {
 		canvas = document.createElement("canvas");
 		canvas.setAttribute("aria-hidden", "true");
-		canvas.style.cssText =
-			"position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999";
+		canvas.width = 0;
+		canvas.height = 0;
+		canvas.style.cssText = "position:fixed;left:0;top:0;pointer-events:none;z-index:9999";
 		document.body.appendChild(canvas);
 		ctx = canvas.getContext("2d");
-		resizeCanvas();
 	}
 
-	function resizeCanvas() {
+	// Moves and sizes the canvas to cover the visible trails, then clears it.
+	function fitCanvas() {
+		let left = Infinity,
+			top = Infinity,
+			right = -Infinity,
+			bottom = -Infinity;
+		for (const trail of trails.values()) {
+			if (!trail.visible) continue;
+			for (const corner of trail.corners) {
+				left = Math.min(left, corner.x);
+				top = Math.min(top, corner.y);
+				right = Math.max(right, corner.x);
+				bottom = Math.max(bottom, corner.y);
+			}
+		}
 		const ratio = window.devicePixelRatio || 1;
-		canvas.width = Math.round(window.innerWidth * ratio);
-		canvas.height = Math.round(window.innerHeight * ratio);
-		ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+		const next =
+			left === Infinity
+				? { x: 0, y: 0, width: 0, height: 0 }
+				: {
+						x: Math.floor(left - PADDING),
+						y: Math.floor(top - PADDING),
+						width: Math.ceil((right - left + PADDING * 2) / GRID) * GRID,
+						height: Math.ceil((bottom - top + PADDING * 2) / GRID) * GRID
+					};
+		if (next.width !== area.width || next.height !== area.height) {
+			canvas.width = Math.round(next.width * ratio);
+			canvas.height = Math.round(next.height * ratio);
+			canvas.style.width = next.width + "px";
+			canvas.style.height = next.height + "px";
+		}
+		canvas.style.transform = `translate(${next.x}px, ${next.y}px)`;
+		area = next;
+		ctx.setTransform(ratio, 0, 0, ratio, -next.x * ratio, -next.y * ratio);
+		ctx.clearRect(next.x, next.y, next.width, next.height);
 	}
 
 	// Looks at every cursor once. Returns true if anything needs to be redrawn.
@@ -279,7 +315,7 @@
 			if (trail.step(dt)) moving = true;
 		}
 
-		ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+		fitCanvas();
 		for (const trail of trails.values()) {
 			if (trail.visible) trail.draw();
 		}
@@ -293,18 +329,62 @@
 		scrollingUntil = performance.now() + SCROLL_PAUSE;
 	}
 
+	// Watch only the editors' cursor layers, not the whole page: VS Code changes the rest of
+	// the page all the time (lists, hovers, status bar), and none of that moves a cursor.
+	const watchedLayers = new WeakSet();
+	const watchedEditors = new WeakSet();
+	const layerObserver = new MutationObserver(schedule);
+	// An editor that changes size or moves (side bar toggled, panel resized) moves its cursor
+	// without touching the cursor's own element.
+	const editorObserver = new ResizeObserver(schedule);
+
+	function watchEditors() {
+		let found = false;
+		for (const layer of document.querySelectorAll(".monaco-editor .cursors-layer")) {
+			found = true;
+			if (watchedLayers.has(layer)) continue;
+			watchedLayers.add(layer);
+			layerObserver.observe(layer, {
+				subtree: true,
+				childList: true,
+				attributes: true,
+				attributeFilter: ["style", "class"]
+			});
+			const editor = layer.closest(".monaco-editor");
+			if (editor && !watchedEditors.has(editor)) {
+				watchedEditors.add(editor);
+				editorObserver.observe(editor);
+			}
+		}
+		return found;
+	}
+
 	function start() {
 		setUpCanvas();
 
-		new MutationObserver(schedule).observe(document.body, {
-			subtree: true,
-			childList: true,
-			attributes: true,
-			attributeFilter: ["style", "class"]
-		});
+		// VS Code builds its editors after this script runs. Look for them as the page is built,
+		// and stop looking once the first one exists.
+		if (!watchEditors()) {
+			const finder = new MutationObserver(() => {
+				if (watchEditors()) {
+					finder.disconnect();
+					schedule();
+				}
+			});
+			finder.observe(document.body, { childList: true, subtree: true });
+		}
+		// Later editors (new tabs, splits, the settings editor) are picked up when they get focus.
+		document.addEventListener(
+			"focusin",
+			() => {
+				watchEditors();
+				schedule();
+			},
+			true
+		);
 
 		window.addEventListener("resize", () => {
-			resizeCanvas();
+			area = { x: 0, y: 0, width: 0, height: 0 }; // the screen scale may have changed
 			for (const [element, trail] of trails) {
 				trail.snapTo(element.getBoundingClientRect());
 			}

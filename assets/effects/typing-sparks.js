@@ -37,7 +37,14 @@
 			"position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9998";
 		document.body.appendChild(canvas);
 		ctx = canvas.getContext("2d");
-		resizeCanvas();
+		releaseCanvas();
+	}
+
+	// Without sparks the canvas has no size, so it takes no memory. A full-window canvas
+	// would take tens of megabytes on a 4K screen.
+	function releaseCanvas() {
+		canvas.width = 0;
+		canvas.height = 0;
 	}
 
 	function resizeCanvas() {
@@ -47,13 +54,21 @@
 		ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 	}
 
+	// Colors are read at most once a second, not on every keystroke.
+	let colorCache = null;
+	let colorCacheTime = 0;
+
 	function sparkColors() {
+		const now = performance.now();
+		if (colorCache && now - colorCacheTime < 1000) return colorCache;
+		colorCacheTime = now;
 		const custom = getComputedStyle(document.documentElement)
 			.getPropertyValue("--stylesmith-spark-colors")
 			.split(",")
 			.map(color => color.trim())
 			.filter(Boolean);
-		return custom.length > 0 ? custom : DEFAULT_COLORS;
+		colorCache = custom.length > 0 ? custom : DEFAULT_COLORS;
+		return colorCache;
 	}
 
 	function isTypingKey(event) {
@@ -82,6 +97,7 @@
 			});
 		}
 		if (sparks.length > MAX_SPARKS) sparks.splice(0, sparks.length - MAX_SPARKS);
+		if (canvas.width === 0) resizeCanvas();
 		schedule();
 	}
 
@@ -120,13 +136,19 @@
 		ctx.globalAlpha = 1;
 
 		// When the last spark is gone the canvas is left empty and nothing runs.
-		if (alive > 0) schedule();
-		else lastFrameTime = null;
+		if (alive > 0) {
+			schedule();
+		} else {
+			lastFrameTime = null;
+			releaseCanvas();
+		}
 	}
 
 	function start() {
 		setUpCanvas();
-		window.addEventListener("resize", resizeCanvas);
+		window.addEventListener("resize", () => {
+			if (canvas.width > 0) resizeCanvas();
+		});
 
 		document.addEventListener(
 			"keydown",
