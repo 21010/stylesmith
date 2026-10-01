@@ -6,6 +6,7 @@ import * as path from "node:path";
 import { after, before, describe, it } from "node:test";
 import { pathToFileURL } from "node:url";
 import {
+	fetchImport,
 	importKind,
 	loadImports,
 	resolveVariables,
@@ -192,5 +193,86 @@ describe("import security", () => {
 	it("refuses files over the size limit", async () => {
 		const big = pathToFileURL(path.join(dir, "big.css")).href;
 		assert.match(await loadError(big, { allowRemote: false, maxBytes: 1024 }), /larger/);
+	});
+});
+
+describe("remote imports (https)", () => {
+	const realFetch = globalThis.fetch;
+	const remote = { allowRemote: true, maxBytes: 1024 };
+	let requests: { url: string; signal?: AbortSignal | null }[];
+
+	/** Makes fetch answer with `body`, as if it came from `finalUrl` (after any redirects). */
+	function serve(
+		body: ConstructorParameters<typeof Response>[0],
+		init: ResponseInit = {},
+		finalUrl?: string
+	): void {
+		globalThis.fetch = async (input, options) => {
+			const url = String(input);
+			requests.push({ url, signal: options?.signal });
+			const response = new Response(body, init);
+			Object.defineProperty(response, "url", { value: finalUrl ?? url });
+			return response;
+		};
+	}
+
+	before(() => (requests = []));
+	after(() => (globalThis.fetch = realFetch));
+
+	it("loads an https import when remote imports are allowed, with a timeout", async () => {
+		serve("a{color:red}");
+		const text = await fetchImport(new URL("https://example.com/a.css"), remote);
+		assert.equal(text, "a{color:red}");
+		assert.ok(requests.at(-1)?.signal, "the request can time out");
+	});
+
+	it("refuses a redirect to plain http", async () => {
+		serve("a{}", {}, "http://evil.example/a.css");
+		await assert.rejects(
+			fetchImport(new URL("https://example.com/a.css"), remote),
+			/insecure URL/
+		);
+	});
+
+	it("reports an HTTP error status", async () => {
+		serve("missing", { status: 404, statusText: "Not Found" });
+		await assert.rejects(fetchImport(new URL("https://example.com/a.css"), remote), /404/);
+	});
+
+	it("refuses a file that says it's too large, before reading it", async () => {
+		serve("small", { headers: { "content-length": "999999" } });
+		await assert.rejects(fetchImport(new URL("https://example.com/a.css"), remote), /larger/);
+	});
+
+	it("stops reading a stream that grows too large, even without a size", async () => {
+		let pulled = 0;
+		const endless = new ReadableStream<Uint8Array>({
+			pull(controller) {
+				pulled++;
+				controller.enqueue(new Uint8Array(512));
+			}
+		});
+		serve(endless);
+		await assert.rejects(fetchImport(new URL("https://example.com/a.css"), remote), /larger/);
+		assert.ok(pulled < 10, `stopped early (read ${pulled} chunks)`);
+	});
+
+	it("accepts a file of exactly the size limit", async () => {
+		serve("x".repeat(1024));
+		assert.equal(
+			(await fetchImport(new URL("https://example.com/a.css"), remote)).length,
+			1024
+		);
+	});
+
+	it("checks a sha256 pin on remote files too", async () => {
+		serve("a{}");
+		const errors: string[] = [];
+		const pinned = `https://example.com/a.css#sha256-${createHash("sha256").update("other").digest("base64")}`;
+		const snippets = await loadImports([pinned], VARS, remote, (_entry, error) =>
+			errors.push(error.message)
+		);
+		assert.deepEqual(snippets, []);
+		assert.equal(errors.length, 1);
 	});
 });

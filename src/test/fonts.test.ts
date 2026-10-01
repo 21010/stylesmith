@@ -7,8 +7,6 @@ import {
 	FONTS,
 	findFont,
 	fontFaceCss,
-	planApply,
-	planRestore,
 	preloadScript,
 	withFontFirst,
 	withoutStylesmithFonts
@@ -106,38 +104,5 @@ describe("font-family lists", () => {
 			withoutStylesmithFonts(`"${JB}", Fira Code, monospace`),
 			"Fira Code, monospace"
 		);
-	});
-});
-
-describe("font settings", () => {
-	it("remember that the setting was not set, and remove it again on restore", () => {
-		const plan = planApply(undefined, DEFAULT, undefined, JB, false)!;
-		assert.equal(plan.value, `'${JB}', ${DEFAULT}`);
-		assert.equal(plan.saved.previous, undefined);
-		assert.equal(planRestore(plan.value, plan.saved), undefined);
-	});
-
-	it("restore the user's exact previous value", () => {
-		const plan = planApply("Fira Code", DEFAULT, undefined, JB, false)!;
-		assert.equal(plan.value, `'${JB}', Fira Code`);
-		assert.equal(planRestore(plan.value, plan.saved), "Fira Code");
-	});
-
-	it("keep the original value across repeated Enable/Reload", () => {
-		const first = planApply("Fira Code", DEFAULT, undefined, JB, false)!;
-		const again = planApply(first.value, DEFAULT, first.saved, JB, false)!;
-		assert.equal(again.value, first.value);
-		assert.equal(planRestore(again.value, again.saved), "Fira Code");
-	});
-
-	it("respect a font the user picked after Stylesmith changed it", () => {
-		const plan = planApply("Fira Code", DEFAULT, undefined, JB, false)!;
-		assert.equal(planRestore(`'${JB}', Hack`, plan.saved), "Hack");
-		assert.equal(planRestore("Hack", plan.saved), "Hack");
-	});
-
-	it("leave an empty terminal font alone, because it follows the editor font", () => {
-		assert.equal(planApply(undefined, "", undefined, JB, true), undefined);
-		assert.equal(planApply("Hack", "", undefined, JB, true)?.value, `'${JB}', Hack`);
 	});
 });

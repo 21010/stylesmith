@@ -2,23 +2,11 @@ import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
+import { contrast } from "../color";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
 const ICONS = path.join(ROOT, "icons");
-
-function luminance(hex: string): number {
-	const [r, g, b] = [1, 3, 5].map(i => {
-		const v = parseInt(hex.slice(i, i + 2), 16) / 255;
-		return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-	});
-	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-function contrast(a: string, b: string): number {
-	const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-	return (light + 0.05) / (dark + 0.05);
-}
 
 /** Editor backgrounds of Stylesmith's themes, by the icon variant VS Code uses with them. */
 function editorBackgrounds(): Record<"dark" | "light", string[]> {

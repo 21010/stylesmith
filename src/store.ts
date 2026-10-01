@@ -10,11 +10,10 @@
 
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import * as path from "node:path";
-import type { SavedSetting } from "./fonts";
-import type { SavedValue } from "./settings";
+import type { SavedValue } from "./managed";
 
 export interface StoredState {
-	fontSettings?: Record<string, SavedSetting>;
+	fontSettings?: Record<string, SavedValue>;
 	effectSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
 	reapplyAskedAt?: number;

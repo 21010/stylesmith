@@ -1,3 +1,4 @@
+// @ts-check
 // Stylesmith typing sparks, runs inside the VS Code workbench page.
 //
 // Each key you type in an editor throws a few small neon pixel sparks up from the cursor.
@@ -23,21 +24,33 @@
 	const MAX_STEP = 1 / 30; // seconds; keeps motion stable after a slow frame
 
 	const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+	/** @type {{ x: number, y: number, vx: number, vy: number, age: number, size: number, color: string }[]} */
 	const sparks = [];
 
-	let canvas = null;
-	let ctx = null;
+	// Both are set by setUpCanvas(), before anything else uses them.
+	/** @type {HTMLCanvasElement} */
+	let canvas;
+	/** @type {CanvasRenderingContext2D} */
+	let ctx;
 	let scheduled = false;
+	/** @type {number | null} */
 	let lastFrameTime = null; // null while no sparks are alive
 
+	/** Returns false if the page can't draw on a canvas; the effect then stays off. */
 	function setUpCanvas() {
 		canvas = document.createElement("canvas");
 		canvas.setAttribute("aria-hidden", "true");
 		canvas.style.cssText =
 			"position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9998";
 		document.body.appendChild(canvas);
-		ctx = canvas.getContext("2d");
+		const context = canvas.getContext("2d");
+		if (!context) {
+			canvas.remove();
+			return false;
+		}
+		ctx = context;
 		releaseCanvas();
+		return true;
 	}
 
 	// Without sparks the canvas has no size, so it takes no memory. A full-window canvas
@@ -55,6 +68,7 @@
 	}
 
 	// Colors are read at most once a second, not on every keystroke.
+	/** @type {string[] | null} */
 	let colorCache = null;
 	let colorCacheTime = 0;
 
@@ -71,6 +85,7 @@
 		return colorCache;
 	}
 
+	/** @param {KeyboardEvent} event */
 	function isTypingKey(event) {
 		if (event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return false;
 		return event.key.length === 1 || event.key === "Backspace" || event.key === "Enter";
@@ -107,6 +122,7 @@
 		requestAnimationFrame(frame);
 	}
 
+	/** @param {number} now */
 	function frame(now) {
 		scheduled = false;
 		const dt =
@@ -145,7 +161,7 @@
 	}
 
 	function start() {
-		setUpCanvas();
+		if (!setUpCanvas()) return;
 		window.addEventListener("resize", () => {
 			if (canvas.width > 0) resizeCanvas();
 		});

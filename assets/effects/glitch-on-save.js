@@ -1,3 +1,4 @@
+// @ts-check
 // Stylesmith glitch on save, runs inside the VS Code workbench page.
 //
 // When a file is saved, the editor glitches for a moment: a quick red/cyan split and a small
@@ -14,7 +15,7 @@
 	const EDITOR_AREA = ".monaco-workbench .part.editor";
 
 	const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-	let lastGlitch = 0;
+	let lastGlitch = -Infinity; // so a save right after startup glitches too
 
 	const STYLE = `
 @keyframes stylesmith-glitch {
@@ -33,6 +34,7 @@
 	animation: stylesmith-glitch ${DURATION}ms steps(3, end) 1;
 }`;
 
+	/** @param {Element} tab */
 	function glitch(tab) {
 		const now = performance.now();
 		if (reducedMotion.matches || now - lastGlitch < MIN_GAP) return;
@@ -65,6 +67,7 @@
 		finder.observe(document.body, { childList: true, subtree: true });
 	}
 
+	/** @param {Element} area */
 	function watch(area) {
 		new MutationObserver(mutations => {
 			for (const m of mutations) {

@@ -1,3 +1,4 @@
+// @ts-check
 // Stylesmith boot sequence, runs inside the VS Code workbench page.
 //
 // When VS Code starts, a short retro terminal boot log types itself out over the window and

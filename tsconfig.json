@@ -17,5 +17,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true
 	},
-	"include": ["src"]
+	"include": ["src"],
+	// Browser tests use the DOM types: tsconfig.browser.json compiles them.
+	"exclude": ["src/test-browser"]
 }

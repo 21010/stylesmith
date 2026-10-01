@@ -5,8 +5,7 @@
  * first.
  */
 
-/** Folder next to the workbench HTML file that holds the selected font's files. */
-export const FONT_FOLDER = "stylesmith-fonts";
+import { FONT_FOLDER } from "./workbench";
 
 export interface NerdFont {
 	/** Value of the `stylesmith.fonts.family` setting. */
@@ -99,49 +98,6 @@ export function withoutStylesmithFonts(fontFamily: string): string {
 	return splitFamilies(fontFamily)
 		.filter(name => !ours.has(unquote(name).toLowerCase()))
 		.join(", ");
-}
-
-/** What Stylesmith remembers about a font setting it changed. */
-export interface SavedSetting {
-	/** The user's own value before Stylesmith changed it; undefined if it wasn't set. */
-	previous: string | undefined;
-	/** The value Stylesmith wrote. */
-	applied: string;
-}
-
-/**
- * Works out the new value for a font setting. Returns undefined when the setting should be
- * left alone (an empty terminal font already uses the editor font).
- */
-export function planApply(
-	current: string | undefined,
-	defaultValue: string | undefined,
-	saved: SavedSetting | undefined,
-	family: string,
-	leaveEmpty: boolean
-): { value: string; saved: SavedSetting } | undefined {
-	const base = current ?? defaultValue ?? "";
-	if (leaveEmpty && base.trim() === "") return undefined;
-
-	// Remember the user's own value. If they changed the setting after Stylesmith did,
-	// their latest choice (without Stylesmith's font) is what gets restored.
-	const previous = !saved
-		? current
-		: current === saved.applied
-			? saved.previous
-			: userPart(current);
-
-	const value = withFontFirst(base, family);
-	return { value, saved: { previous, applied: value } };
-}
-
-/** Works out the value to restore for a font setting Stylesmith changed. */
-export function planRestore(current: string | undefined, saved: SavedSetting): string | undefined {
-	return current === saved.applied ? saved.previous : userPart(current);
-}
-
-function userPart(value: string | undefined): string | undefined {
-	return value === undefined ? undefined : withoutStylesmithFonts(value) || undefined;
 }
 
 function splitFamilies(fontFamily: string): string[] {

@@ -6,11 +6,12 @@ out/test/
 **/*.ts
 node_modules/
 eslint.config.mjs
-tsconfig.json
+tsconfig*.json
 .prettierrc.yaml
 .gitignore
 images/logo.svg
 scripts/
 .workbench-location.json
 out/test-integration/
+out/test-browser/
 .vscode-test/

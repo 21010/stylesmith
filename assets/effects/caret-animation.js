@@ -1,3 +1,4 @@
+// @ts-check
 // Stylesmith caret animation, runs inside the VS Code workbench page.
 //
 // Draws the text cursor on a canvas above the editor, with a soft glow. When the cursor
@@ -39,15 +40,21 @@
 	const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 	const trails = new Map(); // cursor element -> Trail
 
-	let canvas = null;
-	let ctx = null;
+	// Both are set by setUpCanvas(), before anything else uses them.
+	/** @type {HTMLCanvasElement} */
+	let canvas;
+	/** @type {CanvasRenderingContext2D} */
+	let ctx;
+	/** @type {DOMRect | null} */
 	let lastPosition = null; // where the most recently moved cursor ended up
 	let scrollingUntil = 0;
 	let scheduled = false;
 	let dirty = false; // redraw even if no cursor changed (e.g. after a resize)
+	/** @type {number | null} */
 	let lastFrameTime = null; // null while no animation is running
 
 	class Trail {
+		/** @param {DOMRect} start */
 		constructor(start) {
 			this.rect = start;
 			this.color = "";
@@ -64,6 +71,7 @@
 			this.snapTo(start);
 		}
 
+		/** @param {DOMRect} rect */
 		snapTo(rect) {
 			this.rect = rect;
 			for (const corner of this.corners) {
@@ -76,6 +84,7 @@
 
 		// Starts a move to `rect`. Each corner gets a time based on how much it points in
 		// the direction of travel: forward corners lead, backward corners trail.
+		/** @param {DOMRect} rect */
 		moveTo(rect) {
 			const moveX = centerX(rect) - centerX(this.rect);
 			const moveY = centerY(rect) - centerY(this.rect);
@@ -111,6 +120,7 @@
 		}
 
 		// Advances the animation by `dt` seconds. Returns true while still moving.
+		/** @param {number} dt seconds since the last frame */
 		step(dt) {
 			const maxOffset = Math.max(this.rect.width, this.rect.height) * MAX_TRAIL;
 			let moving = false;
@@ -152,6 +162,7 @@
 
 	// A critically damped spring: moves `position` towards `target` as fast as possible
 	// without overshooting. Returns the new position and velocity after `dt` seconds.
+	/** @param {number} position @param {number} velocity @param {number} target @param {number} speed @param {number} dt @param {number} maxOffset @returns {[number, number]} */
 	function follow(position, velocity, target, speed, dt, maxOffset) {
 		const offset = position - target;
 		const k = velocity + speed * offset;
@@ -160,28 +171,34 @@
 		return [target + next, (velocity - speed * k * dt) * decay];
 	}
 
+	/** @param {number} value @param {number} min @param {number} max */
 	function clamp(value, min, max) {
 		return Math.min(Math.max(value, min), max);
 	}
 
+	/** @param {DOMRect} rect */
 	function centerX(rect) {
 		return rect.left + rect.width / 2;
 	}
 
+	/** @param {DOMRect} rect */
 	function centerY(rect) {
 		return rect.top + rect.height / 2;
 	}
 
+	/** @param {DOMRect} a @param {DOMRect} b */
 	function sameRect(a, b) {
 		return a.left === b.left && a.top === b.top && a.width === b.width && a.height === b.height;
 	}
 
+	/** @param {Element} element @param {DOMRect} rect */
 	function isVisible(element, rect) {
 		if (rect.width === 0 || rect.height === 0) return false;
 		const style = getComputedStyle(element);
 		return style.visibility !== "hidden" && style.display !== "none" && style.opacity !== "0";
 	}
 
+	/** @param {Element} element */
 	function cursorColor(element) {
 		const style = getComputedStyle(element);
 		const background = style.backgroundColor;
@@ -196,6 +213,7 @@
 	const GRID = 64; // canvas sizes snap to this, so it isn't resized on every frame
 	let area = { x: 0, y: 0, width: 0, height: 0 };
 
+	/** Returns false if the page can't draw on a canvas; the effect then stays off. */
 	function setUpCanvas() {
 		canvas = document.createElement("canvas");
 		canvas.setAttribute("aria-hidden", "true");
@@ -203,7 +221,13 @@
 		canvas.height = 0;
 		canvas.style.cssText = "position:fixed;left:0;top:0;pointer-events:none;z-index:9999";
 		document.body.appendChild(canvas);
-		ctx = canvas.getContext("2d");
+		const context = canvas.getContext("2d");
+		if (!context) {
+			canvas.remove();
+			return false;
+		}
+		ctx = context;
+		return true;
 	}
 
 	// Moves and sizes the canvas to cover the visible trails, then clears it.
@@ -295,6 +319,7 @@
 		requestAnimationFrame(tick);
 	}
 
+	/** @param {number} now */
 	function tick(now) {
 		scheduled = false;
 
@@ -361,7 +386,7 @@
 	}
 
 	function start() {
-		setUpCanvas();
+		if (!setUpCanvas()) return;
 
 		// VS Code builds its editors after this script runs. Look for them as the page is built,
 		// and stop looking once the first one exists.

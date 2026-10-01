@@ -11,7 +11,6 @@ import {
 	writeFile
 } from "node:fs/promises";
 import * as path from "node:path";
-import { FONT_FOLDER } from "./fonts";
 import { getLegacySessionId, PATCH_MARKER, unpatch } from "./patch";
 
 export interface Workbench {
@@ -36,6 +35,9 @@ const HTML_FILES = [
 ];
 
 const LEGACY_BACKUP_SUFFIX = ".bak-custom-css";
+
+/** Folder next to the workbench HTML file that holds the selected font's files. */
+export const FONT_FOLDER = "stylesmith-fonts";
 
 /** Finds the workbench HTML under the first application directory that has one. */
 export function locateWorkbench(appDirs: readonly string[]): Workbench | undefined {
