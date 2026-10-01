@@ -21,7 +21,7 @@ import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { execFileSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import {
 	downloadAndUnzipVSCode,
 	resolveCliArgsFromVSCodeExecutablePath
@@ -89,10 +89,13 @@ function installPackage(executable) {
 		throw new Error(`${vsix} is missing: run "npx @vscode/vsce package" first`);
 	const extensions = mkdtempSync(join(tmpdir(), "stylesmith-shot-extensions-"));
 	const [cli, ...args] = resolveCliArgsFromVSCodeExecutablePath(executable);
-	execFileSync(cli, [...args, "--extensions-dir", extensions, "--install-extension", vsix], {
-		stdio: "ignore",
-		shell: process.platform === "win32" // code.cmd
-	});
+	const all = [...args, "--extensions-dir", extensions, "--install-extension", vsix];
+	if (process.platform === "win32") {
+		// code.cmd only runs through a shell, so build one command with every part quoted.
+		execSync([cli, ...all].map(part => `"${part}"`).join(" "), { stdio: "ignore" });
+	} else {
+		execFileSync(cli, all, { stdio: "ignore" });
+	}
 	return extensions;
 }
 

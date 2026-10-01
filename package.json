@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.14.4",
+	"version": "1.15.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -154,6 +154,24 @@
 					"default": false,
 					"scope": "application",
 					"markdownDescription": "Square corners and tabs that look like tabs, instead of VS Code's rounded modern look. Turns on VS Code's compact layout density (`window.density.layout`) while it's on, and puts your setting back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
+				},
+				"stylesmith.effects.neonTerminal": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Give the terminal you're typing in a soft neon frame, like the editor's focus frame. When you change this, Stylesmith offers to reload so it takes effect."
+				},
+				"stylesmith.effects.terminalGlow": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "Make the terminal's text glow in the theme's terminal text color, like an old CRT. Only in dark themes. Change the size with `--stylesmith-terminal-glow-size` (default `4px`) in one of your own CSS imports. When you change this, Stylesmith offers to reload so it takes effect."
+				},
+				"stylesmith.effects.retroTerminalCursor": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "A blinking block cursor in the terminal, like an old console. Sets VS Code's `terminal.integrated.cursorStyle` and `terminal.integrated.cursorBlinking` while it's on, and puts your settings back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
 				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",

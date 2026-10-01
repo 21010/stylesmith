@@ -50,11 +50,18 @@ const WORKBENCH = `<!DOCTYPE html>
 			</div>
 		</div></div>
 		<div id="card" style="border-radius: var(--vscode-cornerRadius-large)"></div>
+		<!-- Built like VS Code 1.140's terminal; the text is drawn on the unnamed canvas. -->
+		<div class="terminal-wrapper active" id="terminal"><div class="terminal-xterm-host">
+			<div class="terminal xterm focus" id="xterm"><div class="xterm-scrollable-element"><div class="xterm-screen">
+				<canvas class="xterm-link-layer" id="links" width="40" height="20"></canvas>
+				<canvas id="text" width="40" height="20"></canvas>
+			</div></div></div>
+		</div></div>
 		<div id="badge" style="border-radius: var(--vscode-cornerRadius-circle)"></div>
 		</div>
 		<!-- VS Code defines its design tokens in a style that loads after Stylesmith's. -->
 		<style>
-			.monaco-workbench { --vscode-cornerRadius-large: 8px; --vscode-cornerRadius-circle: 9999px; }
+			.monaco-workbench { --vscode-cornerRadius-large: 8px; --vscode-cornerRadius-circle: 9999px; --vscode-terminal-foreground: #7df2b8; --vscode-focusBorder: #5fe0ff; }
 		</style>
 	</body>
 </html>
@@ -72,6 +79,7 @@ const PROBE = `
 `;
 
 let browser: Browser;
+let pages = 0;
 let dir: string;
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -79,15 +87,15 @@ async function openWorkbench(ids: readonly string[], reducedMotion = false): Pro
 	const effects = EFFECTS.filter(effect => ids.includes(effect.setting.replace("effects.", "")));
 	assert.equal(effects.length, ids.length, `unknown effect in ${ids.join(", ")}`);
 	const snippets: Snippet[] = await Promise.all(
-		effects.map(async ({ file, kind }) => ({
-			kind,
-			source: await readFile(path.join(ROOT, file), "utf-8")
-		}))
+		effects
+			.flatMap(effect => (effect.asset ? [effect.asset] : []))
+			.map(async ({ file, kind }) => ({
+				kind,
+				source: await readFile(path.join(ROOT, file), "utf-8")
+			}))
 	);
-	const file = path.join(
-		dir,
-		`${ids.join("+") || "none"}${reducedMotion ? "-reduced" : ""}.html`
-	);
+	// A short name: one built from every effect's name can pass Windows' path length limit.
+	const file = path.join(dir, `page-${++pages}.html`);
 	await writeFile(file, patch(WORKBENCH, snippets));
 
 	const page = await browser.newPage({
@@ -111,8 +119,10 @@ const violationsOf = (page: Page) =>
 	page.evaluate(() => (window as unknown as { __violations: string[] }).__violations);
 
 async function canvasSizes(page: Page): Promise<{ width: number; height: number }[]> {
-	return page.$$eval("canvas", canvases =>
-		canvases.map(c => ({ width: c.width, height: c.height }))
+	return page.$$eval("body > canvas", canvases =>
+		canvases
+			.filter(c => c instanceof HTMLCanvasElement)
+			.map(c => ({ width: c.width, height: c.height }))
 	);
 }
 
@@ -195,7 +205,8 @@ describe("caret animation", () => {
 			"not full-window"
 		);
 		await waitUntilIdle(page);
-		const pixel = await page.$eval("canvas", c => {
+		const pixel = await page.$eval("body > canvas", c => {
+			if (!(c instanceof HTMLCanvasElement)) return false;
 			const ctx = c.getContext("2d")!;
 			return Array.from(ctx.getImageData(0, 0, c.width, c.height).data).some(
 				value => value > 0
@@ -348,6 +359,50 @@ describe("classic layout", () => {
 		const page = await openWorkbench(["classicLayout"]);
 		assert.equal(await radius(page, "#card"), "0px");
 		assert.equal(await radius(page, "#badge"), "9999px", "circles stay round");
+		await page.close();
+	});
+});
+
+describe("neon terminal frame", () => {
+	const frame = (page: Page) =>
+		page.$eval("#terminal", el => getComputedStyle(el, "::after").boxShadow);
+
+	it("frames the terminal you're typing in, and nothing else", async () => {
+		const page = await openWorkbench(["neonTerminal"]);
+		assert.match(await frame(page), /inset/, "a neon frame");
+		await page.$eval("#xterm", el => el.classList.remove("focus"));
+		assert.equal(await frame(page), "none", "not when the terminal isn't focused");
+		await page.close();
+	});
+});
+
+describe("terminal glow", () => {
+	const filter = (page: Page, selector: string) =>
+		page.$eval(selector, el => getComputedStyle(el).filter);
+
+	it("makes the terminal text glow in the terminal text color, but not the link layer", async () => {
+		const page = await openWorkbench(["terminalGlow"]);
+		assert.match(
+			await filter(page, "#text"),
+			/drop-shadow\(.*0\.49\d* 0\.94\d* 0\.72\d*/,
+			"#7df2b8"
+		);
+		assert.equal(await filter(page, "#links"), "none");
+		await page.close();
+	});
+
+	it("doesn't glow in light and high contrast themes", async () => {
+		const page = await openWorkbench(["terminalGlow"]);
+		for (const kind of ["vs", "hc-black", "hc-light"]) {
+			await page.$eval(
+				"#workbench",
+				(el, k) => {
+					el.setAttribute("class", `monaco-workbench ${k}`);
+				},
+				kind
+			);
+			assert.equal(await filter(page, "#text"), "none", kind);
+		}
 		await page.close();
 	});
 });

@@ -1,0 +1,27 @@
+/*
+ * Stylesmith neon terminal frame: the terminal you're typing in gets a soft neon frame, like
+ * the editor's focus frame.
+ *
+ * Color: your theme's focus color. Override it in one of your own CSS imports:
+ *   :root { --stylesmith-neon: #00f0ff; }
+ */
+
+/* Lets the frame below cover exactly the terminal. The wrapper already fills a positioned
+   parent, so this doesn't move anything. */
+.monaco-workbench .terminal-wrapper {
+	position: relative;
+}
+
+/* Drawn on top, because the terminal paints its text on a canvas that would hide an inset
+   shadow on the wrapper itself. */
+.monaco-workbench .terminal-wrapper.active:has(.xterm.focus)::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	pointer-events: none;
+	box-shadow:
+		inset 0 0 0 1px
+			color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 70%, transparent),
+		inset 0 0 16px -6px var(--stylesmith-neon, var(--vscode-focusBorder));
+}

@@ -235,8 +235,9 @@ function findWorkbench(services: Services, reportMissing = true): Workbench | un
 
 /** Reads the stylesheets and scripts of the given effects. */
 function readAssets(services: Services, effects: readonly Effect[]): Promise<Snippet[]> {
+	const assets = effects.flatMap(effect => (effect.asset ? [effect.asset] : []));
 	return Promise.all(
-		effects.map(async ({ file, kind }) => ({
+		assets.map(async ({ file, kind }) => ({
 			kind,
 			source: await readFile(services.asAbsolutePath(file), "utf-8")
 		}))

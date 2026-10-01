@@ -1,23 +1,28 @@
 /**
- * The built-in effects: one entry per effect, with its setting, its file, and any VS Code
- * settings it needs.
+ * The built-in effects: one entry per effect, with its setting, its file (if it has one),
+ * and any VS Code settings it needs.
  */
 
 import type { ImportKind } from "./patch";
 
-/** A built-in effect: a stylesheet or script in assets/, turned on by a boolean setting. */
+/** A built-in effect, turned on by a boolean setting. */
 export interface Effect {
 	/** Setting under `stylesmith.`, e.g. `effects.caretAnimation`. */
 	setting: string;
 	/** Name shown in the Stylesmith menu. */
 	label: string;
-	/** Path relative to the extension root. */
-	file: string;
-	kind: ImportKind;
+	/** The stylesheet or script it adds; none for an effect that only changes VS Code settings. */
+	asset?: EffectAsset;
 	/** Must match the setting's default in package.json (checked by a test). */
 	enabledByDefault: boolean;
 	/** VS Code settings the effect needs, turned on while the effect is on. */
 	editorSettings?: readonly EditorSetting[];
+}
+
+export interface EffectAsset {
+	/** Path relative to the extension root, in assets/effects/. */
+	file: string;
+	kind: ImportKind;
 }
 
 export interface EditorSetting {
@@ -32,36 +37,31 @@ export const EFFECTS: readonly Effect[] = [
 	{
 		setting: "effects.caretAnimation",
 		label: "Caret animation",
-		file: "assets/effects/caret-animation.js",
-		kind: "js",
+		asset: { file: "assets/effects/caret-animation.js", kind: "js" },
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonCurrentLine",
 		label: "Neon current line",
-		file: "assets/effects/neon-current-line.css",
-		kind: "css",
+		asset: { file: "assets/effects/neon-current-line.css", kind: "css" },
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonFocusFrame",
 		label: "Neon focus frame",
-		file: "assets/effects/neon-focus-frame.css",
-		kind: "css",
+		asset: { file: "assets/effects/neon-focus-frame.css", kind: "css" },
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonSelections",
 		label: "Neon selections",
-		file: "assets/effects/neon-selections.css",
-		kind: "css",
+		asset: { file: "assets/effects/neon-selections.css", kind: "css" },
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonBlocks",
 		label: "Neon code blocks",
-		file: "assets/effects/neon-blocks.css",
-		kind: "css",
+		asset: { file: "assets/effects/neon-blocks.css", kind: "css" },
 		enabledByDefault: true,
 		editorSettings: [
 			{
@@ -74,22 +74,19 @@ export const EFFECTS: readonly Effect[] = [
 	{
 		setting: "effects.diagnosticHighlights",
 		label: "Problem outlines (no underline)",
-		file: "assets/effects/diagnostic-highlights.css",
-		kind: "css",
+		asset: { file: "assets/effects/diagnostic-highlights.css", kind: "css" },
 		enabledByDefault: true
 	},
 	{
 		setting: "effects.neonGlow",
 		label: "Neon glow on code",
-		file: "assets/effects/neon-glow.css",
-		kind: "css",
+		asset: { file: "assets/effects/neon-glow.css", kind: "css" },
 		enabledByDefault: false
 	},
 	{
 		setting: "effects.classicLayout",
 		label: "Classic layout (square corners)",
-		file: "assets/effects/classic-layout.css",
-		kind: "css",
+		asset: { file: "assets/effects/classic-layout.css", kind: "css" },
 		enabledByDefault: false,
 		editorSettings: [
 			{
@@ -101,31 +98,56 @@ export const EFFECTS: readonly Effect[] = [
 		]
 	},
 	{
+		setting: "effects.neonTerminal",
+		label: "Neon terminal frame",
+		asset: { file: "assets/effects/neon-terminal.css", kind: "css" },
+		enabledByDefault: true
+	},
+	{
+		setting: "effects.terminalGlow",
+		label: "Terminal glow",
+		asset: { file: "assets/effects/terminal-glow.css", kind: "css" },
+		enabledByDefault: false
+	},
+	{
+		setting: "effects.retroTerminalCursor",
+		label: "Retro terminal cursor",
+		enabledByDefault: false,
+		editorSettings: [
+			{
+				key: "terminal.integrated.cursorStyle",
+				value: "block",
+				isOn: value => value === "block"
+			},
+			{
+				key: "terminal.integrated.cursorBlinking",
+				value: true,
+				isOn: value => value === true
+			}
+		]
+	},
+	{
 		setting: "effects.crtScanlines",
 		label: "CRT scanlines",
-		file: "assets/effects/crt-scanlines.css",
-		kind: "css",
+		asset: { file: "assets/effects/crt-scanlines.css", kind: "css" },
 		enabledByDefault: false
 	},
 	{
 		setting: "effects.typingSparks",
 		label: "Typing sparks",
-		file: "assets/effects/typing-sparks.js",
-		kind: "js",
+		asset: { file: "assets/effects/typing-sparks.js", kind: "js" },
 		enabledByDefault: false
 	},
 	{
 		setting: "effects.bootSequence",
 		label: "Boot sequence",
-		file: "assets/effects/boot-sequence.js",
-		kind: "js",
+		asset: { file: "assets/effects/boot-sequence.js", kind: "js" },
 		enabledByDefault: false
 	},
 	{
 		setting: "effects.glitchOnSave",
 		label: "Glitch on save",
-		file: "assets/effects/glitch-on-save.js",
-		kind: "js",
+		asset: { file: "assets/effects/glitch-on-save.js", kind: "js" },
 		enabledByDefault: false
 	}
 ];

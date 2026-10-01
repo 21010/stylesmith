@@ -27,9 +27,17 @@ describe("built-in effects", () => {
 				assert.equal(setting?.scope, "application");
 			});
 
-			it("has its file in the package", () => {
-				assert.ok(existsSync(path.join(ROOT, effect.file)), effect.file);
-				assert.equal(path.extname(effect.file), `.${effect.kind}`);
+			it("has its file in the package, or changes VS Code settings instead", () => {
+				if (!effect.asset) {
+					assert.ok(
+						effect.editorSettings?.length,
+						"an effect without a file needs settings"
+					);
+					return;
+				}
+				const { file, kind } = effect.asset;
+				assert.ok(existsSync(path.join(ROOT, file)), file);
+				assert.equal(path.extname(file), `.${kind}`);
 			});
 		});
 	}

@@ -2,6 +2,14 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.15.0 (2026-10-01)
+
+### Added
+
+- **Neon terminal frame**: the terminal you're typing in gets a soft neon frame, like the editor's. On by default and in every preset.
+- **Terminal glow**: the terminal's text glows softly in the theme's terminal text color, in dark themes. Off by default; in the Night City, Phosphor Terminal and Amber Monitor presets. Measured in VS Code 1.140 while printing 20,000 lines: no measurable cost.
+- **Retro terminal cursor**: a blinking block cursor in the terminal. It sets VS Code's terminal cursor settings while it's on and puts yours back afterwards. Off by default; in the same three presets.
+
 ## 1.14.4 (2026-10-01)
 
 ### Added

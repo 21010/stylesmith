@@ -99,15 +99,15 @@ A paint-can button appears in the status bar. Click it for the Stylesmith menu.
 
 A preset sets up a complete look in one step: a color theme, the pixel icons, a Nerd Font and a set of effects. Run **Stylesmith: Apply Preset…**, or pick **Apply a preset…** in the status bar menu.
 
-| Preset                | Theme              | Font          | Extra effects                                           |
-| --------------------- | ------------------ | ------------- | ------------------------------------------------------- |
-| **Night City**        | Neon Night         | JetBrainsMono | neon glow, typing sparks, boot sequence, glitch on save |
-| **Phosphor Terminal** | Phosphor           | DepartureMono | CRT scanlines, boot sequence, classic layout            |
-| **Amber Monitor**     | Amber              | BlexMono      | CRT scanlines, classic layout                           |
-| **Daylight**          | Daylight           | JetBrainsMono | none                                                    |
-| **High Contrast**     | Neon High Contrast | JetBrainsMono | none, and no caret animation                            |
+| Preset                | Theme              | Font          | Extra effects                                                                     |
+| --------------------- | ------------------ | ------------- | --------------------------------------------------------------------------------- |
+| **Night City**        | Neon Night         | JetBrainsMono | neon glow, terminal glow and cursor, typing sparks, boot sequence, glitch on save |
+| **Phosphor Terminal** | Phosphor           | DepartureMono | CRT scanlines, boot sequence, classic layout, terminal glow and cursor            |
+| **Amber Monitor**     | Amber              | BlexMono      | CRT scanlines, classic layout, terminal glow and cursor                           |
+| **Daylight**          | Daylight           | JetBrainsMono | none                                                                              |
+| **High Contrast**     | Neon High Contrast | JetBrainsMono | none, and no caret animation                                                      |
 
-Every preset also turns on the subtle effects (neon current line, focus frame and selections). Afterwards you can still change anything on its own.
+Every preset also turns on the subtle effects (neon current line, focus frame, selections and terminal frame). Afterwards you can still change anything on its own.
 
 To switch presets with a keyboard shortcut, add a key binding (**Preferences: Open Keyboard Shortcuts (JSON)**) with the preset's id: `night-city`, `phosphor-terminal`, `amber-monitor`, `daylight` or `high-contrast`:
 
@@ -134,20 +134,23 @@ Every VS Code update replaces the file Stylesmith changes, so its changes disapp
 
 Stylesmith comes with effects you can use without writing any code. They're applied when you run **Stylesmith: Enable**, even if `stylesmith.imports` is empty. The subtle ones are on by default; the louder ones are waiting for you to turn them on.
 
-| Effect                                  | Setting                                   | Default |
-| --------------------------------------- | ----------------------------------------- | ------- |
-| [Caret animation](#caret-animation)     | `stylesmith.effects.caretAnimation`       | on      |
-| [Neon current line](#neon-current-line) | `stylesmith.effects.neonCurrentLine`      | on      |
-| [Neon focus frame](#neon-focus-frame)   | `stylesmith.effects.neonFocusFrame`       | on      |
-| [Neon selections](#neon-selections)     | `stylesmith.effects.neonSelections`       | on      |
-| [Neon code blocks](#neon-code-blocks)   | `stylesmith.effects.neonBlocks`           | on      |
-| [Problem outlines](#problem-outlines)   | `stylesmith.effects.diagnosticHighlights` | on      |
-| [Neon glow on code](#neon-glow-on-code) | `stylesmith.effects.neonGlow`             | off     |
-| [Classic layout](#classic-layout)       | `stylesmith.effects.classicLayout`        | off     |
-| [CRT scanlines](#crt-scanlines)         | `stylesmith.effects.crtScanlines`         | off     |
-| [Typing sparks](#typing-sparks)         | `stylesmith.effects.typingSparks`         | off     |
-| [Boot sequence](#boot-sequence)         | `stylesmith.effects.bootSequence`         | off     |
-| [Glitch on save](#glitch-on-save)       | `stylesmith.effects.glitchOnSave`         | off     |
+| Effect                                          | Setting                                   | Default |
+| ----------------------------------------------- | ----------------------------------------- | ------- |
+| [Caret animation](#caret-animation)             | `stylesmith.effects.caretAnimation`       | on      |
+| [Neon current line](#neon-current-line)         | `stylesmith.effects.neonCurrentLine`      | on      |
+| [Neon focus frame](#neon-focus-frame)           | `stylesmith.effects.neonFocusFrame`       | on      |
+| [Neon selections](#neon-selections)             | `stylesmith.effects.neonSelections`       | on      |
+| [Neon code blocks](#neon-code-blocks)           | `stylesmith.effects.neonBlocks`           | on      |
+| [Problem outlines](#problem-outlines)           | `stylesmith.effects.diagnosticHighlights` | on      |
+| [Neon glow on code](#neon-glow-on-code)         | `stylesmith.effects.neonGlow`             | off     |
+| [Classic layout](#classic-layout)               | `stylesmith.effects.classicLayout`        | off     |
+| [Neon terminal frame](#neon-terminal-frame)     | `stylesmith.effects.neonTerminal`         | on      |
+| [Terminal glow](#terminal-glow)                 | `stylesmith.effects.terminalGlow`         | off     |
+| [Retro terminal cursor](#retro-terminal-cursor) | `stylesmith.effects.retroTerminalCursor`  | off     |
+| [CRT scanlines](#crt-scanlines)                 | `stylesmith.effects.crtScanlines`         | off     |
+| [Typing sparks](#typing-sparks)                 | `stylesmith.effects.typingSparks`         | off     |
+| [Boot sequence](#boot-sequence)                 | `stylesmith.effects.bootSequence`         | off     |
+| [Glitch on save](#glitch-on-save)               | `stylesmith.effects.glitchOnSave`         | off     |
 
 When you change any of them in Settings, Stylesmith offers to reload so the change takes effect. None of the effects do any work while you're not typing or moving the cursor.
 
@@ -196,6 +199,18 @@ Off by default. Since version 1.129, VS Code has a rounded "modern" look, with g
 
 It uses VS Code's own compact layout density (`window.density.layout`) for the gaps, so Stylesmith turns that setting on while the effect is on and puts your setting back afterwards. In VS Code versions without the modern look, it changes nothing.
 
+### Neon terminal frame
+
+On by default. The terminal you're typing in gets a soft neon frame, like the editor's focus frame, in your theme's focus color.
+
+### Terminal glow
+
+Off by default. The terminal's text glows softly, like an old CRT. The terminal draws its text as one image, so the glow has one color: the theme's terminal text color, which suits the green and amber themes best. It only works in dark themes, and it costs nothing measurable, even while a command prints thousands of lines.
+
+### Retro terminal cursor
+
+Off by default. A blinking block cursor in the terminal, like an old console. It sets VS Code's `terminal.integrated.cursorStyle` and `terminal.integrated.cursorBlinking` while it's on, and puts your settings back afterwards.
+
 ### CRT scanlines
 
 Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image on its own GPU layer, so it doesn't use any CPU. On very large screens, blending it over the window costs a little GPU time while you scroll.
@@ -223,6 +238,7 @@ The neon effects use your theme's focus color, so they match any theme. To chang
 	--stylesmith-scanlines: 0.2; /* scanline strength, 0.12 by default */
 	--stylesmith-glow: 40%; /* neon glow strength, 60% by default */
 	--stylesmith-glow-size: 4px; /* neon glow size, 6px by default */
+	--stylesmith-terminal-glow-size: 3px; /* terminal glow size, 4px by default */
 }
 ```
 

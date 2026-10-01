@@ -24,7 +24,8 @@ const BASE = {
 	"effects.neonFocusFrame": true,
 	"effects.neonSelections": true,
 	"effects.neonBlocks": true,
-	"effects.diagnosticHighlights": true
+	"effects.diagnosticHighlights": true,
+	"effects.neonTerminal": true
 };
 
 export const PRESETS: readonly Preset[] = [
@@ -42,7 +43,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.bootSequence": true,
 			"effects.glitchOnSave": true,
 			"effects.neonGlow": true,
-			"effects.classicLayout": false
+			"effects.classicLayout": false,
+			"effects.terminalGlow": true,
+			"effects.retroTerminalCursor": true
 		}
 	},
 	{
@@ -59,7 +62,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.bootSequence": true,
 			"effects.glitchOnSave": false,
 			"effects.neonGlow": false,
-			"effects.classicLayout": true
+			"effects.classicLayout": true,
+			"effects.terminalGlow": true,
+			"effects.retroTerminalCursor": true
 		}
 	},
 	{
@@ -75,7 +80,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.bootSequence": false,
 			"effects.glitchOnSave": false,
 			"effects.neonGlow": false,
-			"effects.classicLayout": true
+			"effects.classicLayout": true,
+			"effects.terminalGlow": true,
+			"effects.retroTerminalCursor": true
 		}
 	},
 	{
@@ -91,7 +98,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.bootSequence": false,
 			"effects.glitchOnSave": false,
 			"effects.neonGlow": false,
-			"effects.classicLayout": false
+			"effects.classicLayout": false,
+			"effects.terminalGlow": false,
+			"effects.retroTerminalCursor": false
 		}
 	},
 	{
@@ -108,7 +117,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.bootSequence": false,
 			"effects.glitchOnSave": false,
 			"effects.neonGlow": false,
-			"effects.classicLayout": false
+			"effects.classicLayout": false,
+			"effects.terminalGlow": false,
+			"effects.retroTerminalCursor": false
 		}
 	}
 ];
