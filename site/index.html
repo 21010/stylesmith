@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- No scripts and nothing from other sites: the page only loads its own files. -->
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<title>Stylesmith: customize VS Code, keep it secure</title>
+		<meta
+			name="description"
+			content="A safe way to customize VS Code with your own CSS and JS, with its security policy kept on. And a retro and cyberpunk style kit: themes, icons, fonts and effects."
+		/>
+		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content="#0f1120" />
+		<link rel="icon" href="logo.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="style.css" />
+		<meta property="og:title" content="Stylesmith" />
+		<meta
+			property="og:description"
+			content="Customize VS Code with your own CSS and JS, with its security policy kept on. Plus retro and cyberpunk themes, icons, fonts and effects."
+		/>
+		<meta property="og:image" content="https://stylesmith.dev/img/night-city.png" />
+		<meta property="og:url" content="https://stylesmith.dev/" />
+	</head>
+	<body>
+		<a class="skip" href="#main">Skip to content</a>
+
+		<header class="top">
+			<a class="brand" href="./">
+				<img src="logo.svg" width="36" height="36" alt="" />
+				<span>Stylesmith</span>
+			</a>
+			<nav aria-label="Main">
+				<a href="#presets">Presets</a>
+				<a href="#features">Features</a>
+				<a href="#security">Security</a>
+				<a href="#install">Install</a>
+				<a href="https://github.com/21010/stylesmith">GitHub</a>
+			</nav>
+		</header>
+
+		<main id="main">
+			<section class="hero">
+				<p class="prompt" aria-hidden="true">
+					&gt; stylesmith --enable<span class="caret"></span>
+				</p>
+				<h1>Style VS Code your way.<br /><span>Keep it secure.</span></h1>
+				<p class="lead">
+					<strong>A safe way to customize VS Code:</strong> your own CSS and JS, with its
+					security policy kept on.<br />
+					<strong>A retro and cyberpunk style kit:</strong> themes, icons, fonts and
+					effects.
+				</p>
+				<p class="actions">
+					<a class="button" href="#install">Install</a>
+					<a class="button ghost" href="https://github.com/21010/stylesmith"
+						>View on GitHub</a
+					>
+				</p>
+				<figure class="screen">
+					<img
+						src="img/night-city.png"
+						width="1280"
+						height="760"
+						alt="VS Code with the Night City preset: a dark indigo theme with pink and cyan neon code, glowing highlights, pixel file icons, and errors shown on their lines."
+					/>
+				</figure>
+			</section>
+
+			<section id="presets" aria-labelledby="presets-title">
+				<h2 id="presets-title"><span aria-hidden="true">01 //</span> Presets</h2>
+				<p>
+					A preset sets up a complete look in one step: a color theme, the pixel icons, a
+					Nerd Font and a set of effects. Afterwards you can still change anything on its
+					own.
+				</p>
+				<div class="gallery">
+					<figure>
+						<img
+							src="img/night-city.png"
+							width="1280"
+							height="760"
+							loading="lazy"
+							alt="Night City: dark indigo with pink and cyan neon, and glowing code."
+						/>
+						<figcaption>
+							<strong>Night City</strong> Cyberpunk neon, glowing code, sparks and a
+							boot sequence.
+						</figcaption>
+					</figure>
+					<figure>
+						<img
+							src="img/phosphor-terminal.png"
+							width="1280"
+							height="760"
+							loading="lazy"
+							alt="Phosphor Terminal: green text on black in a pixel font, with square panels."
+						/>
+						<figcaption>
+							<strong>Phosphor Terminal</strong> A green CRT terminal with a pixel
+							font, scanlines and a square layout.
+						</figcaption>
+					</figure>
+					<figure>
+						<img
+							src="img/amber-monitor.png"
+							width="1280"
+							height="760"
+							loading="lazy"
+							alt="Amber Monitor: amber text on a dark brown background, with square panels."
+						/>
+						<figcaption>
+							<strong>Amber Monitor</strong> An amber monochrome monitor with
+							scanlines and a square layout.
+						</figcaption>
+					</figure>
+					<figure>
+						<img
+							src="img/daylight.png"
+							width="1280"
+							height="760"
+							loading="lazy"
+							alt="Daylight: a warm light theme with dark text and subtle colored highlights."
+						/>
+						<figcaption>
+							<strong>Daylight</strong> Calm and bright, with only the subtle effects.
+						</figcaption>
+					</figure>
+				</div>
+				<p class="note">
+					There's also a <strong>High Contrast</strong> preset, with nothing that moves.
+				</p>
+			</section>
+
+			<section id="features" aria-labelledby="features-title">
+				<h2 id="features-title"><span aria-hidden="true">02 //</span> What's in the kit</h2>
+				<div class="cards">
+					<article>
+						<h3>Your own CSS and JS</h3>
+						<p>
+							Add your own files to change anything in VS Code's interface. They stay
+							in place until you turn them off, and a VS Code update doesn't make you
+							start over: Stylesmith offers to apply them again.
+						</p>
+					</article>
+					<article>
+						<h3>Effects</h3>
+						<p>
+							A gliding caret, a neon current line, glowing code blocks and
+							selections, CRT scanlines, typing sparks, a boot sequence and a glitch
+							on save. The loud ones are off until you turn them on, and none of them
+							do any work while you're idle.
+						</p>
+					</article>
+					<article>
+						<h3>Problem Lens</h3>
+						<p>
+							Errors and warnings right on their line: a soft tint, a pixel icon in
+							the gutter, the message at the end of the line, and the problem in the
+							status bar.
+						</p>
+					</article>
+					<article>
+						<h3>Six color themes</h3>
+						<p>
+							Dark, light and high contrast. Every theme is checked against the WCAG
+							contrast levels and simulated for color blindness, so the colors that
+							carry meaning stay apart.
+						</p>
+					</article>
+					<article>
+						<h3>Nerd Fonts</h3>
+						<p>
+							JetBrainsMono, BlexMono, ShureTechMono and DepartureMono, bundled and
+							set for the editor and terminal. Your own fonts stay as fallbacks.
+						</p>
+					</article>
+					<article>
+						<h3>Classic layout</h3>
+						<p>
+							Prefer square corners and tabs that look like tabs? One switch brings
+							back the classic look of VS Code, and puts your settings back when you
+							turn it off.
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<section id="security" aria-labelledby="security-title">
+				<h2 id="security-title">
+					<span aria-hidden="true">03 //</span> Security comes first
+				</h2>
+				<p>
+					Tools that change VS Code's look have to change VS Code's own files. Stylesmith
+					does it without turning off what keeps VS Code secure:
+				</p>
+				<ul class="checks">
+					<li>
+						<strong>VS Code's security policy stays on.</strong> Only the exact scripts
+						Stylesmith adds are allowed to run, each by its fingerprint.
+					</li>
+					<li>
+						<strong>A project can't change what runs.</strong> Settings are read from
+						your user settings only, never from a workspace you open.
+					</li>
+					<li>
+						<strong>Your files, on your terms.</strong> No <code>http://</code>,
+						<code>https://</code> only if you allow it, a size limit, and optional
+						fingerprints that refuse a file that changed.
+					</li>
+					<li>
+						<strong>Always reversible.</strong> Disable and uninstall put VS Code's file
+						back byte for byte.
+					</li>
+					<li>
+						<strong>Checked on every change.</strong> About 1,800 tests, browser and
+						end-to-end tests in a real VS Code, CodeQL and OpenSSF Scorecard.
+					</li>
+				</ul>
+				<p>
+					Found a problem? Please report it privately, as described in the
+					<a href="https://github.com/21010/stylesmith/blob/main/SECURITY.md"
+						>security policy</a
+					>.
+				</p>
+			</section>
+
+			<section id="install" aria-labelledby="install-title">
+				<h2 id="install-title"><span aria-hidden="true">04 //</span> Install</h2>
+				<p>
+					Stylesmith isn't on the Marketplace yet. Build the package and install it in VS
+					Code:
+				</p>
+				<pre><code>git clone https://github.com/21010/stylesmith.git
+cd stylesmith
+npm install
+npx @vscode/vsce package --no-dependencies
+code --install-extension stylesmith-&lt;version&gt;.vsix</code></pre>
+				<p>
+					Then open the Command Palette and run <strong>Stylesmith: Enable</strong>, or
+					click the paint-can button in the status bar and pick a preset. The
+					<a href="https://github.com/21010/stylesmith#readme">README</a> explains every
+					setting.
+				</p>
+			</section>
+		</main>
+
+		<footer>
+			<p>
+				Stylesmith is free and open source under the
+				<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt">MIT license</a>.
+				It began as a fork of
+				<a href="https://github.com/be5invis/vscode-custom-css">Custom CSS and JS Loader</a>
+				by Belleve Invis, which was based on work by Roberto Huertas. Thank you both.
+			</p>
+			<p>
+				Visual Studio Code is a trademark of Microsoft. Stylesmith isn't affiliated with
+				Microsoft.
+			</p>
+		</footer>
+	</body>
+</html>

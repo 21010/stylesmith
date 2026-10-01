@@ -1,0 +1,358 @@
+/*
+ * stylesmith.dev, in the colors of the Neon Night theme. src/test/site.test.ts checks the
+ * contrast of the color pairs below.
+ */
+
+:root {
+	--bg: #0f1120;
+	--bg-deep: #0b0d19;
+	--raised: #171a2e;
+	--border: #262b4a;
+	--text: #e2e4f3;
+	--muted: #a3a9d0;
+	--cyan: #5fe0ff;
+	--pink: #ff72d8;
+	--yellow: #f4e27c;
+	--on-accent: #0b0d19;
+
+	--mono: ui-monospace, "Cascadia Code", "JetBrains Mono", "SF Mono", Consolas, monospace;
+	--sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	background-color: var(--bg);
+	/* The glow sits at the top only; it doesn't repeat on short pages. */
+	background-image:
+		radial-gradient(60rem 30rem at 85% -10%, rgb(255 114 216 / 0.12), transparent),
+		radial-gradient(50rem 30rem at 0% 0%, rgb(95 224 255 / 0.1), transparent);
+	background-repeat: no-repeat;
+	color: var(--text);
+	font: 1.0625rem/1.65 var(--sans);
+}
+
+a {
+	color: var(--cyan);
+	text-underline-offset: 0.2em;
+}
+
+a:hover {
+	color: var(--pink);
+}
+
+:focus-visible {
+	outline: 2px solid var(--yellow);
+	outline-offset: 3px;
+}
+
+code,
+pre {
+	font-family: var(--mono);
+}
+
+.skip {
+	position: absolute;
+	left: 1rem;
+	top: -3rem;
+	padding: 0.5rem 1rem;
+	background: var(--yellow);
+	color: var(--on-accent);
+}
+
+.skip:focus {
+	top: 1rem;
+}
+
+/* Header */
+
+.top {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem 2rem;
+	align-items: center;
+	justify-content: space-between;
+	max-width: 72rem;
+	margin: 0 auto;
+	padding: 1.25rem 1.5rem;
+}
+
+.brand {
+	display: flex;
+	gap: 0.6rem;
+	align-items: center;
+	color: var(--text);
+	font: 700 1.25rem var(--mono);
+	text-decoration: none;
+}
+
+.top nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 1.25rem;
+	font-family: var(--mono);
+	font-size: 0.95rem;
+}
+
+.top nav a {
+	color: var(--muted);
+	text-decoration: none;
+}
+
+.top nav a:hover {
+	color: var(--cyan);
+}
+
+/* Sections */
+
+main {
+	max-width: 72rem;
+	margin: 0 auto;
+	padding: 0 1.5rem;
+}
+
+section {
+	padding: 4rem 0 2rem;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--mono);
+	line-height: 1.2;
+}
+
+h2 {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text);
+}
+
+h2 span {
+	color: var(--pink);
+}
+
+h3 {
+	margin: 0 0 0.5rem;
+	color: var(--cyan);
+	font-size: 1.1rem;
+}
+
+/* Hero */
+
+.hero {
+	padding-top: 3rem;
+	text-align: center;
+}
+
+.prompt {
+	margin: 0 0 1rem;
+	color: var(--cyan);
+	font-family: var(--mono);
+}
+
+.caret {
+	display: inline-block;
+	width: 0.6em;
+	height: 1.1em;
+	margin-left: 0.2em;
+	vertical-align: text-bottom;
+	background: var(--cyan);
+	box-shadow: 0 0 8px var(--cyan);
+	animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+h1 {
+	margin: 0 0 1.25rem;
+	font-size: clamp(2.2rem, 6vw, 3.8rem);
+	text-shadow: 0 0 18px rgb(95 224 255 / 0.35);
+}
+
+h1 span {
+	color: var(--pink);
+	text-shadow: 0 0 18px rgb(255 114 216 / 0.45);
+}
+
+.lead {
+	max-width: 46rem;
+	margin: 0 auto 2rem;
+	color: var(--muted);
+	font-size: 1.15rem;
+}
+
+.lead strong {
+	color: var(--text);
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	justify-content: center;
+	margin-bottom: 3rem;
+}
+
+.button {
+	display: inline-block;
+	padding: 0.75rem 1.6rem;
+	border: 2px solid var(--cyan);
+	border-radius: 0;
+	background: var(--cyan);
+	color: var(--on-accent);
+	font: 700 1rem var(--mono);
+	text-decoration: none;
+	box-shadow: 0 0 18px rgb(95 224 255 / 0.35);
+}
+
+.button:hover {
+	background: var(--pink);
+	border-color: var(--pink);
+	color: var(--on-accent);
+	box-shadow: 0 0 18px rgb(255 114 216 / 0.45);
+}
+
+.button.ghost {
+	background: transparent;
+	color: var(--cyan);
+	box-shadow: none;
+}
+
+.button.ghost:hover {
+	color: var(--on-accent);
+}
+
+figure {
+	margin: 0;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.screen img {
+	display: block;
+	border: 1px solid var(--border);
+	box-shadow:
+		0 0 0 1px rgb(95 224 255 / 0.25),
+		0 30px 80px -20px rgb(255 114 216 / 0.35);
+}
+
+/* Presets */
+
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+	gap: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+.gallery img {
+	display: block;
+	border: 1px solid var(--border);
+}
+
+.gallery figcaption {
+	padding: 0.75rem 0 0;
+	color: var(--muted);
+}
+
+.gallery figcaption strong {
+	display: block;
+	color: var(--text);
+	font-family: var(--mono);
+}
+
+.note {
+	color: var(--muted);
+}
+
+/* Features */
+
+.cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+	gap: 1rem;
+}
+
+.cards article {
+	padding: 1.25rem 1.4rem;
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--cyan);
+	background: var(--raised);
+}
+
+.cards p {
+	margin: 0;
+	color: var(--muted);
+}
+
+/* Security */
+
+.checks {
+	padding: 0;
+	list-style: none;
+}
+
+.checks li {
+	position: relative;
+	margin: 0 0 0.9rem;
+	padding-left: 2rem;
+	color: var(--muted);
+}
+
+.checks li::before {
+	content: "[✓]";
+	position: absolute;
+	left: 0;
+	color: var(--cyan);
+	font-family: var(--mono);
+	font-size: 0.85rem;
+	line-height: 2;
+}
+
+.checks strong {
+	color: var(--text);
+}
+
+/* Install */
+
+pre {
+	overflow-x: auto;
+	padding: 1.25rem 1.5rem;
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--pink);
+	background: var(--bg-deep);
+	color: var(--yellow);
+	font-size: 0.95rem;
+	line-height: 1.7;
+}
+
+/* Footer */
+
+footer {
+	max-width: 72rem;
+	margin: 3rem auto 0;
+	padding: 2rem 1.5rem 3rem;
+	border-top: 1px solid var(--border);
+	color: var(--muted);
+	font-size: 0.95rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.caret {
+		animation: none;
+	}
+}

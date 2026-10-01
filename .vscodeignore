@@ -15,3 +15,4 @@ scripts/
 out/test-integration/
 out/test-browser/
 .vscode-test/
+site/

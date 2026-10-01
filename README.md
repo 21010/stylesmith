@@ -70,7 +70,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.11.1.vsix
+code --install-extension stylesmith-<version>.vsix   # the file vsce just made
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -500,6 +500,7 @@ npm run format             # format the code with Prettier
 npm run themes             # rebuild the color themes
 npm run icons              # rebuild the pixel icons
 npm run fonts              # download, verify and rebuild the bundled Nerd Fonts
+npm run screenshots        # retake the preset screenshots for the website
 ```
 
 The browser tests need Chromium once: `npx playwright-core install chromium-headless-shell`. For the end-to-end test on the oldest supported VS Code, set `VSCODE_VERSION=1.93.0`.
@@ -532,10 +533,11 @@ src/
 assets/
 ├── effects/        # built-in effects (CSS and JS)
 └── fonts/          # bundled Nerd Fonts (WOFF2) and their licenses
-scripts/            # generators for the themes, icons and fonts
+scripts/            # generators for the themes, icons, fonts and website screenshots
 └── data/           # the theme palettes and the pixel art of the icons
 themes/             # color themes (generated)
 icons/              # pixel icons (generated)
+site/               # the website, stylesmith.dev (published by .github/workflows/pages.yml)
 ```
 
 Only `extension.ts`, `ui.ts`, `config.ts` and `problemLens.ts` use the VS Code API. Everything else is plain TypeScript and is tested with Node.js alone.

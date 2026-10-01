@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+	<defs>
+		<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#4F46E5" />
+			<stop offset="0.55" stop-color="#9333EA" />
+			<stop offset="1" stop-color="#EC4899" />
+		</linearGradient>
+		<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color="#FDE68A" />
+			<stop offset="1" stop-color="#F59E0B" />
+		</linearGradient>
+	</defs>
+
+	<rect width="256" height="256" rx="56" fill="url(#bg)" />
+
+	<!-- CSS braces being forged -->
+	<g fill="none" stroke="url(#glow)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M104 38 Q86 38 86 54 V64 Q86 74 74 76 Q86 78 86 88 V98 Q86 114 104 114" />
+		<path d="M152 38 Q170 38 170 54 V64 Q170 74 182 76 Q170 78 170 88 V98 Q170 114 152 114" />
+	</g>
+
+	<!-- Sparks -->
+	<g stroke="#FDE68A" stroke-width="7" stroke-linecap="round">
+		<path d="M62 44 L50 34" />
+		<path d="M56 106 L44 114" />
+		<path d="M194 44 L206 34" />
+		<path d="M200 106 L212 114" />
+		<path d="M128 30 V44" />
+	</g>
+
+	<!-- Anvil -->
+	<path
+		fill="#FFFFFF"
+		d="M36 132 H198 Q218 132 218 150 V152 Q218 166 202 168 L172 172 L164 196 H190 Q198 196 198 204 V214 H74 V204 Q74 196 82 196 H108 L100 172 Q62 168 36 132 Z"
+	/>
+</svg>
