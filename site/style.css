@@ -229,8 +229,12 @@ h1 span {
 	box-shadow: none;
 }
 
+/* Its own hover colors: .button:hover alone loses to .button.ghost, which comes later. */
 .button.ghost:hover {
+	background: var(--pink);
+	border-color: var(--pink);
 	color: var(--on-accent);
+	box-shadow: 0 0 18px rgb(255 114 216 / 0.45);
 }
 
 figure {
@@ -351,8 +355,100 @@ footer {
 	font-size: 0.95rem;
 }
 
+/*
+ * Boot sequence: the same log and timing as Stylesmith's effect (assets/effects/
+ * boot-sequence.js), without JavaScript. Each line types out at 6 ms per character,
+ * one after another; the finished log shows for 350 ms, then fades out in 300 ms.
+ * It never blocks clicks.
+ */
+
+.boot {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgb(5 6 12 / 0.92);
+	pointer-events: none;
+	animation: boot-fade 0.3s ease-out 1.094s forwards;
+}
+
+.boot pre {
+	min-width: 34ch;
+	margin: 0;
+	color: var(--cyan);
+	font: 15px/1.6 var(--mono);
+	text-shadow: 0 0 6px var(--cyan);
+}
+
+.boot span {
+	display: block;
+	width: 0;
+	overflow: hidden;
+	white-space: pre;
+	animation-name: boot-type;
+	animation-fill-mode: forwards;
+}
+
+/*
+ * [characters, typing time, start]: the start is when the line before it is done. Each
+ * character appears at the start of its step (jump-start), so the last one always shows:
+ * with "end", rounding can stop a short animation one character early.
+ */
+.boot span:nth-child(1) {
+	--chars: 20;
+	animation-duration: 0.12s;
+	animation-timing-function: steps(20, jump-start);
+}
+
+.boot span:nth-child(2) {
+	--chars: 31;
+	animation-duration: 0.186s;
+	animation-delay: 0.12s;
+	animation-timing-function: steps(31, jump-start);
+}
+
+.boot span:nth-child(3) {
+	--chars: 31;
+	animation-duration: 0.186s;
+	animation-delay: 0.306s;
+	animation-timing-function: steps(31, jump-start);
+}
+
+.boot span:nth-child(4) {
+	--chars: 31;
+	animation-duration: 0.186s;
+	animation-delay: 0.492s;
+	animation-timing-function: steps(31, jump-start);
+}
+
+.boot span:nth-child(5) {
+	--chars: 11;
+	animation-duration: 0.066s;
+	animation-delay: 0.678s;
+	animation-timing-function: steps(11, jump-start);
+}
+
+@keyframes boot-type {
+	to {
+		width: calc(var(--chars) * 1ch);
+	}
+}
+
+@keyframes boot-fade {
+	to {
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.caret {
 		animation: none;
+	}
+
+	.boot {
+		display: none;
 	}
 }
