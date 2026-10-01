@@ -1,0 +1,32 @@
+/*
+ * Stylesmith neon code blocks: the code inside the brackets around your cursor ((), [] or {})
+ * gets a glowing neon line on the left and a soft tint, so the block stands out.
+ *
+ * It builds on VS Code's bracket pair guides, which Stylesmith turns on for you
+ * ("editor.guides.bracketPairs": "active"). Colors come from your theme's bracket pair colors,
+ * so each nesting level has its own neon.
+ */
+
+/* The guide line of the active bracket pair: thicker, with a soft glow. */
+.monaco-editor .lines-content .core-guide.bracket-indent-guide.vertical.indent-active {
+	box-shadow:
+		inset 2px 0 0 0 var(--guide-color-active),
+		-1px 0 6px -1px var(--guide-color-active);
+}
+
+/* The tint: drawn on every line inside the pair, starting at the guide and fading out.
+   It sits behind the text, and the editor clips it at its right edge. */
+.monaco-editor .lines-content .core-guide.bracket-indent-guide.vertical.indent-active::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 2px;
+	width: 100vw;
+	height: 100%;
+	pointer-events: none;
+	background: linear-gradient(
+		90deg,
+		color-mix(in srgb, var(--guide-color-active) 14%, transparent),
+		transparent 60%
+	);
+}

@@ -37,7 +37,7 @@ Everything you need for a retro or cyberpunk VS Code, ready to use:
 - **[Themes](#color-themes):** six color themes (Neon Night, Phosphor, Amber, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
 - **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
 - **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
-- **[Effects](#built-in-effects):** a gliding caret, neon highlights, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
+- **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
 - **[Presets](#presets):** a complete look in one step, such as Night City or Phosphor Terminal.
 
 Each part works on its own. The effects follow any theme, including ones that aren't from Stylesmith, and the themes and icons work even without running **Stylesmith: Enable**.
@@ -69,7 +69,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.6.1.vsix
+code --install-extension stylesmith-1.7.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -136,6 +136,7 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Neon current line](#neon-current-line)   | `stylesmith.effects.neonCurrentLine` | on      |
 | [Neon focus frame](#neon-focus-frame)     | `stylesmith.effects.neonFocusFrame`  | on      |
 | [Neon selections](#neon-selections)       | `stylesmith.effects.neonSelections`  | on      |
+| [Neon code blocks](#neon-code-blocks)     | `stylesmith.effects.neonBlocks`      | on      |
 | [CRT scanlines](#crt-scanlines)           | `stylesmith.effects.crtScanlines`    | off     |
 | [Typing sparks](#typing-sparks)           | `stylesmith.effects.typingSparks`    | off     |
 | [Boot sequence](#boot-sequence)           | `stylesmith.effects.bootSequence`    | off     |
@@ -167,6 +168,12 @@ On by default. The editor you're typing in gets a soft neon frame, and its activ
 ### Neon selections
 
 On by default. Selected text, search matches and matching brackets get a soft neon glow, so they're easy to spot.
+
+### Neon code blocks
+
+On by default. The code inside the brackets around your cursor (`()`, `[]` or `{}`) gets a glowing neon line on the left and a soft tint, so you can see at a glance which block you're in. Each nesting level uses its own color from your theme's bracket colors.
+
+It builds on VS Code's bracket pair guides. While the effect is on, Stylesmith sets `"editor.guides.bracketPairs": "active"`, unless you already have bracket guides on. It remembers your own value and puts it back when you turn the effect off or run **Stylesmith: Disable**.
 
 ### CRT scanlines
 

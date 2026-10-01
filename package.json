@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.6.1",
+	"version": "1.7.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -126,6 +126,12 @@
 					"scope": "application",
 					"markdownDescription": "Give selected text, search matches and matching brackets a soft neon glow. Run **Stylesmith: Reload** after changing this.",
 					"default": true
+				},
+				"stylesmith.effects.neonBlocks": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Highlight the code inside the brackets around your cursor with a neon line on the left and a soft tint. Turns on VS Code's bracket pair guides (`editor.guides.bracketPairs`) while it's on, and puts your setting back afterwards. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.effects.crtScanlines": {
 					"type": "boolean",

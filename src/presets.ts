@@ -20,7 +20,8 @@ const BASE = {
 	"effects.caretAnimation": true,
 	"effects.neonCurrentLine": true,
 	"effects.neonFocusFrame": true,
-	"effects.neonSelections": true
+	"effects.neonSelections": true,
+	"effects.neonBlocks": true
 };
 
 export const PRESETS: readonly Preset[] = [

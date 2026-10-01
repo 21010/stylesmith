@@ -11,6 +11,15 @@ export interface Effect {
 	kind: ImportKind;
 	/** Must match the setting's default in package.json (checked by a test). */
 	enabledByDefault: boolean;
+	/** VS Code settings the effect needs, turned on while the effect is on. */
+	editorSettings?: readonly EditorSetting[];
+}
+
+export interface EditorSetting {
+	key: string;
+	value: unknown;
+	/** Whether a value already counts as on, so a user's own setting is left alone. */
+	isOn: (value: unknown) => boolean;
 }
 
 // Subtle effects are on by default; louder ones are opt-in.
@@ -42,6 +51,20 @@ export const EFFECTS: readonly Effect[] = [
 		file: "assets/effects/neon-selections.css",
 		kind: "css",
 		enabledByDefault: true
+	},
+	{
+		setting: "effects.neonBlocks",
+		label: "Neon code blocks",
+		file: "assets/effects/neon-blocks.css",
+		kind: "css",
+		enabledByDefault: true,
+		editorSettings: [
+			{
+				key: "editor.guides.bracketPairs",
+				value: "active",
+				isOn: value => value === true || value === "active"
+			}
+		]
 	},
 	{
 		setting: "effects.crtScanlines",
