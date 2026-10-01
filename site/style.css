@@ -452,3 +452,12 @@ footer {
 		display: none;
 	}
 }
+
+/* The Sponsor link in the header stands out a little from the rest. */
+.top nav a.sponsor {
+	color: var(--pink);
+}
+
+.top nav a.sponsor:hover {
+	color: var(--cyan);
+}
