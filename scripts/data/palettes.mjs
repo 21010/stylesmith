@@ -177,6 +177,65 @@ export const palettes = [
 		}
 	},
 	{
+		id: "ice",
+		name: "Stylesmith ICE",
+		// White phosphor (P4) on a cold night screen, and the glowing ICE of cyberpunk:
+		// iced white text, frost cyan and pale blue, told apart mostly by brightness.
+		bg: "#0c121a",
+		bgDark: "#080c12",
+		bgRaised: "#121b26",
+		lineHighlight: "#131d29",
+		border: "#22303f",
+		fg: "#dce9f5",
+		fgStrong: "#e6f0f9",
+		muted: "#9fb3c8",
+		lineNumber: "#71879d",
+		accent: "#9fe6ff",
+		accentAlt: "#c9c2ff",
+		onAccent: "#080c12",
+		selection: "#3a5a7a80",
+		findMatch: "#9fe6ff40",
+		tokens: {
+			comment: "#8196ab",
+			keyword: "#9fe6ff",
+			function: "#eef6ff",
+			string: "#b4d6f0",
+			number: "#c9c2ff",
+			type: "#a6f0ee",
+			property: "#cfe0f0",
+			regexp: "#c9c2ff",
+			tag: "#9fe6ff",
+			attribute: "#b4d6f0",
+			operator: "#a9bfd4"
+		},
+		status: {
+			error: "#ff8a8a",
+			warning: "#ffd27a",
+			info: "#9fe6ff",
+			added: "#6fe0c8",
+			modified: "#b8a4ff",
+			deleted: "#ff9a7a"
+		},
+		ansi: {
+			black: "#22303f",
+			red: "#ff8270",
+			green: "#86f5b8",
+			yellow: "#ffd27a",
+			blue: "#7fb8ff",
+			magenta: "#d0a8ff",
+			cyan: "#9fe6ff",
+			white: "#dce9f5",
+			brightBlack: "#8196ab",
+			brightRed: "#ffaaaa",
+			brightGreen: "#a6f0c4",
+			brightYellow: "#ffe0a6",
+			brightBlue: "#a8d0ff",
+			brightMagenta: "#e0c8ff",
+			brightCyan: "#c4f0ff",
+			brightWhite: "#e6f0f9"
+		}
+	},
+	{
 		id: "daylight",
 		name: "Stylesmith Daylight",
 		kind: "light",

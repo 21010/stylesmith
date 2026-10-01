@@ -43,6 +43,7 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"night-city",
 	"phosphor-terminal",
 	"amber-monitor",
+	"black-ice",
 	"daylight"
 ];
 const SIZE = { width: 1280, height: 760 };

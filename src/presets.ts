@@ -86,6 +86,25 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "black-ice",
+		label: "Black ICE",
+		description:
+			"Cold white phosphor: ICE, ShureTechMono, glowing code and terminal, scanlines",
+		theme: "Stylesmith ICE",
+		font: "ShureTechMono",
+		effects: {
+			...BASE,
+			"effects.crtScanlines": true,
+			"effects.typingSparks": false,
+			"effects.bootSequence": true,
+			"effects.glitchOnSave": false,
+			"effects.neonGlow": true,
+			"effects.classicLayout": false,
+			"effects.terminalGlow": true,
+			"effects.retroTerminalCursor": true
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Calm and bright: Daylight, JetBrains Mono and the subtle effects only",

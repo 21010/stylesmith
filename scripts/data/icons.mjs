@@ -168,7 +168,7 @@ export const FILES = [
 
 export const SIDEBAR = {
 	// The side bar colors the icons are checked against: VS Code's defaults and Stylesmith's.
-	dark: ["#181818", "#252526", "#0b0d19", "#070e09", "#0f0b04", "#000000"],
+	dark: ["#181818", "#252526", "#0b0d19", "#070e09", "#0f0b04", "#080c12", "#000000"],
 	light: ["#f8f8f8", "#f3f3f3", "#efe8d6", "#ffffff"]
 };
 export const OUTLINE = { dark: "#b4bad2", light: "#50566c" };
@@ -244,6 +244,6 @@ export const PROBLEM_ICONS = {
 
 // Editor backgrounds the problem icons are checked against: VS Code's defaults and Stylesmith's.
 export const EDITOR = {
-	dark: ["#1e1e1e", "#1f1f1f", "#0f1120", "#0b130d", "#140f07", "#000000"],
+	dark: ["#1e1e1e", "#1f1f1f", "#0f1120", "#0b130d", "#140f07", "#0c121a", "#000000"],
 	light: ["#ffffff", "#f7f2e4", "#f3f3f3"]
 };

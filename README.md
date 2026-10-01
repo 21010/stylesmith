@@ -34,7 +34,7 @@ The [Security](#security) section has the details.
 
 Everything you need for a retro or cyberpunk VS Code, ready to use:
 
-- **[Themes](#color-themes):** six color themes (Neon Night, Phosphor, Amber, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
+- **[Themes](#color-themes):** seven color themes (Neon Night, Phosphor, Amber, ICE, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
 - **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
 - **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
 - **[Problem Lens](#problem-lens):** errors and warnings right on their line, with pixel gutter icons and terminal-style messages.
@@ -104,12 +104,13 @@ A preset sets up a complete look in one step: a color theme, the pixel icons, a 
 | **Night City**        | Neon Night         | JetBrainsMono | neon glow, terminal glow and cursor, typing sparks, boot sequence, glitch on save |
 | **Phosphor Terminal** | Phosphor           | DepartureMono | CRT scanlines, boot sequence, classic layout, terminal glow and cursor            |
 | **Amber Monitor**     | Amber              | BlexMono      | CRT scanlines, classic layout, terminal glow and cursor                           |
+| **Black ICE**         | ICE                | ShureTechMono | neon glow, CRT scanlines, boot sequence, terminal glow and cursor                 |
 | **Daylight**          | Daylight           | JetBrainsMono | none                                                                              |
 | **High Contrast**     | Neon High Contrast | JetBrainsMono | none, and no caret animation                                                      |
 
 Every preset also turns on the subtle effects (neon current line, focus frame, selections and terminal frame). Afterwards you can still change anything on its own.
 
-To switch presets with a keyboard shortcut, add a key binding (**Preferences: Open Keyboard Shortcuts (JSON)**) with the preset's id: `night-city`, `phosphor-terminal`, `amber-monitor`, `daylight` or `high-contrast`:
+To switch presets with a keyboard shortcut, add a key binding (**Preferences: Open Keyboard Shortcuts (JSON)**) with the preset's id: `night-city`, `phosphor-terminal`, `amber-monitor`, `black-ice`, `daylight` or `high-contrast`:
 
 ```json
 { "key": "ctrl+alt+n", "command": "stylesmith.applyPreset", "args": "night-city" }
@@ -301,16 +302,17 @@ The fonts come from Nerd Fonts v3.5.1. The build downloads them from the officia
 
 ## Color themes
 
-Stylesmith comes with three dark themes in a retro and cyberpunk style. Pick one with **Preferences: Color Theme** (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>T</kbd>). They work on their own, without running **Stylesmith: Enable**, and the neon effects pick up each theme's accent color automatically.
+Stylesmith comes with seven themes: four dark ones in a retro and cyberpunk style, a light one, and two high contrast ones for low vision. Pick one with **Preferences: Color Theme** (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>K</kbd> <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>T</kbd>). They work on their own, without running **Stylesmith: Enable**, and the neon effects pick up each theme's accent color automatically.
 
-| Theme                                 | Style                                                               |
-| ------------------------------------- | ------------------------------------------------------------------- |
-| **Stylesmith Neon Night**             | Cyberpunk: deep indigo night, cyan and magenta neon, yellow strings |
-| **Stylesmith Phosphor**               | Retro green CRT terminal, with amber numbers                        |
-| **Stylesmith Amber**                  | Retro amber monochrome monitor                                      |
-| **Stylesmith Daylight**               | Retro paper and ink for bright rooms, teal and magenta accents      |
-| **Stylesmith Neon High Contrast**     | Maximum contrast on black for low vision, with neon accents         |
-| **Stylesmith Daylight High Contrast** | Maximum contrast on white for low vision                            |
+| Theme                                 | Style                                                                       |
+| ------------------------------------- | --------------------------------------------------------------------------- |
+| **Stylesmith Neon Night**             | Cyberpunk: deep indigo night, cyan and magenta neon, yellow strings         |
+| **Stylesmith Phosphor**               | Retro green CRT terminal, with amber numbers                                |
+| **Stylesmith Amber**                  | Retro amber monochrome monitor                                              |
+| **Stylesmith ICE**                    | Cold white phosphor and cyberpunk ICE: iced white, frost cyan and pale blue |
+| **Stylesmith Daylight**               | Retro paper and ink for bright rooms, teal and magenta accents              |
+| **Stylesmith Neon High Contrast**     | Maximum contrast on black for low vision, with neon accents                 |
+| **Stylesmith Daylight High Contrast** | Maximum contrast on white for low vision                                    |
 
 ### Easy on the eyes
 

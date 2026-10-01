@@ -2,6 +2,13 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.16.0 (2026-10-01)
+
+### Added
+
+- **Stylesmith ICE**, a new dark theme: white phosphor on a cold night screen, and the glowing ICE of cyberpunk. Iced white text with frost cyan and pale blue, checked against the WCAG contrast rules and for color blindness like the other themes.
+- **Black ICE**, a new preset: the ICE theme, ShureTechMono, glowing code and terminal, CRT scanlines, the boot sequence and the retro terminal cursor.
+
 ## 1.15.0 (2026-10-01)
 
 ### Added
