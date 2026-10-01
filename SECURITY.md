@@ -27,6 +27,8 @@ These are the protections Stylesmith is built to keep, so a way around any of th
 - **Untrusted projects can't add code.** `${workspaceFolder}` and `${cwd}` imports are skipped in workspaces you haven't trusted.
 - **Remote code is off by default.** `https://` imports need `stylesmith.allowRemoteImports`. `http://` is never allowed, and a redirect to `http://` is refused. `file://` imports must be on this computer: network paths are refused.
 - **Changes can always be undone.** Stylesmith only writes a change it has checked it can revert, and it writes through a temporary file so a failed write can't damage VS Code.
+- **Uninstalling removes everything.** Even without **Stylesmith: Disable**, uninstalling puts VS Code's file back and removes the font folder, so none of Stylesmith's changes keep running.
+- **Files can be pinned.** An import with a `#sha256-…` fingerprint is refused if its content changes.
 
 ## What is out of scope
 

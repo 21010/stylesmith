@@ -111,15 +111,63 @@ function errorCode(error: unknown): string | undefined {
 }
 
 /**
+ * Undoes everything Stylesmith changed in VS Code's installation: restores the original
+ * workbench file and removes the font folder and old backups. Returns true if the workbench
+ * file was patched.
+ */
+export async function cleanUp(workbench: Workbench): Promise<boolean> {
+	const current = await readFile(workbench.htmlPath, "utf-8");
+	const pristine = await readPristine(workbench, current);
+	if (pristine !== current) await writeFileAtomic(workbench.htmlPath, pristine);
+	await removeFonts(workbench);
+	await removeLegacyBackups(workbench);
+	return pristine !== current;
+}
+
+/**
+ * Whether a remembered location really is a VS Code workbench file, so the uninstall
+ * cleanup never touches anything else.
+ */
+export function isWorkbenchLocation(value: unknown): value is Workbench {
+	if (typeof value !== "object" || value === null) return false;
+	const { dir, htmlPath } = value as Record<string, unknown>;
+	if (typeof dir !== "string" || typeof htmlPath !== "string") return false;
+	if (path.dirname(htmlPath) !== dir || !HTML_FILES.includes(path.basename(htmlPath)))
+		return false;
+	return WORKBENCH_DIRS.some(segments => dir.endsWith(path.join(...segments)));
+}
+
+/**
  * Puts the given font files in the font folder next to the workbench HTML file, replacing any
  * that were there. The workbench loads them from there, which VS Code's security policy allows.
  */
 export async function writeFonts(workbench: Workbench, files: readonly string[]): Promise<void> {
+	if (await hasFonts(workbench, files)) return; // already there, nothing to copy
 	await removeFonts(workbench);
 	const folder = path.join(workbench.dir, FONT_FOLDER);
 	await mkdir(folder);
 	for (const file of files) {
 		await copyFile(file, path.join(folder, path.basename(file)), constants.COPYFILE_EXCL);
+	}
+}
+
+/** Whether the font folder holds exactly these files, with the same content. */
+async function hasFonts(workbench: Workbench, files: readonly string[]): Promise<boolean> {
+	const folder = path.join(workbench.dir, FONT_FOLDER);
+	try {
+		const present = (await readdir(folder)).sort();
+		const wanted = files.map(file => path.basename(file)).sort();
+		if (present.join("/") !== wanted.join("/")) return false;
+		for (const file of files) {
+			const [a, b] = await Promise.all([
+				readFile(file),
+				readFile(path.join(folder, path.basename(file)))
+			]);
+			if (!a.equals(b)) return false;
+		}
+		return true;
+	} catch {
+		return false;
 	}
 }
 

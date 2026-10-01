@@ -11,3 +11,6 @@ tsconfig.json
 .gitignore
 images/logo.svg
 scripts/
+.workbench-location.json
+out/test-integration/
+.vscode-test/

@@ -6,7 +6,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-	{ ignores: ["out/", "node_modules/"] },
+	{ ignores: ["out/", "node_modules/", ".vscode-test/"] },
 	js.configs.recommended,
 	tseslint.configs.recommended,
 	{

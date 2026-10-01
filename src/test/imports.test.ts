@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -151,6 +152,37 @@ describe("import security", () => {
 				/trusted workspace/
 			);
 		}
+	});
+
+	it("loads a pinned file whose content matches its pin", async () => {
+		const file = path.join(dir, "pinned.css");
+		await writeFile(file, "a{}");
+		const pin = createHash("sha256").update("a{}").digest("base64");
+		const snippets = await loadImports(
+			[`${pathToFileURL(file).href}#sha256-${pin}`],
+			VARS,
+			{ allowRemote: false },
+			() => assert.fail("should load")
+		);
+		assert.deepEqual(snippets, [{ kind: "css", source: "a{}" }]);
+	});
+
+	it("refuses a pinned file whose content changed, and shows the actual pin", async () => {
+		const file = path.join(dir, "changed.css");
+		await writeFile(file, "a{color:red}");
+		const oldPin = createHash("sha256").update("a{}").digest("base64");
+		const newPin = createHash("sha256").update("a{color:red}").digest("base64");
+		const message = await loadError(`${pathToFileURL(file).href}#sha256-${oldPin}`);
+		assert.match(message, /doesn't match its pin/);
+		assert.ok(message.includes(`sha256-${newPin}`));
+	});
+
+	it("refuses a malformed pin", async () => {
+		const file = path.join(dir, "big.css");
+		assert.match(
+			await loadError(`${pathToFileURL(file).href}#sha256-nope`),
+			/pin must look like/
+		);
 	});
 
 	it("refuses network paths in file:// imports", async () => {

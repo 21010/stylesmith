@@ -69,7 +69,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.9.0.vsix
+code --install-extension stylesmith-1.10.0.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -186,7 +186,7 @@ On by default. Code with an error gets a soft red-ish background, and code with 
 
 ### CRT scanlines
 
-Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image, so it doesn't use any CPU.
+Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image on its own GPU layer, so it doesn't use any CPU. On very large screens, blending it over the window costs a little GPU time while you scroll.
 
 ### Typing sparks
 
@@ -322,7 +322,19 @@ Each entry must be a **link (URL), not a plain file path**:
 
 Only `.css` and `.js` files work, up to 5 MB each. They're added in the order you list them.
 
-Web links are off by default because a file on a server can change at any time, and the new version would run in your editor the next time you reload. If you turn them on, only `https://` works: `http://` links and redirects to `http://` are refused.
+Web links are off by default because a file on a server can change at any time, and the new version would run in your editor the next time you reload. If you turn them on, only `https://` works: `http://` links and redirects to `http://` are refused. Network paths (`file://server/share/...`) are refused too.
+
+#### Pinning a file
+
+To make sure a file is exactly the one you checked, add its SHA-256 fingerprint to the end of the link, in the same format browsers use for Subresource Integrity:
+
+```json
+"stylesmith.imports": [
+	"https://example.com/theme.css#sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="
+]
+```
+
+If the file changes, Stylesmith refuses it and shows its new fingerprint, so you can check the change and update the pin. This works for local files too, and it's a good idea for every web link.
 
 ### Variables
 
@@ -337,6 +349,10 @@ You can use these in `file://` links:
 | `${pathSeparator}` or `${/}` | `\` on Windows, `/` everywhere else                  |
 | `${env:NAME}`                | The environment variable `NAME`, or nothing if unset |
 | `${env:NAME:default}`        | The environment variable `NAME`, or `default`        |
+
+## Uninstalling
+
+You don't have to run **Stylesmith: Disable** before uninstalling. When VS Code restarts after you uninstall Stylesmith, it puts VS Code's file back to the original and removes the font folder, so none of Stylesmith's changes keep running. Only your editor and terminal font settings stay as they are; they still list your own fonts after the Nerd Font, so VS Code falls back to them.
 
 ## Permissions
 
@@ -401,6 +417,7 @@ Scripts can't load other scripts from the web. CSS can load images over `https:/
 ### Automatic checks
 
 - **CodeQL**, GitHub's code scanner, with its extended security rules. Runs on every push, every pull request, and weekly.
+- **End-to-end test**, which runs Stylesmith inside a real VS Code (the oldest supported version and the current one) and checks that Enable keeps the security policy, and that Disable and uninstalling restore VS Code byte for byte. Runs on every push and pull request.
 - **npm audit**, which checks dependencies for known security problems and verifies package signatures. Runs on every push and pull request.
 - **Dependency review**, which blocks pull requests that add a dependency with a known security problem.
 - **OpenSSF Scorecard**, which checks the project's supply-chain practices. Runs on every push to `main` and weekly.
@@ -420,6 +437,7 @@ npm install
 npm run compile   # build TypeScript into out/
 npm run watch     # rebuild when files change
 npm test          # build and run the tests
+npm run test:integration  # run Stylesmith inside a downloaded VS Code (VSCODE_VERSION=1.93.0 for the oldest)
 npm run lint      # check the code with ESLint
 npm run format    # format the code with Prettier
 npm run themes    # rebuild the color themes from scripts/build-themes.mjs

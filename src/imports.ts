@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { open } from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -77,7 +78,25 @@ export function importKind(url: URL): ImportKind {
 	throw new Error(`Unsupported file type "${ext}", expected .css or .js`);
 }
 
+// An optional pin at the end of an import's URL, in the same format as Subresource Integrity:
+// file:///C:/styles/theme.css#sha256-<base64 hash>. A pinned file must match it exactly.
+const PIN_PREFIX = "#sha256-";
+const PIN_RE = /^#sha256-([A-Za-z0-9+/]{43}=)$/;
+
 export async function fetchImport(url: URL, options: LoadOptions): Promise<string> {
+	const bytes = await fetchBytes(url, options);
+	if (url.hash.startsWith(PIN_PREFIX)) {
+		const pin = PIN_RE.exec(url.hash)?.[1];
+		if (!pin) throw new Error("the pin must look like #sha256-<base64 hash>");
+		const actual = createHash("sha256").update(bytes).digest("base64");
+		if (actual !== pin) {
+			throw new Error(`the content doesn't match its pin (it is sha256-${actual})`);
+		}
+	}
+	return bytes.toString("utf-8");
+}
+
+async function fetchBytes(url: URL, options: LoadOptions): Promise<Buffer> {
 	const maxBytes = options.maxBytes ?? DEFAULT_MAX_BYTES;
 	switch (url.protocol) {
 		case "file:":
@@ -111,10 +130,10 @@ export async function fetchImport(url: URL, options: LoadOptions): Promise<strin
 }
 
 /** Reads a response body, giving up as soon as it grows past `maxBytes`. */
-async function readLimited(response: Response, maxBytes: number): Promise<string> {
+async function readLimited(response: Response, maxBytes: number): Promise<Buffer> {
 	if (Number(response.headers.get("content-length")) > maxBytes) throw tooLarge(maxBytes);
 	const reader = response.body?.getReader();
-	if (!reader) return "";
+	if (!reader) return Buffer.alloc(0);
 
 	const chunks: Uint8Array[] = [];
 	let size = 0;
@@ -128,14 +147,14 @@ async function readLimited(response: Response, maxBytes: number): Promise<string
 		}
 		chunks.push(value);
 	}
-	return Buffer.concat(chunks).toString("utf-8");
+	return Buffer.concat(chunks);
 }
 
 /**
  * Reads a local file through a single open handle, giving up as soon as it grows past
  * `maxBytes`. Checking the size separately first could be out of date by the time we read.
  */
-async function readFileLimited(file: string, maxBytes: number): Promise<string> {
+async function readFileLimited(file: string, maxBytes: number): Promise<Buffer> {
 	const handle = await open(file, "r");
 	try {
 		const chunks: Buffer[] = [];
@@ -148,7 +167,7 @@ async function readFileLimited(file: string, maxBytes: number): Promise<string> 
 			if (size > maxBytes) throw tooLarge(maxBytes);
 			chunks.push(chunk.subarray(0, bytesRead));
 		}
-		return Buffer.concat(chunks).toString("utf-8");
+		return Buffer.concat(chunks);
 	} finally {
 		await handle.close();
 	}

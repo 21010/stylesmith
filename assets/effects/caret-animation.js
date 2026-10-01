@@ -26,6 +26,7 @@
 	const MAX_STEP = 1 / 30; // seconds; keeps motion stable after a slow frame
 	const SETTLED = 0.25; // pixels
 	const SCROLL_PAUSE = 150; // ms without animating after scrolling
+	const FINDER_TIMEOUT = 10_000; // ms to look for the first editor while VS Code starts
 
 	// Corner offsets from the cursor's center, as a fraction of its width and height.
 	const CORNERS = [
@@ -372,6 +373,9 @@
 				}
 			});
 			finder.observe(document.body, { childList: true, subtree: true });
+			// If no editor is open yet, stop looking after a while: editors opened later are
+			// picked up when they get focus.
+			setTimeout(() => finder.disconnect(), FINDER_TIMEOUT);
 		}
 		// Later editors (new tabs, splits, the settings editor) are picked up when they get focus.
 		document.addEventListener(

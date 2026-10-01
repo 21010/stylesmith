@@ -6,3 +6,5 @@ out
 .staging-custom-css
 *.vsix
 .playwright-mcp
+.workbench-location.json
+.vscode-test

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
@@ -90,6 +90,25 @@ describe("font folder", () => {
 		await removeFonts(workbench);
 		assert.deepEqual(await readdir(dir), []);
 		await removeFonts(workbench); // removing again is fine
+	});
+
+	it("doesn't copy the files again when they're already there", async () => {
+		const dir = path.join(root, "wb");
+		await mkdir(dir);
+		const workbench = { dir, htmlPath: path.join(dir, "workbench.html") };
+		const font = path.join(root, "A-Regular.woff2");
+		await writeFile(font, "font");
+
+		await writeFonts(workbench, [font]);
+		const copy = path.join(dir, "stylesmith-fonts", "A-Regular.woff2");
+		const before = (await stat(copy)).mtimeMs;
+		await new Promise(r => setTimeout(r, 20));
+		await writeFonts(workbench, [font]);
+		assert.equal((await stat(copy)).mtimeMs, before, "unchanged file wasn't rewritten");
+
+		await writeFile(font, "new font");
+		await writeFonts(workbench, [font]);
+		assert.equal(await readFile(copy, "utf-8"), "new font", "a changed file is copied again");
 	});
 });
 

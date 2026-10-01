@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.9.0",
+	"version": "1.10.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -258,12 +258,15 @@
 		"test": "node --test \"out/test/**/*.test.js\"",
 		"themes": "node scripts/build-themes.mjs",
 		"fonts": "node scripts/build-fonts.mjs",
-		"icons": "node scripts/build-icons.mjs"
+		"icons": "node scripts/build-icons.mjs",
+		"vscode:uninstall": "node ./out/uninstall",
+		"test:integration": "npm run compile && node out/test-integration/runTest.js"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.5",
 		"@types/node": "^20.19.43",
 		"@types/vscode": "~1.93.0",
+		"@vscode/test-electron": "^3.1.0",
 		"eslint": "^9.39.5",
 		"eslint-config-prettier": "^10.1.8",
 		"globals": "^17.12.0",

@@ -11,15 +11,17 @@ import {
 	planApply,
 	planRestore,
 	preloadScript,
-	type NerdFont,
-	type SavedSetting
+	type NerdFont
 } from "./fonts";
 import { loadImports, type Variables } from "./imports";
 import { messages } from "./messages";
 import { patch, type Snippet } from "./patch";
 import { ICON_THEME, PRESETS, presetEffects, type Preset } from "./presets";
-import { planReset, planSet, type SavedValue } from "./settings";
+import { planReset, planSet } from "./settings";
+import { StateFile } from "./store";
+import { rememberWorkbench } from "./uninstall";
 import {
+	cleanUp,
 	isPatched,
 	isPermissionError,
 	locateWorkbench,
@@ -41,16 +43,29 @@ const FONT_SETTINGS = [
 	{ key: "editor.fontFamily", leaveEmpty: false },
 	{ key: "terminal.integrated.fontFamily", leaveEmpty: true }
 ] as const;
-// Where the user's own font settings are remembered, so Disable can put them back.
-const FONT_STATE = "stylesmith.fontSettings";
-// Whether the user last enabled Stylesmith, so it can offer to re-apply after VS Code updates.
-const ENABLED_STATE = "stylesmith.enabled";
-// VS Code settings that effects turned on, remembered so they can be put back.
-const EFFECT_SETTINGS_STATE = "stylesmith.effectSettings";
-// When the re-apply question was last asked, so several open windows ask only once.
-const REAPPLY_ASKED_STATE = "stylesmith.reapplyAskedAt";
+// Where Stylesmith versions up to 1.9 kept their state in VS Code's globalState. It's read
+// once, to move it into the state file (see store.ts for why).
+const LEGACY_STATE_KEYS = {
+	fontSettings: "stylesmith.fontSettings",
+	effectSettings: "stylesmith.effectSettings",
+	enabled: "stylesmith.enabled",
+	reapplyAskedAt: "stylesmith.reapplyAskedAt"
+} as const;
+
+// The user's font and effect settings Stylesmith changed, whether it's enabled, and when it
+// last asked to re-apply. Set up in activate().
+let store: StateFile;
 
 export function activate(context: vscode.ExtensionContext): void {
+	store = new StateFile(path.join(context.globalStorageUri.fsPath, "state.json"), () =>
+		Object.fromEntries(
+			Object.entries(LEGACY_STATE_KEYS).map(([name, key]) => [
+				name,
+				context.globalState.get(key)
+			])
+		)
+	);
+
 	// Every command that rewrites VS Code's file runs one at a time.
 	let queue = Promise.resolve();
 	const register = (command: string, task: () => Promise<void>) => {
@@ -67,7 +82,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	register("stylesmith.enable", async () => status.show(await enable(context)));
 	register("stylesmith.reload", async () => status.show(await enable(context)));
 	register("stylesmith.disable", async () => {
-		await disable(context);
+		await disable();
 		status.show(false);
 	});
 	register("stylesmith.applyPreset", () => applyPreset());
@@ -75,7 +90,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscode.commands.registerCommand("stylesmith.menu", () => reportErrors(showMenu))
 	);
 
-	void reportErrors(() => checkAfterStartup(context, status));
+	void reportErrors(() => checkAfterStartup(status));
 }
 
 export function deactivate(): void {}
@@ -111,20 +126,18 @@ function createStatusButton(context: vscode.ExtensionContext): { show(active: bo
  * After startup: show whether Stylesmith is active, and if a VS Code update removed its
  * changes, offer to re-apply them. It only asks, and only reads the start of one file.
  */
-async function checkAfterStartup(
-	context: vscode.ExtensionContext,
-	status: { show(active: boolean): void }
-): Promise<void> {
+async function checkAfterStartup(status: { show(active: boolean): void }): Promise<void> {
 	const workbench = findWorkbench(false);
 	if (!workbench) return;
 	const patched = await isPatched(workbench);
 	status.show(patched);
 
-	if (patched || !context.globalState.get<boolean>(ENABLED_STATE)) return;
+	const state = await store.read();
+	if (patched || !state.enabled) return;
 	if (!userSetting("remindAfterUpdate", true)) return;
-	const asked = context.globalState.get<number>(REAPPLY_ASKED_STATE) ?? 0;
+	const asked = state.reapplyAskedAt ?? 0;
 	if (Date.now() - asked < 60_000) return;
-	await context.globalState.update(REAPPLY_ASKED_STATE, Date.now());
+	await store.update({ reapplyAskedAt: Date.now() });
 	const choice = await vscode.window.showInformationMessage(
 		messages.reapply,
 		messages.reapplyNow,
@@ -180,28 +193,24 @@ async function enable(context: vscode.ExtensionContext): Promise<boolean> {
 	}
 	if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
 	await removeLegacyBackups(workbench);
-	await (font ? applyFontSettings(context, font) : restoreFontSettings(context));
-	await updateEffectSettings(context, effects);
-	await context.globalState.update(ENABLED_STATE, true);
+	await (font ? applyFontSettings(font) : restoreFontSettings());
+	await updateEffectSettings(effects);
+	await store.update({ enabled: true });
 	void promptRestart(messages.enabled);
 	return true;
 }
 
-async function disable(context: vscode.ExtensionContext): Promise<void> {
+async function disable(): Promise<void> {
 	const workbench = findWorkbench();
 	if (!workbench) return;
 
-	const current = await readFile(workbench.htmlPath, "utf-8");
-	const pristine = await readPristine(workbench, current);
-	if (pristine !== current) await writeFileAtomic(workbench.htmlPath, pristine);
-	await removeFonts(workbench);
-	await removeLegacyBackups(workbench);
-	await restoreFontSettings(context);
-	await updateEffectSettings(context, []);
-	await context.globalState.update(ENABLED_STATE, false);
-	void (pristine === current
-		? vscode.window.showInformationMessage(messages.alreadyDisabled)
-		: promptRestart(messages.disabled));
+	const wasPatched = await cleanUp(workbench);
+	await restoreFontSettings();
+	await updateEffectSettings([]);
+	await store.update({ enabled: false });
+	void (wasPatched
+		? promptRestart(messages.disabled)
+		: vscode.window.showInformationMessage(messages.alreadyDisabled));
 }
 
 type MenuItem = vscode.QuickPickItem & { run?: () => Thenable<unknown> };
@@ -307,6 +316,12 @@ function findWorkbench(reportMissing = true): Workbench | undefined {
 	if (!workbench && reportMissing) {
 		void vscode.window.showErrorMessage(messages.unableToLocateVsCodeInstallationPath);
 	}
+	if (workbench) {
+		// So the uninstall cleanup can find it later, when VS Code's API isn't available.
+		rememberWorkbench(workbench).catch(error =>
+			console.warn("stylesmith: could not remember the workbench location", error)
+		);
+	}
 	return workbench;
 }
 
@@ -383,11 +398,8 @@ function fontSnippets(font: NerdFont | undefined): Snippet[] {
  * Turns on the VS Code settings that the active effects need, and puts back the user's own
  * values for effects that are off.
  */
-async function updateEffectSettings(
-	context: vscode.ExtensionContext,
-	active: readonly Effect[]
-): Promise<void> {
-	const state = context.globalState.get<Record<string, SavedValue>>(EFFECT_SETTINGS_STATE) ?? {};
+async function updateEffectSettings(active: readonly Effect[]): Promise<void> {
+	const state = (await store.read()).effectSettings ?? {};
 	const config = vscode.workspace.getConfiguration();
 	const wanted = new Map(
 		active.flatMap(effect => effect.editorSettings ?? []).map(s => [s.key, s])
@@ -407,12 +419,12 @@ async function updateEffectSettings(
 		if (value !== current) await config.update(key, value, vscode.ConfigurationTarget.Global);
 		delete state[key];
 	}
-	await context.globalState.update(EFFECT_SETTINGS_STATE, state);
+	await store.update({ effectSettings: state });
 }
 
 /** Puts the Nerd Font first in the user's editor and terminal font settings. */
-async function applyFontSettings(context: vscode.ExtensionContext, font: NerdFont): Promise<void> {
-	const state = context.globalState.get<Record<string, SavedSetting>>(FONT_STATE) ?? {};
+async function applyFontSettings(font: NerdFont): Promise<void> {
+	const state = (await store.read()).fontSettings ?? {};
 	const config = vscode.workspace.getConfiguration();
 	for (const { key, leaveEmpty } of FONT_SETTINGS) {
 		const info = config.inspect<string>(key);
@@ -429,12 +441,12 @@ async function applyFontSettings(context: vscode.ExtensionContext, font: NerdFon
 		}
 		state[key] = plan.saved;
 	}
-	await context.globalState.update(FONT_STATE, state);
+	await store.update({ fontSettings: state });
 }
 
 /** Puts back the user's own font settings from before Stylesmith changed them. */
-async function restoreFontSettings(context: vscode.ExtensionContext): Promise<void> {
-	const state = context.globalState.get<Record<string, SavedSetting>>(FONT_STATE);
+async function restoreFontSettings(): Promise<void> {
+	const state = (await store.read()).fontSettings;
 	if (!state) return;
 	const config = vscode.workspace.getConfiguration();
 	for (const [key, saved] of Object.entries(state)) {
@@ -442,7 +454,7 @@ async function restoreFontSettings(context: vscode.ExtensionContext): Promise<vo
 		const value = planRestore(current, saved);
 		if (value !== current) await config.update(key, value, vscode.ConfigurationTarget.Global);
 	}
-	await context.globalState.update(FONT_STATE, undefined);
+	await store.update({ fontSettings: undefined });
 }
 
 async function promptRestart(message: string): Promise<void> {
