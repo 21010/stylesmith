@@ -98,8 +98,13 @@ export function activate(context: vscode.ExtensionContext): void {
 		await disable();
 		status.show(false);
 	});
-	register("stylesmith.applyPreset", () => applyPreset());
+	// Commands that only ask the user and change settings stay outside the queue. They run
+	// "stylesmith.reload", which joins the queue itself: a queued command that waited for
+	// another queued command would wait forever.
 	context.subscriptions.push(
+		vscode.commands.registerCommand("stylesmith.applyPreset", (id?: unknown) =>
+			reportErrors(() => applyPreset(id))
+		),
 		vscode.commands.registerCommand("stylesmith.menu", () => reportErrors(showMenu))
 	);
 
@@ -298,14 +303,28 @@ async function pickFont(): Promise<void> {
 	await vscode.commands.executeCommand("stylesmith.reload");
 }
 
-/** Lets the user pick a preset, then applies its theme, icons, font and effects. */
-async function applyPreset(): Promise<void> {
-	const choice = await vscode.window.showQuickPick(
-		PRESETS.map(preset => ({ label: preset.label, detail: preset.description, preset })),
-		{ title: "Stylesmith: Apply a preset" }
-	);
-	if (!choice) return;
-	await usePreset(choice.preset);
+/**
+ * Applies a preset's theme, icons, font and effects. Given a preset id (for example from a
+ * keyboard shortcut: "args": "night-city"), it applies that one; otherwise it asks.
+ */
+async function applyPreset(id?: unknown): Promise<void> {
+	let preset: Preset | undefined;
+	if (typeof id === "string") {
+		preset = PRESETS.find(candidate => candidate.id === id);
+		if (!preset) throw new Error(`there's no preset "${id}"`);
+	} else {
+		const choice = await vscode.window.showQuickPick(
+			PRESETS.map(candidate => ({
+				label: candidate.label,
+				detail: candidate.description,
+				preset: candidate
+			})),
+			{ title: "Stylesmith: Apply a preset" }
+		);
+		preset = choice?.preset;
+	}
+	if (!preset) return;
+	await usePreset(preset);
 	await vscode.commands.executeCommand("stylesmith.reload");
 }
 

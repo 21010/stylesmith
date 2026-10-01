@@ -70,7 +70,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.11.0.vsix
+code --install-extension stylesmith-1.11.1.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -111,6 +111,12 @@ A preset sets up a complete look in one step: a color theme, the pixel icons, a 
 | **High Contrast**     | Neon High Contrast    | JetBrainsMono  | none, and no caret animation                |
 
 Every preset also turns on the subtle effects (neon current line, focus frame and selections). Afterwards you can still change anything on its own.
+
+To switch presets with a keyboard shortcut, add a key binding (**Preferences: Open Keyboard Shortcuts (JSON)**) with the preset's id: `night-city`, `phosphor-terminal`, `amber-monitor`, `daylight` or `high-contrast`:
+
+```json
+{ "key": "ctrl+alt+n", "command": "stylesmith.applyPreset", "args": "night-city" }
+```
 
 ## Status bar menu
 

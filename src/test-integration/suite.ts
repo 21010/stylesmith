@@ -10,6 +10,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { PRESETS } from "../presets";
 import { uninstall } from "../uninstall";
 import { locateWorkbench } from "../workbench";
 
@@ -51,6 +52,22 @@ function activePolicy(html: string): string {
 
 function userValue(section: string, key: string): unknown {
 	return vscode.workspace.getConfiguration(section).inspect(key)?.globalValue;
+}
+
+/** Fails instead of hanging if a command never finishes (for example, a deadlock). */
+async function withTimeout(work: Thenable<unknown>, what: string, ms = 60_000): Promise<void> {
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const timeout = new Promise<never>((_, reject) => {
+		timer = setTimeout(
+			() => reject(new Error(`${what} didn't finish within ${ms / 1000} s`)),
+			ms
+		);
+	});
+	try {
+		await Promise.race([work, timeout]);
+	} finally {
+		clearTimeout(timer);
+	}
 }
 
 async function step(name: string, check: () => Promise<void>): Promise<void> {
@@ -113,6 +130,34 @@ export async function run(): Promise<void> {
 		assert.ok(!existsSync(fonts), "the font folder is removed");
 		assert.equal(userValue("editor", "fontFamily"), undefined);
 		assert.equal(userValue("editor.guides", "bracketPairs"), undefined);
+	});
+
+	await step("Two presets in a row both apply fully (no deadlock)", async () => {
+		await withTimeout(
+			vscode.commands.executeCommand("stylesmith.applyPreset", "phosphor-terminal"),
+			"the first preset"
+		);
+		assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Phosphor");
+		await withTimeout(
+			vscode.commands.executeCommand("stylesmith.applyPreset", "night-city"),
+			"the second preset"
+		);
+		assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Neon Night");
+		assert.equal(userValue("workbench", "iconTheme"), "stylesmith-pixel");
+		assert.equal(userValue("stylesmith", "effects.typingSparks"), true);
+		// The preset's Reload really ran: the second preset's font is the one in place.
+		assert.ok((await readFile(workbench.htmlPath, "utf-8")).includes(MARKER));
+		assert.ok(existsSync(path.join(fonts, "JetBrainsMonoNerdFontMono-Regular.woff2")));
+		assert.ok(!existsSync(path.join(fonts, "DepartureMonoNerdFontMono-Regular.woff2")));
+
+		await vscode.commands.executeCommand("stylesmith.disable");
+		const reset = async (section: string, key: string) =>
+			vscode.workspace.getConfiguration(section).update(key, undefined, true);
+		await reset("workbench", "colorTheme");
+		await reset("workbench", "iconTheme");
+		for (const key of Object.keys(PRESETS[0].effects)) await reset("stylesmith", key);
+		await reset("stylesmith", "fonts.enabled");
+		await reset("stylesmith", "fonts.family");
 	});
 
 	await step("The uninstall cleanup restores VS Code without Disable", async () => {
