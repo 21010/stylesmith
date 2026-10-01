@@ -1,6 +1,7 @@
 /*
- * Stylesmith neon current line: the line with the cursor gets a glowing neon edge on the
- * left, thin neon lines above and below, and a faint gradient, like a lit HUD line.
+ * Stylesmith neon current line: the line with the cursor gets thin neon lines above and below
+ * and a faint gradient, like a lit HUD line. Its line number glows, with a neon marker in the
+ * gutter. Nothing is drawn over the text itself.
  *
  * Color: your theme's focus color. Override it in one of your own CSS imports:
  *   :root { --stylesmith-neon: #ff2bd6; }
@@ -9,11 +10,10 @@
 .monaco-editor.focused .view-overlays .current-line {
 	background: linear-gradient(
 		90deg,
-		color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 16%, transparent),
+		color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 14%, transparent),
 		transparent 65%
 	) !important;
 	box-shadow:
-		inset 3px 0 0 var(--stylesmith-neon, var(--vscode-focusBorder)),
 		inset 0 1px 0
 			color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 35%, transparent),
 		inset 0 -1px 0
@@ -21,8 +21,17 @@
 		0 0 14px -6px var(--stylesmith-neon, var(--vscode-focusBorder));
 }
 
-/* Editors without focus keep a dimmer version, so you can still see where you were. */
-.monaco-editor:not(.focused) .view-overlays .current-line {
+/* The marker sits on the left edge of the line number column, in the gutter, so it never
+   touches the code. Line numbers are right-aligned and VS Code keeps room for at least five
+   digits, so the left edge stays free. */
+.monaco-editor.focused .margin-view-overlays .line-numbers.active-line-number {
+	box-shadow: inset 2px 0 0 var(--stylesmith-neon, var(--vscode-focusBorder));
+	text-shadow: 0 0 6px
+		color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 70%, transparent);
+}
+
+/* Editors without focus keep a dimmer marker, so you can still see where you left off. */
+.monaco-editor:not(.focused) .margin-view-overlays .line-numbers.active-line-number {
 	box-shadow: inset 2px 0 0
 		color-mix(in srgb, var(--stylesmith-neon, var(--vscode-focusBorder)) 40%, transparent);
 }

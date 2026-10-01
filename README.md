@@ -69,7 +69,7 @@ git clone https://github.com/21010/stylesmith.git
 cd stylesmith
 npm install
 npx @vscode/vsce package --no-dependencies
-code --install-extension stylesmith-1.6.0.vsix
+code --install-extension stylesmith-1.6.1.vsix
 ```
 
 You can also install the `.vsix` file from VS Code: open the **Extensions** view, click **⋯**, choose **Install from VSIX…**, and pick the file.
@@ -158,7 +158,7 @@ The idea comes from [Neovide](https://github.com/neovide/neovide)'s cursor anima
 
 ### Neon current line
 
-On by default. The line with the cursor gets a glowing neon edge on the left, thin neon lines above and below, and a faint gradient, like a lit line on a HUD. Editors you're not typing in keep a dimmer edge, so you can still see where you left off.
+On by default. The line with the cursor gets thin neon lines above and below and a faint gradient, like a lit line on a HUD. Its line number glows, with a neon marker in the gutter, so nothing is drawn over your code. Editors you're not typing in keep a dimmer marker, so you can still see where you left off.
 
 ### Neon focus frame
 

@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
@@ -113,7 +113,7 @@
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Give the line with the cursor a glowing neon edge. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
+					"markdownDescription": "Give the line with the cursor thin neon lines and a faint gradient, and a glowing line number with a neon marker in the gutter. Nothing is drawn over your code. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. Run **Stylesmith: Reload** after changing this."
 				},
 				"stylesmith.effects.neonFocusFrame": {
 					"type": "boolean",
