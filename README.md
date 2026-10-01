@@ -94,7 +94,7 @@ You can also install the `.vsix` file from VS Code: open the **Extensions** view
     ```
 
 3. Open the Command Palette (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>) and run **Stylesmith: Enable**.
-4. Click **Restart Visual Studio Code** when asked.
+4. Click **Reload Window** when asked.
 5. After you edit your CSS file, run **Stylesmith: Reload**. When you change Stylesmith's settings, it offers to reload by itself.
 
 A paint-can button appears in the status bar. Click it for the Stylesmith menu.
@@ -132,7 +132,7 @@ The button shows **off** when Stylesmith isn't active. To hide it, set `"stylesm
 
 ## After VS Code updates
 
-Every VS Code update replaces the file Stylesmith changes, so its changes disappear. When that happens, Stylesmith notices after VS Code starts and asks whether to re-apply them. One click, and VS Code restarts with your setup back. It only asks and never changes anything on its own. To stop the question, choose **Don't Ask Again** or set `"stylesmith.remindAfterUpdate": false`.
+Every VS Code update replaces the file Stylesmith changes, so its changes disappear. When that happens, Stylesmith notices after VS Code starts and asks whether to re-apply them. One click, and the window reloads with your setup back. It only asks and never changes anything on its own. To stop the question, choose **Don't Ask Again** or set `"stylesmith.remindAfterUpdate": false`.
 
 ## Built-in effects
 
@@ -345,7 +345,7 @@ Each icon has a version for dark and for light themes, and every icon keeps at l
 | **Stylesmith: Apply Preset…** | Sets a complete look: theme, icons, font and effects.         |
 | **Stylesmith: Show Menu**     | Opens the Stylesmith menu, the same as the status bar button. |
 
-Restart VS Code to see the change.
+Reload the window (**Developer: Reload Window**) to see the change.
 
 ## Settings
 

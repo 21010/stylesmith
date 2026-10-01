@@ -53,8 +53,12 @@ class FakeUi implements Ui {
 	offerRestart(message: string): void {
 		this.shown.push(`restart: ${message}`);
 	}
-	run(command: string): Promise<void> {
-		this.ran.push(command);
+	restartNow(): Promise<void> {
+		this.shown.push("restarted");
+		return Promise.resolve();
+	}
+	run(command: string, ...args: unknown[]): Promise<void> {
+		this.ran.push(args.length > 0 ? `${command} ${JSON.stringify(args)}` : command);
 		return Promise.resolve();
 	}
 }
@@ -138,6 +142,8 @@ afterEach(async () => {
 });
 
 const html = () => readFile(workbench.htmlPath, "utf-8");
+/** Lets work that runs after a question is answered finish. */
+const settle = () => new Promise(resolve => setTimeout(resolve, 20));
 
 describe("enable", () => {
 	it("patches VS Code, copies the font, sets the font settings and offers a restart", async () => {
@@ -156,7 +162,29 @@ describe("enable", () => {
 		options = { effects: new Set(), font: undefined, imports: [] };
 		assert.equal(await enable(services), false);
 		assert.equal(await html(), PRISTINE);
-		assert.deepEqual(ui.shown, [`info: ${messages.notConfigured}`]);
+		assert.deepEqual(ui.shown, [`ask: ${messages.notConfigured}`]);
+	});
+
+	it("offers a preset when nothing is turned on", async () => {
+		options = { effects: new Set(), font: undefined, imports: [] };
+		ui.answers = [messages.applyPreset];
+		await enable(services);
+		await settle();
+		assert.deepEqual(ui.ran, ["stylesmith.applyPreset"]);
+	});
+
+	it("removes the font folder when the font is turned off", async () => {
+		await enable(services);
+		assert.ok((await readdir(root)).includes(FONT_FOLDER));
+		options.font = undefined;
+		await enable(services);
+		assert.ok(!(await readdir(root)).includes(FONT_FOLDER));
+		assert.equal(settings.has("editor.fontFamily"), false, "the font setting is put back");
+	});
+
+	it("reloads the window right away when the user already agreed to it", async () => {
+		await enable(services, { restartNow: true });
+		assert.deepEqual(ui.shown, ["restarted"]);
 	});
 
 	it("reports an import it can't load, and still applies the rest", async () => {
@@ -213,8 +241,6 @@ describe("disable", () => {
 });
 
 describe("after startup", () => {
-	const settle = () => new Promise(resolve => setTimeout(resolve, 20));
-
 	it("reports whether VS Code is patched, and asks nothing when all is well", async () => {
 		assert.equal(await checkAfterStartup(services), false);
 		await enable(services);
@@ -231,11 +257,25 @@ describe("after startup", () => {
 		assert.equal(await checkAfterStartup(services), false);
 		await settle();
 		assert.deepEqual(ui.shown, [`ask: ${messages.reapply}`]);
-		assert.deepEqual(ui.ran, ["stylesmith.enable"]);
+		assert.deepEqual(ui.ran, ['stylesmith.reload [{"restartNow":true}]'], "no second question");
 
 		await checkAfterStartup(services); // another window, right after
 		await settle();
 		assert.equal(ui.shown.length, 1, "asked only once");
+	});
+
+	it("reports a problem that happens after the user answered", async () => {
+		await enable(services);
+		await writeFile(workbench.htmlPath, PRISTINE);
+		ui.shown.length = 0;
+		ui.answers = [messages.reapplyNow];
+		ui.run = () => Promise.reject(new Error("boom"));
+		await checkAfterStartup(services);
+		await settle();
+		assert.deepEqual(ui.shown, [
+			`ask: ${messages.reapply}`,
+			`error: ${messages.somethingWrong}boom`
+		]);
 	});
 
 	it("stops asking after Don't Ask Again", async () => {
@@ -262,7 +302,7 @@ describe("reload offer", () => {
 		ui.answers = [messages.reloadNow];
 		await offer.offer();
 		assert.deepEqual(ui.shown, [`ask: ${messages.settingsChanged}`]);
-		assert.deepEqual(ui.ran, ["stylesmith.reload"]);
+		assert.deepEqual(ui.ran, ['stylesmith.reload [{"restartNow":true}]'], "no second question");
 	});
 
 	it("asks one question at a time", async () => {

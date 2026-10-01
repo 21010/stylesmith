@@ -22,6 +22,12 @@ const LEGACY_CONFIG_SECTION = "vscode_custom_css";
  * ignored on purpose, so a cloned repository can never choose what gets injected into VS Code.
  */
 export interface Config {
+	get(key: string, fallback: boolean): boolean;
+	get(key: string, fallback: string): string;
+	get(key: string, fallback: boolean): boolean;
+	get(key: string, fallback: string): string;
+	get(key: string, fallback: boolean): boolean;
+	get(key: string, fallback: string): string;
 	get<T>(key: string, fallback: T): T;
 	set(key: string, value: unknown): Promise<void>;
 	/** The user's CSS and JS imports. */
@@ -42,6 +48,10 @@ function userValue<T>(section: string, key: string, fallback: T): T {
 	return value === undefined || typeof value !== typeof fallback ? fallback : value;
 }
 
+// A boolean fallback gives a boolean: without these, get("x", true) would be typed as `true`.
+function get(key: string, fallback: boolean): boolean;
+function get(key: string, fallback: string): string;
+function get<T>(key: string, fallback: T): T;
 function get<T>(key: string, fallback: T): T {
 	return userValue(CONFIG_SECTION, key, fallback);
 }

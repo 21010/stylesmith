@@ -22,15 +22,18 @@ export const vscodeUi: Ui = {
 		Promise.resolve(vscode.window.showInformationMessage(message, ...choices)),
 	offerRestart: message => {
 		void vscode.window
-			.showInformationMessage(message, messages.restartIde)
+			.showInformationMessage(message, messages.reloadWindow)
 			.then(choice =>
-				choice === messages.restartIde
+				choice === messages.reloadWindow
 					? vscode.commands.executeCommand("workbench.action.reloadWindow")
 					: undefined
 			);
 	},
-	run: async command => {
-		await vscode.commands.executeCommand(command);
+	restartNow: async () => {
+		await vscode.commands.executeCommand("workbench.action.reloadWindow");
+	},
+	run: async (command, ...args) => {
+		await vscode.commands.executeCommand(command, ...args);
 	}
 };
 

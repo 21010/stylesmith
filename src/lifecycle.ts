@@ -41,10 +41,12 @@ export interface Ui {
 	error(message: string): void;
 	/** Shows a message with buttons; resolves to the button chosen, if any. */
 	ask(message: string, ...choices: string[]): Promise<string | undefined>;
-	/** Tells the user a restart is needed, and offers to restart VS Code. */
+	/** Tells the user a window reload is needed, and offers to do it. */
 	offerRestart(message: string): void;
+	/** Reloads the window now, so Stylesmith's changes show. */
+	restartNow(): Promise<void>;
 	/** Runs one of Stylesmith's commands, such as "stylesmith.enable". */
-	run(command: string): Promise<void>;
+	run(command: string, ...args: unknown[]): Promise<void>;
 }
 
 /** What enabling and disabling Stylesmith needs. Passed in, so nothing hides in globals. */
@@ -66,8 +68,14 @@ const FONT_SETTINGS = [
 	{ key: "terminal.integrated.fontFamily", leaveEmpty: true }
 ] as const;
 
+/** How Enable ends. */
+export interface EnableOptions {
+	/** Reload the window right away instead of asking: the user already agreed to it. */
+	restartNow?: boolean;
+}
+
 /** Patches VS Code with the configured font, effects and imports. True if it was patched. */
-export async function enable(services: Services): Promise<boolean> {
+export async function enable(services: Services, options: EnableOptions = {}): Promise<boolean> {
 	const { config, managed, store, ui } = services;
 	const workbench = findWorkbench(services);
 	if (!workbench) return false;
@@ -76,7 +84,13 @@ export async function enable(services: Services): Promise<boolean> {
 	const effects = EFFECTS.filter(effect => config.isOn(effect));
 	const font = config.font();
 	if (imports.length === 0 && effects.length === 0 && !font) {
-		ui.info(messages.notConfigured);
+		// Not awaited: Enable runs in the command queue, and the preset's Reload joins it.
+		void ui
+			.ask(messages.notConfigured, messages.applyPreset)
+			.then(async choice => {
+				if (choice === messages.applyPreset) await ui.run("stylesmith.applyPreset");
+			})
+			.catch(reportTo(ui));
 		return false;
 	}
 
@@ -113,7 +127,8 @@ export async function enable(services: Services): Promise<boolean> {
 	await managed.update(FONT_GROUP, fontSettings(font));
 	await managed.update(EFFECT_GROUP, effectSettings(effects));
 	await store.update({ enabled: true });
-	ui.offerRestart(messages.enabled);
+	if (options.restartNow) await ui.restartNow();
+	else ui.offerRestart(messages.enabled);
 	return true;
 }
 
@@ -149,14 +164,12 @@ export async function checkAfterStartup(services: Services): Promise<boolean> {
 	void ui
 		.ask(messages.reapply, messages.reapplyNow, messages.dontAskAgain)
 		.then(async choice => {
-			if (choice === messages.reapplyNow) await ui.run("stylesmith.enable");
+			// The question already says the window reloads, so it does without asking again.
+			if (choice === messages.reapplyNow)
+				await ui.run("stylesmith.reload", { restartNow: true });
 			else if (choice === messages.dontAskAgain) await config.set("remindAfterUpdate", false);
 		})
-		.catch((error: unknown) => {
-			ui.error(
-				messages.somethingWrong + (error instanceof Error ? error.message : String(error))
-			);
-		});
+		.catch(reportTo(ui));
 	return patched;
 }
 
@@ -176,11 +189,23 @@ export class ReloadOffer {
 		this.asking = true;
 		try {
 			const choice = await this.services.ui.ask(messages.settingsChanged, messages.reloadNow);
-			if (choice === messages.reloadNow) await this.services.ui.run("stylesmith.reload");
+			if (choice === messages.reloadNow) {
+				// The user just agreed, so the window reloads without asking a second time.
+				await this.services.ui.run("stylesmith.reload", { restartNow: true });
+			}
 		} finally {
 			this.asking = false;
 		}
 	}
+}
+
+/** An error handler for work that runs after a question is answered. */
+function reportTo(ui: Ui): (error: unknown) => void {
+	return error => {
+		ui.error(
+			messages.somethingWrong + (error instanceof Error ? error.message : String(error))
+		);
+	};
 }
 
 /** Runs `task`, reporting a permission problem as one with VS Code's workbench folder. */

@@ -32,7 +32,7 @@ const UPDATE_DELAY = 150; // ms; problems change quickly while typing
  * it to remove everything it added.
  */
 export class ProblemLens implements vscode.Disposable {
-	private types = new Map<Severity, vscode.TextEditorDecorationType>();
+	private types: Record<Severity, vscode.TextEditorDecorationType>;
 	private readonly status: vscode.StatusBarItem;
 	private readonly disposables: vscode.Disposable[] = [];
 	private timer: ReturnType<typeof setTimeout> | undefined;
@@ -52,7 +52,7 @@ export class ProblemLens implements vscode.Disposable {
 		this.status.name = "Stylesmith: problem on this line";
 		this.status.command = "workbench.actions.view.problems";
 
-		this.createTypes();
+		this.types = this.createTypes();
 		this.disposables.push(
 			this.status,
 			vscode.languages.onDidChangeDiagnostics(event => {
@@ -67,13 +67,13 @@ export class ProblemLens implements vscode.Disposable {
 			}),
 			vscode.window.onDidChangeActiveTextEditor(() => this.updateStatus()),
 			vscode.window.onDidChangeActiveColorTheme(() => {
-				this.createTypes();
+				this.replaceTypes();
 				this.update();
 			}),
 			vscode.workspace.onDidChangeConfiguration(event => {
 				if (!event.affectsConfiguration("stylesmith.problems")) return;
 				this.options = this.readOptions();
-				this.createTypes();
+				this.replaceTypes();
 				this.update();
 			})
 		);
@@ -82,7 +82,7 @@ export class ProblemLens implements vscode.Disposable {
 
 	dispose(): void {
 		clearTimeout(this.timer);
-		for (const type of this.types.values()) type.dispose();
+		this.disposeTypes();
 		for (const disposable of this.disposables) disposable.dispose();
 	}
 
@@ -91,12 +91,20 @@ export class ProblemLens implements vscode.Disposable {
 		this.timer = setTimeout(() => this.update(), UPDATE_DELAY);
 	}
 
+	/** Replaces the decoration types, after the theme or the settings changed. */
+	private replaceTypes(): void {
+		this.disposeTypes();
+		this.types = this.createTypes();
+	}
+
+	private disposeTypes(): void {
+		for (const type of Object.values(this.types)) type.dispose();
+	}
+
 	/** One decoration type per severity, styled for the current theme. */
-	private createTypes(): void {
-		for (const type of this.types.values()) type.dispose();
-		this.types.clear();
+	private createTypes(): Record<Severity, vscode.TextEditorDecorationType> {
 		const tint = LINE_TINT[themeKind()];
-		for (const severity of SEVERITIES) {
+		const create = (severity: Severity) => {
 			const color = COLOR[severity];
 			const icon = (kind: "dark" | "light") =>
 				this.options.gutterIcons
@@ -106,29 +114,27 @@ export class ProblemLens implements vscode.Disposable {
 							)
 						}
 					: {};
-			this.types.set(
-				severity,
-				vscode.window.createTextEditorDecorationType({
-					isWholeLine: true,
-					backgroundColor:
-						tint > 0
-							? `color-mix(in srgb, var(--vscode-editor${color}-foreground) ${tint}%, transparent)`
-							: undefined,
-					gutterIconSize: "contain",
-					overviewRulerColor: new vscode.ThemeColor(
-						`editorOverviewRuler.${severity}Foreground`
-					),
-					overviewRulerLane: vscode.OverviewRulerLane.Right,
-					after: {
-						margin: "0 0 0 3ch",
-						color: new vscode.ThemeColor(`editor${color}.foreground`),
-						fontStyle: "normal"
-					},
-					dark: icon("dark"),
-					light: icon("light")
-				})
-			);
-		}
+			return vscode.window.createTextEditorDecorationType({
+				isWholeLine: true,
+				backgroundColor:
+					tint > 0
+						? `color-mix(in srgb, var(--vscode-editor${color}-foreground) ${tint}%, transparent)`
+						: undefined,
+				gutterIconSize: "contain",
+				overviewRulerColor: new vscode.ThemeColor(
+					`editorOverviewRuler.${severity}Foreground`
+				),
+				overviewRulerLane: vscode.OverviewRulerLane.Right,
+				after: {
+					margin: "0 0 0 3ch",
+					color: new vscode.ThemeColor(`editor${color}.foreground`),
+					fontStyle: "normal"
+				},
+				dark: icon("dark"),
+				light: icon("light")
+			});
+		};
+		return { error: create("error"), warning: create("warning"), info: create("info") };
 	}
 
 	private update(): void {
@@ -144,7 +150,7 @@ export class ProblemLens implements vscode.Disposable {
 				range: document.lineAt(line).range,
 				renderOptions: text === undefined ? undefined : { after: { contentText: text } }
 			}));
-			editor.setDecorations(this.types.get(severity)!, options);
+			editor.setDecorations(this.types[severity], options);
 		}
 	}
 

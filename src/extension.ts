@@ -2,7 +2,14 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import { SettingChanges, markingOwnChanges } from "./changes";
 import { vscodeConfig, vscodeSettings } from "./config";
-import { ReloadOffer, checkAfterStartup, disable, enable, type Services } from "./lifecycle";
+import {
+	ReloadOffer,
+	checkAfterStartup,
+	disable,
+	enable,
+	type EnableOptions,
+	type Services
+} from "./lifecycle";
 import { ManagedSettings } from "./managed";
 import { messages } from "./messages";
 import { PermissionDeniedError } from "./permissions";
@@ -51,9 +58,9 @@ export function activate(context: vscode.ExtensionContext): void {
 
 	// Commands that change VS Code's files run one at a time, through this queue.
 	let queue = Promise.resolve();
-	const queued = (command: string, task: () => Promise<void>) =>
-		vscode.commands.registerCommand(command, () => {
-			queue = queue.then(() => reportErrors(task));
+	const queued = (command: string, task: (...args: unknown[]) => Promise<void>) =>
+		vscode.commands.registerCommand(command, (...args: unknown[]) => {
+			queue = queue.then(() => reportErrors(() => task(...args)));
 			return queue;
 		});
 	// Commands that only ask the user and change settings stay outside the queue. They run
@@ -71,7 +78,9 @@ export function activate(context: vscode.ExtensionContext): void {
 	context.subscriptions.push(
 		// Enabling always starts from the pristine file, so it doubles as "reload".
 		queued("stylesmith.enable", async () => status.show(await enable(services))),
-		queued("stylesmith.reload", async () => status.show(await enable(services))),
+		queued("stylesmith.reload", async options =>
+			status.show(await enable(services, enableOptions(options)))
+		),
 		queued("stylesmith.disable", async () => {
 			await disable(services);
 			status.show(false);
@@ -97,6 +106,16 @@ export function activate(context: vscode.ExtensionContext): void {
 /** Nothing to do: everything is registered in context.subscriptions, which VS Code disposes. */
 export function deactivate(): void {}
 
+/** Reads Reload's options. Commands can be run with any argument, so only known ones count. */
+function enableOptions(value: unknown): EnableOptions {
+	const restartNow =
+		typeof value === "object" &&
+		value !== null &&
+		"restartNow" in value &&
+		value.restartNow === true;
+	return { restartNow };
+}
+
 /** Where VS Code's application files are, in the order to try them. */
 function vscodeAppDirs(): string[] {
 	return [
@@ -114,11 +133,11 @@ async function reportErrors(task: () => Promise<void>): Promise<void> {
 		if (error instanceof PermissionDeniedError) {
 			void showPermissionHelp(error.folder);
 		} else {
+			const reason = error instanceof Error ? error.message : String(error);
 			vscodeUi.error(
 				isPermissionError(error)
-					? messages.admin
-					: messages.somethingWrong +
-							(error instanceof Error ? error.message : String(error))
+					? messages.notAllowed(reason)
+					: messages.somethingWrong + reason
 			);
 		}
 	}

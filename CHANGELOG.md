@@ -2,6 +2,23 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.14.1 (2026-10-01)
+
+### Changed
+
+- One click instead of two: after you choose **Reload** when your settings changed, or **Re-apply** after a VS Code update, the window reloads right away instead of asking a second time.
+- The button that reloads the window is now called **Reload Window**, which is what it does (it said "Restart Visual Studio Code").
+- When Stylesmith has nothing to add, the message offers **Apply a Preset**.
+- When Stylesmith isn't allowed to save a change outside VS Code's own files, the message says what failed instead of suggesting admin rights.
+
+### Fixed
+
+- Some settings were typed as always on (for example `stylesmith.fonts.enabled`), so TypeScript would have accepted code that ignored the "off" case. Nothing behaved differently, but the compiler now checks those cases.
+
+### Tests
+
+- Enable with the font turned off removes the font folder; a problem after answering the re-apply question is reported.
+
 ## 1.14.0 (2026-10-01)
 
 ### Added

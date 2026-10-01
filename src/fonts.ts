@@ -17,7 +17,8 @@ export interface NerdFont {
 	files: readonly { file: string; weight: number }[];
 }
 
-export const FONTS: readonly NerdFont[] = [
+/** The bundled fonts; the first one is the default (a test checks this). */
+export const FONTS: readonly [NerdFont, ...NerdFont[]] = [
 	{
 		id: "JetBrainsMono",
 		label: "JetBrainsMono Nerd Font",
@@ -54,7 +55,7 @@ export const DEFAULT_FONT_ID = "JetBrainsMono";
 
 /** The bundled font with this id; the default font for an unknown id. */
 export function findFont(id: string): NerdFont {
-	return FONTS.find(font => font.id === id) ?? FONTS.find(font => font.id === DEFAULT_FONT_ID)!;
+	return FONTS.find(font => font.id === id) ?? FONTS[0];
 }
 
 /** `@font-face` rules that embed the font files, so no file or network access is needed. */
