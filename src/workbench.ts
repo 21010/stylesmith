@@ -4,6 +4,7 @@
  * up after older versions and Custom CSS and JS Loader.
  */
 
+import { randomUUID } from "node:crypto";
 import { constants, existsSync } from "node:fs";
 import {
 	copyFile,
@@ -13,6 +14,7 @@ import {
 	readFile,
 	rename,
 	rm,
+	stat,
 	unlink,
 	writeFile
 } from "node:fs/promises";
@@ -92,7 +94,8 @@ export async function removeLegacyBackups(workbench: Workbench): Promise<void> {
  * leave VS Code with a truncated workbench.
  */
 export async function writeFileAtomic(file: string, data: string): Promise<void> {
-	const temp = `${file}.${process.pid}.tmp`;
+	// A random name, so a temporary file left by a crash never blocks a later write.
+	const temp = `${file}.${randomUUID()}.tmp`;
 	let createdTemp = false;
 	try {
 		// Copying keeps the original's permissions. COPYFILE_EXCL refuses to reuse an existing
@@ -170,6 +173,12 @@ async function hasFonts(workbench: Workbench, files: readonly string[]): Promise
 		const wanted = files.map(file => path.basename(file)).sort();
 		if (present.join("/") !== wanted.join("/")) return false;
 		for (const file of files) {
+			// Sizes first: a different font almost always has a different size.
+			const [sizeA, sizeB] = await Promise.all([
+				stat(file),
+				stat(path.join(folder, path.basename(file)))
+			]);
+			if (sizeA.size !== sizeB.size) return false;
 			const [a, b] = await Promise.all([
 				readFile(file),
 				readFile(path.join(folder, path.basename(file)))
@@ -189,7 +198,8 @@ export async function removeFonts(workbench: Workbench): Promise<void> {
 
 /**
  * Whether the workbench is patched by Stylesmith. Only the start of the file is read: the
- * marker comes right after VS Code's own few kilobytes of head, before any embedded fonts.
+ * marker comes right after VS Code's own few kilobytes of head, before the injected styles
+ * and scripts, which can be large.
  */
 export async function isPatched(workbench: Workbench, bytes = 64 * 1024): Promise<boolean> {
 	const handle = await open(workbench.htmlPath, "r");

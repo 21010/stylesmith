@@ -58,7 +58,10 @@ export function findFont(id: string): NerdFont {
 	return FONTS.find(font => font.id === id) ?? FONTS[0];
 }
 
-/** `@font-face` rules that embed the font files, so no file or network access is needed. */
+/**
+ * `@font-face` rules that load the font files from the font folder next to the workbench HTML
+ * file (see writeFonts), so no network access is needed.
+ */
 export function fontFaceCss(font: NerdFont): string {
 	return font.files
 		.map(

@@ -24,10 +24,6 @@ const LEGACY_CONFIG_SECTION = "vscode_custom_css";
 export interface Config {
 	get(key: string, fallback: boolean): boolean;
 	get(key: string, fallback: string): string;
-	get(key: string, fallback: boolean): boolean;
-	get(key: string, fallback: string): string;
-	get(key: string, fallback: boolean): boolean;
-	get(key: string, fallback: string): string;
 	get<T>(key: string, fallback: T): T;
 	set(key: string, value: unknown): Promise<void>;
 	/** The user's CSS and JS imports. */

@@ -105,10 +105,14 @@ describe("font folder", () => {
 		assert.equal(await writeFonts(workbench, [font]), true, "copied the first time");
 		assert.equal(await writeFonts(workbench, [font]), false, "not copied again when unchanged");
 
+		const copy = path.join(dir, "stylesmith-fonts", "A-Regular.woff2");
 		await writeFile(font, "new font");
 		assert.equal(await writeFonts(workbench, [font]), true, "copied again when changed");
-		const copy = path.join(dir, "stylesmith-fonts", "A-Regular.woff2");
 		assert.equal(await readFile(copy, "utf-8"), "new font");
+
+		await writeFile(font, "NEW FONT");
+		assert.equal(await writeFonts(workbench, [font]), true, "copied again at the same size");
+		assert.equal(await readFile(copy, "utf-8"), "NEW FONT");
 	});
 });
 
@@ -116,8 +120,11 @@ describe("isPatched", () => {
 	it("finds the marker near the start of a large patched file", async () => {
 		const htmlPath = path.join(root, "workbench.html");
 		const head = "<html><head><meta charset='utf-8'>" + "x".repeat(4000);
-		const fonts = "y".repeat(3 * 1024 * 1024);
-		await writeFile(htmlPath, `${head}<!-- !! STYLESMITH-START !! -->\n${fonts}</head></html>`);
+		const injected = "y".repeat(3 * 1024 * 1024);
+		await writeFile(
+			htmlPath,
+			`${head}<!-- !! STYLESMITH-START !! -->\n${injected}</head></html>`
+		);
 		assert.equal(await isPatched({ dir: root, htmlPath }), true);
 	});
 
@@ -136,14 +143,15 @@ describe("writeFileAtomic", () => {
 		assert.deepEqual(await readdir(root), ["workbench.html"]);
 	});
 
-	it("does not write through a file planted at the temporary path", async () => {
+	it("is not blocked by, and leaves alone, a temporary file left behind earlier", async () => {
 		const file = path.join(root, "workbench.html");
-		const planted = `${file}.${process.pid}.tmp`;
+		const leftover = `${file}.${process.pid}.tmp`;
 		await writeFile(file, "old");
-		await writeFile(planted, "planted");
-		await assert.rejects(writeFileAtomic(file, "new"), { code: "EEXIST" });
-		assert.equal(await readFile(file, "utf-8"), "old");
-		assert.equal(await readFile(planted, "utf-8"), "planted");
+		await writeFile(leftover, "leftover");
+		await writeFileAtomic(file, "new");
+		assert.equal(await readFile(file, "utf-8"), "new");
+		assert.equal(await readFile(leftover, "utf-8"), "leftover");
+		assert.deepEqual((await readdir(root)).sort(), ["workbench.html", path.basename(leftover)]);
 	});
 
 	it("fails when the target does not exist", async () => {
