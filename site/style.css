@@ -303,6 +303,12 @@ img {
 	color: var(--muted);
 }
 
+/* Not part of the extension: a full row, in the second accent color. */
+.cards .addon {
+	grid-column: 1 / -1;
+	border-left-color: var(--pink);
+}
+
 /* Security */
 
 .checks {

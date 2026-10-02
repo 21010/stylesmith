@@ -40,6 +40,7 @@ Everything you need for a retro or cyberpunk VS Code, ready to use:
 - **[Problem Lens](#problem-lens):** errors and warnings right on their line, with pixel gutter icons and terminal-style messages.
 - **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, solid problem underlines, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
 - **[Presets](#presets):** a complete look in one step, such as Night City or Phosphor Terminal.
+- **[Terminal prompt](#terminal-prompt-optional-add-on)** (optional add-on): an Oh My Posh theme for your shell that follows the Stylesmith theme you picked.
 
 Each part works on its own. The effects follow any theme, including ones that aren't from Stylesmith, and the themes and icons work even without running **Stylesmith: Enable**.
 
@@ -350,6 +351,51 @@ That's why the themes mark added lines in teal, modified lines in violet and del
 **Stylesmith Pixel** is a file icon theme with retro 16×16 pixel icons: a page with a colored band and a short pixel label (`JS`, `TS`, `PY`, `</>` and so on), and pixel folders. It covers about 90 file types and common files like `package.json`, `Dockerfile` and `.gitignore`. Pick it with **Preferences: File Icon Theme**.
 
 Each icon has a version for dark and for light themes, and every icon keeps at least 3:1 contrast on the side bar.
+
+## Terminal prompt (optional add-on)
+
+To match your shell prompt to the rest of the look, Stylesmith has an optional theme for [Oh My Posh](https://ohmyposh.dev), a prompt engine for PowerShell, bash, zsh, fish and more. It isn't part of the extension: Stylesmith never installs it and never changes your shell profile. Use it only if you want it.
+
+```text
+╭─ ~\projects\stylesmith on main ?1 took 3s
+╰─❯
+```
+
+What the prompt shows:
+
+- **The folder** you're in, shortened to the last three parts.
+- **The git branch:** green when it's clean, yellow when there are changes, magenta when it's ahead of or behind its remote.
+- **How long the last command took**, when it took longer than two seconds.
+- **The exit code** of a command that failed. The `❯` turns red too.
+- **Your user and computer name**, only in an SSH session.
+
+Earlier prompts shrink to a single `❯`, so the terminal's history stays easy to read.
+
+**It follows your theme.** The prompt uses only the terminal's own 16 colors, not fixed ones. In VS Code's terminal, those come from the Stylesmith theme you picked, so the prompt is green on Phosphor, amber on Amber and frost on ICE without any change. In other terminals, it uses that terminal's colors. Every color it uses passes the same contrast checks as the themes, and a test makes sure it stays that way.
+
+**Icons need a Nerd Font.** In VS Code, Stylesmith's [fonts](#fonts) already include them. In other terminals, such as Windows Terminal, install a [Nerd Font](https://www.nerdfonts.com) and pick it there, or the icons show as boxes.
+
+### Setting it up
+
+1. [Install Oh My Posh](https://ohmyposh.dev/docs/installation/windows), version 29 or newer. On Windows: `winget install JanDeDobbeleer.OhMyPosh`.
+2. Download the theme to your home folder. In PowerShell:
+
+    ```powershell
+    Invoke-WebRequest https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json -OutFile "$HOME\stylesmith.omp.json"
+    ```
+
+    Keep your own copy rather than pointing Oh My Posh to the URL, so the prompt never changes without you knowing.
+
+3. Add one line to your shell's profile, then open a new terminal:
+
+    | Shell      | Profile                      | Line to add                                                                      |
+    | ---------- | ---------------------------- | -------------------------------------------------------------------------------- |
+    | PowerShell | `notepad $PROFILE`           | `oh-my-posh init pwsh --config "$HOME\stylesmith.omp.json" \| Invoke-Expression` |
+    | bash       | `~/.bashrc`                  | `eval "$(oh-my-posh init bash --config ~/stylesmith.omp.json)"`                  |
+    | zsh        | `~/.zshrc`                   | `eval "$(oh-my-posh init zsh --config ~/stylesmith.omp.json)"`                   |
+    | fish       | `~/.config/fish/config.fish` | `oh-my-posh init fish --config ~/stylesmith.omp.json \| source`                  |
+
+To stop using it, remove that line from your profile.
 
 ## Commands
 
