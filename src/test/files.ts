@@ -29,8 +29,16 @@ export interface ColorTheme {
 	tokenColors: { scope?: string | string[]; settings: { foreground?: string } }[];
 }
 
-export interface IconTheme {
+/** Which icon each file extension, file name and language uses. */
+export interface IconMappings {
+	fileExtensions: Record<string, string>;
+	fileNames: Record<string, string>;
+	languageIds: Record<string, string>;
+}
+
+export interface IconTheme extends IconMappings {
 	iconDefinitions: Record<string, { iconPath: string }>;
+	light: IconMappings;
 }
 
 /** Reads a JSON file of the project; `T` is what the file is expected to hold. */

@@ -1,15 +1,28 @@
-// Builds the Stylesmith Pixel file icon theme into icons/.
+// Builds the Stylesmith Pixel file icon themes into icons/.
 // Run with: npm run icons
 //
 // Every icon is 16×16 pixel art: a page with a folded corner and a colored band with a short
 // label in a 3×5 pixel font, or a pixel folder. Each icon comes in a dark and a light version,
 // adjusted so it keeps at least 3:1 contrast on the side bar (WCAG non-text contrast).
+//
+// Stylesmith Pixel colors each file type in its own color. Themes with an `icons` palette
+// (Phosphor, Amber, ICE) also get their own set, colored by kind of file in the theme's colors.
 
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { contrast, mix } from "../out/color.js";
-import { EDITOR, FILES, FOLDER, GLYPHS, OUTLINE, PROBLEM_ICONS, SIDEBAR } from "./data/icons.mjs";
+import {
+	CATEGORIES,
+	EDITOR,
+	FILES,
+	FOLDER,
+	GLYPHS,
+	OUTLINE,
+	PROBLEM_ICONS,
+	SIDEBAR
+} from "./data/icons.mjs";
+import { palettes } from "./data/palettes.mjs";
 
 const MIN_CONTRAST = 3;
 
@@ -98,52 +111,89 @@ function textOn(color) {
 }
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "icons");
-const dir = join(root, "pixel");
-rmSync(dir, { recursive: true, force: true });
-mkdirSync(dir, { recursive: true });
 
-const theme = {
-	iconDefinitions: {},
-	fileExtensions: {},
-	fileNames: {},
-	languageIds: {},
-	light: {}
+/** The colors of the original Stylesmith Pixel set: each file type's own color. */
+const brandLook = kind => ({
+	outline: OUTLINE[kind],
+	folder: fit(FOLDER[kind], kind),
+	band: file => fit(file.color, kind),
+	text: textOn
+});
+
+/**
+ * The colors of a theme's own set (dark themes): band colors by kind of file, from the
+ * palette, and label text in the theme's darkest color or white.
+ */
+const themeLook = palette => kind => {
+	if (kind === "light") return brandLook(kind);
+	const colors = palette.icons;
+	const category = id =>
+		Object.keys(CATEGORIES).find(name => CATEGORIES[name].includes(id)) ?? "code";
+	return {
+		outline: fit(colors.outline, kind),
+		folder: fit(colors.folder, kind),
+		band: file => fit(colors[category(file.id)], kind),
+		text: color =>
+			contrast(palette.bgDark, color) >= contrast("#ffffff", color)
+				? palette.bgDark
+				: "#ffffff"
+	};
 };
-theme.light = { fileExtensions: {}, fileNames: {}, languageIds: {} };
 
-function define(id, kind, pixels) {
-	const name = kind === "dark" ? id : `${id}_light`;
-	writeFileSync(join(dir, `${name}.svg`), svg(pixels));
-	theme.iconDefinitions[name] = { iconPath: `./pixel/${name}.svg` };
-	return name;
-}
+/**
+ * Draws one icon set into icons/<set>/ and writes icons/<set>-icon-theme.json. Kinds the set
+ * doesn't draw (the light version of a dark theme's set) use the original set's icons.
+ */
+function iconSet(set, look, kinds) {
+	const dir = join(root, set);
+	rmSync(dir, { recursive: true, force: true });
+	mkdirSync(dir, { recursive: true });
 
-for (const kind of ["dark", "light"]) {
-	const target = kind === "dark" ? theme : theme.light;
-	const outline = OUTLINE[kind];
-	const folderColor = fit(FOLDER[kind], kind);
+	const theme = {
+		iconDefinitions: {},
+		fileExtensions: {},
+		fileNames: {},
+		languageIds: {},
+		light: { fileExtensions: {}, fileNames: {}, languageIds: {} }
+	};
 
-	target.file = define("_file", kind, page(outline));
-	target.folder = define("_folder", kind, folder(folderColor, false));
-	target.folderExpanded = define("_folder_open", kind, folder(folderColor, true));
-	target.rootFolder = target.folder;
-	target.rootFolderExpanded = target.folderExpanded;
+	for (const kind of ["dark", "light"]) {
+		const target = kind === "dark" ? theme : theme.light;
+		const drawn = kinds.includes(kind);
+		const define = (id, pixels) => {
+			const name = kind === "dark" ? id : `${id}_light`;
+			if (drawn) writeFileSync(join(dir, `${name}.svg`), svg(pixels));
+			theme.iconDefinitions[name] = { iconPath: `./${drawn ? set : "pixel"}/${name}.svg` };
+			return name;
+		};
+		const colors = look(kind);
 
-	for (const file of FILES) {
-		const color = fit(file.color, kind);
-		const name = define(
-			file.id,
-			kind,
-			page(outline, { color, text: textOn(color) }, file.label)
-		);
-		for (const ext of file.ext) target.fileExtensions[ext] = name;
-		for (const lang of file.lang) target.languageIds[lang] = name;
-		for (const fileName of file.names ?? []) target.fileNames[fileName] = name;
+		target.file = define("_file", page(colors.outline));
+		target.folder = define("_folder", folder(colors.folder, false));
+		target.folderExpanded = define("_folder_open", folder(colors.folder, true));
+		target.rootFolder = target.folder;
+		target.rootFolderExpanded = target.folderExpanded;
+
+		for (const file of FILES) {
+			const color = colors.band(file);
+			const name = define(
+				file.id,
+				page(colors.outline, { color, text: colors.text(color) }, file.label)
+			);
+			for (const ext of file.ext) target.fileExtensions[ext] = name;
+			for (const lang of file.lang) target.languageIds[lang] = name;
+			for (const fileName of file.names ?? []) target.fileNames[fileName] = name;
+		}
 	}
+
+	writeFileSync(join(root, `${set}-icon-theme.json`), JSON.stringify(theme, null, "\t") + "\n");
+	console.log(`wrote ${set}: ${Object.keys(theme.iconDefinitions).length} icons`);
 }
 
-writeFileSync(join(root, "pixel-icon-theme.json"), JSON.stringify(theme, null, "\t") + "\n");
-console.log(`wrote ${Object.keys(theme.iconDefinitions).length} icons`);
+iconSet("pixel", brandLook, ["dark", "light"]);
+for (const palette of palettes.filter(p => p.icons)) {
+	iconSet(`pixel-${palette.id}`, themeLook(palette), ["dark"]);
+}
 
 const problemDir = join(root, "problems");
 rmSync(problemDir, { recursive: true, force: true });

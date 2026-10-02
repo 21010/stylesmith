@@ -5,7 +5,7 @@ import { FONTS } from "./fonts";
 import type { Ui } from "./lifecycle";
 import { messages } from "./messages";
 import { permissionHelp } from "./permissions";
-import { ICON_THEME, PRESETS, presetEffects, type Preset } from "./presets";
+import { PRESETS, presetEffects, type Preset } from "./presets";
 
 /**
  * Stylesmith's UI in VS Code: notifications, the status bar button and the menu it opens,
@@ -164,7 +164,7 @@ export async function applyPreset(config: Config, id?: unknown): Promise<void> {
 }
 
 async function usePreset(config: Config, preset: Preset): Promise<void> {
-	await config.setThemes(preset.theme, ICON_THEME);
+	await config.setThemes(preset.theme, preset.iconTheme);
 	await config.set("fonts.enabled", true);
 	await config.set("fonts.family", preset.font);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);

@@ -35,7 +35,7 @@ The [Security](#security) section has the details.
 Everything you need for a retro or cyberpunk VS Code, ready to use:
 
 - **[Themes](#color-themes):** seven color themes (Neon Night, Phosphor, Amber, ICE, Daylight and two high contrast themes), all checked against the WCAG contrast rules and for color blindness.
-- **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types.
+- **[Icons](#pixel-icons):** Stylesmith Pixel, retro pixel-art icons for about 90 file types, with matching sets for Phosphor, Amber and ICE.
 - **[Fonts](#fonts):** four Nerd Fonts for the editor and terminal, with thousands of icons for prompts and tools.
 - **[Problem Lens](#problem-lens):** errors and warnings right on their line, with pixel gutter icons and terminal-style messages.
 - **[Effects](#built-in-effects):** a gliding caret, neon highlights, neon code blocks, solid problem underlines, CRT scanlines, typing sparks, a boot sequence and a glitch on save.
@@ -98,7 +98,7 @@ A paint-can button appears in the status bar. Click it for the Stylesmith menu.
 
 ## Presets
 
-A preset sets up a complete look in one step: a color theme, the pixel icons, a Nerd Font and a set of effects. Run **Stylesmith: Apply Preset…**, or pick **Apply a preset…** in the status bar menu.
+A preset sets up a complete look in one step: a color theme, the pixel icons that go with it, a Nerd Font and a set of effects. Run **Stylesmith: Apply Preset…**, or pick **Apply a preset…** in the status bar menu.
 
 | Preset                | Theme              | Font          | Extra effects                                                                     |
 | --------------------- | ------------------ | ------------- | --------------------------------------------------------------------------------- |
@@ -351,6 +351,22 @@ That's why the themes mark added lines in teal, modified lines in violet and del
 **Stylesmith Pixel** is a file icon theme with retro 16×16 pixel icons: a page with a colored band and a short pixel label (`JS`, `TS`, `PY`, `</>` and so on), and pixel folders. It covers about 90 file types and common files like `package.json`, `Dockerfile` and `.gitignore`. Pick it with **Preferences: File Icon Theme**.
 
 Each icon has a version for dark and for light themes, and every icon keeps at least 3:1 contrast on the side bar.
+
+### Matching sets for Phosphor, Amber and ICE
+
+Stylesmith Pixel gives each file type its own color, which suits colorful themes like Neon Night. The single-color themes get their own sets, drawn in the theme's colors:
+
+| Icon theme                    | Code           | Config and data | Documents  | Media and assets |
+| ----------------------------- | -------------- | --------------- | ---------- | ---------------- |
+| **Stylesmith Pixel Phosphor** | phosphor green | amber           | pale green | teal             |
+| **Stylesmith Pixel Amber**    | amber          | orange          | cream      | yellow-green     |
+| **Stylesmith Pixel ICE**      | frost cyan     | violet          | ice white  | frost blue       |
+
+Config and data are files like `package.json`, `.yml`, `.env` and lock files; documents are Markdown, text, PDF, notebooks and licenses; media are images, SVGs, fonts and archives. Everything else is code.
+
+The colors set the mood; the labels tell the file types apart. Within one family of colors, the four kinds of file can look alike with color blindness, so don't rely on the color alone. Every icon keeps at least 3:1 contrast on its theme's side bar, and every label at least 4.5:1 on its band.
+
+VS Code picks the icon theme separately from the color theme, so choose the matching set with **Preferences: File Icon Theme**. The Phosphor Terminal, Amber Monitor and Black ICE presets do it for you. With a light theme, these sets show the regular Stylesmith Pixel icons.
 
 ## Terminal prompt (optional add-on)
 

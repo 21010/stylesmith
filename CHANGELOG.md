@@ -2,6 +2,14 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.17.0 (2026-10-02)
+
+### Added
+
+- **Matching pixel icons for Phosphor, Amber and ICE:** three new file icon themes, Stylesmith Pixel Phosphor, Stylesmith Pixel Amber and Stylesmith Pixel ICE, drawn in each theme's own colors. Files are colored by kind (code, config and data, documents, media), and the labels still tell the file types apart. Every icon keeps at least 3:1 contrast on its theme's side bar, and every label 4.5:1 on its band. With a light theme, they show the regular Stylesmith Pixel icons.
+- The Phosphor Terminal, Amber Monitor and Black ICE presets now pick their theme's matching icons. The other presets keep Stylesmith Pixel.
+- An optional [Oh My Posh](https://ohmyposh.dev) prompt theme for PowerShell, bash, zsh and fish, in `extras/oh-my-posh/`. It uses the terminal's own colors, so in VS Code it follows the Stylesmith theme you picked. It isn't part of the extension, and Stylesmith never changes your shell profile; see the README for setup.
+
 ## 1.16.5 (2026-10-02)
 
 ### Tests

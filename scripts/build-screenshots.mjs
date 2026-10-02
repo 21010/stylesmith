@@ -35,7 +35,7 @@ const { enable, disable } = require(join(ROOT, "out", "lifecycle.js"));
 const { ManagedSettings } = require(join(ROOT, "out", "managed.js"));
 const { StateFile } = require(join(ROOT, "out", "store.js"));
 const { findFont } = require(join(ROOT, "out", "fonts.js"));
-const { PRESETS, ICON_THEME } = require(join(ROOT, "out", "presets.js"));
+const { PRESETS } = require(join(ROOT, "out", "presets.js"));
 const { locateWorkbench } = require(join(ROOT, "out", "workbench.js"));
 
 // SHOTS=daylight npm run screenshots takes just one.
@@ -176,7 +176,8 @@ async function shoot(executable, workbench, extensions, preset) {
 		store,
 		ui,
 		findWorkbench: () => workbench,
-		asAbsolutePath: relativePath => join(ROOT, relativePath)
+		asAbsolutePath: relativePath => join(ROOT, relativePath),
+		locationFile: join(temp, ".workbench-location.json")
 	};
 
 	const project = join(temp, "neon-server");
@@ -194,7 +195,7 @@ async function shoot(executable, workbench, extensions, preset) {
 			join(userData, "User", "settings.json"),
 			JSON.stringify({
 				"workbench.colorTheme": preset.theme,
-				"workbench.iconTheme": ICON_THEME,
+				"workbench.iconTheme": preset.iconTheme,
 				// The preset's own choices, as Apply Preset writes them, so the menu shows them.
 				...Object.fromEntries(
 					Object.entries(preset.effects).map(([key, on]) => [`stylesmith.${key}`, on])
@@ -238,9 +239,18 @@ async function shoot(executable, workbench, extensions, preset) {
 		await page.keyboard.press("ArrowUp");
 		await page.keyboard.press("End");
 		await page.waitForTimeout(1200);
+		// A status bar that still says "Activating Extensions..." would end up in the picture.
+		await page
+			.locator(".statusbar", { hasText: "Activating" })
+			.waitFor({ state: "hidden", timeout: 30_000 })
+			.catch(() => console.warn(`  ${preset.id}: extensions still activating`));
 		// Pop-up notifications (like the expected "installation appears to be corrupt") would
-		// cover the editor; they're still in the notification center.
-		await page.addStyleTag({ content: ".notifications-toasts { display: none !important; }" });
+		// cover the editor; they're still in the notification center. A scrollbar that is still
+		// fading out after moving the cursor would show up too.
+		await page.addStyleTag({
+			content:
+				".notifications-toasts, .monaco-editor .scrollbar.horizontal { display: none !important; }"
+		});
 		if (process.env.DEBUG_SHOTS) {
 			console.log(readFileSync(join(userData, "User", "settings.json"), "utf-8"));
 			console.log(await page.$eval(".monaco-workbench", el => el.className));

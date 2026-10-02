@@ -166,6 +166,14 @@ export const FILES = [
 	}
 ];
 
+// Kinds of file, for the icon sets of single-color themes (the `icons` colors in
+// palettes.mjs). A file type that isn't listed here is code.
+export const CATEGORIES = {
+	config: ["json", "yaml", "toml", "xml", "env", "lock", "npm", "docker", "git", "csv"],
+	docs: ["md", "txt", "pdf", "license", "ipynb"],
+	media: ["svg", "image", "font", "zip"]
+};
+
 export const SIDEBAR = {
 	// The side bar colors the icons are checked against: VS Code's defaults and Stylesmith's.
 	dark: ["#181818", "#252526", "#0b0d19", "#070e09", "#0f0b04", "#080c12", "#000000"],

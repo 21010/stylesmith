@@ -147,6 +147,7 @@ export async function run(): Promise<void> {
 			"the first preset"
 		);
 		assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Phosphor");
+		assert.equal(userValue("workbench", "iconTheme"), "stylesmith-pixel-phosphor");
 		// Its classic layout turns on VS Code's compact density, in versions that have it
 		// (1.129 and newer); older versions are skipped without an error.
 		const hasDensity =

@@ -2,19 +2,22 @@
 
 import { EFFECTS } from "./effects";
 
-/** A complete look: a color theme, the pixel icons, a font and a set of effects. */
+/** A complete look: a color theme, its pixel icons, a font and a set of effects. */
 export interface Preset {
 	id: string;
 	label: string;
 	description: string;
 	/** Color theme label, as listed in package.json. */
 	theme: string;
+	/** File icon theme id, as listed in package.json: the theme's own pixel icons, if it has them. */
+	iconTheme: string;
 	/** Nerd Font id, as used by `stylesmith.fonts.family`. */
 	font: string;
 	/** Every effect's setting (e.g. `effects.crtScanlines`) and whether it's on. */
 	effects: Record<string, boolean>;
 }
 
+/** Stylesmith Pixel with each file type's own color, for themes without their own icons. */
 export const ICON_THEME = "stylesmith-pixel";
 
 // Effects that are on in every preset: subtle, and they follow the theme's colors.
@@ -35,6 +38,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"Cyberpunk neon: Neon Night, JetBrains Mono, glowing code, sparks, boot sequence and glitch",
 		theme: "Stylesmith Neon Night",
+		iconTheme: ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
 			...BASE,
@@ -54,6 +58,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"Green CRT terminal: Phosphor, Departure Mono, scanlines, boot sequence, square layout",
 		theme: "Stylesmith Phosphor",
+		iconTheme: "stylesmith-pixel-phosphor",
 		font: "DepartureMono",
 		effects: {
 			...BASE,
@@ -72,6 +77,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Amber Monitor",
 		description: "Amber monochrome monitor: Amber, BlexMono, scanlines and square layout",
 		theme: "Stylesmith Amber",
+		iconTheme: "stylesmith-pixel-amber",
 		font: "BlexMono",
 		effects: {
 			...BASE,
@@ -91,6 +97,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"Cold white phosphor: ICE, ShureTechMono, glowing code and terminal, scanlines",
 		theme: "Stylesmith ICE",
+		iconTheme: "stylesmith-pixel-ice",
 		font: "ShureTechMono",
 		effects: {
 			...BASE,
@@ -109,6 +116,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Daylight",
 		description: "Calm and bright: Daylight, JetBrains Mono and the subtle effects only",
 		theme: "Stylesmith Daylight",
+		iconTheme: ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
 			...BASE,
@@ -127,6 +135,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "High Contrast",
 		description: "Maximum readability: Neon High Contrast, JetBrains Mono, no moving effects",
 		theme: "Stylesmith Neon High Contrast",
+		iconTheme: ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
 			...BASE,

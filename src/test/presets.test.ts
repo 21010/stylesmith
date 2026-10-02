@@ -12,15 +12,24 @@ describe("presets", () => {
 		assert.equal(new Set(PRESETS.map(preset => preset.id)).size, PRESETS.length);
 	});
 
-	it("use the Stylesmith Pixel icon theme", () => {
-		assert.ok(contributes.iconThemes.some((theme: { id: string }) => theme.id === ICON_THEME));
+	it("fall back to the Stylesmith Pixel icon theme", () => {
+		assert.ok(contributes.iconThemes.some(theme => theme.id === ICON_THEME));
 	});
 
 	for (const preset of PRESETS) {
 		describe(preset.label, () => {
 			it("uses a Stylesmith color theme", () => {
-				const labels = contributes.themes.map((theme: { label: string }) => theme.label);
+				const labels = contributes.themes.map(theme => theme.label);
 				assert.ok(labels.includes(preset.theme), preset.theme);
+			});
+
+			it("uses its color theme's own pixel icons, if it has them", () => {
+				// "Stylesmith Phosphor" has its own icons if "Stylesmith Pixel Phosphor" exists.
+				const own = contributes.iconThemes.find(
+					theme =>
+						theme.label === preset.theme.replace("Stylesmith ", "Stylesmith Pixel ")
+				);
+				assert.equal(preset.iconTheme, own?.id ?? ICON_THEME);
 			});
 
 			it("uses a bundled font", () => {
