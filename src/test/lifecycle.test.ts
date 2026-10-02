@@ -132,7 +132,9 @@ beforeEach(async () => {
 		store,
 		ui,
 		findWorkbench: () => workbench,
-		asAbsolutePath: relativePath => path.join(ROOT, relativePath)
+		asAbsolutePath: relativePath => path.join(ROOT, relativePath),
+		// In the test folder: the real location file is in the project, next to out/.
+		locationFile: path.join(root, ".workbench-location.json")
 	};
 });
 
@@ -156,6 +158,17 @@ describe("enable", () => {
 		);
 		assert.equal((await services.store.read()).enabled, true);
 		assert.deepEqual(ui.shown, [`restart: ${messages.enabled}`]);
+	});
+
+	it("remembers the workbench's location in the given file", async () => {
+		await enable(services);
+		// Remembering isn't awaited by Enable, so give it a moment.
+		let text: string | undefined;
+		for (let i = 0; i < 50 && text === undefined; i++) {
+			text = await readFile(services.locationFile, "utf-8").catch(() => undefined);
+			if (text === undefined) await settle();
+		}
+		assert.deepEqual(JSON.parse(text ?? "null"), workbench);
 	});
 
 	it("does nothing, and says so, when nothing is turned on", async () => {

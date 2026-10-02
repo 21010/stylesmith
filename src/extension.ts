@@ -16,6 +16,7 @@ import { PermissionDeniedError } from "./permissions";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
 import { applyPreset, createStatusButton, showMenu, showPermissionHelp, vscodeUi } from "./ui";
+import { LOCATION_FILE } from "./uninstall";
 import { isPermissionError, locateWorkbench } from "./workbench";
 
 /**
@@ -53,7 +54,8 @@ export function activate(context: vscode.ExtensionContext): void {
 		store,
 		ui: vscodeUi,
 		findWorkbench: () => locateWorkbench(vscodeAppDirs()),
-		asAbsolutePath: relativePath => context.asAbsolutePath(relativePath)
+		asAbsolutePath: relativePath => context.asAbsolutePath(relativePath),
+		locationFile: LOCATION_FILE
 	};
 
 	// Commands that change VS Code's files run one at a time, through this queue.

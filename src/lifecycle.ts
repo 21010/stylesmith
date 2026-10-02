@@ -59,6 +59,8 @@ export interface Services {
 	findWorkbench(): Workbench | undefined;
 	/** The full path of a file bundled with the extension. */
 	asAbsolutePath(relativePath: string): string;
+	/** Where to remember the workbench's location for the uninstall cleanup (LOCATION_FILE). */
+	locationFile: string;
 }
 
 // Font settings Stylesmith puts its Nerd Font into. An empty terminal font already follows
@@ -226,7 +228,7 @@ function findWorkbench(services: Services, reportMissing = true): Workbench | un
 	}
 	if (workbench) {
 		// So the uninstall cleanup can find it later, when VS Code's API isn't available.
-		rememberWorkbench(workbench).catch((error: unknown) =>
+		rememberWorkbench(workbench, services.locationFile).catch((error: unknown) =>
 			console.warn("stylesmith: could not remember the workbench location", error)
 		);
 	}

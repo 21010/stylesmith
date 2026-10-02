@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.16.5 (2026-10-02)
+
+### Tests
+
+- The tests no longer leave a `.workbench-location.json` file in the project folder. Where Stylesmith remembers VS Code's location for the uninstall cleanup is now passed in like its other services, so the tests use their own temporary folder.
+
 ## 1.16.4 (2026-10-02)
 
 ### Changed
