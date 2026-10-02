@@ -57,9 +57,9 @@
 		"editorError.foreground": "#ff7a6b",
 		"editorWarning.foreground": "#ffcf73",
 		"editorInfo.foreground": "#8fe3d0",
-		"editorGutter.addedBackground": "#5ee6c4",
-		"editorGutter.modifiedBackground": "#b69cff",
-		"editorGutter.deletedBackground": "#ff8a6b",
+		"editorGutter.addedBackground": "#6dff9a",
+		"editorGutter.modifiedBackground": "#ffb03f",
+		"editorGutter.deletedBackground": "#ff6b6b",
 		"editorOverviewRuler.border": "#00000000",
 		"editorWidget.background": "#122018",
 		"editorWidget.foreground": "#b9f2b4",
@@ -79,8 +79,8 @@
 		"peekViewEditor.background": "#070e09",
 		"peekViewResult.background": "#122018",
 		"peekViewTitle.background": "#122018",
-		"diffEditor.insertedTextBackground": "#5ee6c41f",
-		"diffEditor.removedTextBackground": "#ff8a6b1f",
+		"diffEditor.insertedTextBackground": "#6dff9a1f",
+		"diffEditor.removedTextBackground": "#ff6b6b1f",
 		"minimap.selectionHighlight": "#2e6b3f80",
 		"scrollbarSlider.background": "#6b9e7340",
 		"scrollbarSlider.hoverBackground": "#6b9e7366",
@@ -161,10 +161,10 @@
 		"notifications.background": "#122018",
 		"notifications.foreground": "#b9f2b4",
 		"notifications.border": "#1f3826",
-		"gitDecoration.addedResourceForeground": "#5ee6c4",
-		"gitDecoration.modifiedResourceForeground": "#b69cff",
-		"gitDecoration.deletedResourceForeground": "#ff8a6b",
-		"gitDecoration.untrackedResourceForeground": "#5ee6c4",
+		"gitDecoration.addedResourceForeground": "#6dff9a",
+		"gitDecoration.modifiedResourceForeground": "#ffb03f",
+		"gitDecoration.deletedResourceForeground": "#ff6b6b",
+		"gitDecoration.untrackedResourceForeground": "#6dff9a",
 		"gitDecoration.ignoredResourceForeground": "#6b9e73",
 		"gitDecoration.conflictingResourceForeground": "#ffcf73",
 		"terminal.background": "#070e09",
@@ -363,7 +363,7 @@
 				"markup.inserted"
 			],
 			"settings": {
-				"foreground": "#5ee6c4"
+				"foreground": "#6dff9a"
 			}
 		},
 		{
@@ -371,7 +371,7 @@
 				"markup.deleted"
 			],
 			"settings": {
-				"foreground": "#ff8a6b"
+				"foreground": "#ff6b6b"
 			}
 		},
 		{

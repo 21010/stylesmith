@@ -95,9 +95,10 @@ export const palettes = [
 			error: "#ff7a6b",
 			warning: "#ffcf73",
 			info: "#8fe3d0",
-			added: "#5ee6c4",
-			modified: "#b69cff",
-			deleted: "#ff8a6b"
+			// Phosphor green and the amber of a second terminal, rather than neon colors.
+			added: "#6dff9a",
+			modified: "#ffb03f",
+			deleted: "#ff6b6b"
 		},
 		ansi: {
 			black: "#1f3826",
@@ -153,9 +154,10 @@ export const palettes = [
 			error: "#ff7f66",
 			warning: "#ffcc4d",
 			info: "#ffe6b8",
-			added: "#8fd9c0",
-			modified: "#c4a8ff",
-			deleted: "#ff7f66"
+			// Within the monochrome: modified is the bright, near-white intensity of the screen.
+			added: "#bfe36a",
+			modified: "#fff1d6",
+			deleted: "#ff7060"
 		},
 		ansi: {
 			black: "#3a2c14",
@@ -212,9 +214,10 @@ export const palettes = [
 			error: "#ff8a8a",
 			warning: "#ffd27a",
 			info: "#9fe6ff",
-			added: "#6fe0c8",
-			modified: "#b8a4ff",
-			deleted: "#ff9a7a"
+			// Frost colors; deleted stays warm, the one thing that should break the ice.
+			added: "#9ff5c0",
+			modified: "#7fb8ff",
+			deleted: "#ff8a7a"
 		},
 		ansi: {
 			black: "#22303f",

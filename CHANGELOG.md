@@ -2,6 +2,21 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.16.4 (2026-10-02)
+
+### Changed
+
+- Changed files in the Explorer, the gutter and diffs now use colors that belong to their theme, instead of the purple shared with Neon Night:
+    - **Phosphor**: phosphor green for added, amber for modified, red for deleted.
+    - **Amber**: yellow-green for added, a bright near-white amber for modified, red for deleted.
+    - **ICE**: mint for added, frost blue for modified, and a warm coral for deleted.
+
+    The new colors pass the same contrast and color blindness checks as the rest of the themes.
+
+### Fixed
+
+- A temporary file left behind by a crash while Stylesmith wrote VS Code's workbench file could make a later Enable fail.
+
 ## 1.16.3 (2026-10-01)
 
 ### Security
