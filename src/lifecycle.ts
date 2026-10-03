@@ -33,7 +33,7 @@ import {
 	writeFonts,
 	type Workbench
 } from "./workbench";
-import { fixChecksum } from "./checksum";
+import { fixChecksum, getVsCodeCommit } from "./checksum";
 
 /** How Stylesmith talks to the user. In VS Code these are notifications (see ui.ts). */
 export interface Ui {
@@ -136,7 +136,7 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 	});
 	await managed.update(FONT_GROUP, fontSettings(font));
 	await managed.update(EFFECT_GROUP, effectSettings(effects));
-	await store.update({ enabled: true });
+	await store.update({ enabled: true, vsCodeCommit: await getVsCodeCommit(services.appRoot) });
 	if (options.restartNow) await ui.restartNow();
 	else ui.offerRestart(messages.enabled);
 	return true;
@@ -175,6 +175,14 @@ export async function checkAfterStartup(services: Services): Promise<boolean> {
 
 	const state = await store.read();
 	if (patched || !state.enabled) return patched;
+
+	// Ensure this was a genuine update and not external tampering
+	const currentCommit = await getVsCodeCommit(services.appRoot);
+	if (state.vsCodeCommit && currentCommit && state.vsCodeCommit === currentCommit) {
+		ui.error("VS Code files were modified externally. Stylesmith aborted re-patching to protect your installation.");
+		return patched;
+	}
+
 	if (!config.get("remindAfterUpdate", true)) return patched;
 	if (Date.now() - (state.reapplyAskedAt ?? 0) < 60_000) return patched; // another window asked
 	await store.update({ reapplyAskedAt: Date.now() });

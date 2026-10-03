@@ -8,6 +8,19 @@ export async function computeChecksum(content: string): Promise<string> {
 }
 
 /**
+ * Gets the commit hash (or version) from product.json to identify genuine VS Code updates.
+ */
+export async function getVsCodeCommit(appRoot: string): Promise<string | undefined> {
+	try {
+		const productJson = await readFile(path.join(appRoot, "product.json"), "utf-8");
+		const data = JSON.parse(productJson);
+		return data.commit || data.version;
+	} catch {
+		return undefined;
+	}
+}
+
+/**
  * Updates VS Code's product.json with the checksum of the given content.
  * Assumes product.json is in the appRoot.
  */
