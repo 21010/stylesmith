@@ -283,6 +283,17 @@ describe("typing sparks", () => {
 	});
 });
 
+describe("crt flicker", () => {
+	it("does not mutate DOM on reduced motion", async () => {
+		const page = await openWorkbench(["crtFlicker"], true);
+		await waitUntilIdle(page);
+		const before = await frames(page);
+		await sleep(500);
+		assert.ok((await frames(page)) - before <= 2, "no extra animation frames generated");
+		await page.close();
+	});
+});
+
 describe("glitch on save", () => {
 	it("glitches briefly when a tab is saved", async () => {
 		const page = await openWorkbench(["glitchOnSave"]);
