@@ -2,7 +2,7 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
-## 1.18.0 (2026-10-03)
+## 1.18.2 (2026-10-03)
 
 ### Added
 
