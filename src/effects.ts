@@ -133,6 +133,12 @@ export const EFFECTS: readonly Effect[] = [
 		enabledByDefault: false
 	},
 	{
+		setting: "effects.crtFlicker",
+		label: "CRT flicker",
+		asset: { file: "assets/effects/crt-flicker.js", kind: "js" },
+		enabledByDefault: false
+	},
+	{
 		setting: "effects.matrixRain",
 		label: "Matrix rain",
 		asset: { file: "assets/effects/matrix-rain.js", kind: "js" },

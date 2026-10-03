@@ -152,6 +152,7 @@ Stylesmith comes with effects you can use without writing any code. They're appl
 | [Terminal glow](#terminal-glow)                       | `stylesmith.effects.terminalGlow`         | off     |
 | [Retro terminal cursor](#retro-terminal-cursor)       | `stylesmith.effects.retroTerminalCursor`  | off     |
 | [CRT scanlines](#crt-scanlines)                       | `stylesmith.effects.crtScanlines`         | off     |
+| [CRT flicker](#crt-flicker)                           | `stylesmith.effects.crtFlicker`           | off     |
 | [Matrix rain](#matrix-rain)                           | `stylesmith.effects.matrixRain`           | off     |
 | [Typing sparks](#typing-sparks)                       | `stylesmith.effects.typingSparks`         | off     |
 | [Boot sequence](#boot-sequence)                       | `stylesmith.effects.bootSequence`         | off     |
@@ -466,6 +467,7 @@ You can also set everything in your `settings.json` (**Preferences: Open User Se
 	"stylesmith.effects.terminalGlow": false, // the terminal's text glows (dark themes)
 	"stylesmith.effects.retroTerminalCursor": false, // a blinking block cursor in the terminal
 	"stylesmith.effects.crtScanlines": false, // faint scanlines over the window, like an old monitor
+	"stylesmith.effects.crtFlicker": false, // occasionally jitter and flicker the editor
 	"stylesmith.effects.matrixRain": false, // matrix characters drop from the cursor as you type
 	"stylesmith.effects.typingSparks": false, // neon sparks fly from the cursor as you type
 	"stylesmith.effects.bootSequence": false, // a retro boot log when VS Code starts
