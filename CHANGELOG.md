@@ -2,6 +2,14 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## 1.18.0 (2026-10-03)
+
+### Added
+
+- **Matrix Rain Effect (`stylesmith.effects.matrixRain`):** A zero-idle-cost canvas overlay that drops fading matrix characters when you type.
+- **CRT Flicker Effect (`stylesmith.effects.crtFlicker`):** Occasionally shakes and flickers the editor with slight CSS translations, mimicking a failing CRT monitor. Both new effects correctly respect OS-level reduced motion settings.
+- **Automatic Checksum Fixer (`stylesmith.silenceCorruptWarning`):** Silences the VS Code `[Unsupported]` / "Installation appears corrupt" warning by automatically updating `product.json` with the exact SHA-256 hash of the known-good patched string. Includes a strict Commit Verification Lock to prevent automated re-patching if external file tampering is detected without a corresponding VS Code version update.
+
 ## 1.17.0 (2026-10-02)
 
 ### Added

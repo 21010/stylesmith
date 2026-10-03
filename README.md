@@ -221,6 +221,14 @@ Off by default. A blinking block cursor in the terminal, like an old console. It
 
 Off by default. Faint horizontal lines and slightly darker edges over the whole window, like an old monitor. It's a still image on its own GPU layer, so it doesn't use any CPU. On very large screens, blending it over the window costs a little GPU time while you scroll.
 
+### CRT flicker
+
+Off by default. Occasionally shakes and flickers the editor with slight CSS translations, mimicking a failing CRT monitor. Like the scanlines, it is heavily hardware accelerated to prevent CPU overhead and will disable itself if your OS has reduced motion enabled.
+
+### Matrix rain
+
+Off by default. A highly optimized, zero-idle-cost canvas overlay that drops fading matrix characters when you type. It correctly respects `prefers-reduced-motion` and consumes 0 bytes of memory when the user is idle.
+
 ### Typing sparks
 
 Off by default. Each key you type throws a few small neon pixel sparks up from the cursor. They arc, fall and fade out in about half a second. Like the caret animation, it turns itself off if your system is set to reduce motion.
@@ -616,15 +624,17 @@ Keep in mind that a stylesheet from the web can load images from anywhere, so it
 
 ### The "Installation appears corrupt" warning
 
-By default, VS Code verifies its core files on startup. If any file has been modified, it shows an "Installation appears corrupt" warning in the title bar. Because Stylesmith patches the core UI file to inject styles, it naturally triggers this warning.
+By default, VS Code verifies its core files on startup. If any file has been modified, it shows an `[Unsupported]` or "Installation appears corrupt" warning in the title bar. Because Stylesmith safely patches the core UI file to inject styles, it naturally triggers this warning.
 
-Stylesmith can automatically update VS Code's internal checksum registry (`product.json`) so this warning is silenced (`stylesmith.silenceCorruptWarning`).
+Stylesmith can automatically update VS Code's internal checksum registry (`product.json`) so this warning is silenced (`stylesmith.silenceCorruptWarning`, on by default).
 
 **Why this is safe:**
-Instead of blindly hashing the file on disk (which would act as a hash-laundering service for malware), Stylesmith strictly calculates the hash of its own isolated, _in-memory_ HTML string at the exact moment it patches the file.
+Instead of blindly hashing the file on disk (which would act as a hash-laundering service for malware), Stylesmith strictly calculates the SHA-256 hash of its own isolated, _known-good in-memory HTML string_ at the exact moment it patches the file.
 
-**Why this protects you:**
-If we defaulted to leaving the warning visible, you would see the "Installation appears corrupt" warning every single day. Eventually, you would learn to ignore it (Alert Fatigue). By silencing the warning for our _known-good_ changes, we preserve the warning's utility: if you ever see the corruption warning while Stylesmith is active, you immediately know that another extension or malicious software has tampered with your files. We also verify the Git commit of the VS Code build before repatching to ensure we only apply our changes after a genuine VS Code update.
+**Why this protects you (The Alert Fatigue Paradox):**
+If we defaulted to leaving the warning visible, you would see it every single day and eventually learn to permanently ignore it. By silencing the warning exclusively for our _known-good_ changes, we preserve the warning's utility as an active defense mechanism: **If you ever see the corruption warning while Stylesmith is active, you immediately know that another extension or malware has tampered with your files.**
+
+Additionally, we implement a **Commit Verification Lock**: before re-patching files on startup, Stylesmith verifies the Git commit of your VS Code build to ensure it only auto-patches during genuine, verified VS Code updates.
 
 ### Automatic checks
 
