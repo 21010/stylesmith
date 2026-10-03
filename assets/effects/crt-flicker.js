@@ -54,6 +54,7 @@
 		scheduleNext();
 	}
 
+	/** @type {number | undefined} */
 	let timeoutId;
 	function scheduleNext() {
 		clearTimeout(timeoutId);
