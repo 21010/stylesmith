@@ -3,7 +3,13 @@ import * as path from "node:path";
 import { readFile } from "node:fs/promises";
 import { Workbench, writeFileAtomic } from "./workbench";
 
-export async function computeChecksum(content: string): Promise<string> {
+interface ProductJson {
+	commit?: string;
+	version?: string;
+	checksums?: Record<string, string>;
+}
+
+export function computeChecksum(content: string): string {
 	return crypto.createHash("sha256").update(content).digest("base64").replace(/=+$/, "");
 }
 
@@ -13,7 +19,7 @@ export async function computeChecksum(content: string): Promise<string> {
 export async function getVsCodeCommit(appRoot: string): Promise<string | undefined> {
 	try {
 		const productJson = await readFile(path.join(appRoot, "product.json"), "utf-8");
-		const data = JSON.parse(productJson);
+		const data = JSON.parse(productJson) as ProductJson;
 		return data.commit || data.version;
 	} catch {
 		return undefined;
@@ -38,9 +44,9 @@ export async function fixChecksum(
 		return;
 	}
 
-	let data: any;
+	let data: ProductJson;
 	try {
-		data = JSON.parse(productJson);
+		data = JSON.parse(productJson) as ProductJson;
 	} catch {
 		return;
 	}
@@ -73,7 +79,7 @@ export async function fixChecksum(
 
 	if (!matchedKey) return;
 
-	const newChecksum = await computeChecksum(content);
+	const newChecksum = computeChecksum(content);
 	if (data.checksums[matchedKey] === newChecksum) {
 		return; // Already up to date
 	}
