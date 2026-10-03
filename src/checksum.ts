@@ -57,18 +57,21 @@ export async function fixChecksum(
 	// We need to figure out which key matches workbench.htmlPath.
 	// workbench.htmlPath is something like .../resources/app/out/vs/code/electron-sandbox/workbench/workbench.html
 	// so we find the key that when path.join(appRoot, "out", key) matches workbench.htmlPath.
-	
+
 	const outDir = path.join(appRoot, "out");
 	let matchedKey: string | undefined;
 
 	for (const key of Object.keys(data.checksums)) {
 		if (key.endsWith("workbench.html")) {
 			const absolutePath = path.join(outDir, ...key.split("/"));
-			if (absolutePath === workbench.htmlPath || absolutePath === workbench.htmlPath.replace(/\\/g, "/")) {
+			if (
+				absolutePath === workbench.htmlPath ||
+				absolutePath === workbench.htmlPath.replace(/\\/g, "/")
+			) {
 				matchedKey = key;
 				break;
 			}
-			
+
 			// Also just try path.normalize matching
 			if (path.normalize(absolutePath) === path.normalize(workbench.htmlPath)) {
 				matchedKey = key;
@@ -88,7 +91,7 @@ export async function fixChecksum(
 
 	// Keep it pretty
 	const newProductJson = JSON.stringify(data, null, "\t");
-	
+
 	try {
 		await writeFileAtomic(productJsonPath, newProductJson);
 	} catch {

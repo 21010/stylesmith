@@ -428,17 +428,17 @@ Reload the window (**Developer: Reload Window**) to see the change.
 
 ## Settings
 
-| Setting                         | Default           | What it does                                                            |
-| ------------------------------- | ----------------- | ----------------------------------------------------------------------- |
-| `stylesmith.imports`            | `[]`              | A list of `.css` and `.js` files to add, in order.                      |
-| `stylesmith.allowRemoteImports` | `false`           | Allows `https://` links in `stylesmith.imports`.                        |
-| `stylesmith.silenceCorruptWarning`| `true`          | Silences VS Code's "Installation appears corrupt" warning.              |
-| `stylesmith.effects.*`          | varies            | Turns each [built-in effect](#built-in-effects) on or off.              |
-| `stylesmith.fonts.enabled`      | `true`            | Uses a bundled [Nerd Font](#fonts) in the editor and terminal.          |
-| `stylesmith.fonts.family`       | `"JetBrainsMono"` | Which Nerd Font to use.                                                 |
-| `stylesmith.problems.*`         | varies            | The [Problem Lens](#problem-lens): what it shows, and from which level. |
-| `stylesmith.statusbar`          | `true`            | Shows the Stylesmith button in the status bar.                          |
-| `stylesmith.remindAfterUpdate`  | `true`            | Offers to re-apply Stylesmith after a VS Code update.                   |
+| Setting                            | Default           | What it does                                                            |
+| ---------------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| `stylesmith.imports`               | `[]`              | A list of `.css` and `.js` files to add, in order.                      |
+| `stylesmith.allowRemoteImports`    | `false`           | Allows `https://` links in `stylesmith.imports`.                        |
+| `stylesmith.silenceCorruptWarning` | `true`            | Silences VS Code's "Installation appears corrupt" warning.              |
+| `stylesmith.effects.*`             | varies            | Turns each [built-in effect](#built-in-effects) on or off.              |
+| `stylesmith.fonts.enabled`         | `true`            | Uses a bundled [Nerd Font](#fonts) in the editor and terminal.          |
+| `stylesmith.fonts.family`          | `"JetBrainsMono"` | Which Nerd Font to use.                                                 |
+| `stylesmith.problems.*`            | varies            | The [Problem Lens](#problem-lens): what it shows, and from which level. |
+| `stylesmith.statusbar`             | `true`            | Shows the Stylesmith button in the status bar.                          |
+| `stylesmith.remindAfterUpdate`     | `true`            | Offers to re-apply Stylesmith after a VS Code update.                   |
 
 Stylesmith only reads these from your **user settings**. Values in a project's `.vscode/settings.json` are ignored.
 

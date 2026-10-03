@@ -179,7 +179,9 @@ export async function checkAfterStartup(services: Services): Promise<boolean> {
 	// Ensure this was a genuine update and not external tampering
 	const currentCommit = await getVsCodeCommit(services.appRoot);
 	if (state.vsCodeCommit && currentCommit && state.vsCodeCommit === currentCommit) {
-		ui.error("VS Code files were modified externally. Stylesmith aborted re-patching to protect your installation.");
+		ui.error(
+			"VS Code files were modified externally. Stylesmith aborted re-patching to protect your installation."
+		);
 		return patched;
 	}
 
