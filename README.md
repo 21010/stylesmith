@@ -432,6 +432,7 @@ Reload the window (**Developer: Reload Window**) to see the change.
 | ------------------------------- | ----------------- | ----------------------------------------------------------------------- |
 | `stylesmith.imports`            | `[]`              | A list of `.css` and `.js` files to add, in order.                      |
 | `stylesmith.allowRemoteImports` | `false`           | Allows `https://` links in `stylesmith.imports`.                        |
+| `stylesmith.silenceCorruptWarning`| `true`          | Silences VS Code's "Installation appears corrupt" warning.              |
 | `stylesmith.effects.*`          | varies            | Turns each [built-in effect](#built-in-effects) on or off.              |
 | `stylesmith.fonts.enabled`      | `true`            | Uses a bundled [Nerd Font](#fonts) in the editor and terminal.          |
 | `stylesmith.fonts.family`       | `"JetBrainsMono"` | Which Nerd Font to use.                                                 |
@@ -452,6 +453,7 @@ You can also set everything in your `settings.json` (**Preferences: Open User Se
 		// "file://${userHome}/.vscode-styles/custom.css"
 	],
 	"stylesmith.allowRemoteImports": false, // allow https:// links in imports (off: only files on your computer)
+	"stylesmith.silenceCorruptWarning": true, // automatically updates checksums so VS Code stops complaining
 
 	// Built-in effects
 	"stylesmith.effects.caretAnimation": true, // the cursor glides to where it moves

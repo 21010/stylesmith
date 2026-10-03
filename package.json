@@ -107,6 +107,12 @@
 					"scope": "application",
 					"markdownDescription": "Allow `https://` URLs in `stylesmith.imports`. Off by default: remote files can change at any time, and they run with full access to your editor. `http://` is never allowed."
 				},
+				"stylesmith.silenceCorruptWarning": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDescription": "Automatically updates VS Code's internal checksums so it stops complaining that the installation is corrupt when Stylesmith modifies files. Disable this if you want to see the warning."
+				},
 				"stylesmith.effects.caretAnimation": {
 					"type": "boolean",
 					"default": true,
