@@ -33,6 +33,7 @@ import {
 	writeFonts,
 	type Workbench
 } from "./workbench";
+import { fixChecksum, getVsCodeCommit } from "./checksum";
 
 /** How Stylesmith talks to the user. In VS Code these are notifications (see ui.ts). */
 export interface Ui {
@@ -61,6 +62,8 @@ export interface Services {
 	asAbsolutePath(relativePath: string): string;
 	/** Where to remember the workbench's location for the uninstall cleanup (LOCATION_FILE). */
 	locationFile: string;
+	/** VS Code appRoot. */
+	appRoot: string;
 }
 
 // Font settings Stylesmith puts its Nerd Font into. An empty terminal font already follows
@@ -123,12 +126,17 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 		} else {
 			await removeFonts(workbench);
 		}
-		if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
+		if (patched !== current) {
+			await writeFileAtomic(workbench.htmlPath, patched);
+			if (config.get("silenceCorruptWarning", true)) {
+				await fixChecksum(workbench, services.appRoot, patched);
+			}
+		}
 		await removeLegacyBackups(workbench);
 	});
 	await managed.update(FONT_GROUP, fontSettings(font));
 	await managed.update(EFFECT_GROUP, effectSettings(effects));
-	await store.update({ enabled: true });
+	await store.update({ enabled: true, vsCodeCommit: await getVsCodeCommit(services.appRoot) });
 	if (options.restartNow) await ui.restartNow();
 	else ui.offerRestart(messages.enabled);
 	return true;
@@ -139,7 +147,15 @@ export async function disable(services: Services): Promise<void> {
 	const workbench = findWorkbench(services);
 	if (!workbench) return;
 
-	const wasPatched = await writingTo(workbench, () => cleanUp(workbench));
+	const wasPatched = await writingTo(workbench, async () => {
+		const cleaned = await cleanUp(workbench);
+		if (services.config.get("silenceCorruptWarning", true)) {
+			// Read the newly restored pristine file and fix the checksum
+			const pristine = await readFile(workbench.htmlPath, "utf-8");
+			await fixChecksum(workbench, services.appRoot, pristine);
+		}
+		return cleaned;
+	});
 	await services.managed.update(FONT_GROUP, new Map());
 	await services.managed.update(EFFECT_GROUP, new Map());
 	await services.store.update({ enabled: false });
@@ -159,6 +175,16 @@ export async function checkAfterStartup(services: Services): Promise<boolean> {
 
 	const state = await store.read();
 	if (patched || !state.enabled) return patched;
+
+	// Ensure this was a genuine update and not external tampering
+	const currentCommit = await getVsCodeCommit(services.appRoot);
+	if (state.vsCodeCommit && currentCommit && state.vsCodeCommit === currentCommit) {
+		ui.error(
+			"VS Code files were modified externally. Stylesmith aborted re-patching to protect your installation."
+		);
+		return patched;
+	}
+
 	if (!config.get("remindAfterUpdate", true)) return patched;
 	if (Date.now() - (state.reapplyAskedAt ?? 0) < 60_000) return patched; // another window asked
 	await store.update({ reapplyAskedAt: Date.now() });

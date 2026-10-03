@@ -134,7 +134,8 @@ beforeEach(async () => {
 		findWorkbench: () => workbench,
 		asAbsolutePath: relativePath => path.join(ROOT, relativePath),
 		// In the test folder: the real location file is in the project, next to out/.
-		locationFile: path.join(root, ".workbench-location.json")
+		locationFile: path.join(root, ".workbench-location.json"),
+		appRoot: root
 	};
 });
 

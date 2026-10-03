@@ -30,6 +30,7 @@ export interface StoredState {
 	effectSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
 	reapplyAskedAt?: number;
+	vsCodeCommit?: string;
 }
 
 /** Reads and updates the state file. Every read is fresh; updates never overlap. */

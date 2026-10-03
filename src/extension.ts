@@ -55,7 +55,8 @@ export function activate(context: vscode.ExtensionContext): void {
 		ui: vscodeUi,
 		findWorkbench: () => locateWorkbench(vscodeAppDirs()),
 		asAbsolutePath: relativePath => context.asAbsolutePath(relativePath),
-		locationFile: LOCATION_FILE
+		locationFile: LOCATION_FILE,
+		appRoot: vscode.env.appRoot
 	};
 
 	// Commands that change VS Code's files run one at a time, through this queue.
