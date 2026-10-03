@@ -227,6 +227,24 @@ describe("caret animation", () => {
 	});
 });
 
+describe("matrix rain", () => {
+	it("bursts on typing, then frees the canvas", async () => {
+		const page = await openWorkbench(["matrixRain"]);
+		assert.deepEqual(
+			await canvasSizes(page),
+			[{ width: 0, height: 0 }],
+			"no memory before typing"
+		);
+		await page.focus("#input");
+		await page.keyboard.press("a");
+		await sleep(80);
+		assert.ok(((await canvasSizes(page))[0]?.width ?? 0) > 0, "characters are drawn");
+		await waitUntilIdle(page);
+		assert.deepEqual(await canvasSizes(page), [{ width: 0, height: 0 }], "canvas freed");
+		await page.close();
+	});
+});
+
 describe("typing sparks", () => {
 	it("bursts on typing, then frees the canvas", async () => {
 		const page = await openWorkbench(["typingSparks"]);
