@@ -612,6 +612,18 @@ Scripts can't load other scripts from the web. CSS can load images over `https:/
 
 Keep in mind that a stylesheet from the web can load images from anywhere, so its server can see when you use VS Code. Only use web links you trust, and pin them.
 
+### The "Installation appears corrupt" warning
+
+By default, VS Code verifies its core files on startup. If any file has been modified, it shows an "Installation appears corrupt" warning in the title bar. Because Stylesmith patches the core UI file to inject styles, it naturally triggers this warning.
+
+Stylesmith can automatically update VS Code's internal checksum registry (`product.json`) so this warning is silenced (`stylesmith.silenceCorruptWarning`).
+
+**Why this is safe:**
+Instead of blindly hashing the file on disk (which would act as a hash-laundering service for malware), Stylesmith strictly calculates the hash of its own isolated, _in-memory_ HTML string at the exact moment it patches the file.
+
+**Why this protects you:**
+If we defaulted to leaving the warning visible, you would see the "Installation appears corrupt" warning every single day. Eventually, you would learn to ignore it (Alert Fatigue). By silencing the warning for our _known-good_ changes, we preserve the warning's utility: if you ever see the corruption warning while Stylesmith is active, you immediately know that another extension or malicious software has tampered with your files. We also verify the Git commit of the VS Code build before repatching to ensure we only apply our changes after a genuine VS Code update.
+
 ### Automatic checks
 
 Every push and pull request runs:
