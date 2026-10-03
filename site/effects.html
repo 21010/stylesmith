@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<title>Dynamic Effects - Stylesmith</title>
+		<meta
+			name="description"
+			content="Explore hardware-accelerated retro and cyberpunk effects for VS Code."
+		/>
+		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content="#0f1120" />
+		<link rel="icon" href="logo.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<header class="top">
+			<a class="brand" href="./">
+				<img src="logo.svg" width="36" height="36" alt="" />
+				<span>Stylesmith</span>
+			</a>
+			<nav aria-label="Main">
+				<a href="themes.html">Themes</a>
+				<a href="effects.html" style="color: var(--cyan)">Effects</a>
+				<a href="./#security">Security</a>
+				<a href="./#install">Install</a>
+				<a href="https://github.com/21010/stylesmith">GitHub</a>
+			</nav>
+		</header>
+
+		<main id="main">
+			<section class="hero">
+				<h1>Dynamic <span>Effects</span></h1>
+				<p class="lead">
+					Hardware-accelerated. Zero-idle-cost. Fully responsive to your OS reduced-motion
+					preferences.
+				</p>
+			</section>
+
+			<section id="effects" aria-labelledby="effects-title">
+				<div class="cards">
+					<article class="feature-card">
+						<h3>Matrix Rain</h3>
+						<p>
+							A highly optimized HTML5 Canvas overlay that drops fading matrix
+							characters when you type. Costing 0 bytes of memory when idle.
+						</p>
+					</article>
+					<article class="feature-card">
+						<h3>CRT Flicker</h3>
+						<p>
+							Mimics a dying CRT monitor by injecting micro-translations into the
+							editor viewport via CSS hardware acceleration.
+						</p>
+					</article>
+					<article class="feature-card">
+						<h3>Caret Animation</h3>
+						<p>
+							When the text cursor moves, it glides to its new place and leaves a
+							short trail behind it, making it easier to track your jumps.
+						</p>
+					</article>
+					<article class="feature-card">
+						<h3>Typing Sparks</h3>
+						<p>
+							Each key you type throws small neon pixel sparks up from the cursor that
+							arc, fall, and fade out.
+						</p>
+					</article>
+					<article class="feature-card">
+						<h3>Glitch on Save</h3>
+						<p>
+							The editor glitches for a moment with a quick red and cyan split every
+							time you save a file.
+						</p>
+					</article>
+					<article class="feature-card">
+						<h3>Boot Sequence</h3>
+						<p>
+							A retro boot log types itself out over the window during startup and
+							fades away.
+						</p>
+					</article>
+				</div>
+			</section>
+		</main>
+
+		<footer>
+			<p>Stylesmith is open source under the MIT license.</p>
+		</footer>
+	</body>
+</html>

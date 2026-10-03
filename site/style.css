@@ -471,3 +471,22 @@ footer {
 .menu-title {
 	margin-top: 2.5rem;
 }
+.steps-list {
+	list-style-type: none;
+	padding-left: 0;
+}
+.steps-list li {
+	margin-bottom: 1rem;
+	padding: 1rem;
+	border-left: 4px solid var(--cyan);
+	background: var(--raised);
+}
+video {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	border: 1px solid var(--border);
+	box-shadow:
+		0 0 0 1px rgb(95 224 255 / 0.25),
+		0 30px 80px -20px rgb(255 114 216 / 0.35);
+}
