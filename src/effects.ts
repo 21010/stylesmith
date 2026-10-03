@@ -133,6 +133,12 @@ export const EFFECTS: readonly Effect[] = [
 		enabledByDefault: false
 	},
 	{
+		setting: "effects.matrixRain",
+		label: "Matrix rain",
+		asset: { file: "assets/effects/matrix-rain.js", kind: "js" },
+		enabledByDefault: false
+	},
+	{
 		setting: "effects.typingSparks",
 		label: "Typing sparks",
 		asset: { file: "assets/effects/typing-sparks.js", kind: "js" },

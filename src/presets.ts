@@ -43,6 +43,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.crtScanlines": false,
+			"effects.matrixRain": false,
 			"effects.typingSparks": true,
 			"effects.bootSequence": true,
 			"effects.glitchOnSave": true,
@@ -63,6 +64,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.crtScanlines": true,
+			"effects.matrixRain": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": true,
 			"effects.glitchOnSave": false,
@@ -82,6 +84,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.crtScanlines": true,
+			"effects.matrixRain": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": false,
 			"effects.glitchOnSave": false,
@@ -102,6 +105,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.crtScanlines": true,
+			"effects.matrixRain": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": true,
 			"effects.glitchOnSave": false,
@@ -121,6 +125,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.crtScanlines": false,
+			"effects.matrixRain": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": false,
 			"effects.glitchOnSave": false,
@@ -141,6 +146,7 @@ export const PRESETS: readonly Preset[] = [
 			...BASE,
 			"effects.caretAnimation": false,
 			"effects.crtScanlines": false,
+			"effects.matrixRain": false,
 			"effects.typingSparks": false,
 			"effects.bootSequence": false,
 			"effects.glitchOnSave": false,
