@@ -64,15 +64,23 @@ function appDirs(executable) {
 		.filter(existsSync);
 }
 
-/** Installs the packaged extension into a new extensions folder; returns the folder. */
-function installPackage(executable) {
+/**
+ * Installs the packaged extension, and the given Marketplace extensions, into a new extensions
+ * folder; returns the folder.
+ */
+function installPackage(executable, marketplace) {
 	const { version } = require(join(ROOT, "package.json"));
 	const vsix = join(ROOT, `stylesmith-${version}.vsix`);
 	if (!existsSync(vsix))
 		throw new Error(`${vsix} is missing: run "npx @vscode/vsce package" first`);
 	const extensions = mkdtempSync(join(tmpdir(), "stylesmith-shot-extensions-"));
 	const [cli, ...args] = resolveCliArgsFromVSCodeExecutablePath(executable);
-	const all = [...args, "--extensions-dir", extensions, "--install-extension", vsix];
+	const all = [
+		...args,
+		"--extensions-dir",
+		extensions,
+		...[vsix, ...marketplace].flatMap(id => ["--install-extension", id])
+	];
 	if (process.platform === "win32") {
 		// code.cmd only runs through a shell, so build one command with every part quoted.
 		execSync([cli, ...all].map(part => `"${part}"`).join(" "), { stdio: "ignore" });
@@ -82,10 +90,13 @@ function installPackage(executable) {
 	return extensions;
 }
 
-/** Downloads VS Code and installs the package. Call `dispose` when done with every session. */
-export async function prepareVSCode() {
+/**
+ * Downloads VS Code and installs the package, plus `marketplace` extensions by id. Call
+ * `dispose` when done with every session.
+ */
+export async function prepareVSCode(marketplace = []) {
 	const executable = await downloadAndUnzipVSCode("stable");
-	const extensions = installPackage(executable);
+	const extensions = installPackage(executable, marketplace);
 	const workbench = locateWorkbench(appDirs(executable));
 	if (!workbench) throw new Error(`can't find VS Code's workbench in ${dirname(executable)}`);
 	return {
@@ -97,12 +108,20 @@ export async function prepareVSCode() {
 }
 
 /**
- * Starts VS Code with `preset` applied, showing src/server.ts in a window of `size`.
- * `effects` overrides the preset's effects ({ "effects.matrixRain": true, ... }).
+ * Starts VS Code with `preset` applied, showing `open` (src/server.ts) of the sample project
+ * `files` in a window of `size`.
+ * `effects` overrides the preset's effects ({ "effects.matrixRain": true, ... }), and
+ * `settings` adds VS Code settings.
  * Returns the window's page and a `close` that undoes everything.
  */
 export async function openVSCode({ executable, workbench, extensions }, preset, options = {}) {
-	const { size, effects: override = {}, settings: extra = {} } = options;
+	const {
+		size,
+		effects: override = {},
+		settings: extra = {},
+		files = SAMPLE,
+		open = "src/server.ts"
+	} = options;
 	const chosen = { ...preset.effects, ...override };
 	const temp = mkdtempSync(join(tmpdir(), "stylesmith-shot-"));
 	const settings = new Map();
@@ -166,7 +185,7 @@ export async function openVSCode({ executable, workbench, extensions }, preset, 
 	};
 
 	const project = join(temp, "neon-server");
-	for (const [file, content] of Object.entries(SAMPLE)) {
+	for (const [file, content] of Object.entries(files)) {
 		mkdirSync(dirname(join(project, file)), { recursive: true });
 		writeFileSync(join(project, file), content);
 	}
@@ -213,7 +232,7 @@ export async function openVSCode({ executable, workbench, extensions }, preset, 
 				"--skip-welcome",
 				"--skip-release-notes",
 				project,
-				join(project, "src", "server.ts")
+				join(project, open)
 			]
 		});
 		const page = await app.firstWindow();
