@@ -949,3 +949,15 @@ video {
 .copy-btn.copied .copy-success {
 	display: inline !important;
 }
+
+.copy-btn span {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+.copy-btn .copy-success {
+	display: none;
+}
+.copy-btn.copied .copy-success {
+	display: flex !important;
+}
