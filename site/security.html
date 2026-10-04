@@ -545,6 +545,77 @@
 					</div>
 				</article>
 			</section>
+
+			<div
+				class="security-warning"
+				style="
+					max-width: 800px;
+					margin: 4rem auto 2rem;
+					padding: 2rem;
+					border-left: 4px solid var(--pink);
+					background: rgba(255, 114, 216, 0.05);
+					border-radius: 4px;
+				"
+			>
+				<h3
+					style="
+						color: var(--pink);
+						margin-top: 0;
+						margin-bottom: 1rem;
+						font-size: 1.25rem;
+						display: flex;
+						align-items: center;
+						gap: 0.5rem;
+					"
+				>
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path
+							d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+						></path>
+						<line x1="12" y1="9" x2="12" y2="13"></line>
+						<line x1="12" y1="17" x2="12.01" y2="17"></line>
+					</svg>
+					CRITICAL ADVISORY: The "Corrupt Installation" Warning
+				</h3>
+				<p
+					style="
+						font-size: 1.05rem;
+						line-height: 1.6;
+						color: var(--text);
+						margin-bottom: 1rem;
+					"
+				>
+					If you ever see a
+					<strong>"Your VS Code installation appears to be corrupt"</strong> message
+					<em>while Stylesmith is actively managing your theme</em>,
+					<strong>DO NOT IGNORE IT.</strong> Never attempt to permanently disable this
+					warning using third-party extensions.
+				</p>
+				<p
+					style="
+						font-size: 1.05rem;
+						line-height: 1.6;
+						color: var(--text);
+						margin-bottom: 0;
+					"
+				>
+					Because Stylesmith strictly manages and updates the editor's cryptographic
+					lockfile for its own benign modifications, seeing this warning means
+					<strong>something else</strong> has modified your editor's core files without
+					your knowledge. This usually indicates a broken VS Code update, a rogue
+					extension leaking code, or worst case, a malicious script attempting to hijack
+					your editor environment. Always investigate the root cause.
+				</p>
+			</div>
 		</main>
 
 		<footer>
