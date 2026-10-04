@@ -1317,3 +1317,24 @@ kbd {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
+
+@font-face {
+	font-family: "JetBrainsMono Nerd Font";
+	src: url("fonts/JetBrainsMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "BlexMono Nerd Font";
+	src: url("fonts/BlexMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "ShureTechMono Nerd Font";
+	src: url("fonts/ShureTechMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "DepartureMono Nerd Font";
+	src: url("fonts/DepartureMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
