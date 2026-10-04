@@ -438,15 +438,24 @@
 									class="copy-btn"
 									aria-label="Copy command"
 									onclick="
-										navigator.clipboard
-											.writeText('code --install-extension 21010.stylesmith')
-											.then(() => {
-												this.classList.add('copied');
-												setTimeout(
-													() => this.classList.remove('copied'),
-													2000
-												);
-											})
+										const btn = this;
+										const copyText =
+											'code --install-extension 21010.stylesmith';
+										const onSuccess = () => {
+											btn.classList.add('copied');
+											setTimeout(() => btn.classList.remove('copied'), 2000);
+										};
+										if (navigator.clipboard && window.isSecureContext) {
+											navigator.clipboard.writeText(copyText).then(onSuccess);
+										} else {
+											const input = document.createElement('input');
+											input.value = copyText;
+											document.body.appendChild(input);
+											input.select();
+											document.execCommand('copy');
+											document.body.removeChild(input);
+											onSuccess();
+										}
 									"
 								>
 									<span class="copy-default"
