@@ -223,8 +223,9 @@
 								and reapplies them across editor upgrades.
 							</li>
 							<li>
-								<strong>SRI Pinning:</strong> Secure your custom JS files with
-								Subresource Integrity hashes to guarantee runtime safety.
+								<strong>Strict CSP Hashing:</strong> Stylesmith dynamically
+								calculates and pins SHA-256 hashes for all injected scripts, keeping
+								unauthorized code locked out.
 							</li>
 						</ul>
 					</div>
@@ -239,14 +240,9 @@
 						</div>
 						<div class="editor-body">
 							<pre><code><span class="token-punctuation">{</span>
-  <span class="token-key">"stylesmith.customCss"</span><span class="token-punctuation">:</span> <span class="token-punctuation">[</span>
-    <span class="token-string">"file:///Users/me/.vscode/custom.css"</span>
-  <span class="token-punctuation">]</span><span class="token-punctuation">,</span>
-  <span class="token-key">"stylesmith.customJs"</span><span class="token-punctuation">:</span> <span class="token-punctuation">[</span>
-    <span class="token-punctuation">{</span>
-      <span class="token-key">"url"</span><span class="token-punctuation">:</span> <span class="token-string">"file:///Users/me/.vscode/custom.js"</span><span class="token-punctuation">,</span>
-      <span class="token-key">"integrity"</span><span class="token-punctuation">:</span> <span class="token-string">"sha256-kY8B..."</span>
-    <span class="token-punctuation">}</span>
+  <span class="token-key">"stylesmith.imports"</span><span class="token-punctuation">:</span> <span class="token-punctuation">[</span>
+    <span class="token-string">"file:///Users/me/.vscode/custom.css"</span><span class="token-punctuation">,</span>
+    <span class="token-string">"file:///Users/me/.vscode/custom.js"</span>
   <span class="token-punctuation">]</span>
 <span class="token-punctuation">}</span></code></pre>
 						</div>
