@@ -973,3 +973,17 @@ video {
 .copy-btn.copied .copy-default {
 	display: none !important;
 }
+
+kbd {
+	display: inline-block;
+	padding: 0.15rem 0.4rem;
+	font-family: var(--mono);
+	font-size: 0.85em;
+	color: var(--text);
+	background-color: var(--bg-deep);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	box-shadow: 0 2px 0 var(--border);
+	line-height: 1;
+	vertical-align: middle;
+}
