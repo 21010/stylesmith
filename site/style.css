@@ -961,3 +961,7 @@ video {
 .copy-btn.copied .copy-success {
 	display: flex !important;
 }
+
+.copy-btn.copied .copy-default {
+	display: none !important;
+}
