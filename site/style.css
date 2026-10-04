@@ -458,10 +458,18 @@ img {
 }
 
 .cards article {
+	display: flex;
+	flex-direction: column;
 	padding: 1.25rem 1.4rem;
 	border: 1px solid var(--border);
 	border-left: 3px solid var(--cyan);
 	background: var(--raised);
+	height: 100%;
+}
+
+.card-actions {
+	margin-top: auto;
+	padding-top: 1.5rem;
 }
 
 .cards p {
