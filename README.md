@@ -70,3 +70,52 @@ All visual effects actively query `window.matchMedia('(prefers-reduced-motion: r
 ## License
 
 [MIT](LICENSE.txt). Contains code from Custom CSS and JS Loader (MIT).
+
+### All settings in settings.json
+
+You can also set everything in your `settings.json`. Here is every Stylesmith setting with its default value:
+
+```jsonc
+{
+	"stylesmith.imports": [],
+	"stylesmith.allowRemoteImports": false,
+	"stylesmith.silenceCorruptWarning": true,
+	"stylesmith.effects.caretAnimation": true,
+	"stylesmith.effects.neonCurrentLine": true,
+	"stylesmith.effects.neonFocusFrame": true,
+	"stylesmith.effects.neonSelections": true,
+	"stylesmith.effects.neonBlocks": true,
+	"stylesmith.effects.diagnosticHighlights": true,
+	"stylesmith.effects.neonGlow": false,
+	"stylesmith.effects.classicLayout": false,
+	"stylesmith.effects.neonTerminal": true,
+	"stylesmith.effects.terminalGlow": false,
+	"stylesmith.effects.retroTerminalCursor": false,
+	"stylesmith.effects.crtScanlines": false,
+	"stylesmith.effects.crtFlicker": false,
+	"stylesmith.effects.matrixRain": false,
+	"stylesmith.effects.typingSparks": false,
+	"stylesmith.effects.bootSequence": false,
+	"stylesmith.effects.glitchOnSave": false,
+	"stylesmith.fonts.enabled": true,
+	"stylesmith.fonts.family": "JetBrainsMono",
+	"stylesmith.problems.enabled": true,
+	"stylesmith.problems.minimumSeverity": "warning",
+	"stylesmith.problems.inlineMessages": true,
+	"stylesmith.problems.gutterIcons": true,
+	"stylesmith.problems.statusBar": true,
+	"stylesmith.statusbar": true,
+	"stylesmith.remindAfterUpdate": true
+}
+```
+
+### Settings Stylesmith changes for you
+
+Some effects need one of VS Code's own settings. Stylesmith turns it on while the effect is on, remembers your own value, and puts it back when you turn the effect off or run **Stylesmith: Disable**. You don't need to add these yourself:
+
+| VS Code setting                                                         | Changed by                                       |
+| ----------------------------------------------------------------------- | ------------------------------------------------ |
+| `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled` (the Nerd Font first) |
+| `editor.guides.bracketPairs`                                            | `stylesmith.effects.neonBlocks`                  |
+| `window.density.layout`                                                 | `stylesmith.effects.classicLayout`               |
+| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.retroTerminalCursor`         |
