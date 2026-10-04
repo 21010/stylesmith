@@ -507,7 +507,7 @@
 		</footer>
 
 		<script>
-			document.addEventListener("DOMContentLoaded", () => {
+			(function () {
 				const btn = document.getElementById("install-copy-btn");
 				if (!btn) return;
 				btn.addEventListener("click", () => {
@@ -523,7 +523,7 @@
 							.catch(err => {
 								console.error("Clipboard API failed", err);
 								fallbackCopy(copyText, onSuccess);
-							});
+							})();
 					} else {
 						fallbackCopy(copyText, onSuccess);
 					}
