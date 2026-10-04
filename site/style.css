@@ -96,6 +96,7 @@ pre {
 .top nav {
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
 	gap: 0.25rem 1.25rem;
 	font-family: var(--mono);
 	font-size: 0.95rem;
