@@ -523,7 +523,7 @@
 							.catch(err => {
 								console.error("Clipboard API failed", err);
 								fallbackCopy(copyText, onSuccess);
-							})();
+							});
 					} else {
 						fallbackCopy(copyText, onSuccess);
 					}
@@ -538,7 +538,7 @@
 					document.body.removeChild(input);
 					cb();
 				}
-			});
+			})();
 		</script>
 	</body>
 </html>
