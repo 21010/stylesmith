@@ -845,6 +845,17 @@ footer {
 	margin-top: 1rem;
 	margin-bottom: 0;
 }
+.install-options {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	margin-top: 1rem;
+	flex-wrap: wrap;
+}
+.install-options pre {
+	margin-top: 0;
+	flex-grow: 1;
+}
 video {
 	max-width: 100%;
 	height: auto;
