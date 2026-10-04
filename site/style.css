@@ -937,3 +937,15 @@ video {
 		0 0 0 1px rgb(95 224 255 / 0.25),
 		0 30px 80px -20px rgb(255 114 216 / 0.35);
 }
+
+.copy-btn.copied {
+	color: var(--pink);
+	border-color: var(--pink);
+	background: rgba(255, 114, 216, 0.1);
+}
+.copy-btn.copied .copy-default {
+	display: none;
+}
+.copy-btn.copied .copy-success {
+	display: inline !important;
+}
