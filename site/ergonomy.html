@@ -436,5 +436,28 @@
 				Microsoft.
 			</p>
 		</footer>
+
+		<script>
+			// Update sticky nav active state based on scroll
+			const observer = new IntersectionObserver(
+				entries => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							document.querySelectorAll(".ergo-nav a").forEach(a => {
+								a.classList.toggle(
+									"active",
+									a.getAttribute("href") === "#" + entry.target.id
+								);
+							});
+						}
+					});
+				},
+				{ rootMargin: "-20% 0px -70% 0px" }
+			);
+
+			document
+				.querySelectorAll(".ergo-section")
+				.forEach(section => observer.observe(section));
+		</script>
 	</body>
 </html>
