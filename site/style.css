@@ -1375,14 +1375,14 @@ kbd {
 }
 
 .font-card p {
-	margin: 0;
+	margin: 0 0 2rem;
 	color: var(--muted);
 	line-height: 1.5;
 }
 
 .font-preview {
 	margin-top: auto;
-	padding: 1rem;
+	padding: 0.6rem 1rem;
 	background: var(--bg-deep);
 	border: 1px solid var(--border);
 	border-radius: 4px;
