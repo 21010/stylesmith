@@ -827,12 +827,23 @@ footer {
 .steps-list {
 	list-style-type: none;
 	padding-left: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 .steps-list li {
-	margin-bottom: 1rem;
-	padding: 1rem;
-	border-left: 4px solid var(--cyan);
+	padding: 1.5rem;
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--cyan);
 	background: var(--raised);
+	font-size: 1.05rem;
+}
+.steps-list li p {
+	margin-bottom: 0;
+}
+.steps-list pre {
+	margin-top: 1rem;
+	margin-bottom: 0;
 }
 video {
 	max-width: 100%;
