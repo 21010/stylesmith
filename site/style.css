@@ -647,11 +647,10 @@ img {
 }
 
 .ergo-icon {
-	font-size: 2.25rem;
-	font-family: var(--mono);
 	color: var(--cyan);
-	margin-bottom: 1.25rem;
-	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .ergo-item h3 {
@@ -716,8 +715,10 @@ img {
 }
 
 .sec-icon {
-	font-size: 1.8rem;
 	color: var(--pink);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .security-card h3 {
