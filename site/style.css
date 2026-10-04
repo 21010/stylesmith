@@ -475,6 +475,10 @@ img {
 	gap: 1rem;
 }
 
+.cards.stacked {
+	grid-template-columns: 1fr;
+}
+
 .cards article {
 	display: flex;
 	flex-direction: column;
