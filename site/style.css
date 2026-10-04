@@ -1385,7 +1385,7 @@ kbd {
 .font-preview {
 	margin-top: auto;
 	padding: 0.6rem 1rem;
-	background: var(--bg-deep);
+	background: rgba(0, 0, 0, 0.5);
 	border: 1px solid var(--border);
 	border-radius: 4px;
 	color: var(--text);
