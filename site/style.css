@@ -591,6 +591,54 @@ img {
 	color: var(--muted);
 }
 
+/* Ergonomics Grid */
+.ergo-grid {
+	display: grid;
+	gap: 1.5rem;
+}
+
+@media (min-width: 800px) {
+	.ergo-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.ergo-item {
+	padding: 2rem 1.5rem;
+	background: rgba(0, 0, 0, 0.2);
+	border-top: 2px solid var(--pink);
+	border-radius: 0 0 6px 6px;
+	transition:
+		transform 0.2s,
+		background 0.2s;
+}
+
+.ergo-item:hover {
+	transform: translateY(-4px);
+	background: var(--raised);
+}
+
+.ergo-icon {
+	font-size: 2.25rem;
+	font-family: var(--mono);
+	color: var(--cyan);
+	margin-bottom: 1.25rem;
+	line-height: 1;
+}
+
+.ergo-item h3 {
+	margin-top: 0;
+	font-size: 1.1rem;
+	color: var(--text);
+}
+
+.ergo-item p {
+	margin-bottom: 0;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	color: var(--muted);
+}
+
 /* Install */
 
 pre {
