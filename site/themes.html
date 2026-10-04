@@ -181,6 +181,18 @@
 					setTheme((currentIndex + 1) % themesData.length);
 				}
 
+				function prevTheme() {
+					setTheme((currentIndex - 1 + themesData.length) % themesData.length);
+				}
+
+				document.addEventListener("keydown", e => {
+					if (e.key === "ArrowRight") {
+						nextTheme();
+					} else if (e.key === "ArrowLeft") {
+						prevTheme();
+					}
+				});
+
 				function resetTimer() {
 					clearInterval(carouselTimer);
 					carouselTimer = setInterval(nextTheme, 3000);
