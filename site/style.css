@@ -686,6 +686,13 @@ img {
 	border-radius: 0 0 6px 6px;
 	position: relative;
 	overflow: hidden;
+	transition:
+		transform 0.2s,
+		background 0.2s;
+}
+.security-card:hover {
+	transform: translateY(-4px);
+	background: var(--raised);
 }
 
 .card-header {
