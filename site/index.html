@@ -329,25 +329,24 @@
 						<h3>Strict CSP Hashing</h3>
 						<p>
 							VS Code's Content-Security-Policy stays perfectly intact. Stylesmith
-							calculates the exact SHA-256 hash for every custom script you inject,
-							preventing unauthorized code execution.
+							calculates exact SHA-256 hashes for every injected script, preventing
+							unauthorized execution.
 						</p>
 					</article>
 					<article class="feature-card">
 						<h3>Commit Verification Lock</h3>
 						<p>
-							Stylesmith verifies the exact Git commit of your VS Code build before
-							re-patching files. This ensures automated updates only happen during
-							genuine VS Code upgrades, keeping the "Corrupt Installation" warning
-							functional as a defense mechanism against malware.
+							Stylesmith verifies the exact Git commit of your build before patching.
+							This ensures the built-in "Corrupt Installation" warning remains a
+							functional defense against malware.
 						</p>
 					</article>
 					<article class="feature-card">
 						<h3>Atomic Operations</h3>
 						<p>
-							File operations use UUID suffixes and exclusive write locks to
-							neutralize symlink and race-condition attacks. Reverting to the pristine
-							state is mathematically verified before patching.
+							UUID suffixes and exclusive write locks neutralize symlink and
+							race-condition attacks. Core files are strictly verified against their
+							pristine state before any updates occur.
 						</p>
 					</article>
 				</div>
