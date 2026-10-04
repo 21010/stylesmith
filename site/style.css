@@ -928,15 +928,11 @@ footer {
 	font-family: var(--mono);
 	cursor: pointer;
 	border-radius: 4px;
-	transition:
-		background 0.2s,
-		color 0.2s,
-		border-color 0.2s;
 }
-.copy-btn:hover {
-	background: rgba(95, 224, 255, 0.1);
-	border-color: var(--cyan);
-	color: var(--text);
+/* On a code block with the darker background. Hover keeps .button.ghost:hover colors. */
+.copy-btn.on-deep {
+	background: var(--bg-deep);
+	box-shadow: -8px 0 16px var(--bg-deep);
 }
 video {
 	max-width: 100%;
@@ -1265,27 +1261,6 @@ kbd {
 	height: 100%;
 	object-fit: cover;
 	z-index: 2;
-}
-
-.vid-placeholder {
-	position: absolute;
-	inset: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	color: var(--muted);
-	font-family: var(--mono);
-	font-size: 0.9rem;
-	background: linear-gradient(135deg, rgba(10, 10, 10, 1) 0%, rgba(20, 20, 25, 1) 100%);
-	gap: 0.5rem;
-	z-index: 1;
-}
-
-.vid-placeholder svg {
-	width: 32px;
-	height: 32px;
-	color: var(--border);
 }
 
 .effect-content {

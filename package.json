@@ -372,6 +372,7 @@
 		"fonts": "node scripts/build-fonts.mjs",
 		"icons": "npm run compile && node scripts/build-icons.mjs",
 		"screenshots": "npm run compile && node scripts/build-screenshots.mjs",
+		"videos": "npm run compile && node scripts/record-effects.mjs",
 		"vscode:uninstall": "node ./out/uninstall",
 		"test:browser": "npm run compile && tsc -p tsconfig.browser.json && node --test \"out/test-browser/**/*.test.js\"",
 		"typecheck:effects": "tsc -p tsconfig.effects.json",
