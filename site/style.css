@@ -1338,3 +1338,7 @@ kbd {
 	src: url("fonts/DepartureMonoNerdFontMono-Regular.woff2") format("woff2");
 	font-weight: 400;
 }
+
+.pt-2 {
+	padding-top: 2rem;
+}
