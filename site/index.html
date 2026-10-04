@@ -438,6 +438,7 @@
 									class="button ghost copy-btn"
 									id="install-copy-btn"
 									aria-label="Copy command"
+									onclick="copyInstallCmd(this)"
 								>
 									<span class="copy-default"
 										><svg
@@ -507,38 +508,37 @@
 		</footer>
 
 		<script>
-			(function () {
-				const btn = document.getElementById("install-copy-btn");
-				if (!btn) return;
-				btn.addEventListener("click", () => {
-					const copyText = "code --install-extension 21010.stylesmith";
-					const onSuccess = () => {
-						btn.classList.add("copied");
-						setTimeout(() => btn.classList.remove("copied"), 2000);
-					};
-					if (navigator.clipboard && window.isSecureContext) {
-						navigator.clipboard
-							.writeText(copyText)
-							.then(onSuccess)
-							.catch(err => {
-								console.error("Clipboard API failed", err);
-								fallbackCopy(copyText, onSuccess);
-							});
-					} else {
-						fallbackCopy(copyText, onSuccess);
-					}
-				});
+			function copyInstallCmd(btn) {
+				const text = "code --install-extension 21010.stylesmith";
+				const onSuccess = () => {
+					btn.classList.add("copied");
+					setTimeout(() => btn.classList.remove("copied"), 2000);
+				};
 
-				function fallbackCopy(text, cb) {
-					const input = document.createElement("input");
-					input.value = text;
-					document.body.appendChild(input);
-					input.select();
-					document.execCommand("copy");
-					document.body.removeChild(input);
-					cb();
+				const fallbackCopy = () => {
+					try {
+						const input = document.createElement("input");
+						input.value = text;
+						document.body.appendChild(input);
+						input.select();
+						document.execCommand("copy");
+						document.body.removeChild(input);
+					} catch (e) {
+						console.error(e);
+					}
+					onSuccess();
+				};
+
+				try {
+					if (navigator.clipboard && window.isSecureContext) {
+						navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+					} else {
+						fallbackCopy();
+					}
+				} catch (err) {
+					fallbackCopy();
 				}
-			})();
+			}
 		</script>
 	</body>
 </html>
