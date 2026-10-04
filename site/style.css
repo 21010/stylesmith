@@ -111,6 +111,14 @@ pre {
 	color: var(--cyan);
 }
 
+.top nav a.button {
+	color: var(--on-accent);
+}
+
+.top nav a.button:hover {
+	color: var(--on-accent);
+}
+
 /* Sections */
 
 main {
