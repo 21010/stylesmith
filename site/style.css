@@ -906,7 +906,7 @@ footer {
 	margin-top: 1rem;
 	flex-wrap: wrap;
 }
-.install-options .code-wrapper {
+.code-wrapper {
 	position: relative;
 	flex-grow: 1;
 }
