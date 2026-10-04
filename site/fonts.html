@@ -8,8 +8,11 @@
 			content="default-src 'none'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
-		<title>Oh My Posh - Stylesmith Integrations</title>
-		<meta name="description" content="Integrate Oh My Posh terminal prompt with Stylesmith." />
+		<title>Typography - Stylesmith</title>
+		<meta
+			name="description"
+			content="Curated, zero-install Nerd Fonts bundled seamlessly into VS Code via Stylesmith."
+		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
 		<link rel="icon" href="logo.svg" type="image/svg+xml" />
@@ -74,58 +77,163 @@
 
 		<main id="main">
 			<section class="hero">
-				<div style="font-family: var(--mono); color: var(--pink); margin-bottom: 1rem">
-					INTEGRATION
-				</div>
-				<h1>Oh My <span>Posh</span></h1>
+				<h1>Custom <span>Typography</span></h1>
 				<p class="lead">
-					Extend the retro aesthetic outside the editor. We provide a matching Oh My Posh
-					terminal prompt theme that dynamically follows your active Stylesmith color
-					palette.
+					Stylesmith ships with carefully curated Nerd Fonts. They are injected seamlessly
+					as web fonts directly into the editor UI—no system installation required,
+					keeping your machine perfectly clean.
 				</p>
 			</section>
 
-			<section style="max-width: 800px; margin: 0 auto; padding: 2rem">
-				<h2>How it works</h2>
-				<p>
-					Oh My Posh is a custom prompt engine for any shell that has the ability to
-					adjust the string shown in the prompt. Stylesmith ships with an official Oh My
-					Posh theme file (`stylesmith.omp.json`) that uses terminal environment variables
-					to automatically sync with your currently active VS Code theme colors.
-				</p>
-
-				<h2 style="margin-top: 3rem">Installation</h2>
-				<ol class="steps-list" style="margin-top: 1.5rem">
-					<li>
-						<strong>Install Oh My Posh:</strong> Follow the
-						<a href="https://ohmyposh.dev/docs/installation/windows"
-							>official Oh My Posh documentation</a
+			<section id="fonts" aria-labelledby="fonts-title" style="padding-top: 2rem">
+				<div
+					class="cards"
+					style="
+						display: grid;
+						grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+						gap: 1.5rem;
+					"
+				>
+					<article
+						class="feature-card"
+						style="
+							display: flex;
+							flex-direction: column;
+							padding: 1.5rem;
+							border: 1px solid var(--border);
+							border-left: 3px solid var(--cyan);
+							background: rgba(0, 0, 0, 0.2);
+							border-radius: 6px;
+							transition:
+								transform 0.2s,
+								background 0.2s;
+						"
+					>
+						<h3 style="margin: 0 0 0.5rem; font-size: 1.25rem">JetBrainsMono</h3>
+						<p style="margin: 0; color: var(--muted); line-height: 1.5">
+							The default developer staple. High legibility, excellent ligatures, and
+							a sleek modern aesthetic.
+						</p>
+						<div
+							style="
+								margin-top: 1rem;
+								padding: 1rem;
+								background: var(--bg-deep);
+								border: 1px solid var(--border);
+								border-radius: 4px;
+								font-family: monospace;
+								color: var(--text);
+							"
 						>
-						for your OS.
-					</li>
-					<li>
-						<strong>Get the Stylesmith theme:</strong> Download the official
-						configuration file.
-						<pre><code>curl -O https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json</code></pre>
-					</li>
-					<li>
-						<strong>Configure your Shell:</strong> Set Oh My Posh to use the downloaded
-						theme. For PowerShell, add this to your `$PROFILE`:
-						<pre><code>oh-my-posh init pwsh --config ~/stylesmith.omp.json | Invoke-Expression</code></pre>
-					</li>
-				</ol>
+							function init() {<br />&nbsp;&nbsp;console.log("JetBrains");<br />}
+						</div>
+					</article>
 
-				<section style="margin-top: 4rem; text-align: center">
-					<h2 style="font-size: 1.5rem">Ready to style your terminal?</h2>
-					<p class="actions" style="margin-top: 2rem">
-						<a class="button ghost btn-secondary" href="./#install">Get Stylesmith</a>
-						<a
-							class="button ghost btn-secondary"
-							href="https://github.com/21010/stylesmith#terminal-prompt-optional-add-on"
-							>Read Docs on GitHub</a
+					<article
+						class="feature-card"
+						style="
+							display: flex;
+							flex-direction: column;
+							padding: 1.5rem;
+							border: 1px solid var(--border);
+							border-left: 3px solid var(--cyan);
+							background: rgba(0, 0, 0, 0.2);
+							border-radius: 6px;
+							transition:
+								transform 0.2s,
+								background 0.2s;
+						"
+					>
+						<h3 style="margin: 0 0 0.5rem; font-size: 1.25rem">BlexMono</h3>
+						<p style="margin: 0; color: var(--muted); line-height: 1.5">
+							Based on IBM Plex Mono. A highly engineered, precise font that excels in
+							high-contrast environments.
+						</p>
+						<div
+							style="
+								margin-top: 1rem;
+								padding: 1rem;
+								background: var(--bg-deep);
+								border: 1px solid var(--border);
+								border-radius: 4px;
+								font-family: monospace;
+								color: var(--text);
+							"
 						>
-					</p>
-				</section>
+							function init() {<br />&nbsp;&nbsp;console.log("BlexMono");<br />}
+						</div>
+					</article>
+
+					<article
+						class="feature-card"
+						style="
+							display: flex;
+							flex-direction: column;
+							padding: 1.5rem;
+							border: 1px solid var(--border);
+							border-left: 3px solid var(--pink);
+							background: rgba(0, 0, 0, 0.2);
+							border-radius: 6px;
+							transition:
+								transform 0.2s,
+								background 0.2s;
+						"
+					>
+						<h3 style="margin: 0 0 0.5rem; font-size: 1.25rem">ShureTechMono</h3>
+						<p style="margin: 0; color: var(--muted); line-height: 1.5">
+							A condensed, futuristic technical font. Perfect for compact cyberpunk
+							layouts and dense log analysis.
+						</p>
+						<div
+							style="
+								margin-top: 1rem;
+								padding: 1rem;
+								background: var(--bg-deep);
+								border: 1px solid var(--border);
+								border-radius: 4px;
+								font-family: monospace;
+								color: var(--text);
+							"
+						>
+							function init() {<br />&nbsp;&nbsp;console.log("ShureTech");<br />}
+						</div>
+					</article>
+
+					<article
+						class="feature-card"
+						style="
+							display: flex;
+							flex-direction: column;
+							padding: 1.5rem;
+							border: 1px solid var(--border);
+							border-left: 3px solid var(--pink);
+							background: rgba(0, 0, 0, 0.2);
+							border-radius: 6px;
+							transition:
+								transform 0.2s,
+								background 0.2s;
+						"
+					>
+						<h3 style="margin: 0 0 0.5rem; font-size: 1.25rem">DepartureMono</h3>
+						<p style="margin: 0; color: var(--muted); line-height: 1.5">
+							A monospaced pixel font with a lo-fi tech vibe. Delivers the ultimate
+							retro CRT or terminal aesthetic.
+						</p>
+						<div
+							style="
+								margin-top: 1rem;
+								padding: 1rem;
+								background: var(--bg-deep);
+								border: 1px solid var(--border);
+								border-radius: 4px;
+								font-family: monospace;
+								color: var(--text);
+							"
+						>
+							function init() {<br />&nbsp;&nbsp;console.log("Departure");<br />}
+						</div>
+					</article>
+				</div>
 			</section>
 		</main>
 
