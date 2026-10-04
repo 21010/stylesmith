@@ -145,7 +145,7 @@
 							>
 								Disabling or blindly relaxing VS Code's Content Security Policy
 								allows any malicious extension or untrusted workspace to execute
-								arbitrary, dangerous scripts inside your editor context.
+								untrusted scripts inside your editor context.
 							</p>
 						</div>
 						<div>
@@ -168,10 +168,9 @@
 									margin: 0;
 								"
 							>
-								Stylesmith injects extremely narrow, surgical CSP headers. It only
-								permits its own static assets (like bundled fonts) and local CSS. It
-								never uses <code>unsafe-eval</code> or opens broad script execution
-								vectors.
+								Stylesmith injects strict CSP headers. It only permits its own
+								static assets (like bundled fonts) and local CSS. It never uses
+								<code>unsafe-eval</code> or opens broad script execution vectors.
 							</p>
 						</div>
 					</div>
@@ -202,8 +201,8 @@
 								margin: 0;
 							"
 						>
-							You get a heavily customized UI without opening a backdoor into your
-							local development environment.
+							You get a custom UI without opening a backdoor into your local
+							development environment.
 						</p>
 					</div>
 				</article>
@@ -280,9 +279,9 @@
 									margin: 0;
 								"
 							>
-								Stylesmith recalculates the exact cryptographic checksum of the core
-								HTML file <em>after</em> making its own benign modifications, and
-								updates the editor's lockfile to match the new hash.
+								Stylesmith recalculates the cryptographic checksum of the core HTML
+								file <em>after</em> making its own modifications, and updates the
+								editor's lockfile to match the new hash.
 							</p>
 						</div>
 					</div>
@@ -370,9 +369,9 @@
 									margin: 0;
 								"
 							>
-								VS Code updates frequently. Aggressive, hard-coded UI patches can
-								easily crash the editor, leaving you locked out of your workspace
-								after a Tuesday morning update.
+								VS Code updates frequently. Hard-coded UI patches can easily crash
+								the editor, leaving you locked out of your workspace after a Tuesday
+								morning update.
 							</p>
 						</div>
 						<div>
@@ -396,8 +395,8 @@
 								"
 							>
 								Stylesmith's patches are structural and non-destructive. If an
-								upstream VS Code update breaks the CSS hooks, the modifications
-								gracefully fail.
+								upstream VS Code update breaks the CSS hooks, the modifications fail
+								without breaking the editor.
 							</p>
 						</div>
 					</div>
@@ -483,7 +482,7 @@
 							>
 								Extensions that globally modify UI styles often leak CSS into
 								embedded webviews (like Markdown previews or third-party extension
-								pages), horribly breaking their layout.
+								pages), breaking their layout.
 							</p>
 						</div>
 						<div>
@@ -507,8 +506,7 @@
 								"
 							>
 								Stylesmith strictly scopes all visual modifications to the main
-								workbench container, completely isolating it from the rest of the
-								application.
+								workbench container, isolating it from the rest of the application.
 							</p>
 						</div>
 					</div>
@@ -540,7 +538,7 @@
 							"
 						>
 							Your code, extension menus, and markdown previews look exactly as their
-							authors intended, with zero visual artifacts or overridden colors.
+							authors intended, with no visual artifacts.
 						</p>
 					</div>
 				</article>
@@ -596,9 +594,8 @@
 				>
 					If you ever see a
 					<strong>"Your VS Code installation appears to be corrupt"</strong> message
-					<em>while Stylesmith is actively managing your theme</em>,
-					<strong>DO NOT IGNORE IT.</strong> Never attempt to permanently disable this
-					warning using third-party extensions.
+					<em>while Stylesmith is active</em>, <strong>DO NOT IGNORE IT.</strong> Never
+					attempt to permanently disable this warning using third-party extensions.
 				</p>
 				<p
 					style="
@@ -608,8 +605,8 @@
 						margin-bottom: 0;
 					"
 				>
-					Because Stylesmith strictly manages and updates the editor's cryptographic
-					lockfile for its own benign modifications, seeing this warning means
+					Because Stylesmith updates the editor's cryptographic lockfile for its own
+					modifications, seeing this warning means
 					<strong>something else</strong> has modified your editor's core files without
 					your knowledge. This usually indicates a broken VS Code update, a rogue
 					extension leaking code, or worst case, a malicious script attempting to hijack
