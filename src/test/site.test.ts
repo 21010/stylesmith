@@ -50,9 +50,13 @@ describe("website", () => {
 				assert.match(policy, /default-src 'none'/);
 				assert.match(policy, /script-src 'self'(;|$)/, "scripts only from the site");
 				assert.doesNotMatch(policy, /connect-src/, "no connections");
-				for (const [script] of html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)) {
-					assert.equal(script, '<script src="app.js" defer></script>', "only app.js");
+				// Every script tag is app.js, and each is closed right away, with nothing inside.
+				const scripts = html.match(/<script\b[^>]*>/gi) ?? [];
+				for (const tag of scripts) {
+					assert.equal(tag, '<script src="app.js" defer>', "only app.js");
 				}
+				const allowed = html.split('<script src="app.js" defer></script>').length - 1;
+				assert.equal(allowed, scripts.length, "no inline script code");
 				assert.doesNotMatch(html, /\son[a-z]+=/i, "no inline event handlers");
 			});
 
