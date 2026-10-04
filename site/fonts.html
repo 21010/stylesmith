@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<title>Oh My Posh - Stylesmith Integrations</title>
+		<meta name="description" content="Integrate Oh My Posh terminal prompt with Stylesmith." />
+		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content="#0f1120" />
+		<link rel="icon" href="logo.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<header class="top">
+			<a class="brand" href="./">
+				<img src="logo.svg" width="36" height="36" alt="" />
+				<span>Stylesmith</span>
+			</a>
+			<nav aria-label="Main">
+				<a href="themes.html">Themes</a>
+				<a href="effects.html">Effects</a>
+				<a href="./#addons" style="color: var(--cyan)" aria-current="page">Add-ons</a>
+				<a href="./#security">Security</a>
+				<a href="./#install">Install</a>
+				<a href="https://github.com/21010/stylesmith">GitHub</a>
+			</nav>
+		</header>
+
+		<main id="main">
+			<section class="hero">
+				<div style="font-family: var(--mono); color: var(--pink); margin-bottom: 1rem">
+					INTEGRATION
+				</div>
+				<h1>Oh My <span>Posh</span></h1>
+				<p class="lead">
+					Extend the retro aesthetic outside the editor. We provide a matching Oh My Posh
+					terminal prompt theme that dynamically follows your active Stylesmith color
+					palette.
+				</p>
+			</section>
+
+			<section style="max-width: 800px; margin: 0 auto; padding: 2rem">
+				<h2>How it works</h2>
+				<p>
+					Oh My Posh is a custom prompt engine for any shell that has the ability to
+					adjust the string shown in the prompt. Stylesmith ships with an official Oh My
+					Posh theme file (`stylesmith.omp.json`) that uses terminal environment variables
+					to automatically sync with your currently active VS Code theme colors.
+				</p>
+
+				<h2 style="margin-top: 3rem">Installation</h2>
+				<ol class="steps-list" style="margin-top: 1.5rem">
+					<li>
+						<strong>Install Oh My Posh:</strong> Follow the
+						<a href="https://ohmyposh.dev/docs/installation/windows"
+							>official Oh My Posh documentation</a
+						>
+						for your OS.
+					</li>
+					<li>
+						<strong>Get the Stylesmith theme:</strong> Download the official
+						configuration file.
+						<pre><code>curl -O https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json</code></pre>
+					</li>
+					<li>
+						<strong>Configure your Shell:</strong> Set Oh My Posh to use the downloaded
+						theme. For PowerShell, add this to your `$PROFILE`:
+						<pre><code>oh-my-posh init pwsh --config ~/stylesmith.omp.json | Invoke-Expression</code></pre>
+					</li>
+				</ol>
+
+				<section style="margin-top: 4rem; text-align: center">
+					<h2 style="font-size: 1.5rem">Ready to style your terminal?</h2>
+					<p class="actions" style="margin-top: 2rem">
+						<a class="button ghost btn-secondary" href="./#install">Get Stylesmith</a>
+						<a
+							class="button ghost btn-secondary"
+							href="https://github.com/21010/stylesmith#terminal-prompt-optional-add-on"
+							>Read Docs on GitHub</a
+						>
+					</p>
+				</section>
+			</section>
+		</main>
+
+		<footer>
+			<p>&copy; 21010. Released under the MIT License.</p>
+		</footer>
+	</body>
+</html>
