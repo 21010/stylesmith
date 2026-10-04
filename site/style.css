@@ -1036,6 +1036,16 @@ kbd {
 	margin-top: 0.5rem;
 }
 
+/* Invisible bridge to prevent hover loss when moving mouse down */
+.dropdown-content::before {
+	content: "";
+	position: absolute;
+	top: -0.5rem;
+	left: 0;
+	right: 0;
+	height: 0.5rem;
+}
+
 .dropdown:hover .dropdown-content,
 .dropdown:focus-within .dropdown-content {
 	display: flex;
