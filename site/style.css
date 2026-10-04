@@ -1511,7 +1511,7 @@ kbd {
 	margin: 0;
 }
 .ergo-impact {
-	padding: 1.5rem 2rem;
+	padding: 1rem 1.5rem;
 	background: var(--bg-deep);
 	border: 1px solid var(--border);
 	border-radius: 6px;
