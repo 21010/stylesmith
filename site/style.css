@@ -1067,3 +1067,79 @@ kbd {
 	background-color: rgba(95, 224, 255, 0.1);
 	color: var(--cyan) !important;
 }
+
+/* Theme Cards */
+.theme-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+	gap: 2rem;
+	margin-top: 2rem;
+}
+
+.theme-card {
+	display: flex;
+	flex-direction: column;
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--border);
+	border-top: 3px solid var(--cyan);
+	border-radius: 6px;
+	overflow: hidden;
+	transition:
+		transform 0.2s,
+		background 0.2s,
+		box-shadow 0.2s;
+}
+
+.theme-card:hover {
+	transform: translateY(-4px);
+	background: var(--raised);
+	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.theme-img-wrapper {
+	border-bottom: 1px solid var(--border);
+	background: var(--bg-deep);
+}
+
+.theme-img-wrapper img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.theme-content {
+	padding: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.theme-content h3 {
+	margin: 0 0 0.5rem;
+	color: var(--text);
+	font-size: 1.25rem;
+}
+
+.theme-content p {
+	margin: 0 0 1.5rem;
+	color: var(--muted);
+	line-height: 1.5;
+}
+
+.theme-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: auto;
+}
+
+.badge {
+	background: var(--bg-deep);
+	color: var(--cyan);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 0.2rem 0.6rem;
+	font-size: 0.75rem;
+	font-family: var(--mono);
+	line-height: 1;
+}
