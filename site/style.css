@@ -187,13 +187,42 @@ h1 span {
 
 .lead {
 	max-width: 46rem;
-	margin: 0 auto 2rem;
+	margin: 0 auto 1.25rem;
 	color: var(--muted);
 	font-size: 1.15rem;
 }
 
-.lead strong {
-	color: var(--text);
+.hero-badges {
+	display: flex;
+	gap: 0.75rem;
+	justify-content: center;
+	margin-bottom: 2.25rem;
+	flex-wrap: wrap;
+}
+
+.badge {
+	font-family: var(--mono);
+	font-size: 0.85rem;
+	padding: 0.3rem 0.6rem;
+	background: var(--bg-deep);
+}
+
+.badge.cyan {
+	color: var(--cyan);
+	border: 1px solid var(--cyan);
+	box-shadow: 0 0 10px rgb(95 224 255 / 0.15);
+}
+
+.badge.pink {
+	color: var(--pink);
+	border: 1px solid var(--pink);
+	box-shadow: 0 0 10px rgb(255 114 216 / 0.15);
+}
+
+.badge.yellow {
+	color: var(--yellow);
+	border: 1px solid var(--yellow);
+	box-shadow: 0 0 10px rgb(255 230 0 / 0.15);
 }
 
 .actions {
