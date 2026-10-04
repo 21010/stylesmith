@@ -81,190 +81,116 @@
 			</section>
 
 			<section
-				aria-labelledby="security-title"
-				style="
-					max-width: 1200px;
-					margin: 3rem auto 4rem auto;
-					display: grid;
-					grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-					gap: 3rem;
-					padding: 0 2rem;
-				"
+				class="ergo-split"
+				style="max-width: 1000px; padding: 0 2rem; margin: 4rem auto"
 			>
-				<article class="security-card" style="display: block">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div class="sec-icon">
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-								<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-							</svg>
+				<aside class="ergo-nav" style="align-self: start">
+					<h2>Core Pillars</h2>
+					<ul>
+						<li><a href="#csp" class="active">Content Security Policy</a></li>
+						<li><a href="#checksum">The Checksum Lock</a></li>
+						<li><a href="#failsafe">Failsafe Architecture</a></li>
+						<li><a href="#immunity">Workspace Immunity</a></li>
+					</ul>
+				</aside>
+				<div class="ergo-content">
+					<article id="csp" class="security-card ergo-section" style="display: block">
+						<div class="card-header" style="margin-bottom: 2rem">
+							<div class="sec-icon">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+									<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+								</svg>
+							</div>
+							<h3>Content Security Policy (CSP)</h3>
 						</div>
-						<h3>Content Security Policy (CSP)</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
-							<h4
-								style="
-									color: var(--pink);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Risk
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
-								Disabling or blindly relaxing VS Code's Content Security Policy
-								allows any malicious extension or untrusted workspace to execute
-								untrusted scripts inside your editor context.
-							</p>
-						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Fix
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
-								Stylesmith injects strict CSP headers. It only permits its own
-								static assets (like bundled fonts) and local CSS. It never uses
-								<code>unsafe-eval</code> or opens broad script execution vectors.
-							</p>
-						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
-					>
-						<h4
+						<div
 							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
+								display: grid;
+								grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+								gap: 2rem;
+								margin-bottom: 2rem;
 							"
 						>
-							Why It Matters
-						</h4>
-						<p
+							<div>
+								<h4
+									style="
+										color: var(--pink);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Risk
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--muted);
+										margin: 0;
+									"
+								>
+									Disabling or blindly relaxing VS Code's Content Security Policy
+									allows any malicious extension or untrusted workspace to execute
+									untrusted scripts inside your editor context.
+								</p>
+							</div>
+							<div>
+								<h4
+									style="
+										color: var(--cyan);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Fix
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--text);
+										margin: 0;
+									"
+								>
+									Stylesmith injects strict CSP headers. It only permits its own
+									static assets (like bundled fonts) and local CSS. It never uses
+									<code>unsafe-eval</code> or opens broad script execution
+									vectors.
+								</p>
+							</div>
+						</div>
+						<div
 							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
+								padding: 1.5rem;
+								background: rgba(0, 0, 0, 0.3);
+								border-left: 3px solid var(--yellow);
+								border-radius: 4px;
 							"
 						>
-							You get a custom UI without opening a backdoor into your local
-							development environment.
-						</p>
-					</div>
-				</article>
-
-				<article class="security-card" style="display: block">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div class="sec-icon">
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-							</svg>
-						</div>
-						<h3>The Checksum Lock</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
 							<h4
 								style="
-									color: var(--pink);
+									color: var(--yellow);
 									text-transform: uppercase;
 									font-size: 0.85rem;
 									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
+									margin: 0 0 0.5rem 0;
 								"
 							>
-								The Risk
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
-								VS Code monitors its own installation files. If malware modifies
-								your editor, it displays a "corrupt installation" warning. Other
-								UI-patching tools completely disable this warning, blinding you to
-								actual threats.
-							</p>
-						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Fix
+								Why It Matters
 							</h4>
 							<p
 								style="
@@ -274,223 +200,111 @@
 									margin: 0;
 								"
 							>
-								Stylesmith recalculates the cryptographic checksum of the core HTML
-								file <em>after</em> making its own modifications, and updates the
-								editor's lockfile to match the new hash.
+								You get a custom UI without opening a backdoor into your local
+								development environment.
 							</p>
 						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
+					</article>
+					<article
+						id="checksum"
+						class="security-card ergo-section"
+						style="display: block"
 					>
-						<h4
-							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
-							"
-						>
-							Why It Matters
-						</h4>
-						<p
-							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
-							"
-						>
-							VS Code's integrity check stays fully active. If a virus or rogue tool
-							alters your files later, the checksum will break and you will instantly
-							be warned.
-						</p>
-					</div>
-				</article>
-
-				<article class="security-card" style="display: block">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div class="sec-icon">
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<polyline points="23 4 23 10 17 10"></polyline>
-								<polyline points="1 20 1 14 7 14"></polyline>
-								<path
-									d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
-								></path>
-							</svg>
+						<div class="card-header" style="margin-bottom: 2rem">
+							<div class="sec-icon">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+								</svg>
+							</div>
+							<h3>The Checksum Lock</h3>
 						</div>
-						<h3>Failsafe Architecture</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
+						<div
+							style="
+								display: grid;
+								grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+								gap: 2rem;
+								margin-bottom: 2rem;
+							"
+						>
+							<div>
+								<h4
+									style="
+										color: var(--pink);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Risk
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--muted);
+										margin: 0;
+									"
+								>
+									VS Code monitors its own installation files. If malware modifies
+									your editor, it displays a "corrupt installation" warning. Other
+									UI-patching tools completely disable this warning, blinding you
+									to actual threats.
+								</p>
+							</div>
+							<div>
+								<h4
+									style="
+										color: var(--cyan);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Fix
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--text);
+										margin: 0;
+									"
+								>
+									Stylesmith recalculates the cryptographic checksum of the core
+									HTML file <em>after</em> making its own modifications, and
+									updates the editor's lockfile to match the new hash.
+								</p>
+							</div>
+						</div>
+						<div
+							style="
+								padding: 1.5rem;
+								background: rgba(0, 0, 0, 0.3);
+								border-left: 3px solid var(--yellow);
+								border-radius: 4px;
+							"
+						>
 							<h4
 								style="
-									color: var(--pink);
+									color: var(--yellow);
 									text-transform: uppercase;
 									font-size: 0.85rem;
 									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
+									margin: 0 0 0.5rem 0;
 								"
 							>
-								The Risk
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
-								VS Code updates frequently. Hard-coded UI patches can easily crash
-								the editor, leaving you locked out of your workspace after a Tuesday
-								morning update.
-							</p>
-						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Fix
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
-								Stylesmith's patches are structural and non-destructive. If an
-								upstream VS Code update breaks the CSS hooks, the modifications fail
-								without breaking the editor.
-							</p>
-						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
-					>
-						<h4
-							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
-							"
-						>
-							Why It Matters
-						</h4>
-						<p
-							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
-							"
-						>
-							Zero downtime. Your editor will never refuse to boot because of a theme.
-						</p>
-					</div>
-				</article>
-
-				<article class="security-card" style="display: block">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div class="sec-icon">
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path
-									d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
-								></path>
-							</svg>
-						</div>
-						<h3>Workspace Immunity</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
-							<h4
-								style="
-									color: var(--pink);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Risk
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
-								Extensions that globally modify UI styles often leak CSS into
-								embedded webviews (like Markdown previews or third-party extension
-								pages), breaking their layout.
-							</p>
-						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Fix
+								Why It Matters
 							</h4>
 							<p
 								style="
@@ -500,51 +314,253 @@
 									margin: 0;
 								"
 							>
-								Stylesmith strictly scopes all visual modifications to the main
-								workbench container, isolating it from the rest of the application.
+								VS Code's integrity check stays fully active. If a virus or rogue
+								tool alters your files later, the checksum will break and you will
+								instantly be warned.
 							</p>
 						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
+					</article>
+					<article
+						id="failsafe"
+						class="security-card ergo-section"
+						style="display: block"
 					>
-						<h4
+						<div class="card-header" style="margin-bottom: 2rem">
+							<div class="sec-icon">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polyline points="23 4 23 10 17 10"></polyline>
+									<polyline points="1 20 1 14 7 14"></polyline>
+									<path
+										d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+									></path>
+								</svg>
+							</div>
+							<h3>Failsafe Architecture</h3>
+						</div>
+						<div
 							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
+								display: grid;
+								grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+								gap: 2rem;
+								margin-bottom: 2rem;
 							"
 						>
-							Why It Matters
-						</h4>
-						<p
+							<div>
+								<h4
+									style="
+										color: var(--pink);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Risk
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--muted);
+										margin: 0;
+									"
+								>
+									VS Code updates frequently. Hard-coded UI patches can easily
+									crash the editor, leaving you locked out of your workspace after
+									a Tuesday morning update.
+								</p>
+							</div>
+							<div>
+								<h4
+									style="
+										color: var(--cyan);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Fix
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--text);
+										margin: 0;
+									"
+								>
+									Stylesmith's patches are structural and non-destructive. If an
+									upstream VS Code update breaks the CSS hooks, the modifications
+									fail without breaking the editor.
+								</p>
+							</div>
+						</div>
+						<div
 							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
+								padding: 1.5rem;
+								background: rgba(0, 0, 0, 0.3);
+								border-left: 3px solid var(--yellow);
+								border-radius: 4px;
 							"
 						>
-							Your code, extension menus, and markdown previews look exactly as their
-							authors intended, with no visual artifacts.
-						</p>
-					</div>
-				</article>
+							<h4
+								style="
+									color: var(--yellow);
+									text-transform: uppercase;
+									font-size: 0.85rem;
+									letter-spacing: 0.1em;
+									margin: 0 0 0.5rem 0;
+								"
+							>
+								Why It Matters
+							</h4>
+							<p
+								style="
+									font-size: 1.05rem;
+									line-height: 1.6;
+									color: var(--text);
+									margin: 0;
+								"
+							>
+								Zero downtime. Your editor will never refuse to boot because of a
+								theme.
+							</p>
+						</div>
+					</article>
+					<article
+						id="immunity"
+						class="security-card ergo-section"
+						style="display: block"
+					>
+						<div class="card-header" style="margin-bottom: 2rem">
+							<div class="sec-icon">
+								<svg
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
+									></path>
+								</svg>
+							</div>
+							<h3>Workspace Immunity</h3>
+						</div>
+						<div
+							style="
+								display: grid;
+								grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+								gap: 2rem;
+								margin-bottom: 2rem;
+							"
+						>
+							<div>
+								<h4
+									style="
+										color: var(--pink);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Risk
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--muted);
+										margin: 0;
+									"
+								>
+									Extensions that globally modify UI styles often leak CSS into
+									embedded webviews (like Markdown previews or third-party
+									extension pages), breaking their layout.
+								</p>
+							</div>
+							<div>
+								<h4
+									style="
+										color: var(--cyan);
+										text-transform: uppercase;
+										font-size: 0.85rem;
+										letter-spacing: 0.1em;
+										margin: 0 0 0.75rem 0;
+									"
+								>
+									The Fix
+								</h4>
+								<p
+									style="
+										font-size: 1.05rem;
+										line-height: 1.6;
+										color: var(--text);
+										margin: 0;
+									"
+								>
+									Stylesmith strictly scopes all visual modifications to the main
+									workbench container, isolating it from the rest of the
+									application.
+								</p>
+							</div>
+						</div>
+						<div
+							style="
+								padding: 1.5rem;
+								background: rgba(0, 0, 0, 0.3);
+								border-left: 3px solid var(--yellow);
+								border-radius: 4px;
+							"
+						>
+							<h4
+								style="
+									color: var(--yellow);
+									text-transform: uppercase;
+									font-size: 0.85rem;
+									letter-spacing: 0.1em;
+									margin: 0 0 0.5rem 0;
+								"
+							>
+								Why It Matters
+							</h4>
+							<p
+								style="
+									font-size: 1.05rem;
+									line-height: 1.6;
+									color: var(--text);
+									margin: 0;
+								"
+							>
+								Your code, extension menus, and markdown previews look exactly as
+								their authors intended, with no visual artifacts.
+							</p>
+						</div>
+					</article>
+				</div>
 			</section>
 
 			<div
 				class="security-warning"
 				style="
-					max-width: 1200px;
-					margin: 4rem auto 4rem;
-					padding: 3rem;
+					max-width: 1000px;
+					margin: 4rem auto 2rem;
+					padding: 2rem;
 					border-left: 4px solid var(--pink);
 					background: rgba(255, 114, 216, 0.05);
 					border-radius: 4px;
@@ -620,5 +636,26 @@
 				Microsoft.
 			</p>
 		</footer>
+		<script>
+			const observer = new IntersectionObserver(
+				entries => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							document.querySelectorAll(".ergo-nav a").forEach(a => {
+								a.classList.toggle(
+									"active",
+									a.getAttribute("href") === "#" + entry.target.id
+								);
+							});
+						}
+					});
+				},
+				{ rootMargin: "-20% 0px -70% 0px" }
+			);
+
+			document
+				.querySelectorAll(".ergo-section")
+				.forEach(section => observer.observe(section));
+		</script>
 	</body>
 </html>
