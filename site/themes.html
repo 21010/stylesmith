@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; media-src 'self'; connect-src 'self' ws://* http://localhost:*; base-uri 'none'; form-action 'none'"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<title>Themes - Stylesmith</title>
@@ -14,6 +14,7 @@
 		<meta name="theme-color" content="#0f1120" />
 		<link rel="icon" href="logo.svg" type="image/svg+xml" />
 		<link rel="stylesheet" href="style.css" />
+		<script src="app.js" defer></script>
 	</head>
 	<body>
 		<header class="top">
@@ -101,106 +102,69 @@
 						</div>
 					</div>
 					<div class="carousel-thumbnails">
-						<div class="thumb active" onclick="setTheme(0)">
-							<img src="img/night-city.png" alt="Night City" />
+						<div
+							class="thumb active"
+							data-title="Night City"
+							data-desc="Inspired by the rain-slicked streets of classic 80s cyberpunk cinema. Features piercing neon pinks and cyans, sparking cursor animations, and a full system boot sequence."
+						>
+							<img
+								src="img/night-city.png"
+								width="1280"
+								height="760"
+								alt="Night City"
+							/>
 							<span>Night City</span>
 						</div>
-						<div class="thumb" onclick="setTheme(1)">
-							<img src="img/phosphor-terminal.png" alt="Phosphor Terminal" />
+						<div
+							class="thumb"
+							data-title="Phosphor Terminal"
+							data-desc="A nostalgic tribute to the VT100 and early UNIX mainframes. Uses a pure green phosphor palette, heavy scanlines, and a blocky pixel font to replicate working on a vintage CRT monitor."
+						>
+							<img
+								src="img/phosphor-terminal.png"
+								width="1280"
+								height="760"
+								alt="Phosphor Terminal"
+							/>
 							<span>Phosphor Terminal</span>
 						</div>
-						<div class="thumb" onclick="setTheme(2)">
-							<img src="img/amber-monitor.png" alt="Amber Monitor" />
+						<div
+							class="thumb"
+							data-title="Amber Monitor"
+							data-desc="Emulates the warm, high-contrast glow of the IBM 5151 monochrome display from 1981. Perfect for late-night hacking sessions where green is just too harsh on the eyes."
+						>
+							<img
+								src="img/amber-monitor.png"
+								width="1280"
+								height="760"
+								alt="Amber Monitor"
+							/>
 							<span>Amber Monitor</span>
 						</div>
-						<div class="thumb" onclick="setTheme(3)">
-							<img src="img/black-ice.png" alt="Black ICE" />
+						<div
+							class="thumb"
+							data-title="Black ICE"
+							data-desc="Inspired by the minimalist, corporate intrusion countermeasure electronics found in sprawling dystopian novels. Cold white text against absolute black, framed by sharp, glowing borders."
+						>
+							<img
+								src="img/black-ice.png"
+								width="1280"
+								height="760"
+								alt="Black ICE"
+							/>
 							<span>Black ICE</span>
 						</div>
-						<div class="thumb" onclick="setTheme(4)">
-							<img src="img/daylight.png" alt="Daylight" />
+						<div
+							class="thumb"
+							data-title="Daylight"
+							data-desc="A clean, modern aesthetic designed for highly-lit environments. Strips away the heavy retro filters in favor of crisp typography, subtle transitions, and high-contrast readability."
+						>
+							<img src="img/daylight.png" width="1280" height="760" alt="Daylight" />
 							<span>Daylight</span>
 						</div>
 					</div>
 				</div>
 			</section>
-
-			<script>
-				const themesData = [
-					{
-						title: "Night City",
-						desc: "Inspired by the rain-slicked streets of classic 80s cyberpunk cinema. Features piercing neon pinks and cyans, sparking cursor animations, and a full system boot sequence.",
-						img: "img/night-city.png"
-					},
-					{
-						title: "Phosphor Terminal",
-						desc: "A nostalgic tribute to the VT100 and early UNIX mainframes. Uses a pure green phosphor palette, heavy scanlines, and a blocky pixel font to replicate working on a vintage CRT monitor.",
-						img: "img/phosphor-terminal.png"
-					},
-					{
-						title: "Amber Monitor",
-						desc: "Emulates the warm, high-contrast glow of the IBM 5151 monochrome display from 1981. Perfect for late-night hacking sessions where green is just too harsh on the eyes.",
-						img: "img/amber-monitor.png"
-					},
-					{
-						title: "Black ICE",
-						desc: "Inspired by the minimalist, corporate intrusion countermeasure electronics found in sprawling dystopian novels. Cold white text against absolute black, framed by sharp, glowing borders.",
-						img: "img/black-ice.png"
-					},
-					{
-						title: "Daylight",
-						desc: "A clean, modern aesthetic designed for highly-lit environments. Strips away the heavy retro filters in favor of crisp typography, subtle transitions, and high-contrast readability.",
-						img: "img/daylight.png"
-					}
-				];
-				let currentIndex = 0;
-				let carouselTimer;
-
-				const mainImg = document.getElementById("mainImage");
-				const mainTitle = document.getElementById("mainTitle");
-				const mainDesc = document.getElementById("mainDesc");
-				const thumbs = document.querySelectorAll(".thumb");
-
-				function setTheme(index) {
-					currentIndex = index;
-					const theme = themesData[index];
-					mainImg.style.opacity = "0";
-					setTimeout(() => {
-						mainImg.src = theme.img;
-						mainImg.alt = theme.title;
-						mainTitle.textContent = theme.title;
-						mainDesc.textContent = theme.desc;
-						mainImg.style.opacity = "1";
-					}, 150);
-					thumbs.forEach((thumb, i) => {
-						if (i === index) thumb.classList.add("active");
-						else thumb.classList.remove("active");
-					});
-					resetTimer();
-				}
-
-				function nextTheme() {
-					setTheme((currentIndex + 1) % themesData.length);
-				}
-
-				function prevTheme() {
-					setTheme((currentIndex - 1 + themesData.length) % themesData.length);
-				}
-
-				document.addEventListener("keydown", e => {
-					if (e.key === "ArrowRight") {
-						nextTheme();
-					} else if (e.key === "ArrowLeft") {
-						prevTheme();
-					}
-				});
-
-				function resetTimer() {
-					clearInterval(carouselTimer);
-					carouselTimer = setInterval(nextTheme, 3000);
-				}
-				resetTimer();
-			</script>
 
 			<section class="cta-section" style="text-align: center; margin: 4rem 0">
 				<h2>Ready to style your editor?</h2>

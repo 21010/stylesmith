@@ -42,12 +42,17 @@ describe("website", () => {
 		describe(page, () => {
 			const html = readFileSync(path.join(SITE, page), "utf-8");
 
-			it("has a strict security policy and no scripts", () => {
-				assert.match(
-					html,
-					/http-equiv="Content-Security-Policy"[\s\S]*?default-src 'none'/
-				);
-				assert.doesNotMatch(html, /<script/i);
+			it("has a strict security policy and no inline scripts", () => {
+				const policy = /http-equiv="Content-Security-Policy"\s+content="([^"]*)"/.exec(
+					html
+				)?.[1];
+				assert.ok(policy, "has a security policy");
+				assert.match(policy, /default-src 'none'/);
+				assert.match(policy, /script-src 'self'(;|$)/, "scripts only from the site");
+				assert.doesNotMatch(policy, /connect-src/, "no connections");
+				for (const [script] of html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script>/gi)) {
+					assert.equal(script, '<script src="app.js" defer></script>', "only app.js");
+				}
 				assert.doesNotMatch(html, /\son[a-z]+=/i, "no inline event handlers");
 			});
 

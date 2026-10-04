@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; media-src 'self'; connect-src 'self' ws://* http://localhost:*; base-uri 'none'; form-action 'none'"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<title>Stylesmith: Deep UI Customization for VS Code</title>
@@ -17,6 +17,7 @@
 		<meta name="theme-color" content="#0f1120" />
 		<link rel="icon" href="logo.svg" type="image/svg+xml" />
 		<link rel="stylesheet" href="style.css" />
+		<script src="app.js" defer></script>
 	</head>
 	<body>
 		<div class="boot" aria-hidden="true">
@@ -87,10 +88,14 @@
 					inject your own CSS and JS.
 				</p>
 				<figure class="screen">
-					<!-- Video placeholder for future animated showcase -->
 					<video autoplay loop muted playsinline poster="img/night-city.png">
-						<!-- <source src="video/night-city.webm" type="video/webm"> -->
-						<img src="img/night-city.png" alt="VS Code with the Night City preset" />
+						<source src="video/night-city.webm" type="video/webm" />
+						<img
+							src="img/night-city.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Night City preset"
+						/>
 					</video>
 				</figure>
 			</section>
@@ -547,7 +552,7 @@
 									class="button ghost copy-btn"
 									id="install-copy-btn"
 									aria-label="Copy command"
-									onclick="copyInstallCmd(this)"
+									data-copy="code --install-extension 21010.stylesmith"
 								>
 									<span class="copy-default"
 										><svg
@@ -632,39 +637,5 @@
 				Microsoft.
 			</p>
 		</footer>
-
-		<script>
-			function copyInstallCmd(btn) {
-				const text = "code --install-extension 21010.stylesmith";
-				const onSuccess = () => {
-					btn.classList.add("copied");
-					setTimeout(() => btn.classList.remove("copied"), 2000);
-				};
-
-				const fallbackCopy = () => {
-					try {
-						const input = document.createElement("input");
-						input.value = text;
-						document.body.appendChild(input);
-						input.select();
-						document.execCommand("copy");
-						document.body.removeChild(input);
-					} catch (e) {
-						console.error(e);
-					}
-					onSuccess();
-				};
-
-				try {
-					if (navigator.clipboard && window.isSecureContext) {
-						navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
-					} else {
-						fallbackCopy();
-					}
-				} catch (err) {
-					fallbackCopy();
-				}
-			}
-		</script>
 	</body>
 </html>

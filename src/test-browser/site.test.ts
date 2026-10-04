@@ -6,6 +6,7 @@
  */
 
 import assert from "node:assert/strict";
+import { readdirSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -15,9 +16,12 @@ import { chromium, type Browser, type Page } from "playwright-core";
 import { contrast } from "../color";
 
 const SITE = path.join(__dirname, "..", "..", "site");
+const PAGES = readdirSync(SITE).filter(file => file.endsWith(".html"));
 const TYPES: Record<string, string> = {
 	".html": "text/html",
 	".css": "text/css",
+	".js": "text/javascript",
+	".webm": "video/webm",
 	".png": "image/png",
 	".svg": "image/svg+xml"
 };
@@ -62,7 +66,7 @@ function hex(color: string): string | undefined {
 }
 
 async function open(
-	options: { reducedMotion?: boolean } = {}
+	options: { reducedMotion?: boolean; page?: string } = {}
 ): Promise<{ page: Page; problems: string[] }> {
 	const page = await browser.newPage({
 		reducedMotion: options.reducedMotion ? "reduce" : "no-preference"
@@ -72,24 +76,33 @@ async function open(
 		if (message.type() === "error") problems.push(message.text());
 	});
 	page.on("pageerror", error => problems.push(error.message));
-	await page.goto(base, { waitUntil: "networkidle" });
+	await page.goto(base + (options.page ?? ""), { waitUntil: "networkidle" });
 	return { page, problems };
 }
 
 describe("website in the browser", () => {
-	it("loads without errors or security policy violations", async () => {
-		const { page, problems } = await open();
-		assert.deepEqual(problems, []);
-		await page.close();
-	});
+	for (const name of PAGES) {
+		it(`loads ${name} without errors or security policy violations`, async () => {
+			const { page, problems } = await open({ page: name });
+			assert.deepEqual(problems, []);
+			await page.close();
+		});
+	}
 
 	it("keeps every button readable when hovered", async () => {
-		const { page } = await open({ reducedMotion: true });
+		for (const name of PAGES) {
+			await checkHoverContrast(name);
+		}
+	});
+
+	async function checkHoverContrast(name: string): Promise<void> {
+		const { page } = await open({ reducedMotion: true, page: name });
 		const pageBackground = hex(
 			await page.$eval("body", el => getComputedStyle(el).backgroundColor)
 		);
 		assert.ok(pageBackground);
 		for (const button of await page.$$(".button")) {
+			if (!(await button.isVisible())) continue;
 			const label = (await button.textContent())?.trim();
 			await button.hover();
 			// Let the hover colors apply (there are no transitions, but be safe).
@@ -104,11 +117,11 @@ describe("website in the browser", () => {
 			const ratio = contrast(text, background);
 			assert.ok(
 				ratio >= 4.5,
-				`${label} when hovered: ${text} on ${background} is ${ratio.toFixed(2)}:1`
+				`${name}: ${label} when hovered: ${text} on ${background} is ${ratio.toFixed(2)}:1`
 			);
 		}
 		await page.close();
-	});
+	}
 
 	it("types the boot log, then removes it, and never blocks clicks", async () => {
 		const page = await browser.newPage();
