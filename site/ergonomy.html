@@ -85,344 +85,152 @@
 				</p>
 			</section>
 
-			<section
-				aria-labelledby="ergonomics-title"
-				style="
-					max-width: 800px;
-					margin: 1rem auto 4rem auto;
-					display: flex;
-					flex-direction: column;
-					gap: 3rem;
-					padding: 0 2rem;
-				"
-			>
-				<article class="security-card">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div class="sec-icon">
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<circle cx="12" cy="12" r="10"></circle>
-								<path d="M12 8v4"></path>
-								<path d="M12 16h.01"></path>
-							</svg>
-						</div>
-						<h3>WCAG 2.1 Standards</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
-							<h4
-								style="
-									color: var(--pink);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Challenge
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
+			<section class="ergo-split">
+				<aside class="ergo-nav">
+					<h2>Core Pillars</h2>
+					<ul>
+						<li><a href="#wcag" class="active">WCAG 2.1 Standards</a></li>
+						<li><a href="#eyestrain">Eye Strain Protection</a></li>
+						<li><a href="#cvd">Color-Vision Deficiencies</a></li>
+					</ul>
+				</aside>
+
+				<div class="ergo-content">
+					<!-- Section 1 -->
+					<article id="wcag" class="ergo-section">
+						<h3>
+							<div class="sec-icon">
+								<svg
+									width="22"
+									height="22"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<circle cx="12" cy="12" r="10"></circle>
+									<path d="M12 8v4"></path>
+									<path d="M12 16h.01"></path>
+								</svg>
+							</div>
+							WCAG 2.1 Standards
+						</h3>
+						<div class="ergo-block">
+							<h4 style="color: var(--pink)">The Challenge</h4>
+							<p style="color: var(--muted)">
 								Many custom themes ignore contrast ratios entirely, leading to
 								gray-on-gray syntax highlighting that becomes illegible in bright
 								rooms or on low-brightness monitors.
 							</p>
 						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								Our Approach
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
+						<div class="ergo-block">
+							<h4 style="color: var(--cyan)">Our Approach</h4>
+							<p style="color: var(--text)">
 								Every palette is tested against WCAG 2.1 guidelines. We enforce
 								strict minimum contrast ratios (AA and AAA) for all critical syntax
 								tokens against their background.
 							</p>
 						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
-					>
-						<h4
-							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
-							"
-						>
-							Why It Matters
-						</h4>
-						<p
-							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
-							"
-						>
-							Your code remains perfectly readable regardless of ambient lighting
-							conditions or screen hardware, preventing squinting and posture
-							deterioration.
-						</p>
-					</div>
-				</article>
-
-				<article class="security-card">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div
-							class="sec-icon"
-							style="font-family: var(--mono); font-weight: bold; font-size: 1.5rem"
-						>
-							?
+						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
+							<h4 style="color: var(--yellow)">Why It Matters</h4>
+							<p style="color: var(--text)">
+								Your code remains perfectly readable regardless of ambient lighting
+								conditions or screen hardware, preventing squinting and posture
+								deterioration.
+							</p>
 						</div>
-						<h3>Eye Strain Protection</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
-							<h4
+					</article>
+
+					<!-- Section 2 -->
+					<article id="eyestrain" class="ergo-section">
+						<h3>
+							<div
+								class="sec-icon pink"
 								style="
-									color: var(--pink);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
+									font-family: var(--mono);
+									font-weight: bold;
+									font-size: 1.4rem;
 								"
 							>
-								The Challenge
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
+								?
+							</div>
+							Eye Strain Protection
+						</h3>
+						<div class="ergo-block">
+							<h4 style="color: var(--pink)">The Challenge</h4>
+							<p style="color: var(--muted)">
 								While low contrast is bad, extreme high contrast (like pure #FFFFFF
 								text on a pure #000000 background) causes text glare and halo
 								effects, which rapidly tires the eyes.
 							</p>
 						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								Our Approach
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
+						<div class="ergo-block">
+							<h4 style="color: var(--cyan)">Our Approach</h4>
+							<p style="color: var(--text)">
 								We enforce a strict <em>maximum</em> contrast ratio cap. Backgrounds
 								are slightly lifted, and text is gently dimmed to neutralize
 								halation.
 							</p>
 						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
-					>
-						<h4
-							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
-							"
-						>
-							Why It Matters
-						</h4>
-						<p
-							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
-							"
-						>
-							It eliminates visual glare and drastically reduces optical fatigue,
-							allowing for much longer, more comfortable coding sessions.
-						</p>
-					</div>
-				</article>
-
-				<article class="security-card">
-					<div class="card-header" style="margin-bottom: 2rem">
-						<div class="sec-icon">
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-								<polyline points="2 17 12 22 22 17"></polyline>
-								<polyline points="2 12 17 22 12"></polyline>
-							</svg>
+						<div class="ergo-impact" style="border-left: 3px solid var(--pink)">
+							<h4 style="color: var(--pink)">Why It Matters</h4>
+							<p style="color: var(--text)">
+								It eliminates visual glare and drastically reduces optical fatigue,
+								allowing for much longer, more comfortable coding sessions.
+							</p>
 						</div>
-						<h3>Color-Vision Deficiencies</h3>
-					</div>
-					<div
-						style="
-							display: grid;
-							grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-							gap: 2rem;
-							margin-bottom: 2rem;
-						"
-					>
-						<div>
-							<h4
-								style="
-									color: var(--pink);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								The Challenge
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--muted);
-									margin: 0;
-								"
-							>
+					</article>
+
+					<!-- Section 3 -->
+					<article id="cvd" class="ergo-section">
+						<h3>
+							<div class="sec-icon yellow">
+								<svg
+									width="22"
+									height="22"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+									<polyline points="2 17 12 22 22 17"></polyline>
+									<polyline points="2 12 17 22 12"></polyline>
+								</svg>
+							</div>
+							Color-Vision Deficiencies
+						</h3>
+						<div class="ergo-block">
+							<h4 style="color: var(--pink)">The Challenge</h4>
+							<p style="color: var(--muted)">
 								Themes that rely solely on slight hue variations for syntax
-								highlighting (e.g. red errors vs green strings) often become
+								highlighting (e.g., red errors vs green strings) often become
 								indistinguishable for developers with color-vision deficiencies
 								(CVD).
 							</p>
 						</div>
-						<div>
-							<h4
-								style="
-									color: var(--cyan);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.75rem 0;
-								"
-							>
-								Our Approach
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
+						<div class="ergo-block">
+							<h4 style="color: var(--cyan)">Our Approach</h4>
+							<p style="color: var(--text)">
 								We compute precise Delta-E color differences across our palettes,
 								ensuring varying luminance and saturation, rather than just hue,
 								separate critical UI elements.
 							</p>
 						</div>
-					</div>
-					<div
-						style="
-							padding: 1.5rem;
-							background: rgba(0, 0, 0, 0.3);
-							border-left: 3px solid var(--yellow);
-							border-radius: 4px;
-						"
-					>
-						<h4
-							style="
-								color: var(--yellow);
-								text-transform: uppercase;
-								font-size: 0.85rem;
-								letter-spacing: 0.1em;
-								margin: 0 0 0.5rem 0;
-							"
-						>
-							Why It Matters
-						</h4>
-						<p
-							style="
-								font-size: 1.05rem;
-								line-height: 1.6;
-								color: var(--text);
-								margin: 0;
-							"
-						>
-							Diagnostic errors, warnings, and syntax keywords remain clearly
-							distinguishable to all developers, preventing simple visual mistakes.
-						</p>
-					</div>
-				</article>
+						<div class="ergo-impact" style="border-left: 3px solid var(--cyan)">
+							<h4 style="color: var(--cyan)">Why It Matters</h4>
+							<p style="color: var(--text)">
+								Diagnostic errors, warnings, and syntax keywords remain clearly
+								distinguishable to all developers, preventing simple visual
+								mistakes.
+							</p>
+						</div>
+					</article>
+				</div>
 			</section>
 		</main>
 
