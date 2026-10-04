@@ -491,8 +491,17 @@ img {
 	padding: 1.25rem 1.4rem;
 	border: 1px solid var(--border);
 	border-left: 3px solid var(--cyan);
-	background: var(--raised);
+	background: rgba(0, 0, 0, 0.2);
 	height: 100%;
+	transition:
+		transform 0.2s,
+		background 0.2s,
+		box-shadow 0.2s;
+}
+
+.cards article:hover {
+	transform: translateY(-4px);
+	background: var(--raised);
 }
 
 .card-actions {
