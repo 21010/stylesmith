@@ -987,3 +987,73 @@ kbd {
 	line-height: 1;
 	vertical-align: middle;
 }
+
+/* Nav Dropdowns */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropbtn {
+	background: none;
+	border: none;
+	color: var(--muted);
+	font-family: inherit;
+	font-size: inherit;
+	padding: 0;
+	cursor: pointer;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	transition: color 0.2s;
+}
+
+.dropbtn::after {
+	content: "▾";
+	font-size: 0.8rem;
+}
+
+.dropdown:hover .dropbtn,
+.dropbtn:hover,
+.dropdown:focus-within .dropbtn {
+	color: var(--cyan);
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var(--bg-deep);
+	min-width: 140px;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	z-index: 10;
+	padding: 0.5rem 0;
+	margin-top: 0.5rem;
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.dropdown-content a {
+	padding: 0.5rem 1rem !important;
+	margin: 0 !important;
+	color: var(--text) !important;
+	white-space: nowrap;
+	transition:
+		background 0.2s,
+		color 0.2s;
+}
+
+.dropdown-content a:hover,
+.dropdown-content a:focus {
+	background-color: rgba(95, 224, 255, 0.1);
+	color: var(--cyan) !important;
+}
