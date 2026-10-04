@@ -257,6 +257,13 @@ img {
 	height: auto;
 }
 
+.screen {
+	position: relative;
+	margin-top: 4rem;
+	max-width: 58rem;
+	margin-inline: auto;
+}
+
 .screen img {
 	display: block;
 	border: 1px solid var(--border);
