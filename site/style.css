@@ -475,8 +475,14 @@ img {
 	gap: 1rem;
 }
 
-.cards.stacked {
+.cards.grid-2 {
 	grid-template-columns: 1fr;
+}
+
+@media (min-width: 650px) {
+	.cards.grid-2 {
+		grid-template-columns: 1fr 1fr;
+	}
 }
 
 .cards article {
