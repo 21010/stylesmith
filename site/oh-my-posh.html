@@ -277,12 +277,17 @@
 						<p style="color: var(--muted); margin-bottom: 1rem">
 							Download the official configuration file to your home directory.
 						</p>
-						<div class="code-wrapper" style="position: relative">
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
 							<pre
-								style="padding-right: 5rem"
+								style="margin-top: 0; padding-right: 4rem"
 							><code>curl -O https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json</code></pre>
 							<button
 								class="button ghost copy-btn"
+								style="
+									background: var(--bg-deep);
+									border-color: var(--border);
+									box-shadow: -8px 0 16px var(--bg-deep);
+								"
 								aria-label="Copy command"
 								onclick="
 									copyGenericCmd(
@@ -340,12 +345,17 @@
 							Set Oh My Posh to use the downloaded theme. For PowerShell, add this to
 							your <code>$PROFILE</code>:
 						</p>
-						<div class="code-wrapper" style="position: relative">
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
 							<pre
-								style="padding-right: 5rem"
+								style="margin-top: 0; padding-right: 4rem"
 							><code>oh-my-posh init pwsh --config ~/stylesmith.omp.json | Invoke-Expression</code></pre>
 							<button
 								class="button ghost copy-btn"
+								style="
+									background: var(--bg-deep);
+									border-color: var(--border);
+									box-shadow: -8px 0 16px var(--bg-deep);
+								"
 								aria-label="Copy command"
 								onclick="
 									copyGenericCmd(
