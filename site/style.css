@@ -1493,7 +1493,11 @@ kbd {
 	color: var(--yellow);
 }
 .ergo-block {
-	margin-bottom: 2.5rem;
+	margin-bottom: 1.5rem;
+	padding: 1.5rem 2rem;
+	background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(10, 10, 10, 0.1) 100%);
+	border: 1px solid var(--border);
+	border-radius: 6px;
 }
 .ergo-block h4 {
 	text-transform: uppercase;
