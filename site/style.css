@@ -1143,3 +1143,78 @@ kbd {
 	font-family: var(--mono);
 	line-height: 1;
 }
+
+/* Theme Carousel */
+.carousel-container {
+	margin-top: 2rem;
+	border: 1px solid var(--border);
+	border-top: 3px solid var(--cyan);
+	border-radius: 6px;
+	overflow: hidden;
+	background: rgba(0, 0, 0, 0.2);
+}
+.carousel-main {
+	position: relative;
+	background: var(--bg-deep);
+}
+.carousel-main img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-bottom: 1px solid var(--border);
+	transition: opacity 0.3s ease;
+}
+.carousel-main .main-info {
+	padding: 1.5rem;
+	display: flex;
+	flex-direction: column;
+}
+.carousel-main h3 {
+	margin: 0 0 0.5rem;
+	color: var(--text);
+	font-size: 1.5rem;
+}
+.carousel-main p {
+	margin: 0;
+	color: var(--muted);
+	line-height: 1.5;
+}
+.carousel-thumbnails {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 1px;
+	background: var(--border);
+}
+.thumb {
+	background: var(--bg);
+	padding: 1rem 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+.thumb:hover {
+	background: var(--raised);
+}
+.thumb.active {
+	background: rgba(95, 224, 255, 0.1);
+	border-bottom: 3px solid var(--cyan);
+}
+.thumb img {
+	width: 100%;
+	max-width: 120px;
+	height: auto;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	margin-bottom: 0.75rem;
+}
+.thumb span {
+	font-family: var(--mono);
+	font-size: 0.8rem;
+	color: var(--muted);
+	text-align: center;
+}
+.thumb.active span {
+	color: var(--cyan);
+}

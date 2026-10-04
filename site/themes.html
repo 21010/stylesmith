@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'none'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<title>Themes - Stylesmith</title>
@@ -82,112 +82,111 @@
 			</section>
 
 			<section id="presets">
-				<div class="theme-grid">
-					<article class="theme-card">
-						<div class="theme-img-wrapper">
-							<img
-								src="img/night-city.png"
-								width="1280"
-								height="760"
-								loading="lazy"
-								alt="Night City theme"
-							/>
+				<div class="carousel-container">
+					<div class="carousel-main">
+						<img
+							id="mainImage"
+							src="img/night-city.png"
+							width="1280"
+							height="760"
+							alt="Night City theme"
+						/>
+						<div class="main-info">
+							<h3 id="mainTitle">Night City</h3>
+							<p id="mainDesc">
+								Cyberpunk neon, glowing code, sparks, and a boot sequence.
+							</p>
 						</div>
-						<div class="theme-content">
-							<h3>Night City</h3>
-							<p>Cyberpunk neon, glowing code, sparks, and a boot sequence.</p>
-							<div class="theme-badges">
-								<span class="badge">Neon Glow</span>
-								<span class="badge">Matrix Rain</span>
-								<span class="badge">Typing Sparks</span>
-							</div>
+					</div>
+					<div class="carousel-thumbnails">
+						<div class="thumb active" onclick="setTheme(0)">
+							<img src="img/night-city.png" alt="Night City" />
+							<span>Night City</span>
 						</div>
-					</article>
-
-					<article class="theme-card">
-						<div class="theme-img-wrapper">
-							<img
-								src="img/phosphor-terminal.png"
-								width="1280"
-								height="760"
-								loading="lazy"
-								alt="Phosphor Terminal theme"
-							/>
+						<div class="thumb" onclick="setTheme(1)">
+							<img src="img/phosphor-terminal.png" alt="Phosphor Terminal" />
+							<span>Phosphor Terminal</span>
 						</div>
-						<div class="theme-content">
-							<h3>Phosphor Terminal</h3>
-							<p>A green CRT terminal with a pixel font and scanlines.</p>
-							<div class="theme-badges">
-								<span class="badge">CRT Flicker</span>
-								<span class="badge">Scanlines</span>
-								<span class="badge">Pixel Font</span>
-							</div>
+						<div class="thumb" onclick="setTheme(2)">
+							<img src="img/amber-monitor.png" alt="Amber Monitor" />
+							<span>Amber Monitor</span>
 						</div>
-					</article>
-
-					<article class="theme-card">
-						<div class="theme-img-wrapper">
-							<img
-								src="img/amber-monitor.png"
-								width="1280"
-								height="760"
-								loading="lazy"
-								alt="Amber Monitor theme"
-							/>
+						<div class="thumb" onclick="setTheme(3)">
+							<img src="img/black-ice.png" alt="Black ICE" />
+							<span>Black ICE</span>
 						</div>
-						<div class="theme-content">
-							<h3>Amber Monitor</h3>
-							<p>An amber monochrome monitor with scanlines.</p>
-							<div class="theme-badges">
-								<span class="badge">Monochrome</span>
-								<span class="badge">Scanlines</span>
-								<span class="badge">CRT Flicker</span>
-							</div>
+						<div class="thumb" onclick="setTheme(4)">
+							<img src="img/daylight.png" alt="Daylight" />
+							<span>Daylight</span>
 						</div>
-					</article>
-
-					<article class="theme-card">
-						<div class="theme-img-wrapper">
-							<img
-								src="img/black-ice.png"
-								width="1280"
-								height="760"
-								loading="lazy"
-								alt="Black ICE theme"
-							/>
-						</div>
-						<div class="theme-content">
-							<h3>Black ICE</h3>
-							<p>Cold white phosphor and glowing cyberpunk ICE.</p>
-							<div class="theme-badges">
-								<span class="badge">Neon Blocks</span>
-								<span class="badge">Focus Frame</span>
-								<span class="badge">White Phosphor</span>
-							</div>
-						</div>
-					</article>
-
-					<article class="theme-card">
-						<div class="theme-img-wrapper">
-							<img
-								src="img/daylight.png"
-								width="1280"
-								height="760"
-								loading="lazy"
-								alt="Daylight theme"
-							/>
-						</div>
-						<div class="theme-content">
-							<h3>Daylight</h3>
-							<p>Calm and bright, featuring only subtle visual effects.</p>
-							<div class="theme-badges">
-								<span class="badge">Light Theme</span>
-								<span class="badge">High Contrast</span>
-							</div>
-						</div>
-					</article>
+					</div>
 				</div>
 			</section>
+
+			<script>
+				const themesData = [
+					{
+						title: "Night City",
+						desc: "Cyberpunk neon, glowing code, sparks, and a boot sequence.",
+						img: "img/night-city.png"
+					},
+					{
+						title: "Phosphor Terminal",
+						desc: "A green CRT terminal with a pixel font and scanlines.",
+						img: "img/phosphor-terminal.png"
+					},
+					{
+						title: "Amber Monitor",
+						desc: "An amber monochrome monitor with scanlines.",
+						img: "img/amber-monitor.png"
+					},
+					{
+						title: "Black ICE",
+						desc: "Cold white phosphor and glowing cyberpunk ICE.",
+						img: "img/black-ice.png"
+					},
+					{
+						title: "Daylight",
+						desc: "Calm and bright, featuring only subtle visual effects.",
+						img: "img/daylight.png"
+					}
+				];
+				let currentIndex = 0;
+				let carouselTimer;
+
+				const mainImg = document.getElementById("mainImage");
+				const mainTitle = document.getElementById("mainTitle");
+				const mainDesc = document.getElementById("mainDesc");
+				const thumbs = document.querySelectorAll(".thumb");
+
+				function setTheme(index) {
+					currentIndex = index;
+					const theme = themesData[index];
+					mainImg.style.opacity = "0";
+					setTimeout(() => {
+						mainImg.src = theme.img;
+						mainImg.alt = theme.title;
+						mainTitle.textContent = theme.title;
+						mainDesc.textContent = theme.desc;
+						mainImg.style.opacity = "1";
+					}, 150);
+					thumbs.forEach((thumb, i) => {
+						if (i === index) thumb.classList.add("active");
+						else thumb.classList.remove("active");
+					});
+					resetTimer();
+				}
+
+				function nextTheme() {
+					setTheme((currentIndex + 1) % themesData.length);
+				}
+
+				function resetTimer() {
+					clearInterval(carouselTimer);
+					carouselTimer = setInterval(nextTheme, 3000);
+				}
+				resetTimer();
+			</script>
 
 			<section class="cta-section" style="text-align: center; margin: 4rem 0">
 				<h2>Ready to style your editor?</h2>
