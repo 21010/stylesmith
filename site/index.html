@@ -435,28 +435,9 @@
 							<div class="code-wrapper">
 								<pre><code>code --install-extension 21010.stylesmith</code></pre>
 								<button
-									class="copy-btn"
+									class="button ghost copy-btn"
+									id="install-copy-btn"
 									aria-label="Copy command"
-									onclick="
-										const btn = this;
-										const copyText =
-											'code --install-extension 21010.stylesmith';
-										const onSuccess = () => {
-											btn.classList.add('copied');
-											setTimeout(() => btn.classList.remove('copied'), 2000);
-										};
-										if (navigator.clipboard && window.isSecureContext) {
-											navigator.clipboard.writeText(copyText).then(onSuccess);
-										} else {
-											const input = document.createElement('input');
-											input.value = copyText;
-											document.body.appendChild(input);
-											input.select();
-											document.execCommand('copy');
-											document.body.removeChild(input);
-											onSuccess();
-										}
-									"
 								>
 									<span class="copy-default"
 										><svg
@@ -524,5 +505,40 @@
 				Microsoft.
 			</p>
 		</footer>
+
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				const btn = document.getElementById("install-copy-btn");
+				if (!btn) return;
+				btn.addEventListener("click", () => {
+					const copyText = "code --install-extension 21010.stylesmith";
+					const onSuccess = () => {
+						btn.classList.add("copied");
+						setTimeout(() => btn.classList.remove("copied"), 2000);
+					};
+					if (navigator.clipboard && window.isSecureContext) {
+						navigator.clipboard
+							.writeText(copyText)
+							.then(onSuccess)
+							.catch(err => {
+								console.error("Clipboard API failed", err);
+								fallbackCopy(copyText, onSuccess);
+							});
+					} else {
+						fallbackCopy(copyText, onSuccess);
+					}
+				});
+
+				function fallbackCopy(text, cb) {
+					const input = document.createElement("input");
+					input.value = text;
+					document.body.appendChild(input);
+					input.select();
+					document.execCommand("copy");
+					document.body.removeChild(input);
+					cb();
+				}
+			});
+		</script>
 	</body>
 </html>
