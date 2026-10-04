@@ -1342,3 +1342,67 @@ kbd {
 .pt-2 {
 	padding-top: 2rem;
 }
+
+/* Font Cards */
+.font-card {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem;
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--cyan);
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	transition:
+		transform 0.2s,
+		background 0.2s,
+		box-shadow 0.2s;
+}
+
+.font-card.pink {
+	border-left-color: var(--pink);
+}
+
+.font-card:hover {
+	transform: translateY(-4px);
+	background: var(--raised);
+	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.font-card h3 {
+	margin: 0 0 0.5rem;
+	font-size: 1.25rem;
+	color: var(--text);
+}
+
+.font-card p {
+	margin: 0;
+	color: var(--muted);
+	line-height: 1.5;
+}
+
+.font-preview {
+	margin-top: auto;
+	padding: 1rem;
+	background: var(--bg-deep);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	color: var(--text);
+	white-space: pre-wrap;
+}
+
+.font-preview.jetbrains {
+	font-family: "JetBrainsMono Nerd Font", monospace;
+}
+.font-preview.blex {
+	font-family: "BlexMono Nerd Font", monospace;
+}
+.font-preview.shuretech {
+	font-family: "ShureTechMono Nerd Font", monospace;
+}
+.font-preview.departure {
+	font-family: "DepartureMono Nerd Font", monospace;
+}
+
+.pt-2 {
+	padding-top: 2rem;
+}
