@@ -208,20 +208,45 @@
 				</div>
 			</section>
 
-			<section id="custom-css" aria-labelledby="custom-css-title">
-				<h2 id="custom-css-title">
-					<span aria-hidden="true">03 //</span> Deep Customization
-				</h2>
-				<p>
-					Don't want to use the bundled themes? No problem. Stylesmith is a robust engine
-					that lets you inject your own CSS and JS files to change absolutely anything in
-					VS Code's interface.
-				</p>
-				<p>
-					Unlike legacy tools, Stylesmith remembers your file paths, safely reapplies them
-					across editor updates, and strictly supports Subresource Integrity (SRI) pinning
-					to guarantee your runtime security.
-				</p>
+			<section id="custom-css" aria-labelledby="custom-css-title" class="split-section">
+				<div class="split-text">
+					<h2 id="custom-css-title">
+						<span aria-hidden="true">03 //</span> Deep Customization
+					</h2>
+					<p>
+						Don't want to use the bundled themes? No problem. Stylesmith is a robust
+						engine that lets you inject your own CSS and JS files to change absolutely
+						anything in VS Code's interface.
+					</p>
+					<p>
+						Unlike legacy tools, Stylesmith remembers your file paths, safely reapplies
+						them across editor updates, and strictly supports Subresource Integrity
+						(SRI) pinning to guarantee your runtime security.
+					</p>
+				</div>
+				<div class="editor-window">
+					<div class="editor-header" aria-hidden="true">
+						<div class="editor-dots">
+							<span class="dot red"></span>
+							<span class="dot yellow"></span>
+							<span class="dot green"></span>
+						</div>
+						<span class="filename">settings.json</span>
+					</div>
+					<div class="editor-body">
+						<pre><code><span class="token-punctuation">{</span>
+  <span class="token-key">"stylesmith.customCss"</span><span class="token-punctuation">:</span> <span class="token-punctuation">[</span>
+    <span class="token-string">"file:///Users/me/.vscode/custom.css"</span>
+  <span class="token-punctuation">]</span><span class="token-punctuation">,</span>
+  <span class="token-key">"stylesmith.customJs"</span><span class="token-punctuation">:</span> <span class="token-punctuation">[</span>
+    <span class="token-punctuation">{</span>
+      <span class="token-key">"url"</span><span class="token-punctuation">:</span> <span class="token-string">"file:///Users/me/.vscode/custom.js"</span><span class="token-punctuation">,</span>
+      <span class="token-key">"integrity"</span><span class="token-punctuation">:</span> <span class="token-string">"sha256-kY8B..."</span>
+    <span class="token-punctuation">}</span>
+  <span class="token-punctuation">]</span>
+<span class="token-punctuation">}</span></code></pre>
+					</div>
+				</div>
 			</section>
 
 			<section id="addons" aria-labelledby="addons-title">
