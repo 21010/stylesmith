@@ -316,6 +316,110 @@ img {
 	}
 }
 
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+.carousel-wrapper {
+	position: relative;
+}
+
+.slider-nav {
+	display: flex;
+	justify-content: center;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+.slider-nav label {
+	display: block;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: var(--muted);
+	cursor: pointer;
+	transition:
+		background 0.3s,
+		transform 0.2s;
+	animation: dot-fade 25s infinite ease-in-out;
+}
+
+.slider-nav label:hover {
+	transform: scale(1.2);
+}
+
+.slider-nav label[for="slide1"] {
+	animation-delay: 0s;
+}
+.slider-nav label[for="slide2"] {
+	animation-delay: 5s;
+}
+.slider-nav label[for="slide3"] {
+	animation-delay: 10s;
+}
+.slider-nav label[for="slide4"] {
+	animation-delay: 15s;
+}
+.slider-nav label[for="slide5"] {
+	animation-delay: 20s;
+}
+
+@keyframes dot-fade {
+	0%,
+	16%,
+	100% {
+		background: var(--muted);
+		transform: scale(1);
+	}
+	4%,
+	20% {
+		background: var(--pink);
+		transform: scale(1.2);
+	}
+}
+
+/* Manual Interaction Logic */
+.carousel-wrapper input:checked ~ .carousel img,
+.carousel-wrapper input:checked ~ .slider-nav label {
+	animation: none;
+}
+
+.carousel-wrapper input:checked ~ .carousel img {
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}
+
+.carousel-wrapper input:checked ~ .slider-nav label {
+	background: var(--muted);
+	transform: scale(1);
+}
+
+/* Show the checked image */
+#slide1:checked ~ .carousel img:nth-child(1),
+#slide2:checked ~ .carousel img:nth-child(2),
+#slide3:checked ~ .carousel img:nth-child(3),
+#slide4:checked ~ .carousel img:nth-child(4),
+#slide5:checked ~ .carousel img:nth-child(5) {
+	opacity: 1;
+}
+
+/* Highlight the checked dot */
+#slide1:checked ~ .slider-nav label[for="slide1"],
+#slide2:checked ~ .slider-nav label[for="slide2"],
+#slide3:checked ~ .slider-nav label[for="slide3"],
+#slide4:checked ~ .slider-nav label[for="slide4"],
+#slide5:checked ~ .slider-nav label[for="slide5"] {
+	background: var(--pink);
+	transform: scale(1.2);
+}
+
 /* Presets */
 
 .gallery {
