@@ -1,4 +1,4 @@
-// Takes the screenshots of each preset for the website (site/img/).
+// Takes the screenshots of each preset, and of the Problem Lens, for the website (site/img/).
 // Run with: npm run screenshots (after "npx @vscode/vsce package"; see vscode-session.mjs).
 
 import { mkdirSync, readFileSync } from "node:fs";
@@ -20,9 +20,90 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"phosphor-terminal",
 	"amber-monitor",
 	"black-ice",
-	"daylight"
+	"daylight",
+	"problem-lens"
 ];
 const SIZE = { width: 1280, height: 760 };
+
+// The Problem Lens with one problem of each kind: errors from TypeScript, warnings from its
+// style checks (which VS Code reports as warnings), and info from Code Spell Checker.
+const SPELL_CHECKER = "streetsidesoftware.code-spell-checker";
+const LENS_SIZE = { width: 1280, height: 720 };
+const LENS_PROJECT = {
+	"tsconfig.json": JSON.stringify(
+		{
+			compilerOptions: {
+				target: "es2022",
+				module: "es2022",
+				strict: true,
+				noUnusedLocals: true,
+				noImplicitReturns: true
+			},
+			include: ["src"]
+		},
+		null,
+		"\t"
+	),
+	"package.json": '{\n\t"name": "neon-shop",\n\t"version": "1.0.0"\n}\n',
+	"src/cart.ts": `export interface Item {
+	name: string;
+	price: number;
+	quantity: number;
+}
+
+// Adds up the cart, with the discount code applied.
+export function calculateTotal(items: Item[], discount?: string) {
+	const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+	const shipping = 4.99;
+	if (discount === "NEON10") {
+		return total * 0.9;
+	}
+	reutrn total;
+}
+
+// Recieve the price from the checkout servise, with two decimals.
+export function formatPrice(price: number): string {
+	return "$" + price.toFixed("2");
+}
+`
+};
+
+async function shootProblemLens(vscode) {
+	const preset = PRESETS.find(candidate => candidate.id === "night-city");
+	const { page, close } = await openVSCode(vscode, preset, {
+		size: LENS_SIZE,
+		files: LENS_PROJECT,
+		open: "src/cart.ts",
+		effects: { "effects.bootSequence": false },
+		settings: {
+			"stylesmith.problems.minimumSeverity": "info",
+			"editor.fontSize": 16,
+			"cSpell.diagnosticLevel": "Information"
+		}
+	});
+	try {
+		await settle(page, "problem-lens");
+		await page.keyboard.press("Control+B"); // hides the sidebar: the code is what matters
+		// Wait until each kind of problem is in the gutter.
+		for (const kind of ["error", "warning", "info"]) {
+			await page
+				.waitForSelector(`.monaco-editor .squiggly-${kind}`, { timeout: 30_000 })
+				.catch(() => console.warn(`  problem-lens: no ${kind} shown`));
+		}
+		// The cursor on the line with the typo, so the status bar shows it too.
+		await page.keyboard.press("Control+G");
+		await page.keyboard.type("14");
+		await page.keyboard.press("Enter");
+		await page.keyboard.press("End");
+		await page.waitForTimeout(1200);
+		await hideClutter(page);
+		const file = join(OUT, "problem-lens.png");
+		await page.screenshot({ path: file });
+		console.log(`wrote ${file}`);
+	} finally {
+		await close();
+	}
+}
 // The preset whose window is also used for the screenshot of the open menu.
 const MENU_PRESET = "night-city";
 
@@ -67,9 +148,13 @@ async function shoot(vscode, preset) {
 	}
 }
 
-const vscode = await prepareVSCode();
+const vscode = await prepareVSCode(SHOTS.includes("problem-lens") ? [SPELL_CHECKER] : []);
 mkdirSync(OUT, { recursive: true });
 for (const id of SHOTS) {
+	if (id === "problem-lens") {
+		await shootProblemLens(vscode);
+		continue;
+	}
 	const preset = PRESETS.find(candidate => candidate.id === id);
 	if (!preset) throw new Error(`no preset ${id}`);
 	await shoot(vscode, preset);

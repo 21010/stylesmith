@@ -11,7 +11,7 @@
 		<title>Problem Lens - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith renders diagnostics, errors, and warnings inline directly inside the editor alongside your code."
+			content="Stylesmith renders errors, warnings and info messages inline, directly inside the editor alongside your code."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -83,140 +83,20 @@
 				<h1>Problem <span>Lens</span></h1>
 				<p class="lead" style="max-width: 600px; margin: 0 auto">
 					Stop hovering over squiggly lines or toggling the problems panel. Stylesmith
-					renders errors and warnings inline, right next to your code, giving you
+					renders errors, warnings and info inline, right next to your code, giving you
 					immediate feedback.
 				</p>
 			</section>
 
 			<section style="max-width: 1000px; margin: 4rem auto; padding: 0 2rem">
-				<!-- Screenshot Placeholder -->
-				<div
-					style="
-						width: 100%;
-						aspect-ratio: 16/9;
-						background: var(--bg-deep);
-						border: 1px solid var(--border);
-						border-radius: 8px;
-						box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						margin-bottom: 4rem;
-						position: relative;
-						overflow: hidden;
-					"
-				>
-					<!-- Mock Editor Header -->
-					<div
-						style="
-							position: absolute;
-							top: 0;
-							left: 0;
-							right: 0;
-							height: 32px;
-							background: rgba(0, 0, 0, 0.5);
-							border-bottom: 1px solid var(--border);
-							display: flex;
-							align-items: center;
-							padding: 0 1rem;
-							gap: 0.5rem;
-						"
-					>
-						<div
-							style="
-								width: 12px;
-								height: 12px;
-								border-radius: 50%;
-								background: #ff5f56;
-							"
-						></div>
-						<div
-							style="
-								width: 12px;
-								height: 12px;
-								border-radius: 50%;
-								background: #ffbd2e;
-							"
-						></div>
-						<div
-							style="
-								width: 12px;
-								height: 12px;
-								border-radius: 50%;
-								background: #27c93f;
-							"
-						></div>
-					</div>
-					<!-- Mock Code -->
-					<div
-						style="
-							font-family: var(--mono);
-							font-size: 1.1rem;
-							line-height: 2;
-							width: 100%;
-							padding: 4rem 2rem;
-						"
-					>
-						<span style="color: #666"> 1 |</span>
-						<span style="color: var(--cyan)">function</span>
-						<span style="color: var(--text)">calculateTotal</span
-						><span style="color: var(--pink)">(</span
-						><span style="color: var(--yellow)">items</span
-						><span style="color: var(--pink)">) {</span><br />
-						<span style="color: #666"> 2 |</span> &nbsp;&nbsp;<span
-							style="color: var(--cyan)"
-							>const</span
-						>
-						total <span style="color: var(--pink)">=</span>
-						<span style="color: var(--yellow)">items</span>.<span
-							style="color: var(--text)"
-							>reduce</span
-						><span style="color: var(--pink)">((</span>a, b<span
-							style="color: var(--pink)"
-							>) =></span
-						>
-						a <span style="color: var(--pink)">+</span> b<span
-							style="color: var(--pink)"
-							>);</span
-						><br />
-						<span style="color: #666"> 3 |</span> &nbsp;&nbsp;<span
-							style="text-decoration: underline wavy var(--pink); color: var(--text)"
-							>reutrn total;</span
-						>
-						<div
-							style="
-								display: inline-flex;
-								align-items: center;
-								gap: 0.5rem;
-								background: rgba(255, 114, 216, 0.1);
-								padding: 0.25rem 1rem;
-								border-radius: 4px;
-								margin-left: 2rem;
-							"
-						>
-							<svg
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="var(--pink)"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<circle cx="12" cy="12" r="10"></circle>
-								<line x1="12" y1="8" x2="12" y2="12"></line>
-								<line x1="12" y1="16" x2="12.01" y2="16"></line>
-							</svg>
-							<span style="color: var(--pink); font-size: 0.95rem; font-style: italic"
-								>Cannot find name 'reutrn'. Did you mean 'return'?</span
-							>
-						</div>
-						<br />
-						<span style="color: #666"> 4 |</span>
-						<span style="color: var(--pink)">}</span>
-					</div>
-				</div>
+				<figure class="screen" style="margin: 0 0 4rem; max-width: none">
+					<img
+						src="img/problem-lens.png"
+						width="1280"
+						height="720"
+						alt="VS Code with the Problem Lens: errors, warnings and an info message shown at the end of their lines, with an icon for each in the gutter"
+					/>
+				</figure>
 
 				<div
 					style="
@@ -296,7 +176,7 @@
 							"
 						>
 							Problem Lens uses the diagnostic colors of your active palette. Errors,
-							warnings, and hints match the current theme instead of clashing with
+							warnings and info match the current theme instead of clashing with
 							default editor colors.
 						</p>
 					</div>
