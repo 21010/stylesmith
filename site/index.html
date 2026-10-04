@@ -432,7 +432,23 @@
 								>Install from Marketplace</a
 							>
 							<span style="color: var(--muted)">or run</span>
-							<pre><code>code --install-extension 21010.stylesmith</code></pre>
+							<div class="code-wrapper">
+								<pre><code>code --install-extension 21010.stylesmith</code></pre>
+								<button
+									class="copy-btn"
+									aria-label="Copy command"
+									onclick="
+										navigator.clipboard
+											.writeText('code --install-extension 21010.stylesmith')
+											.then(() => {
+												this.innerText = 'Copied!';
+												setTimeout(() => (this.innerText = 'Copy'), 2000);
+											})
+									"
+								>
+									Copy
+								</button>
+							</div>
 						</div>
 					</li>
 					<li>

@@ -896,9 +896,37 @@ footer {
 	margin-top: 1rem;
 	flex-wrap: wrap;
 }
+.install-options .code-wrapper {
+	position: relative;
+	flex-grow: 1;
+}
 .install-options pre {
 	margin-top: 0;
-	flex-grow: 1;
+	margin-bottom: 0;
+	padding-right: 4.5rem;
+}
+.copy-btn {
+	position: absolute;
+	top: 50%;
+	right: 0.5rem;
+	transform: translateY(-50%);
+	background: var(--bg);
+	border: 1px solid var(--border);
+	color: var(--cyan);
+	padding: 0.3rem 0.6rem;
+	font-size: 0.8rem;
+	font-family: var(--mono);
+	cursor: pointer;
+	border-radius: 4px;
+	transition:
+		background 0.2s,
+		color 0.2s,
+		border-color 0.2s;
+}
+.copy-btn:hover {
+	background: rgba(95, 224, 255, 0.1);
+	border-color: var(--cyan);
+	color: var(--text);
 }
 video {
 	max-width: 100%;
