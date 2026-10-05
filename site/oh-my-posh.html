@@ -147,128 +147,93 @@
 								margin-bottom: 0;
 							"
 						>
-							Oh My Posh is a custom prompt engine for any shell. The Stylesmith
-							extension exports its active theme colors to your terminal environment
-							variables. The included <code>stylesmith.omp.json</code> configuration
-							reads these variables, updating your prompt instantly whenever you
-							switch palettes in VS Code.
+							Oh My Posh is a custom prompt engine for any shell. The included
+							<code>stylesmith.omp.json</code> configuration colors the prompt with
+							your terminal's 16 ANSI colors, and every Stylesmith theme defines them.
+							In VS Code's terminal, the prompt takes on the active preset's palette,
+							and follows when you switch.
 						</p>
 					</div>
 
-					<div style="position: relative">
-						<!-- Carousel Placeholder -->
-						<div
-							style="
-								width: 100%;
-								aspect-ratio: 4/3;
-								background: #0c0c0c;
-								border: 1px solid var(--border);
-								border-radius: 8px;
-								box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-								overflow: hidden;
-								display: flex;
-								flex-direction: column;
-							"
-						>
-							<div
-								style="
-									height: 32px;
-									background: #1a1a1a;
-									display: flex;
-									align-items: center;
-									padding: 0 1rem;
-									gap: 0.5rem;
-									border-bottom: 1px solid #333;
-								"
-							>
-								<div
-									style="
-										width: 12px;
-										height: 12px;
-										border-radius: 50%;
-										background: #ff5f56;
-									"
-								></div>
-								<div
-									style="
-										width: 12px;
-										height: 12px;
-										border-radius: 50%;
-										background: #ffbd2e;
-									"
-								></div>
-								<div
-									style="
-										width: 12px;
-										height: 12px;
-										border-radius: 50%;
-										background: #27c93f;
-									"
-								></div>
-								<div
-									style="
-										margin-left: auto;
-										font-family: var(--mono);
-										color: var(--muted);
-										font-size: 0.8rem;
-									"
-								>
-									bash - 80x24
-								</div>
-							</div>
-							<div
-								style="
-									flex: 1;
-									display: flex;
-									align-items: center;
-									justify-content: center;
-									position: relative;
-								"
-							>
-								<div
-									style="font-family: var(--mono); font-size: 1.2rem; color: #fff"
-								>
-									<span style="color: var(--cyan)">~</span>
-									<span style="color: var(--pink)">❯</span>
-									<span style="color: var(--text)"
-										>echo "Screenshot 1: Synthwave"</span
-									>
-								</div>
-								<!-- Carousel Indicators -->
-								<div
-									style="
-										position: absolute;
-										bottom: 1.5rem;
-										display: flex;
-										gap: 0.5rem;
-									"
-								>
-									<div
-										style="
-											width: 8px;
-											height: 8px;
-											border-radius: 50%;
-											background: var(--cyan);
-										"
-									></div>
-									<div
-										style="
-											width: 8px;
-											height: 8px;
-											border-radius: 50%;
-											background: rgba(255, 255, 255, 0.2);
-										"
-									></div>
-									<div
-										style="
-											width: 8px;
-											height: 8px;
-											border-radius: 50%;
-											background: rgba(255, 255, 255, 0.2);
-										"
-									></div>
-								</div>
-							</div>
+					<div class="carousel-wrapper">
+						<input
+							type="radio"
+							name="slider"
+							id="slide1"
+							class="sr-only"
+							aria-label="Night City"
+						/>
+						<input
+							type="radio"
+							name="slider"
+							id="slide2"
+							class="sr-only"
+							aria-label="Phosphor Terminal"
+						/>
+						<input
+							type="radio"
+							name="slider"
+							id="slide3"
+							class="sr-only"
+							aria-label="Amber Monitor"
+						/>
+						<input
+							type="radio"
+							name="slider"
+							id="slide4"
+							class="sr-only"
+							aria-label="Black ICE"
+						/>
+						<input
+							type="radio"
+							name="slider"
+							id="slide5"
+							class="sr-only"
+							aria-label="Daylight"
+						/>
+						<figure class="screen carousel" style="margin: 0">
+							<img
+								src="img/oh-my-posh-night-city.png"
+								width="960"
+								height="570"
+								loading="lazy"
+								alt="The Stylesmith Oh My Posh prompt in PowerShell, in VS Code's terminal with the Night City preset: the folder, the git branch with a staged and a changed file, and the error state of a failed command"
+							/>
+							<img
+								src="img/oh-my-posh-phosphor-terminal.png"
+								width="960"
+								height="570"
+								loading="lazy"
+								alt="The Stylesmith Oh My Posh prompt in PowerShell, in VS Code's terminal with the Phosphor Terminal preset: the folder, the git branch with a staged and a changed file, and the error state of a failed command"
+							/>
+							<img
+								src="img/oh-my-posh-amber-monitor.png"
+								width="960"
+								height="570"
+								loading="lazy"
+								alt="The Stylesmith Oh My Posh prompt in PowerShell, in VS Code's terminal with the Amber Monitor preset: the folder, the git branch with a staged and a changed file, and the error state of a failed command"
+							/>
+							<img
+								src="img/oh-my-posh-black-ice.png"
+								width="960"
+								height="570"
+								loading="lazy"
+								alt="The Stylesmith Oh My Posh prompt in PowerShell, in VS Code's terminal with the Black ICE preset: the folder, the git branch with a staged and a changed file, and the error state of a failed command"
+							/>
+							<img
+								src="img/oh-my-posh-daylight.png"
+								width="960"
+								height="570"
+								loading="lazy"
+								alt="The Stylesmith Oh My Posh prompt in PowerShell, in VS Code's terminal with the Daylight preset: the folder, the git branch with a staged and a changed file, and the error state of a failed command"
+							/>
+						</figure>
+						<div class="slider-nav" aria-hidden="true">
+							<label for="slide1" title="Night City"></label>
+							<label for="slide2" title="Phosphor Terminal"></label>
+							<label for="slide3" title="Amber Monitor"></label>
+							<label for="slide4" title="Black ICE"></label>
+							<label for="slide5" title="Daylight"></label>
 						</div>
 					</div>
 				</div>

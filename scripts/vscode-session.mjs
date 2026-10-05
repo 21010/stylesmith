@@ -241,7 +241,7 @@ export async function openVSCode({ executable, workbench, extensions }, preset, 
 			const window = await app.browserWindow(page);
 			await window.evaluate((win, s) => win.setContentSize(s.width, s.height), size);
 		}
-		return { app, page, userData, close };
+		return { app, page, userData, project, close };
 	} catch (error) {
 		await close();
 		throw error;

@@ -1,7 +1,12 @@
-// Takes the screenshots of each preset, and of the Problem Lens, for the website (site/img/).
+// Takes the screenshots of each preset, of the Problem Lens, and of the Oh My Posh prompt in
+// each preset, for the website (site/img/).
 // Run with: npm run screenshots (after "npx @vscode/vsce package"; see vscode-session.mjs).
 
-import { mkdirSync, readFileSync } from "node:fs";
+// The functions given to page.waitForFunction run in VS Code's window.
+/* global document */
+
+import { execFileSync } from "node:child_process";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
 	ROOT,
@@ -21,9 +26,103 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"amber-monitor",
 	"black-ice",
 	"daylight",
-	"problem-lens"
+	"problem-lens",
+	"oh-my-posh"
 ];
 const SIZE = { width: 1280, height: 760 };
+
+// The Oh My Posh prompt (extras/oh-my-posh/stylesmith.omp.json) in PowerShell, in VS Code's
+// terminal with each preset. The prompt uses the terminal's ANSI colors, which every Stylesmith
+// theme defines. Needs PowerShell 7 (pwsh) and oh-my-posh on the PATH.
+const OMP_PRESETS = ["night-city", "phosphor-terminal", "amber-monitor", "black-ice", "daylight"];
+const OMP_CONFIG = join(ROOT, "extras", "oh-my-posh", "stylesmith.omp.json");
+// Smaller than the other shots, with the same shape: the prompt is shown small on the website.
+const OMP_SIZE = { width: 960, height: 570 };
+const OMP_INIT =
+	// The temporary folder is home, so the prompt shows ~\neon-server, not a real path.
+	"$env:HOME = $env:USERPROFILE = Split-Path -Parent $PWD; " +
+	// No inline suggestions from PSReadLine: they would show up in the picture.
+	"Set-PSReadLineOption -PredictionSource None; " +
+	`oh-my-posh init pwsh --config '${OMP_CONFIG}' | Invoke-Expression`;
+// A clean tree, a slow command (the "took" segment) and a failing one (the error state), whose
+// messages show no path of this computer.
+const OMP_COMMANDS = ["git status --short", "Start-Sleep -Milliseconds 2200", "git push"];
+
+/** Makes the sample project a git repository with a staged file and a changed one. */
+function gitProject(project) {
+	const git = (...args) =>
+		execFileSync(
+			"git",
+			["-c", "user.name=Stylesmith", "-c", "user.email=shots@stylesmith.dev", ...args],
+			{ cwd: project, stdio: "ignore" }
+		);
+	git("init", "-b", "main");
+	git("add", ".");
+	git("commit", "-m", "Neon server");
+	writeFileSync(join(project, "src", "palette.ts"), 'export const neon = "#ff72d8";\n');
+	git("add", "src/palette.ts");
+	writeFileSync(join(project, "README.md"), "# Neon server\n\nServes the current palette.\n");
+}
+
+/** How many prompts the terminal shows: each one ends with ❯. */
+const promptCount = () =>
+	(document.querySelector(".terminal-wrapper .xterm-rows")?.textContent.match(/❯/g) ?? []).length;
+
+async function shootOhMyPosh(vscode, preset) {
+	const { page, project, close } = await openVSCode(vscode, preset, {
+		size: OMP_SIZE,
+		effects: { "effects.bootSequence": false },
+		settings: {
+			"terminal.integrated.profiles.windows": {
+				"Oh My Posh": {
+					path: "pwsh.exe",
+					args: ["-NoLogo", "-NoProfile", "-NoExit", "-Command", OMP_INIT]
+				}
+			},
+			"terminal.integrated.defaultProfile.windows": "Oh My Posh",
+			"terminal.integrated.fontSize": 16,
+			"terminal.integrated.gpuAcceleration": "off", // the text is in the page, to wait for
+			"terminal.integrated.shellIntegration.enabled": false,
+			"stylesmith.problems.statusBar": false // doesn't fit in this narrow window
+		}
+	});
+	try {
+		gitProject(project);
+		await settle(page, `oh-my-posh ${preset.id}`);
+		await page.keyboard.press("Control+B"); // no sidebar: the terminal gets the width
+		await page.keyboard.press("Control+Backquote");
+		await page.waitForFunction(promptCount, undefined, { timeout: 30_000 });
+		await page.keyboard.press("F1");
+		await page.keyboard.type("View: Toggle Maximized Panel");
+		await page.waitForTimeout(400);
+		await page.keyboard.press("Enter");
+		await page.waitForTimeout(600);
+		await page.click(".terminal-wrapper");
+		for (const command of OMP_COMMANDS) {
+			const before = await page.evaluate(promptCount);
+			await page.keyboard.type(command, { delay: 15 });
+			await page.keyboard.press("Enter");
+			await page.waitForFunction(
+				count =>
+					(
+						document
+							.querySelector(".terminal-wrapper .xterm-rows")
+							?.textContent.match(/❯/g) ?? []
+					).length > count,
+				before,
+				{ timeout: 30_000 }
+			);
+			await page.waitForTimeout(300);
+		}
+		await hideClutter(page);
+		await page.waitForTimeout(800);
+		const file = join(OUT, `oh-my-posh-${preset.id}.png`);
+		await page.screenshot({ path: file });
+		console.log(`wrote ${file}`);
+	} finally {
+		await close();
+	}
+}
 
 // The Problem Lens with one problem of each kind: errors from TypeScript, warnings from its
 // style checks (which VS Code reports as warnings), and info from Code Spell Checker.
@@ -153,6 +252,15 @@ mkdirSync(OUT, { recursive: true });
 for (const id of SHOTS) {
 	if (id === "problem-lens") {
 		await shootProblemLens(vscode);
+		continue;
+	}
+	if (id === "oh-my-posh") {
+		for (const presetId of OMP_PRESETS) {
+			await shootOhMyPosh(
+				vscode,
+				PRESETS.find(candidate => candidate.id === presetId)
+			);
+		}
 		continue;
 	}
 	const preset = PRESETS.find(candidate => candidate.id === id);
