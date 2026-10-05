@@ -263,6 +263,26 @@ describe("website in the browser", () => {
 		await page.close();
 	});
 
+	it("lets the keyboard choose a preset in the carousel (WCAG 2.1.1)", async () => {
+		const { page } = await open();
+		const first = page.locator("#slide1");
+		await first.focus();
+		assert.equal((await first.ariaSnapshot()).trim(), '- radio "Night City"');
+		await page.keyboard.press("ArrowRight");
+		assert.equal(await page.locator("input[name=slider]:checked").getAttribute("id"), "slide2");
+		await page.waitForTimeout(600); // the slides fade in 0.5 s
+		const shown = await page.$$eval(".carousel img", images =>
+			images.map(image => getComputedStyle(image).opacity)
+		);
+		assert.deepEqual(shown, ["0", "1", "0", "0", "0"], "the second preset is shown");
+		const ring = await page.$eval(
+			'label[for="slide2"]',
+			label => getComputedStyle(label).outlineStyle
+		);
+		assert.equal(ring, "solid", "its dot shows the focus");
+		await page.close();
+	});
+
 	it("starts paused when the system asks for reduced motion", async () => {
 		const { page } = await open({ reducedMotion: true });
 		assert.equal(await page.locator(".motion-toggle").getAttribute("aria-pressed"), "true");
