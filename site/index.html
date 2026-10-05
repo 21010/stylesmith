@@ -31,7 +31,17 @@
 				<img src="logo.svg" width="36" height="36" alt="" />
 				<span>Stylesmith</span>
 			</a>
-			<nav aria-label="Main">
+			<button
+				class="menu-toggle"
+				type="button"
+				aria-expanded="false"
+				aria-controls="site-nav"
+				hidden
+			>
+				<span class="menu-icon" aria-hidden="true"></span>
+				<span class="sr-only">Menu</span>
+			</button>
+			<nav id="site-nav" aria-label="Main">
 				<div class="dropdown">
 					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
 						Aesthetics
@@ -61,17 +71,7 @@
 					</div>
 				</div>
 				<a href="https://github.com/21010/stylesmith">GitHub</a>
-				<a
-					href="#install"
-					class="button btn-primary"
-					style="
-						padding: 0.4rem 1.1rem;
-						margin-left: 0.5rem;
-						font-size: 0.9rem;
-						text-decoration: none;
-					"
-					>Install</a
-				>
+				<a href="#install" class="button nav-install">Install</a>
 			</nav>
 		</header>
 
@@ -80,13 +80,20 @@
 				<p class="prompt" aria-hidden="true">
 					&gt; stylesmith --enable<span class="caret"></span>
 				</p>
-				<h1>
-					<span>Hack the look.</span><br /><small>Stay secure. Protect your eyes.</small>
-				</h1>
+				<h1><span>Hack the look.</span><small>Stay secure. Protect your eyes.</small></h1>
 				<p class="lead">
 					A complete UI overhaul for VS Code. Apply presets, dynamic visual effects, or
 					inject your own CSS and JS.
 				</p>
+				<div class="actions hero-actions">
+					<a
+						class="button"
+						href="https://marketplace.visualstudio.com/items?itemName=21010.stylesmith"
+						>Install from Marketplace</a
+					>
+					<a class="button ghost" href="themes.html">Browse the themes</a>
+				</div>
+				<p class="hero-facts">Free &amp; open source (MIT) · VS Code 1.93+</p>
 				<figure class="screen">
 					<video autoplay loop muted playsinline poster="img/night-city.png">
 						<source src="video/night-city.webm" type="video/webm" />

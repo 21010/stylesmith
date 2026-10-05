@@ -167,4 +167,36 @@ describe("website in the browser", () => {
 		);
 		await page.close();
 	});
+
+	it("folds the nav into a menu on phones, which links and Escape close", async () => {
+		const page = await browser.newPage({ viewport: { width: 375, height: 800 } });
+		await page.goto(base);
+		const menu = page.locator(".menu-toggle");
+		const nav = page.locator("#site-nav");
+		assert.ok(!(await nav.isVisible()), "folded");
+
+		await menu.click();
+		assert.equal(await menu.getAttribute("aria-expanded"), "true");
+		const group = page.locator(".dropbtn").first();
+		await group.click();
+		assert.equal(await group.getAttribute("aria-expanded"), "true");
+		assert.ok(await page.locator(".dropdown-content a").first().isVisible(), "group open");
+
+		await page.keyboard.press("Escape");
+		assert.ok(!(await nav.isVisible()), "Escape closes it");
+		assert.equal(await menu.getAttribute("aria-expanded"), "false");
+
+		await menu.click();
+		await page.click(".nav-install");
+		assert.ok(!(await nav.isVisible()), "following a link closes it");
+		await page.close();
+	});
+
+	it("keeps the plain nav, without a menu button, on wide screens", async () => {
+		const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+		await page.goto(base);
+		assert.ok(!(await page.locator(".menu-toggle").isVisible()));
+		assert.ok(await page.locator("#site-nav").isVisible());
+		await page.close();
+	});
 });

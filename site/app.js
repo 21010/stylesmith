@@ -4,6 +4,51 @@
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+// The header: on narrow screens a menu button shows and hides the nav. The nav's dropdowns
+// open on hover, and also on click, for touch screens and the phone menu.
+const header = document.querySelector("header.top");
+const menuButton = header?.querySelector(".menu-toggle");
+const dropdowns = [...document.querySelectorAll(".top .dropdown")];
+
+const setDropdown = (dropdown, open) => {
+	dropdown.classList.toggle("open", open);
+	dropdown.querySelector(".dropbtn").setAttribute("aria-expanded", String(open));
+};
+const setMenu = open => {
+	header.classList.toggle("open", open);
+	menuButton.setAttribute("aria-expanded", String(open));
+	if (!open) dropdowns.forEach(dropdown => setDropdown(dropdown, false));
+};
+
+if (menuButton) {
+	menuButton.hidden = false;
+	header.classList.add("has-menu");
+	menuButton.addEventListener("click", () => setMenu(!header.classList.contains("open")));
+	// Following a link (like #install, on the same page) closes the menu.
+	header.querySelector("nav").addEventListener("click", event => {
+		if (event.target.closest("a")) setMenu(false);
+	});
+}
+for (const dropdown of dropdowns) {
+	dropdown.querySelector(".dropbtn").addEventListener("click", () => {
+		const open = !dropdown.classList.contains("open");
+		dropdowns.forEach(other => setDropdown(other, other === dropdown && open));
+	});
+}
+document.addEventListener("click", event => {
+	if (!event.target.closest(".top .dropdown")) {
+		dropdowns.forEach(dropdown => setDropdown(dropdown, false));
+	}
+});
+document.addEventListener("keydown", event => {
+	if (event.key !== "Escape") return;
+	dropdowns.forEach(dropdown => setDropdown(dropdown, false));
+	if (header?.classList.contains("open")) {
+		setMenu(false);
+		menuButton.focus();
+	}
+});
+
 // Copy buttons: <button data-copy="text to copy">, marked "copied" for two seconds.
 for (const button of document.querySelectorAll("button[data-copy]")) {
 	button.addEventListener("click", () => {

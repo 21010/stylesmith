@@ -24,7 +24,17 @@
 				<img src="logo.svg" width="36" height="36" alt="" />
 				<span>Stylesmith</span>
 			</a>
-			<nav aria-label="Main">
+			<button
+				class="menu-toggle"
+				type="button"
+				aria-expanded="false"
+				aria-controls="site-nav"
+				hidden
+			>
+				<span class="menu-icon" aria-hidden="true"></span>
+				<span class="sr-only">Menu</span>
+			</button>
+			<nav id="site-nav" aria-label="Main">
 				<div class="dropdown">
 					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
 						Aesthetics
@@ -61,17 +71,7 @@
 					</div>
 				</div>
 				<a href="https://github.com/21010/stylesmith">GitHub</a>
-				<a
-					href="./#install"
-					class="button btn-primary"
-					style="
-						padding: 0.4rem 1.1rem;
-						margin-left: 0.5rem;
-						font-size: 0.9rem;
-						text-decoration: none;
-					"
-					>Install</a
-				>
+				<a href="./#install" class="button nav-install">Install</a>
 			</nav>
 		</header>
 
