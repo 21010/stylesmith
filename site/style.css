@@ -96,6 +96,9 @@ pre {
 /* Links to a part of the page stop below the header, not under it. */
 html {
 	scroll-padding-top: 5.5rem;
+	/* The page background on the root too, not only on body: some accessibility checkers
+	   measure text contrast against the root's background (white when unset). */
+	background-color: var(--bg);
 }
 
 .brand {
@@ -1013,6 +1016,13 @@ footer {
 	border-top: 1px solid var(--border);
 	color: var(--muted);
 	font-size: 0.95rem;
+}
+
+/* At least 24px tall, to tap easily (WCAG 2.5.8). */
+footer a {
+	display: inline-block;
+	min-height: 24px;
+	line-height: 24px;
 }
 
 /*
