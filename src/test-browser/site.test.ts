@@ -192,6 +192,17 @@ describe("website in the browser", () => {
 		await page.close();
 	});
 
+	it("has the phone menu on every page with a header", async () => {
+		const page = await browser.newPage({ viewport: { width: 375, height: 800 } });
+		for (const name of PAGES) {
+			await page.goto(base + name);
+			if (!(await page.locator("header.top").count())) continue; // 404.html
+			assert.ok(await page.locator(".menu-toggle").isVisible(), `${name}: menu button`);
+			assert.ok(!(await page.locator("#site-nav").isVisible()), `${name}: nav folded`);
+		}
+		await page.close();
+	});
+
 	it("keeps the plain nav, without a menu button, on wide screens", async () => {
 		const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 		await page.goto(base);
