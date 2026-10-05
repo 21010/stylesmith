@@ -74,7 +74,7 @@
 		</header>
 
 		<main id="main">
-			<section style="max-width: 1200px; margin: 4rem auto 0; padding: 0 2rem">
+			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 0">
 				<div
 					style="
 						font-family: var(--mono);
@@ -93,7 +93,7 @@
 				<div
 					style="
 						display: grid;
-						grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+						grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
 						gap: 4rem;
 						align-items: flex-start;
 					"
@@ -252,7 +252,7 @@
 				</div>
 			</section>
 
-			<section style="max-width: 1200px; margin: 4rem auto 8rem; padding: 0 2rem">
+			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 8rem">
 				<h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center">
 					Installation
 				</h2>
@@ -279,9 +279,7 @@
 							Download the official configuration file to your home directory.
 						</p>
 						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
-							<pre
-								style="margin-top: 0; padding-right: 4rem"
-							><code>curl -O https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json</code></pre>
+							<pre><code>curl -O https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
 								aria-label="Copy command"
@@ -337,9 +335,7 @@
 							your <code>$PROFILE</code>:
 						</p>
 						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
-							<pre
-								style="margin-top: 0; padding-right: 4rem"
-							><code>oh-my-posh init pwsh --config ~/stylesmith.omp.json | Invoke-Expression</code></pre>
+							<pre><code>oh-my-posh init pwsh --config ~/stylesmith.omp.json | Invoke-Expression</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
 								aria-label="Copy command"
