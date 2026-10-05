@@ -1009,10 +1009,12 @@ pre {
 
 /* Footer */
 
+/* The brand and three columns of links side by side on wide screens, then two columns, then
+   one; the copyright and trademark notes below them. */
 footer {
 	max-width: 72rem;
-	margin: 3rem auto 0;
-	padding: 2rem 1.5rem 3rem;
+	margin: 4rem auto 0;
+	padding: 3rem 1.5rem 2rem;
 	border-top: 1px solid var(--border);
 	color: var(--muted);
 	font-size: 0.95rem;
@@ -1023,6 +1025,80 @@ footer a {
 	display: inline-block;
 	min-height: 24px;
 	line-height: 24px;
+}
+
+.footer-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 2.5rem;
+}
+
+@media (min-width: 900px) {
+	.footer-grid {
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr);
+		gap: 4rem;
+	}
+}
+
+.footer-brand p {
+	max-width: 24rem;
+	margin: 1rem 0 1.25rem;
+}
+
+.footer-brand .button {
+	padding: 0.6rem 1.1rem;
+	font-size: 0.9rem;
+}
+
+.footer-links {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+	gap: 2rem;
+}
+
+.footer-title {
+	margin: 0 0 0.75rem;
+	color: var(--text);
+	font: 700 0.8rem var(--mono);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.footer-links ul {
+	display: grid;
+	gap: 0.35rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.footer-links a {
+	color: var(--muted);
+	text-decoration: none;
+}
+
+.footer-links a:hover,
+.footer-links a[aria-current="page"] {
+	color: var(--cyan);
+}
+
+.footer-links a:hover {
+	text-decoration: underline;
+}
+
+.footer-bottom {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.5rem 2rem;
+	margin-top: 2.5rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--border);
+	font-size: 0.85rem;
+}
+
+.footer-bottom p {
+	margin: 0;
 }
 
 /*
