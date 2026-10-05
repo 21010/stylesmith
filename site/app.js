@@ -4,6 +4,49 @@
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+// Motion: the videos, both carousels and the blinking caret move by themselves. The header's
+// pause button stops all of them (WCAG 2.2.2). It starts paused when the system asks for
+// reduced motion, and remembers the visitor's choice from page to page.
+const MOTION_KEY = "stylesmith-motion";
+const savedMotion = () => {
+	try {
+		return localStorage.getItem(MOTION_KEY);
+	} catch {
+		return null; // storage blocked: follow the system
+	}
+};
+let motionPaused = savedMotion() ? savedMotion() === "paused" : reducedMotion.matches;
+const motionButton = document.querySelector(".motion-toggle");
+const motionListeners = [];
+const applyMotion = () => {
+	document.documentElement.classList.toggle("motion-paused", motionPaused);
+	motionButton?.setAttribute("aria-pressed", String(motionPaused));
+	if (motionButton) motionButton.title = motionPaused ? "Play animations" : "Pause animations";
+	for (const video of document.querySelectorAll("video[autoplay]")) {
+		if (motionPaused) video.pause();
+		else video.play().catch(() => {});
+	}
+	motionListeners.forEach(listener => listener());
+};
+if (motionButton) {
+	motionButton.hidden = false;
+	motionButton.addEventListener("click", () => {
+		motionPaused = !motionPaused;
+		try {
+			localStorage.setItem(MOTION_KEY, motionPaused ? "paused" : "playing");
+		} catch {
+			// not remembered; this page still follows the button
+		}
+		applyMotion();
+	});
+}
+reducedMotion.addEventListener("change", () => {
+	if (savedMotion()) return; // the visitor's own choice wins
+	motionPaused = reducedMotion.matches;
+	applyMotion();
+});
+applyMotion();
+
 // The header: on narrow screens a menu button shows and hides the nav. The nav's dropdowns
 // open on hover, and also on click, for touch screens and the phone menu.
 const header = document.querySelector("header.top");
@@ -96,7 +139,7 @@ if (sideNav.length) {
 }
 
 // The theme carousel: thumbnails carry the title and description, the arrow keys step
-// through them, and it advances by itself every 3 seconds unless motion is reduced.
+// through them, and it advances by itself every 3 seconds unless motion is paused.
 const thumbs = [...document.querySelectorAll(".carousel-thumbnails .thumb")];
 if (thumbs.length) {
 	const image = document.getElementById("mainImage");
@@ -122,8 +165,9 @@ if (thumbs.length) {
 	};
 	const restart = () => {
 		clearInterval(timer);
-		if (!reducedMotion.matches) timer = setInterval(() => show(current + 1), 3000);
+		if (!motionPaused) timer = setInterval(() => show(current + 1), 3000);
 	};
+	motionListeners.push(restart);
 
 	thumbs.forEach((thumb, i) => thumb.addEventListener("click", () => show(i)));
 	document.addEventListener("keydown", event => {
@@ -131,19 +175,4 @@ if (thumbs.length) {
 		else if (event.key === "ArrowLeft") show(current - 1);
 	});
 	restart();
-}
-
-// The effect videos loop by themselves, except when the system asks for reduced motion:
-// then they stay paused on their first frame, with controls to play them on request.
-const videos = document.querySelectorAll("video[autoplay]");
-const applyMotion = () => {
-	for (const video of videos) {
-		video.controls = reducedMotion.matches;
-		if (reducedMotion.matches) video.pause();
-		else video.play().catch(() => {});
-	}
-};
-if (videos.length) {
-	applyMotion();
-	reducedMotion.addEventListener("change", applyMotion);
 }

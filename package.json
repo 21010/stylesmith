@@ -386,6 +386,7 @@
 		"@types/vscode": "~1.93.0",
 		"@vscode/test-electron": "^3.1.0",
 		"@vscode/vsce": "4.0.0",
+		"axe-core": "^4.13.0",
 		"eslint": "^9.39.5",
 		"eslint-config-prettier": "^10.1.8",
 		"globals": "^17.12.0",
