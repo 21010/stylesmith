@@ -20,11 +20,35 @@
 		<script src="app.js" defer></script>
 	</head>
 	<body>
+		<a class="skip" href="#main">Skip to content</a>
+
 		<header class="top">
 			<a class="brand" href="./">
 				<img src="logo.svg" width="36" height="36" alt="" />
 				<span>Stylesmith</span>
 			</a>
+			<button class="motion-toggle" type="button" aria-pressed="false" hidden>
+				<svg
+					class="icon-pause"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<rect x="6" y="5" width="4" height="14" fill="currentColor" />
+					<rect x="14" y="5" width="4" height="14" fill="currentColor" />
+				</svg>
+				<svg
+					class="icon-play"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path d="M7 5v14l12-7z" fill="currentColor" />
+				</svg>
+				<span class="sr-only">Pause animations</span>
+			</button>
 			<button
 				class="menu-toggle"
 				type="button"
@@ -37,12 +61,7 @@
 			</button>
 			<nav id="site-nav" aria-label="Main">
 				<div class="dropdown">
-					<button
-						class="dropbtn"
-						aria-haspopup="true"
-						aria-expanded="false"
-						style="color: var(--cyan)"
-					>
+					<button class="dropbtn" aria-expanded="false" style="color: var(--cyan)">
 						Aesthetics
 					</button>
 					<div class="dropdown-content">
@@ -56,17 +75,13 @@
 				<a href="security.html">Security</a>
 				<a href="ergonomics.html">Ergonomics</a>
 				<div class="dropdown">
-					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
-						Productivity
-					</button>
+					<button class="dropbtn" aria-expanded="false">Productivity</button>
 					<div class="dropdown-content">
 						<a href="problem-lens.html">Problem Lens</a>
 					</div>
 				</div>
 				<div class="dropdown">
-					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
-						Add-ons
-					</button>
+					<button class="dropbtn" aria-expanded="false">Add-ons</button>
 					<div class="dropdown-content">
 						<a href="oh-my-posh.html">Oh-My-Posh Theme</a>
 					</div>
@@ -218,6 +233,7 @@
 				&copy; 2026 Grzegorz Zioło (21010). Released under the
 				<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt">MIT License</a>.
 			</p>
+			<p><a href="accessibility.html">Accessibility</a></p>
 			<p>
 				Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated with
 				Microsoft.

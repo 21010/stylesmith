@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<title>Accessibility - Stylesmith</title>
+		<meta
+			name="description"
+			content="How the Stylesmith website is tested for accessibility against WCAG 2.2 AA, what is not tested yet, and how to report a problem."
+		/>
+		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content="#0f1120" />
+		<link rel="icon" href="logo.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="style.css" />
+		<script src="app.js" defer></script>
+	</head>
+	<body>
+		<a class="skip" href="#main">Skip to content</a>
+
+		<header class="top">
+			<a class="brand" href="./">
+				<img src="logo.svg" width="36" height="36" alt="" />
+				<span>Stylesmith</span>
+			</a>
+			<button class="motion-toggle" type="button" aria-pressed="false" hidden>
+				<svg
+					class="icon-pause"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<rect x="6" y="5" width="4" height="14" fill="currentColor" />
+					<rect x="14" y="5" width="4" height="14" fill="currentColor" />
+				</svg>
+				<svg
+					class="icon-play"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path d="M7 5v14l12-7z" fill="currentColor" />
+				</svg>
+				<span class="sr-only">Pause animations</span>
+			</button>
+			<button
+				class="menu-toggle"
+				type="button"
+				aria-expanded="false"
+				aria-controls="site-nav"
+				hidden
+			>
+				<span class="menu-icon" aria-hidden="true"></span>
+				<span class="sr-only">Menu</span>
+			</button>
+			<nav id="site-nav" aria-label="Main">
+				<div class="dropdown">
+					<button class="dropbtn" aria-expanded="false">Aesthetics</button>
+					<div class="dropdown-content">
+						<a href="themes.html">Themes</a>
+						<a href="effects.html">Effects</a>
+						<a href="fonts.html">Fonts</a>
+					</div>
+				</div>
+				<a href="security.html">Security</a>
+				<a href="ergonomics.html">Ergonomics</a>
+				<div class="dropdown">
+					<button class="dropbtn" aria-expanded="false">Productivity</button>
+					<div class="dropdown-content">
+						<a href="problem-lens.html">Problem Lens</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn" aria-expanded="false">Add-ons</button>
+					<div class="dropdown-content">
+						<a href="oh-my-posh.html">Oh-My-Posh Theme</a>
+					</div>
+				</div>
+				<a href="https://github.com/21010/stylesmith">GitHub</a>
+				<a href="./#install" class="button nav-install">Install</a>
+			</nav>
+		</header>
+
+		<main id="main">
+			<section class="hero">
+				<h1>Accessibility <span>Statement</span></h1>
+				<p class="lead">
+					This website aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at
+					level AA. Here is what we test, what we haven&rsquo;t tested yet, and how to
+					tell us about a problem.
+				</p>
+			</section>
+
+			<section aria-labelledby="tested-title" class="statement">
+				<h2 id="tested-title">What we test</h2>
+				<ul>
+					<li>
+						<strong>Every change is checked automatically.</strong> On every pull
+						request and every change to the main branch, axe-core runs the WCAG 2.2
+						level A and AA checks on every page, on a wide screen and on a phone.
+					</li>
+					<li>
+						<strong>Keyboard.</strong> Every link and button can be reached with the
+						keyboard, shows where the focus is, and is never hidden under the header.
+						Every page has a &ldquo;Skip to content&rdquo; link.
+					</li>
+					<li>
+						<strong>Motion.</strong> Everything that moves by itself (the videos, the
+						carousels and the blinking cursor) can be paused with the button in the
+						header. It starts paused when your system asks for reduced motion.
+					</li>
+					<li>
+						<strong>Contrast.</strong> The site&rsquo;s colors are tested for at least
+						7:1 contrast for body text and 4.5:1 for everything else.
+					</li>
+					<li>
+						<strong>Small screens.</strong> Every page works down to 320 pixels wide
+						without scrolling sideways.
+					</li>
+				</ul>
+			</section>
+
+			<section aria-labelledby="limits-title" class="statement">
+				<h2 id="limits-title">Not tested yet</h2>
+				<p>
+					Automated checks find only part of what WCAG asks for. We haven&rsquo;t yet
+					tested the site with a screen reader (such as NVDA or VoiceOver), at 200% zoom,
+					or with custom text spacing, so we don&rsquo;t claim full conformance yet.
+				</p>
+				<p>
+					The videos of the effects are silent demonstrations; the text next to each one
+					describes what it shows.
+				</p>
+			</section>
+
+			<section aria-labelledby="extension-title" class="statement">
+				<h2 id="extension-title">The extension</h2>
+				<p>
+					This statement is about the website. For how the Stylesmith color themes are
+					tested for contrast, see <a href="ergonomics.html">Ergonomics</a>.
+				</p>
+			</section>
+
+			<section aria-labelledby="report-title" class="statement">
+				<h2 id="report-title">Report a problem</h2>
+				<p>
+					If something on this site is hard to use with your setup, please
+					<a href="https://github.com/21010/stylesmith/issues">open an issue on GitHub</a>
+					and tell us the page, what you tried, and what happened.
+				</p>
+				<p class="statement-date">Last reviewed: October 2026.</p>
+			</section>
+		</main>
+
+		<footer>
+			<p>
+				&copy; 2026 Grzegorz Zioło (21010). Released under the
+				<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt">MIT License</a>.
+			</p>
+			<p><a href="accessibility.html" aria-current="page">Accessibility</a></p>
+			<p>
+				Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated with
+				Microsoft.
+			</p>
+		</footer>
+	</body>
+</html>

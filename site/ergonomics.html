@@ -11,7 +11,7 @@
 		<title>Ergonomics - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith is engineered for ergonomics, passing WCAG 2.1 contrast standards and minimizing eye strain during long coding sessions."
+			content="Stylesmith is engineered for ergonomics, meeting the WCAG 2.2 contrast criteria and minimizing eye strain during long coding sessions."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -20,11 +20,35 @@
 		<script src="app.js" defer></script>
 	</head>
 	<body>
+		<a class="skip" href="#main">Skip to content</a>
+
 		<header class="top">
 			<a class="brand" href="./">
 				<img src="logo.svg" width="36" height="36" alt="" />
 				<span>Stylesmith</span>
 			</a>
+			<button class="motion-toggle" type="button" aria-pressed="false" hidden>
+				<svg
+					class="icon-pause"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<rect x="6" y="5" width="4" height="14" fill="currentColor" />
+					<rect x="14" y="5" width="4" height="14" fill="currentColor" />
+				</svg>
+				<svg
+					class="icon-play"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path d="M7 5v14l12-7z" fill="currentColor" />
+				</svg>
+				<span class="sr-only">Pause animations</span>
+			</button>
 			<button
 				class="menu-toggle"
 				type="button"
@@ -37,9 +61,7 @@
 			</button>
 			<nav id="site-nav" aria-label="Main">
 				<div class="dropdown">
-					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
-						Aesthetics
-					</button>
+					<button class="dropbtn" aria-expanded="false">Aesthetics</button>
 					<div class="dropdown-content">
 						<a href="themes.html">Themes</a>
 						<a href="effects.html">Effects</a>
@@ -53,17 +75,13 @@
 					>Ergonomics</a
 				>
 				<div class="dropdown">
-					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
-						Productivity
-					</button>
+					<button class="dropbtn" aria-expanded="false">Productivity</button>
 					<div class="dropdown-content">
 						<a href="problem-lens.html">Problem Lens</a>
 					</div>
 				</div>
 				<div class="dropdown">
-					<button class="dropbtn" aria-haspopup="true" aria-expanded="false">
-						Add-ons
-					</button>
+					<button class="dropbtn" aria-expanded="false">Add-ons</button>
 					<div class="dropdown-content">
 						<a href="oh-my-posh.html">Oh-My-Posh Theme</a>
 					</div>
@@ -87,7 +105,7 @@
 				<aside class="ergo-nav">
 					<h2>Core Pillars</h2>
 					<ul>
-						<li><a href="#wcag" class="active">WCAG 2.1 Standards</a></li>
+						<li><a href="#wcag" class="active">WCAG 2.2 Contrast</a></li>
 						<li><a href="#eyestrain">Eye Strain Protection</a></li>
 						<li><a href="#cvd">Color-Vision Deficiencies</a></li>
 					</ul>
@@ -113,7 +131,7 @@
 									<path d="M12 16h.01"></path>
 								</svg>
 							</div>
-							WCAG 2.1 Standards
+							WCAG 2.2 Contrast
 						</h3>
 						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
 							<h4 style="color: var(--pink)">The Challenge</h4>
@@ -126,9 +144,11 @@
 						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
-								Every palette is tested against WCAG 2.1 guidelines. We enforce
-								strict minimum contrast ratios (AA and AAA) for all critical syntax
-								tokens against their background.
+								Every palette is tested against the WCAG 2.2 contrast criteria: at
+								least 7:1 (AAA) for editor and terminal text, at least 4.5:1 (AA)
+								for every syntax color, also on the current line and on highlighted
+								lines, and at least 3:1 for markers like the cursor and the focus
+								outline. High contrast themes hold all text to 7:1.
 							</p>
 						</div>
 						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
@@ -242,6 +262,7 @@
 				&copy; 2026 Grzegorz Zioło (21010). Released under the
 				<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt">MIT License</a>.
 			</p>
+			<p><a href="accessibility.html">Accessibility</a></p>
 			<p>
 				Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated with
 				Microsoft.

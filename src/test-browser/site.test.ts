@@ -6,12 +6,13 @@
  */
 
 import assert from "node:assert/strict";
-import { readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import * as path from "node:path";
 import { after, before, describe, it } from "node:test";
+import type * as Axe from "axe-core";
 import { chromium, type Browser, type Page } from "playwright-core";
 import { contrast } from "../color";
 
@@ -25,6 +26,9 @@ const TYPES: Record<string, string> = {
 	".png": "image/png",
 	".svg": "image/svg+xml"
 };
+const AXE = readFileSync(require.resolve("axe-core/axe.min.js"), "utf-8");
+// The automated checks of WCAG 2.0, 2.1 and 2.2, levels A and AA.
+const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 let server: Server;
 let browser: Browser;
@@ -87,6 +91,36 @@ describe("website in the browser", () => {
 			assert.deepEqual(problems, []);
 			await page.close();
 		});
+	}
+
+	// On a wide screen and a phone, where the header, grids and code blocks change.
+	for (const [width, height] of [
+		[1280, 900],
+		[375, 812]
+	] as const) {
+		for (const name of PAGES) {
+			it(`${name} passes the WCAG 2.2 AA checks of axe-core at ${width}px`, async () => {
+				const page = await browser.newPage({
+					viewport: { width, height },
+					reducedMotion: "reduce" // no boot log or playing video halfway through
+				});
+				await page.goto(base + name, { waitUntil: "networkidle" });
+				// evaluate() runs outside the page's security policy, which allows only app.js.
+				await page.evaluate(AXE);
+				const violations = await page.evaluate(async tags => {
+					const { axe } = window as unknown as { axe: typeof Axe };
+					const results = await axe.run(document, {
+						runOnly: { type: "tag", values: tags }
+					});
+					return results.violations.map(
+						v =>
+							`${v.id}: ${v.help} (${v.nodes.map(n => n.target.join(" ")).join(", ")})`
+					);
+				}, WCAG);
+				assert.deepEqual(violations, []);
+				await page.close();
+			});
+		}
 	}
 
 	it("keeps every button readable when hovered", async () => {
@@ -200,6 +234,45 @@ describe("website in the browser", () => {
 			assert.ok(await page.locator(".menu-toggle").isVisible(), `${name}: menu button`);
 			assert.ok(!(await page.locator("#site-nav").isVisible()), `${name}: nav folded`);
 		}
+		await page.close();
+	});
+
+	it("pauses everything that moves with one button, and remembers it (WCAG 2.2.2)", async () => {
+		const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+		await page.goto(base, { waitUntil: "networkidle" });
+		const pause = page.locator(".motion-toggle");
+		const video = page.locator("video[autoplay]").first();
+		assert.equal(await pause.getAttribute("aria-pressed"), "false");
+		assert.equal(await video.evaluate(v => (v as HTMLVideoElement).paused), false, "playing");
+
+		await pause.click();
+		assert.equal(await pause.getAttribute("aria-pressed"), "true");
+		assert.equal(await video.evaluate(v => (v as HTMLVideoElement).paused), true, "video");
+		const animations = await page.evaluate(() => ({
+			caret: getComputedStyle(document.querySelector(".caret")!).animationName,
+			carousel: getComputedStyle(document.querySelector(".carousel img")!).animationPlayState
+		}));
+		assert.deepEqual(animations, { caret: "none", carousel: "paused" });
+
+		// On the next page it's still paused: the theme carousel doesn't advance.
+		await page.goto(base + "themes.html");
+		assert.equal(await pause.getAttribute("aria-pressed"), "true", "remembered");
+		const title = await page.textContent("#mainTitle");
+		await page.waitForTimeout(3500); // it advances every 3 s
+		assert.equal(await page.textContent("#mainTitle"), title);
+		await page.close();
+	});
+
+	it("starts paused when the system asks for reduced motion", async () => {
+		const { page } = await open({ reducedMotion: true });
+		assert.equal(await page.locator(".motion-toggle").getAttribute("aria-pressed"), "true");
+		assert.equal(
+			await page
+				.locator("video[autoplay]")
+				.first()
+				.evaluate(v => (v as HTMLVideoElement).paused),
+			true
+		);
 		await page.close();
 	});
 

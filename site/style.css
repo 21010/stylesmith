@@ -60,6 +60,7 @@ pre {
 
 .skip {
 	position: absolute;
+	z-index: 60; /* above the sticky header */
 	left: 1rem;
 	top: -3rem;
 	padding: 0.5rem 1rem;
@@ -142,7 +143,60 @@ html {
 	display: none;
 }
 
+/* The pause button for everything that moves by itself (WCAG 2.2.2): after the nav on wide
+   screens, next to the menu button on narrow ones. Shown once app.js runs. */
+.top .brand {
+	margin-right: auto;
+}
+.top nav {
+	order: 1;
+}
+.motion-toggle {
+	order: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	background: var(--bg-deep);
+	color: var(--muted);
+	cursor: pointer;
+}
+.motion-toggle[hidden] {
+	display: none;
+}
+.motion-toggle:hover {
+	border-color: var(--cyan);
+	color: var(--cyan);
+}
+.motion-toggle[aria-pressed="true"] .icon-pause,
+.motion-toggle[aria-pressed="false"] .icon-play {
+	display: none;
+}
+
+/* Paused: every animation stops where it is, the caret stops blinking, and the boot log
+   doesn't play. app.js pauses the videos and the theme carousel. */
+.motion-paused *,
+.motion-paused *::before,
+.motion-paused *::after {
+	animation-play-state: paused !important;
+}
+.motion-paused .caret {
+	animation: none;
+}
+.motion-paused .boot {
+	display: none;
+}
+
 @media (max-width: 799px) {
+	.motion-toggle {
+		order: 0;
+		width: 2.75rem;
+		height: 2.75rem;
+	}
 	.top.has-menu .menu-toggle {
 		display: inline-flex;
 		align-items: center;
@@ -921,6 +975,23 @@ pre {
 	line-height: 1.7;
 }
 
+/* Accessibility statement */
+
+.statement {
+	max-width: 46rem;
+	margin: 0 auto;
+	padding-top: 1rem;
+}
+
+.statement li {
+	margin-bottom: 0.75rem;
+}
+
+.statement-date {
+	color: var(--muted);
+	font: 0.85rem var(--mono);
+}
+
 /* Footer */
 
 footer {
@@ -1163,6 +1234,13 @@ video {
 	}
 	.security-card {
 		padding: 1.5rem 1rem 1.75rem;
+	}
+	/* article and .font-card: the cards' own rules come later in this file. */
+	article.font-card {
+		padding: 1.25rem 1rem;
+	}
+	.font-card .font-preview {
+		padding: 0.6rem 0.75rem;
 	}
 }
 
@@ -1493,6 +1571,7 @@ kbd {
 
 /* Font Cards */
 .font-card {
+	container-type: inline-size;
 	display: flex;
 	flex-direction: column;
 	padding: 1.5rem;
@@ -1520,9 +1599,11 @@ kbd {
 
 .font-preview {
 	margin-top: auto;
-	/* A sample keeps its lines; on a narrow card it scrolls instead. */
+	/* A sample keeps its lines, and is small enough on phones to fit without scrolling
+	   (a scrolling box would need to be reachable from the keyboard). */
 	white-space: nowrap;
 	overflow-x: auto;
+	font-size: clamp(0.7rem, 5cqi, 1rem); /* 5% of the card: the longest line just fits */
 	padding: 0.6rem 1rem;
 	background: rgba(0, 0, 0, 0.5);
 	border: 1px solid var(--border);
