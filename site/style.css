@@ -748,6 +748,9 @@ img {
 
 pre {
 	overflow-x: auto;
+	/* Long commands wrap instead of widening the page on phones; at spaces where they can. */
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 	padding: 1.25rem 1.5rem;
 	border: 1px solid var(--border);
 	border-left: 3px solid var(--pink);
@@ -909,10 +912,11 @@ footer {
 .code-wrapper {
 	position: relative;
 	flex-grow: 1;
+	min-width: 0; /* a flex item is otherwise as wide as its longest line */
 }
-.install-options pre {
-	margin-top: 0;
-	margin-bottom: 0;
+/* A code block with a copy button over its right end. */
+.code-wrapper pre {
+	margin: 0;
 	padding-right: 4.5rem;
 }
 .copy-btn {
@@ -970,6 +974,35 @@ video {
 
 .copy-btn.copied .copy-default {
 	display: none !important;
+}
+
+/* Sections that set their own width; on phones, main's padding is enough. */
+.wide-section {
+	padding-inline: 2rem;
+}
+
+/* Phones: less padding around code, and the copy button in the top corner, so a wrapped
+   command keeps the whole width. */
+@media (max-width: 649px) {
+	.wide-section {
+		padding-inline: 0;
+	}
+	.steps-list li {
+		padding: 1.25rem 1rem;
+	}
+	pre {
+		padding: 1rem;
+	}
+	.code-wrapper pre {
+		padding: 2.75rem 1rem 1rem;
+	}
+	.copy-btn {
+		top: 0.5rem;
+		transform: none;
+	}
+	.security-card {
+		padding: 1.5rem 1rem 1.75rem;
+	}
 }
 
 kbd {
@@ -1287,11 +1320,12 @@ kbd {
 /* 2x2 Grid */
 .grid-2x2 {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 1.5rem;
 }
 @media (min-width: 768px) {
 	.grid-2x2 {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
@@ -1359,6 +1393,9 @@ kbd {
 
 .font-preview {
 	margin-top: auto;
+	/* A sample keeps its lines; on a narrow card it scrolls instead. */
+	white-space: nowrap;
+	overflow-x: auto;
 	padding: 0.6rem 1rem;
 	background: rgba(0, 0, 0, 0.5);
 	border: 1px solid var(--border);
@@ -1495,8 +1532,12 @@ kbd {
 
 @media (max-width: 768px) {
 	.ergo-split {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 3rem;
+		padding: 0; /* main already has its own */
+	}
+	.ergo-section h3 {
+		font-size: 1.3rem;
 	}
 	.ergo-nav {
 		position: relative;
