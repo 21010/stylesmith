@@ -17,7 +17,8 @@ function color(name: string): string {
 }
 
 describe("website", () => {
-	// [text, background, minimum contrast]: AAA for body text, AA for the rest.
+	// [text, background, minimum contrast]: AAA for body text, AA for the rest, and 3:1 for the
+	// outline of controls (non-text contrast).
 	const pairs: [string, string, number][] = [
 		["text", "bg", 7],
 		["text", "raised", 7],
@@ -29,7 +30,10 @@ describe("website", () => {
 		["yellow", "bg-deep", 4.5],
 		["on-accent", "cyan", 4.5],
 		["on-accent", "pink", 4.5],
-		["on-accent", "yellow", 4.5]
+		["on-accent", "yellow", 4.5],
+		["control-border", "bg", 3],
+		["control-border", "bg-deep", 3],
+		["control-border", "raised", 3]
 	];
 	for (const [text, background, minimum] of pairs) {
 		it(`has readable --${text} on --${background}`, () => {
@@ -70,6 +74,16 @@ describe("website", () => {
 					const file =
 						url === "./" || url === "/" ? "index.html" : url.replace(/^\//, "");
 					assert.ok(existsSync(path.join(SITE, file)), `${url} exists`);
+				}
+			});
+
+			it("hides decorative icons from screen readers, or names them", () => {
+				for (const [svg] of html.matchAll(/<svg\b[^>]*>/g)) {
+					assert.ok(
+						/\saria-hidden="true"/.test(svg) ||
+							(/\srole="img"/.test(svg) && /\saria-label="[^"]+"/.test(svg)),
+						svg.replace(/\s+/g, " ")
+					);
 				}
 			});
 

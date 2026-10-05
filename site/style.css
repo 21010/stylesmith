@@ -8,6 +8,8 @@
 	--bg-deep: #0b0d19;
 	--raised: #171a2e;
 	--border: #262b4a;
+	/* The outline of a control, like a button: 3:1 on every background (WCAG 1.4.11). */
+	--control-border: #62678a;
 	--text: #e2e4f3;
 	--muted: #a3a9d0;
 	--cyan: #5fe0ff;
@@ -159,7 +161,7 @@ html {
 	width: 2.25rem;
 	height: 2.25rem;
 	padding: 0;
-	border: 1px solid var(--border);
+	border: 1px solid var(--control-border);
 	border-radius: 4px;
 	background: var(--bg-deep);
 	color: var(--muted);
@@ -204,7 +206,7 @@ html {
 		width: 2.75rem;
 		height: 2.75rem;
 		padding: 0;
-		border: 1px solid var(--border);
+		border: 1px solid var(--control-border);
 		border-radius: 4px;
 		background: var(--bg-deep);
 		color: var(--text);
@@ -665,6 +667,16 @@ img {
 #slide4:checked ~ .carousel img:nth-child(4),
 #slide5:checked ~ .carousel img:nth-child(5) {
 	opacity: 1;
+}
+
+/* The radios are the keyboard's way to choose a slide: their dot shows the focus. */
+#slide1:focus-visible ~ .slider-nav label[for="slide1"],
+#slide2:focus-visible ~ .slider-nav label[for="slide2"],
+#slide3:focus-visible ~ .slider-nav label[for="slide3"],
+#slide4:focus-visible ~ .slider-nav label[for="slide4"],
+#slide5:focus-visible ~ .slider-nav label[for="slide5"] {
+	outline: 2px solid var(--yellow);
+	outline-offset: 3px;
 }
 
 /* Highlight the checked dot */
@@ -1157,7 +1169,7 @@ footer {
 	right: 0.5rem;
 	transform: translateY(-50%);
 	background: var(--bg);
-	border: 1px solid var(--border);
+	border: 1px solid var(--control-border);
 	color: var(--cyan);
 	padding: 0.3rem 0.6rem;
 	font-size: 0.8rem;
