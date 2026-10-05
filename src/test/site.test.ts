@@ -77,6 +77,17 @@ describe("website", () => {
 				}
 			});
 
+			it("refers only to ids that exist (ARIA labels, descriptions, in-page links)", () => {
+				const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map(([, id]) => id));
+				const refs = [
+					...[
+						...html.matchAll(/\saria-(?:labelledby|describedby|controls)="([^"]+)"/g)
+					].flatMap(([, value]) => value!.split(/\s+/)),
+					...[...html.matchAll(/\shref="#([^"]+)"/g)].map(([, id]) => id!)
+				];
+				for (const id of refs) assert.ok(ids.has(id), `#${id} exists`);
+			});
+
 			it("hides decorative icons from screen readers, or names them", () => {
 				for (const [svg] of html.matchAll(/<svg\b[^>]*>/g)) {
 					assert.ok(
