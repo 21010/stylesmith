@@ -73,15 +73,26 @@ pre {
 
 /* Header */
 
+/* The header stays at the top while the page scrolls. Its background spans the window; its
+   contents line up with main (72rem wide, with 1.5rem padding). */
 .top {
+	position: sticky;
+	top: 0;
+	z-index: 50;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1rem 2rem;
 	align-items: center;
 	justify-content: space-between;
-	max-width: 72rem;
-	margin: 0 auto;
-	padding: 1.25rem 1.5rem;
+	padding: 0.75rem max(1.5rem, calc((100% - 69rem) / 2));
+	border-bottom: 1px solid var(--border);
+	background: rgb(15 17 32 / 0.85); /* --bg, see-through */
+	backdrop-filter: blur(10px);
+}
+
+/* Links to a part of the page stop below the header, not under it. */
+html {
+	scroll-padding-top: 5.5rem;
 }
 
 .brand {
@@ -198,6 +209,9 @@ pre {
 	}
 	.top.has-menu.open nav {
 		display: flex;
+		/* The header stays on screen: a menu taller than the screen scrolls by itself. */
+		max-height: calc(100dvh - 5rem);
+		overflow-y: auto;
 	}
 	.top.has-menu nav > a:not(.button),
 	.top.has-menu .dropbtn {
@@ -267,6 +281,24 @@ h2 span {
 	color: var(--pink);
 }
 
+h2 {
+	text-wrap: balance;
+}
+
+/* Phones: the section number ("01 //") goes on its own line above the title, so the title
+   keeps the whole width and fits on one line. */
+@media (max-width: 649px) {
+	h2 {
+		font-size: 1.3rem;
+	}
+	h2 > span[aria-hidden="true"] {
+		display: block;
+		margin-bottom: 0.35rem;
+		font-size: 0.85rem;
+		letter-spacing: 0.1em;
+	}
+}
+
 h3 {
 	margin: 0 0 0.5rem;
 	color: var(--cyan);
@@ -305,7 +337,9 @@ h3 {
 
 h1 {
 	margin: 0 0 1.25rem;
-	font-size: clamp(2.2rem, 6vw, 3.8rem);
+	/* Small enough on phones for a two-word title to stay on one line. */
+	font-size: clamp(1.6rem, 7.5vw, 3.8rem);
+	text-wrap: balance;
 	text-shadow: 0 0 18px rgb(95 224 255 / 0.35);
 }
 
@@ -644,15 +678,6 @@ img {
 	border-left: 3px solid var(--cyan);
 	background: rgba(0, 0, 0, 0.2);
 	height: 100%;
-	transition:
-		transform 0.2s,
-		background 0.2s,
-		box-shadow 0.2s;
-}
-
-.cards article:hover {
-	transform: translateY(-4px);
-	background: var(--raised);
 }
 
 .card-actions {
@@ -798,14 +823,6 @@ img {
 	background: rgba(0, 0, 0, 0.2);
 	border-top: 2px solid var(--pink);
 	border-radius: 0 0 6px 6px;
-	transition:
-		transform 0.2s,
-		background 0.2s;
-}
-
-.ergo-item:hover {
-	transform: translateY(-4px);
-	background: var(--raised);
 }
 
 .ergo-icon {
@@ -848,13 +865,6 @@ img {
 	border-radius: 0 0 6px 6px;
 	position: relative;
 	overflow: hidden;
-	transition:
-		transform 0.2s,
-		background 0.2s;
-}
-.security-card:hover {
-	transform: translateY(-4px);
-	background: var(--raised);
 }
 
 .card-header {
@@ -1267,16 +1277,6 @@ kbd {
 	border-top: 3px solid var(--cyan);
 	border-radius: 6px;
 	overflow: hidden;
-	transition:
-		transform 0.2s,
-		background 0.2s,
-		box-shadow 0.2s;
-}
-
-.theme-card:hover {
-	transform: translateY(-4px);
-	background: var(--raised);
-	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .theme-img-wrapper {
@@ -1417,16 +1417,6 @@ kbd {
 	border-left: 3px solid var(--pink);
 	border-radius: 6px;
 	overflow: hidden;
-	transition:
-		transform 0.2s,
-		background 0.2s,
-		box-shadow 0.2s;
-}
-
-.effect-card:hover {
-	transform: translateY(-4px);
-	background: var(--raised);
-	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .effect-vid-wrapper {
@@ -1462,11 +1452,6 @@ kbd {
 	margin: 0;
 	color: var(--muted);
 	line-height: 1.5;
-}
-
-.feature-card:hover {
-	transform: translateY(-4px) !important;
-	background: var(--raised) !important;
 }
 
 /* 2x2 Grid */
@@ -1515,20 +1500,10 @@ kbd {
 	border-left: 3px solid var(--cyan);
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 6px;
-	transition:
-		transform 0.2s,
-		background 0.2s,
-		box-shadow 0.2s;
 }
 
 .font-card.pink {
 	border-left-color: var(--pink);
-}
-
-.font-card:hover {
-	transform: translateY(-4px);
-	background: var(--raised);
-	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .font-card h3 {
@@ -1683,6 +1658,10 @@ kbd {
 }
 
 @media (max-width: 768px) {
+	/* The side panel is only useful next to the content: on phones, the page is one column. */
+	.ergo-nav {
+		display: none;
+	}
 	.ergo-split {
 		grid-template-columns: minmax(0, 1fr);
 		gap: 3rem;
@@ -1690,27 +1669,5 @@ kbd {
 	}
 	.ergo-section h3 {
 		font-size: 1.3rem;
-	}
-	.ergo-nav {
-		position: relative;
-		top: 0;
-		border-bottom: 1px solid var(--border);
-		padding-bottom: 2rem;
-	}
-	.ergo-nav ul {
-		border-left: none;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-	}
-	.ergo-nav li {
-		padding: 0;
-	}
-	.ergo-nav li a.active::before {
-		display: none;
-	}
-	.ergo-nav li a.active {
-		text-decoration: underline;
-		text-underline-offset: 4px;
 	}
 }
