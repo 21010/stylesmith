@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+// The module itself, not a copy, so mock.method replaces what workbench.ts calls.
+import fs from "node:fs/promises";
 import { chmod, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
-import { afterEach, beforeEach, describe, it } from "node:test";
+import { afterEach, beforeEach, describe, it, mock } from "node:test";
 import {
 	cleanUp,
 	isPatched,
@@ -22,7 +24,21 @@ beforeEach(async () => {
 	root = await mkdtemp(path.join(os.tmpdir(), "custom-css-"));
 });
 
-afterEach(() => rm(root, { recursive: true, force: true }));
+afterEach(async () => {
+	mock.restoreAll();
+	await rm(root, { recursive: true, force: true });
+});
+
+/** Makes the `call`-th call (counting from 1) of a file system function fail with `code`. */
+function failCall(name: "copyFile" | "writeFile" | "rename", call: number, code: string): void {
+	const original = fs[name] as (...args: unknown[]) => Promise<unknown>;
+	let calls = 0;
+	mock.method(fs, name, (...args: unknown[]) =>
+		++calls === call
+			? Promise.reject(Object.assign(new Error(`${name} failed`), { code }))
+			: original(...args)
+	);
+}
 
 async function touch(...segments: string[]): Promise<string> {
 	const file = path.join(root, ...segments);
@@ -154,6 +170,22 @@ describe("writeFileAtomic", () => {
 		assert.deepEqual((await readdir(root)).sort(), ["workbench.html", path.basename(leftover)]);
 	});
 
+	for (const [step, name, call] of [
+		["creating the temporary file", "copyFile", 1],
+		["writing the temporary file", "writeFile", 1],
+		["renaming it over the file", "rename", 1]
+	] as const) {
+		it(`leaves the file as it was when ${step} fails`, async () => {
+			const file = path.join(root, "workbench.html");
+			await writeFile(file, "old");
+			failCall(name, call, "EPERM");
+			await assert.rejects(writeFileAtomic(file, "new"), { code: "EPERM" });
+			mock.restoreAll();
+			assert.equal(await readFile(file, "utf-8"), "old");
+			assert.deepEqual(await readdir(root), ["workbench.html"], "no temporary file left");
+		});
+	}
+
 	it("fails when the target does not exist", async () => {
 		await assert.rejects(writeFileAtomic(path.join(root, "missing.html"), "x"), {
 			code: "ENOENT"
@@ -182,14 +214,14 @@ describe("writing VS Code's file without full permissions", () => {
 	});
 
 	it(
-		"writes in place when only the folder is read-only",
+		"doesn't write in place when only the folder is read-only",
 		{ skip: noUnixPermissions },
 		async () => {
 			const file = path.join(root, "workbench.html");
 			await writeFile(file, "old");
 			await chmod(root, 0o555);
-			await writeFileAtomic(file, "new");
-			assert.equal(await readFile(file, "utf-8"), "new");
+			await assert.rejects(writeFileAtomic(file, "new"), error => isPermissionError(error));
+			assert.equal(await readFile(file, "utf-8"), "old");
 			assert.deepEqual(await readdir(root), ["workbench.html"]);
 		}
 	);

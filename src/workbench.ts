@@ -91,7 +91,9 @@ export async function removeLegacyBackups(workbench: Workbench): Promise<void> {
 
 /**
  * Replaces `file` via a temporary file and a rename, so an interrupted write can never
- * leave VS Code with a truncated workbench.
+ * leave VS Code with a truncated workbench. When that isn't possible (the folder can't be
+ * written to), it fails and leaves `file` as it was: writing the file in place instead could
+ * leave half a file behind.
  */
 export async function writeFileAtomic(file: string, data: string): Promise<void> {
 	// A random name, so a temporary file left by a crash never blocks a later write.
@@ -107,9 +109,7 @@ export async function writeFileAtomic(file: string, data: string): Promise<void>
 	} catch (error) {
 		// Only clean up a temp file we made; never delete someone else's file.
 		if (createdTemp) await rm(temp, { force: true }).catch(() => undefined);
-		if (!isPermissionError(error)) throw error;
-		// The directory may be read-only while the file itself is writable.
-		await writeFile(file, data, "utf-8");
+		throw error;
 	}
 }
 

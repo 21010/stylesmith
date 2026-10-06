@@ -10,7 +10,7 @@ Stylesmith is a safe, high-performance styling engine for Visual Studio Code. It
 Stylesmith operates by applying pure, functional transformations to VS Code's core `workbench.html`.
 
 1. **Atomic Patching:** Stylesmith locates the main HTML file and reads it into memory. It injects your requested styles and scripts using precise comment markers (`<!-- !! STYLESMITH-START !! -->`).
-2. **File System Safety:** To prevent TOCTOU (Time-of-Check to Time-of-Use) symlink attacks and race conditions, all file writes are atomic. Stylesmith generates a UUID-suffixed temporary file, copies permissions, writes the patched HTML using `COPYFILE_EXCL`, and atomically renames it.
+2. **File System Safety:** To prevent TOCTOU (Time-of-Check to Time-of-Use) symlink attacks and race conditions, all file writes are atomic. Stylesmith generates a UUID-suffixed temporary file, copies permissions, writes the patched HTML using `COPYFILE_EXCL`, and atomically renames it. If VS Code's folder can't be written to, Stylesmith stops and leaves the file as it was rather than writing it in place.
 3. **Restoration:** Before writing, the engine mathematically proves that removing the patch string byte-for-byte restores the exact pristine file. This guarantees that running **Stylesmith: Disable** will safely return VS Code to its factory state.
 
 ## Security Model & CSP Compliance
