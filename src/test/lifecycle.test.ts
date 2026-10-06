@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { chmod, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterEach, beforeEach, describe, it } from "node:test";
+import { computeChecksum } from "../checksum";
 import type { Config } from "../config";
 import { findFont } from "../fonts";
 import {
@@ -303,6 +304,104 @@ describe("after startup", () => {
 		ui.shown.length = 0;
 		await checkAfterStartup(services);
 		assert.deepEqual(ui.shown, []);
+	});
+});
+
+describe("VS Code's checksum", () => {
+	const KEY = "vs/code/electron-browser/workbench/workbench.html";
+
+	beforeEach(async () => {
+		// The layout VS Code has: product.json in the app folder, the workbench under out/.
+		const dir = path.join(root, "out", ...KEY.split("/").slice(0, -1));
+		await mkdir(dir, { recursive: true });
+		workbench = { dir, htmlPath: path.join(dir, "workbench.html") };
+		await writeFile(workbench.htmlPath, PRISTINE);
+		await writeProduct("c1", computeChecksum(PRISTINE));
+	});
+
+	function writeProduct(commit: string, checksum: string) {
+		return writeFile(
+			path.join(root, "product.json"),
+			JSON.stringify({ commit, checksums: { [KEY]: checksum } })
+		);
+	}
+	const checksum = async () =>
+		(
+			JSON.parse(await readFile(path.join(root, "product.json"), "utf-8")) as {
+				checksums: Record<string, string>;
+			}
+		).checksums[KEY];
+
+	it("matches the patched file after Enable, and VS Code's own after Disable", async () => {
+		await enable(services);
+		assert.equal(await checksum(), computeChecksum(await html()));
+		await disable(services);
+		assert.equal(await checksum(), computeChecksum(PRISTINE));
+	});
+
+	it("is left alone while silenceCorruptWarning is off", async () => {
+		settings.set("stylesmith.silenceCorruptWarning", false);
+		await enable(services);
+		assert.equal(await checksum(), computeChecksum(PRISTINE));
+	});
+
+	it("follows silenceCorruptWarning on the next Enable, even if the file is the same", async () => {
+		settings.set("stylesmith.silenceCorruptWarning", false);
+		await enable(services);
+		settings.set("stylesmith.silenceCorruptWarning", true);
+		await enable(services);
+		assert.equal(await checksum(), computeChecksum(await html()), "silenced");
+
+		settings.set("stylesmith.silenceCorruptWarning", false);
+		await enable(services);
+		assert.equal(await checksum(), computeChecksum(PRISTINE), "VS Code warns again");
+	});
+
+	it("is put back by Disable even when silenceCorruptWarning was turned off", async () => {
+		await enable(services);
+		settings.set("stylesmith.silenceCorruptWarning", false);
+		await disable(services);
+		assert.equal(await checksum(), computeChecksum(PRISTINE));
+	});
+
+	it("says when product.json can't be updated, and still enables", async () => {
+		await writeFile(path.join(root, "product.json"), "{ not json");
+		assert.equal(await enable(services), true);
+		assert.ok((await html()).includes(PATCH_MARKER));
+		assert.equal(ui.shown.filter(line => line.startsWith("warn: ")).length, 1);
+		assert.match(ui.shown[0] ?? "", /couldn't update VS Code's checksum/);
+	});
+
+	it("offers to re-apply after a VS Code update", async () => {
+		await enable(services);
+		await writeFile(workbench.htmlPath, PRISTINE);
+		await writeProduct("c2", computeChecksum(PRISTINE));
+		ui.shown.length = 0;
+		await checkAfterStartup(services);
+		assert.deepEqual(ui.shown, [`ask: ${messages.reapply}`]);
+	});
+
+	it("says when VS Code's own file was put back without an update", async () => {
+		await enable(services);
+		await writeFile(workbench.htmlPath, PRISTINE); // a reinstall or repair
+		await writeProduct("c1", computeChecksum(PRISTINE));
+		ui.shown.length = 0;
+		await checkAfterStartup(services);
+		assert.deepEqual(ui.shown, [`ask: ${messages.restoredElsewhere}`]);
+	});
+
+	it("warns when the file was changed by something else, and still lets the user choose", async () => {
+		await enable(services);
+		await writeFile(
+			workbench.htmlPath,
+			PRISTINE.replace("<body>", "<body><script>x()</script>")
+		);
+		ui.shown.length = 0;
+		ui.answers = [messages.dontAskAgain];
+		await checkAfterStartup(services);
+		await settle();
+		assert.deepEqual(ui.shown, [`ask: ${messages.changedOutside}`]);
+		assert.equal(settings.get("stylesmith.remindAfterUpdate"), false);
 	});
 });
 

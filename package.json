@@ -111,7 +111,7 @@
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Automatically updates VS Code's internal checksums so it stops complaining that the installation is corrupt when Stylesmith modifies files. Disable this if you want to see the warning."
+					"markdownDescription": "Automatically updates VS Code's internal checksums so it stops complaining that the installation is corrupt when Stylesmith modifies files. Turn it off to see the warning: the next Enable puts VS Code's original checksum back."
 				},
 				"stylesmith.effects.caretAnimation": {
 					"type": "boolean",
@@ -295,7 +295,7 @@
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"description": "After a VS Code update removes Stylesmith's changes, offer to re-apply them."
+					"description": "When Stylesmith's changes are removed, usually by a VS Code update, offer to re-apply them."
 				}
 			}
 		},

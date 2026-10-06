@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promis
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
+import { computeChecksum } from "../checksum";
 import { patch } from "../patch";
 import { rememberWorkbench, uninstall } from "../uninstall";
 
@@ -42,6 +43,24 @@ describe("uninstall cleanup", () => {
 		assert.equal(await uninstall(locationFile), true);
 		assert.equal(await readFile(workbench.htmlPath, "utf-8"), PRISTINE);
 		assert.deepEqual(await readdir(workbench.dir), ["workbench.html"]);
+	});
+
+	it("puts VS Code's checksum for the restored file back", async () => {
+		const workbench = await patchedWorkbench();
+		const key = "vs/code/electron-browser/workbench/workbench.html";
+		const product = path.join(root, "app", "product.json");
+		const patched = await readFile(workbench.htmlPath, "utf-8");
+		await writeFile(
+			product,
+			JSON.stringify({ checksums: { [key]: computeChecksum(patched) } })
+		);
+		await rememberWorkbench(workbench, locationFile);
+
+		await uninstall(locationFile);
+		const { checksums } = JSON.parse(await readFile(product, "utf-8")) as {
+			checksums: Record<string, string>;
+		};
+		assert.equal(checksums[key], computeChecksum(PRISTINE));
 	});
 
 	it("does nothing when Stylesmith never remembered a location", async () => {

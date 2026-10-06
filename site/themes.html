@@ -107,7 +107,7 @@
 							height="760"
 							alt="Night City theme"
 						/>
-						<div class="main-info">
+						<div class="main-info" id="mainInfo" aria-live="off">
 							<h3 id="mainTitle">Night City</h3>
 							<p id="mainDesc">
 								Inspired by the rain-slicked streets of classic 80s cyberpunk
@@ -116,67 +116,57 @@
 							</p>
 						</div>
 					</div>
-					<div class="carousel-thumbnails">
-						<div
-							class="thumb active"
+					<div class="carousel-thumbnails" role="group" aria-label="Presets">
+						<button
+							type="button"
+							class="thumb"
+							aria-pressed="true"
 							data-title="Night City"
 							data-desc="Inspired by the rain-slicked streets of classic 80s cyberpunk cinema. Features piercing neon pinks and cyans, sparking cursor animations, and a full system boot sequence."
 						>
-							<img
-								src="img/night-city.png"
-								width="1280"
-								height="760"
-								alt="Night City"
-							/>
+							<img src="img/night-city.png" width="1280" height="760" alt="" />
 							<span>Night City</span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							class="thumb"
+							aria-pressed="false"
 							data-title="Phosphor Terminal"
 							data-desc="A nostalgic tribute to the VT100 and early UNIX mainframes. Uses a pure green phosphor palette, heavy scanlines, and a blocky pixel font to replicate working on a vintage CRT monitor."
 						>
-							<img
-								src="img/phosphor-terminal.png"
-								width="1280"
-								height="760"
-								alt="Phosphor Terminal"
-							/>
+							<img src="img/phosphor-terminal.png" width="1280" height="760" alt="" />
 							<span>Phosphor Terminal</span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							class="thumb"
+							aria-pressed="false"
 							data-title="Amber Monitor"
 							data-desc="Emulates the warm, high-contrast glow of the IBM 5151 monochrome display from 1981. Perfect for late-night hacking sessions where green is just too harsh on the eyes."
 						>
-							<img
-								src="img/amber-monitor.png"
-								width="1280"
-								height="760"
-								alt="Amber Monitor"
-							/>
+							<img src="img/amber-monitor.png" width="1280" height="760" alt="" />
 							<span>Amber Monitor</span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							class="thumb"
+							aria-pressed="false"
 							data-title="Black ICE"
 							data-desc="Inspired by the minimalist, corporate intrusion countermeasure electronics found in sprawling dystopian novels. Cold white text against absolute black, framed by sharp, glowing borders."
 						>
-							<img
-								src="img/black-ice.png"
-								width="1280"
-								height="760"
-								alt="Black ICE"
-							/>
+							<img src="img/black-ice.png" width="1280" height="760" alt="" />
 							<span>Black ICE</span>
-						</div>
-						<div
+						</button>
+						<button
+							type="button"
 							class="thumb"
+							aria-pressed="false"
 							data-title="Daylight"
 							data-desc="A clean, modern aesthetic designed for highly-lit environments. Strips away the heavy retro filters in favor of crisp typography, subtle transitions, and high-contrast readability."
 						>
-							<img src="img/daylight.png" width="1280" height="760" alt="Daylight" />
+							<img src="img/daylight.png" width="1280" height="760" alt="" />
 							<span>Daylight</span>
-						</div>
+						</button>
 					</div>
 				</div>
 			</section>

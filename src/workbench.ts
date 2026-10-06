@@ -91,7 +91,9 @@ export async function removeLegacyBackups(workbench: Workbench): Promise<void> {
 
 /**
  * Replaces `file` via a temporary file and a rename, so an interrupted write can never
- * leave VS Code with a truncated workbench.
+ * leave VS Code with a truncated workbench. When that isn't possible (the folder can't be
+ * written to), it fails and leaves `file` as it was: writing the file in place instead could
+ * leave half a file behind.
  */
 export async function writeFileAtomic(file: string, data: string): Promise<void> {
 	// A random name, so a temporary file left by a crash never blocks a later write.
@@ -107,9 +109,7 @@ export async function writeFileAtomic(file: string, data: string): Promise<void>
 	} catch (error) {
 		// Only clean up a temp file we made; never delete someone else's file.
 		if (createdTemp) await rm(temp, { force: true }).catch(() => undefined);
-		if (!isPermissionError(error)) throw error;
-		// The directory may be read-only while the file itself is writable.
-		await writeFile(file, data, "utf-8");
+		throw error;
 	}
 }
 
@@ -151,23 +151,63 @@ export function isWorkbenchLocation(value: unknown): value is Workbench {
 }
 
 /**
+ * VS Code's application folder (the one with product.json) for a workbench file, which is in
+ * its out/ folder; undefined if the workbench isn't laid out that way.
+ */
+export function appRootOf(workbench: Workbench): string | undefined {
+	for (const segments of WORKBENCH_DIRS) {
+		const tail = path.join(...segments);
+		if (!workbench.dir.endsWith(path.sep + tail)) continue;
+		const outDir = workbench.dir.slice(0, -(tail.length + 1));
+		if (path.basename(outDir) === "out") return path.dirname(outDir);
+	}
+	return undefined;
+}
+
+/**
  * Puts the given font files in the font folder next to the workbench HTML file, replacing any
  * that were there. The workbench loads them from there, which VS Code's security policy allows.
+ *
+ * The new files are copied into a folder of their own first, and only swapped in once they're
+ * all there: a copy that fails halfway leaves the fonts in use as they were.
  */
 export async function writeFonts(workbench: Workbench, files: readonly string[]): Promise<boolean> {
-	if (await hasFonts(workbench, files)) return false; // already there, nothing to copy
-	await removeFonts(workbench);
 	const folder = path.join(workbench.dir, FONT_FOLDER);
-	await mkdir(folder);
-	for (const file of files) {
-		await copyFile(file, path.join(folder, path.basename(file)), constants.COPYFILE_EXCL);
+	if (await hasFonts(folder, files)) return false; // already there, nothing to copy
+	await removeLeftovers(workbench);
+
+	const staged = `${folder}.${randomUUID()}.tmp`;
+	const old = `${folder}.${randomUUID()}.old`;
+	try {
+		await mkdir(staged);
+		for (const file of files) {
+			await copyFile(file, path.join(staged, path.basename(file)), constants.COPYFILE_EXCL);
+		}
+		if (!(await hasFonts(staged, files))) {
+			throw new Error("the copied font files don't match the originals");
+		}
+		const hadFonts = await rename(folder, old).then(
+			() => true,
+			(error: unknown) => {
+				if (errorCode(error) === "ENOENT") return false;
+				throw error;
+			}
+		);
+		try {
+			await rename(staged, folder);
+		} catch (error) {
+			if (hadFonts) await rename(old, folder).catch(() => undefined);
+			throw error;
+		}
+	} finally {
+		await rm(staged, { recursive: true, force: true }).catch(() => undefined);
+		await rm(old, { recursive: true, force: true }).catch(() => undefined);
 	}
 	return true;
 }
 
-/** Whether the font folder holds exactly these files, with the same content. */
-async function hasFonts(workbench: Workbench, files: readonly string[]): Promise<boolean> {
-	const folder = path.join(workbench.dir, FONT_FOLDER);
+/** Whether `folder` holds exactly these files, with the same content. */
+async function hasFonts(folder: string, files: readonly string[]): Promise<boolean> {
 	try {
 		const present = (await readdir(folder)).sort();
 		const wanted = files.map(file => path.basename(file)).sort();
@@ -191,9 +231,25 @@ async function hasFonts(workbench: Workbench, files: readonly string[]): Promise
 	}
 }
 
+// Folders writeFonts uses while it swaps the fonts; one is left behind only by a crash.
+const FONT_LEFTOVER_RE = new RegExp(
+	`^${FONT_FOLDER}\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.(?:tmp|old)$`
+);
+
 /** Removes the font folder next to the workbench HTML file, if there is one. */
 export async function removeFonts(workbench: Workbench): Promise<void> {
 	await rm(path.join(workbench.dir, FONT_FOLDER), { recursive: true, force: true });
+	await removeLeftovers(workbench);
+}
+
+/** Removes the folders an interrupted writeFonts left behind. */
+async function removeLeftovers(workbench: Workbench): Promise<void> {
+	const names = await readdir(workbench.dir).catch(() => []);
+	await Promise.all(
+		names
+			.filter(name => FONT_LEFTOVER_RE.test(name))
+			.map(name => rm(path.join(workbench.dir, name), { recursive: true, force: true }))
+	);
 }
 
 /**
