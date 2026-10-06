@@ -3,33 +3,34 @@
 [![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/21010.stylesmith.svg?label=VS%20Marketplace&color=blue)](https://marketplace.visualstudio.com/items?itemName=21010.stylesmith)
 [![GitHub](https://img.shields.io/github/v/release/21010/stylesmith.svg?label=GitHub&color=brightgreen)](https://github.com/21010/stylesmith)
 
-Stylesmith is a safe, high-performance styling engine for Visual Studio Code. It allows you to inject custom CSS and JavaScript directly into the editor UI without compromising VS Code's internal security boundaries.
+Stylesmith customizes Visual Studio Code with themes, fonts, effects, and optional CSS and JavaScript. To apply workbench styles, it modifies the installed VS Code workbench files and may update `product.json`. This is outside VS Code's supported extension APIs; updates can replace or change those files. Review the security and recovery limits below before adding custom code.
 
 ## Architecture Overview
 
-Stylesmith operates by applying pure, functional transformations to VS Code's core `workbench.html`.
+Stylesmith reads VS Code's installed `workbench.html`, adds marked content, and writes the changed file back. The extension also writes bundled font files beside the workbench and may update the matching checksum in `product.json`.
 
-1. **Atomic Patching:** Stylesmith locates the main HTML file and reads it into memory. It injects your requested styles and scripts using precise comment markers (`<!-- !! STYLESMITH-START !! -->`).
-2. **File System Safety:** To prevent TOCTOU (Time-of-Check to Time-of-Use) symlink attacks and race conditions, all file writes are atomic. Stylesmith generates a UUID-suffixed temporary file, copies permissions, writes the patched HTML using `COPYFILE_EXCL`, and atomically renames it. If VS Code's folder can't be written to, Stylesmith stops and leaves the file as it was rather than writing it in place. New font files are copied to a separate folder and swapped in only once they are all there.
-3. **Restoration:** Before writing, the engine mathematically proves that removing the patch string byte-for-byte restores the exact pristine file. This guarantees that running **Stylesmith: Disable** will safely return VS Code to its factory state.
+1. **Marked patch:** Stylesmith inserts its additions between markers so it can identify them later. Before writing, it checks that removing its patch from the source string yields the expected unpatched string.
+2. **File replacement:** Workbench and metadata writes use a uniquely named temporary file and rename. This avoids writing a partial file in place if a write fails, but it does not guarantee recovery from every crash, filesystem failure, or external change. Font files are prepared in a separate folder before that folder is swapped into place.
+3. **Disable and uninstall:** **Stylesmith: Disable** attempts to remove marked additions, remove its font files, restore settings Stylesmith manages, and update VS Code's checksum when applicable. The uninstall hook attempts workbench and font cleanup but does not restore managed user settings; run Disable before uninstalling if you want those settings restored. If cleanup or a checksum update fails, VS Code may need repair or reinstallation. Updates may replace the workbench and require Stylesmith to be enabled again.
 
 ## Security Model & CSP Compliance
 
-Other customization tools often require disabling VS Code's security policies. Stylesmith explicitly keeps the `Content-Security-Policy` (CSP) active and extends it dynamically.
+Stylesmith keeps the installed workbench's `Content-Security-Policy` (CSP) and extends selected directives for its additions. This is a browser policy, not a sandbox for code that runs in the workbench.
 
-- **Strict Script Hashing:** For every script you inject, Stylesmith calculates its exact SHA-256 hash at the moment of patching. It appends only these hashes to the `script-src` CSP directive. This ensures your scripts can run, but completely prevents unauthorized dynamic evaluation or injection by malicious extensions.
-- **The "Installation appears corrupt" Warning:** Because Stylesmith modifies `workbench.html`, VS Code will flag the installation as unsupported. Stylesmith silences this warning by updating `product.json`, and puts VS Code's original checksum back on Disable, on uninstall, and when you turn `stylesmith.silenceCorruptWarning` off.
-- **Commit Verification Lock:** Stylesmith does not blindly calculate checksums on the disk file (which would launder malware hashes). It hashes its own known-good, in-memory string. Furthermore, it records the current Git commit of your VS Code build. When Stylesmith's changes disappear, it offers to re-apply them. If VS Code wasn't updated and the workbench file doesn't match VS Code's own checksum, it warns that the file was changed by something else before you choose.
+- **CSP changes:** Stylesmith adds a SHA-256 source for each inline script it inserts. A hash identifies the script bytes; it does not limit what that script can do or establish that the code is trustworthy. Your own JavaScript runs in VS Code's workbench context with the privileges available there. Only add scripts you trust. Stylesmith also adds `https:` to `style-src` and `font-src` when `stylesmith.allowRemoteImports` is enabled, and adds `data:` to `font-src` for bundled fonts. Existing policy sources are retained.
+- **Remote imports:** They are off by default. When enabled, HTTPS imports and HTTPS resources referenced by unpinned CSS can change at the server. A hash pin checks the imported file's bytes, but does not make JavaScript safe; pinned CSS is refused if it loads further network resources.
+- **VS Code integrity warning:** When `stylesmith.silenceCorruptWarning` is enabled and VS Code tracks the workbench checksum, Stylesmith writes the checksum for the content it generated to `product.json`. That can suppress VS Code's warning for that content. On Disable or uninstall, Stylesmith attempts to write the checksum of the restored workbench. Turning the setting off lets VS Code report that the workbench differs from its recorded checksum. This checksum is not an authenticity guarantee, and suppressing the warning can make other changes harder to notice.
+- **Reapply prompt:** If Stylesmith was enabled but its markers are gone, it may offer to apply the patch again. When the VS Code build identifier is unchanged, it compares the file with the checksum in `product.json` to choose a message. This can reveal a mismatch; it cannot identify who changed the file or detect every modification.
 
 ## Deep Technical Configuration
 
-You can configure Stylesmith via your user `settings.json`. Workspace settings (`.vscode/settings.json`) are strictly ignored for security.
+You can configure Stylesmith via your user `settings.json`; it does not read project settings for its imports. In untrusted workspaces, `${workspaceFolder}` and `${cwd}` import substitutions are refused. This is a limit on Stylesmith imports, not a sandbox for other extensions or code.
 
-| Setting                            | Type       | Description                                                                                                                                            |
-| ---------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `stylesmith.imports`               | `string[]` | Array of absolute paths to your custom `.css` and `.js` files. While it isn't set, `vscode_custom_css.imports` is used; set it to `[]` for no imports. |
-| `stylesmith.allowRemoteImports`    | `boolean`  | Allows `https://` URLs. Modifies CSP `style-src` and `font-src` to permit external servers. (Default: `false`)                                         |
-| `stylesmith.silenceCorruptWarning` | `boolean`  | Updates `product.json` to silence the "[Unsupported]" warning; turning it off brings the warning back. (Default: `true`)                               |
+| Setting                            | Type       | Description                                                                                                                                                                                                                        |
+| ---------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stylesmith.imports`               | `string[]` | URLs of your custom `.css` and `.js` files. While it isn't set, `vscode_custom_css.imports` is used; set it to `[]` for no imports.                                                                                                |
+| `stylesmith.allowRemoteImports`    | `boolean`  | Allows `https://` URLs. Modifies CSP `style-src` and `font-src` to permit external servers. (Default: `false`)                                                                                                                     |
+| `stylesmith.silenceCorruptWarning` | `boolean`  | When VS Code tracks the workbench, writes the checksum for Stylesmith's patched content to `product.json`, which may suppress the integrity warning for that content. The checksum is not proof of authenticity. (Default: `true`) |
 
 ### Environment Variables
 
@@ -37,20 +38,14 @@ Stylesmith resolves standard variables in your import paths:
 
 - `${env:NAME}`: Your system environment variables.
 - `${userHome}`: Your home directory.
-- `${workspaceFolder}`: The current workspace root (Disabled in Untrusted Workspaces).
+- `${workspaceFolder}`: The current workspace root (refused in untrusted workspaces).
+- `${cwd}`: The VS Code process working directory (refused in untrusted workspaces).
 
 ### Trusted Types and DOM API
 
-VS Code uses the Trusted Types API. Stylesmith leaves this enabled. If you write custom JavaScript that modifies the DOM, you cannot use raw string assignments like `innerHTML`.
+VS Code may require Trusted Types for DOM injection. Stylesmith preserves the workbench policy and, when its existing policy has a `trusted-types` directive and you add a JS import, adds the `stylesmith` policy name. A Trusted Types policy does not sanitize input for you. Your JavaScript still runs with workbench privileges; use a reviewed sanitizer for untrusted HTML and only add code you trust.
 
-If `stylesmith.imports` contains a `.js` file, Stylesmith automatically adds the `stylesmith` policy name to the `trusted-types` CSP directive. You must create and use this policy:
-
-```js
-const policy = trustedTypes.createPolicy("stylesmith", {
-	createHTML: html => html // Implement your own sanitization here
-});
-document.body.innerHTML = policy.createHTML("<div>Safe HTML</div>");
-```
+If `stylesmith.imports` contains a `.js` file, Stylesmith adds the `stylesmith` policy name to an existing `trusted-types` directive. Creating that policy only satisfies the browser policy; it does not make HTML safe or reduce the script's privileges.
 
 ## Built-in Effects
 
@@ -65,7 +60,7 @@ All visual effects actively query `window.matchMedia('(prefers-reduced-motion: r
 ## Commands
 
 - **Stylesmith: Enable** - Patches `workbench.html` and restarts the window.
-- **Stylesmith: Disable** - Removes all patches and restores the pristine state.
+- **Stylesmith: Disable** - Attempts to remove Stylesmith's patch and restore managed settings. If files have changed or cannot be written, cleanup may need manual repair.
 
 ## License
 

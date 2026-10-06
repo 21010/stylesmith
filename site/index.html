@@ -11,7 +11,7 @@
 		<title>Stylesmith: Deep UI Customization for VS Code</title>
 		<meta
 			name="description"
-			content="The styling engine for VS Code. Inject custom CSS and JS without hacking core files. Survive updates and keep security intact."
+			content="Themes, fonts, effects, and optional custom CSS or JavaScript for VS Code. Stylesmith modifies installed workbench files; review its security and recovery limits."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -326,13 +326,13 @@
 								files via your <code>settings.json</code>.
 							</li>
 							<li>
-								<strong>Update Resilient:</strong> Stylesmith remembers your paths
-								and reapplies them across editor upgrades.
+								<strong>After updates:</strong> If a VS Code update removes
+								Stylesmith's changes, it can offer to apply them again.
 							</li>
 							<li>
-								<strong>Strict CSP Hashing:</strong> Stylesmith dynamically
-								calculates and pins SHA-256 hashes for all injected scripts, keeping
-								unauthorized code locked out.
+								<strong>CSP hashes:</strong> Stylesmith adds SHA-256 hashes for the
+								inline scripts it inserts. Hashes identify script bytes; they do not
+								sandbox custom JavaScript or make it trustworthy.
 							</li>
 						</ul>
 					</div>
@@ -479,11 +479,13 @@
 									<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
 								</svg>
 							</div>
-							<h3>Preserves Native Security</h3>
+							<h3>Extends VS Code's CSP</h3>
 						</div>
 						<p>
-							VS Code's built-in security rules stay intact. Stylesmith ensures only
-							your approved themes run, keeping unauthorized scripts locked out.
+							Stylesmith keeps and extends the workbench's existing Content Security
+							Policy (CSP). A CSP hash identifies the script it permits; custom
+							JavaScript still runs with workbench privileges. Only add code you
+							trust.
 						</p>
 					</article>
 					<article class="security-card">
@@ -503,12 +505,13 @@
 									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
 								</svg>
 							</div>
-							<h3>Maintains Malware Defenses</h3>
+							<h3>Explains integrity warnings</h3>
 						</div>
 						<p>
-							Stylesmith modifies the UI without blinding your editor. If a
-							third-party program tries to hijack your installation, the native
-							corruption warning will still protect you.
+							Stylesmith may update <code>product.json</code> to record the checksum
+							for its patched workbench. This can suppress VS Code's warning for that
+							content; the checksum is not proof of authenticity and may hide other
+							changes while suppression is on.
 						</p>
 					</article>
 					<article class="security-card">
@@ -532,12 +535,13 @@
 									></path>
 								</svg>
 							</div>
-							<h3>Failsafe Updates</h3>
+							<h3>File replacement and cleanup</h3>
 						</div>
 						<p>
-							Theme changes and editor updates are failsafe. If anything interrupts
-							the process, Stylesmith restores your core files to their original
-							state.
+							Stylesmith uses temporary files and rename to reduce partial-write risk.
+							Disable and uninstall attempt to remove its changes, but cleanup can
+							fail and VS Code updates can replace the workbench. Repair or reinstall
+							may be needed if VS Code will not start.
 						</p>
 					</article>
 					<article class="security-card">
@@ -562,9 +566,9 @@
 							<h3>Workspace Immunity</h3>
 						</div>
 						<p>
-							Stylesmith explicitly ignores workspace-level configurations. This
-							prevents downloaded, untrusted repositories from hijacking your editor
-							with malicious scripts.
+							Stylesmith reads imports from user settings, not project settings, and
+							refuses workspace path substitutions in untrusted workspaces. Other
+							extensions and code remain subject to VS Code's own trust controls.
 						</p>
 					</article>
 				</div>
@@ -673,8 +677,8 @@
 						<span>Stylesmith</span>
 					</a>
 					<p>
-						The styling engine for VS Code: presets, effects and your own CSS and JS,
-						without giving up its security.
+						Themes, fonts, icons, and effects for VS Code, with optional custom CSS and
+						JavaScript. Stylesmith modifies installed workbench files.
 					</p>
 					<a
 						class="button"
