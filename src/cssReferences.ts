@@ -17,9 +17,13 @@ export function networkReferences(css: string): string[] {
 function isNetwork(reference: string): boolean {
 	// What the URL parser does first: drop tabs and newlines, trim spaces and control
 	// characters, and read backslashes as slashes.
-	const url = reference
-		.replace(/[\t\n\r]/g, "")
-		.replace(/^[\u0000- ]+|[\u0000- ]+$/g, "")
+	const withoutWhitespaceControls = reference.replace(/[\t\n\r]/g, "");
+	let start = 0;
+	let end = withoutWhitespaceControls.length;
+	while (start < end && withoutWhitespaceControls.charCodeAt(start) <= 0x20) start++;
+	while (end > start && withoutWhitespaceControls.charCodeAt(end - 1) <= 0x20) end--;
+	const url = withoutWhitespaceControls
+		.slice(start, end)
 		.replace(/\\/g, "/")
 		.toLowerCase();
 	if (url.startsWith("//")) return true;

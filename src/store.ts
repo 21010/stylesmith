@@ -66,7 +66,7 @@ export class StateFile {
 
 	/** Atomically claims the cross-window reapply prompt, if its cooldown has elapsed. */
 	claimReapplyPrompt(now: number, cooldownMs: number): Promise<boolean> {
-		return this.transact(async state => {
+		return this.transact(state => {
 			if (now - (state.reapplyAskedAt ?? 0) < cooldownMs)
 				return { change: {}, result: false };
 			return { change: { reapplyAskedAt: now }, result: true };
@@ -80,7 +80,11 @@ export class StateFile {
 
 	/** Reads, derives and writes state as one cross-window transaction. */
 	transact<T>(
-		derive: (state: StoredState) => Promise<{ change: Partial<StoredState>; result: T }>
+		derive: (
+			state: StoredState
+		) =>
+			| { change: Partial<StoredState>; result: T }
+			| Promise<{ change: Partial<StoredState>; result: T }>
 	): Promise<T> {
 		return this.serialize(() =>
 			this.withLock(async () => {
