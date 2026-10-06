@@ -348,7 +348,8 @@ describe("remote imports (https)", () => {
 	});
 
 	it("refuses a local pinned stylesheet that loads from the network, even with remote imports off", async () => {
-		const file = path.join(os.tmpdir(), `stylesmith-pinned-${process.pid}.css`);
+		const dir = await mkdtemp(path.join(os.tmpdir(), "stylesmith-pinned-"));
+		const file = path.join(dir, "theme.css");
 		const css = '@import url("https://cdn.example/mutable.css");';
 		await writeFile(file, css);
 		try {
@@ -360,7 +361,7 @@ describe("remote imports (https)", () => {
 				/it loads https:\/\/cdn\.example\/mutable\.css\): the pin covers only this file's own content/
 			);
 		} finally {
-			await rm(file, { force: true });
+			await rm(dir, { recursive: true, force: true });
 		}
 	});
 
