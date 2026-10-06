@@ -18,18 +18,18 @@ Stylesmith operates by applying pure, functional transformations to VS Code's co
 Other customization tools often require disabling VS Code's security policies. Stylesmith explicitly keeps the `Content-Security-Policy` (CSP) active and extends it dynamically.
 
 - **Strict Script Hashing:** For every script you inject, Stylesmith calculates its exact SHA-256 hash at the moment of patching. It appends only these hashes to the `script-src` CSP directive. This ensures your scripts can run, but completely prevents unauthorized dynamic evaluation or injection by malicious extensions.
-- **The "Installation appears corrupt" Warning:** Because Stylesmith modifies `workbench.html`, VS Code will flag the installation as unsupported. Stylesmith safely silences this warning by updating `product.json`.
-- **Commit Verification Lock:** Stylesmith does not blindly calculate checksums on the disk file (which would launder malware hashes). It hashes its own known-good, in-memory string. Furthermore, it records the current Git commit of your VS Code build. It will only automatically re-patch files if a genuine VS Code update has occurred, preserving the utility of the corruption warning as an active defense mechanism.
+- **The "Installation appears corrupt" Warning:** Because Stylesmith modifies `workbench.html`, VS Code will flag the installation as unsupported. Stylesmith silences this warning by updating `product.json`, and puts VS Code's original checksum back on Disable, on uninstall, and when you turn `stylesmith.silenceCorruptWarning` off.
+- **Commit Verification Lock:** Stylesmith does not blindly calculate checksums on the disk file (which would launder malware hashes). It hashes its own known-good, in-memory string. Furthermore, it records the current Git commit of your VS Code build. When Stylesmith's changes disappear, it offers to re-apply them. If VS Code wasn't updated and the workbench file doesn't match VS Code's own checksum, it warns that the file was changed by something else before you choose.
 
 ## Deep Technical Configuration
 
 You can configure Stylesmith via your user `settings.json`. Workspace settings (`.vscode/settings.json`) are strictly ignored for security.
 
-| Setting                            | Type       | Description                                                                                                    |
-| ---------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
-| `stylesmith.imports`               | `string[]` | Array of absolute paths to your custom `.css` and `.js` files.                                                 |
-| `stylesmith.allowRemoteImports`    | `boolean`  | Allows `https://` URLs. Modifies CSP `style-src` and `font-src` to permit external servers. (Default: `false`) |
-| `stylesmith.silenceCorruptWarning` | `boolean`  | Updates `product.json` to silence the "[Unsupported]" warning. (Default: `true`)                               |
+| Setting                            | Type       | Description                                                                                                              |
+| ---------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `stylesmith.imports`               | `string[]` | Array of absolute paths to your custom `.css` and `.js` files.                                                           |
+| `stylesmith.allowRemoteImports`    | `boolean`  | Allows `https://` URLs. Modifies CSP `style-src` and `font-src` to permit external servers. (Default: `false`)           |
+| `stylesmith.silenceCorruptWarning` | `boolean`  | Updates `product.json` to silence the "[Unsupported]" warning; turning it off brings the warning back. (Default: `true`) |
 
 ### Environment Variables
 

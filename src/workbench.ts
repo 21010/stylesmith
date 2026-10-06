@@ -151,6 +151,20 @@ export function isWorkbenchLocation(value: unknown): value is Workbench {
 }
 
 /**
+ * VS Code's application folder (the one with product.json) for a workbench file, which is in
+ * its out/ folder; undefined if the workbench isn't laid out that way.
+ */
+export function appRootOf(workbench: Workbench): string | undefined {
+	for (const segments of WORKBENCH_DIRS) {
+		const tail = path.join(...segments);
+		if (!workbench.dir.endsWith(path.sep + tail)) continue;
+		const outDir = workbench.dir.slice(0, -(tail.length + 1));
+		if (path.basename(outDir) === "out") return path.dirname(outDir);
+	}
+	return undefined;
+}
+
+/**
  * Puts the given font files in the font folder next to the workbench HTML file, replacing any
  * that were there. The workbench loads them from there, which VS Code's security policy allows.
  *

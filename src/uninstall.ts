@@ -9,7 +9,8 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
-import { cleanUp, isWorkbenchLocation, type Workbench } from "./workbench";
+import { setChecksum } from "./checksum";
+import { appRootOf, cleanUp, isWorkbenchLocation, type Workbench } from "./workbench";
 
 /** Lives in the extension's own folder, one level above the compiled code. */
 export const LOCATION_FILE = path.join(__dirname, "..", ".workbench-location.json");
@@ -25,7 +26,11 @@ export async function rememberWorkbench(
 	);
 }
 
-/** Undoes Stylesmith's changes at the remembered location. Does nothing if there's none. */
+/**
+ * Undoes Stylesmith's changes at the remembered location, and puts VS Code's checksum for the
+ * restored file back so VS Code doesn't report its installation as corrupt. Does nothing if
+ * there's no remembered location.
+ */
 export async function uninstall(locationFile = LOCATION_FILE): Promise<boolean> {
 	let location: unknown;
 	try {
@@ -34,7 +39,12 @@ export async function uninstall(locationFile = LOCATION_FILE): Promise<boolean> 
 		return false; // Stylesmith never ran, or the file is gone.
 	}
 	if (!isWorkbenchLocation(location)) return false;
-	return cleanUp(location);
+	const cleaned = await cleanUp(location);
+	const appRoot = appRootOf(location);
+	if (cleaned && appRoot) {
+		await setChecksum(location, appRoot, await readFile(location.htmlPath, "utf-8"));
+	}
+	return cleaned;
 }
 
 if (require.main === module) {

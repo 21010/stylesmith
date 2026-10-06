@@ -33,7 +33,7 @@ import {
 	writeFonts,
 	type Workbench
 } from "./workbench";
-import { fixChecksum, getVsCodeCommit } from "./checksum";
+import { getVsCodeCommit, matchesChecksum, setChecksum } from "./checksum";
 
 /** How Stylesmith talks to the user. In VS Code these are notifications (see ui.ts). */
 export interface Ui {
@@ -116,6 +116,12 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 		allowRemote,
 		userScripts: importSnippets.some(snippet => snippet.kind === "js")
 	});
+	const silence = config.get("silenceCorruptWarning", true);
+	// Whether an earlier Enable silenced VS Code's warning for the file now in place.
+	const silenced =
+		!silence &&
+		current !== pristine &&
+		(await matchesChecksum(workbench, services.appRoot, current)) === true;
 	await writingTo(workbench, async () => {
 		// The font files go next to the HTML file first, so they're there when it refers to them.
 		if (font) {
@@ -126,14 +132,12 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 		} else {
 			await removeFonts(workbench);
 		}
-		if (patched !== current) {
-			await writeFileAtomic(workbench.htmlPath, patched);
-			if (config.get("silenceCorruptWarning", true)) {
-				await fixChecksum(workbench, services.appRoot, patched);
-			}
-		}
+		if (patched !== current) await writeFileAtomic(workbench.htmlPath, patched);
 		await removeLegacyBackups(workbench);
 	});
+	// Also when the file didn't change: the setting may have.
+	if (silence) await updateChecksum(services, workbench, patched);
+	else if (silenced) await updateChecksum(services, workbench, pristine); // show the warning again
 	await managed.update(FONT_GROUP, fontSettings(font));
 	await managed.update(EFFECT_GROUP, effectSettings(effects));
 	await store.update({ enabled: true, vsCodeCommit: await getVsCodeCommit(services.appRoot) });
@@ -147,15 +151,11 @@ export async function disable(services: Services): Promise<void> {
 	const workbench = findWorkbench(services);
 	if (!workbench) return;
 
-	const wasPatched = await writingTo(workbench, async () => {
-		const cleaned = await cleanUp(workbench);
-		if (services.config.get("silenceCorruptWarning", true)) {
-			// Read the newly restored pristine file and fix the checksum
-			const pristine = await readFile(workbench.htmlPath, "utf-8");
-			await fixChecksum(workbench, services.appRoot, pristine);
-		}
-		return cleaned;
-	});
+	const wasPatched = await writingTo(workbench, () => cleanUp(workbench));
+	// Whatever silenceCorruptWarning says now: it may have been on when VS Code was patched.
+	if (wasPatched) {
+		await updateChecksum(services, workbench, await readFile(workbench.htmlPath, "utf-8"));
+	}
 	await services.managed.update(FONT_GROUP, new Map());
 	await services.managed.update(EFFECT_GROUP, new Map());
 	await services.store.update({ enabled: false });
@@ -164,8 +164,9 @@ export async function disable(services: Services): Promise<void> {
 }
 
 /**
- * After startup: if a VS Code update removed Stylesmith's changes, offer to re-apply them.
- * It only asks, and only reads the start of one file. Returns whether VS Code is patched.
+ * After startup: if Stylesmith's changes are gone (usually after a VS Code update), offer to
+ * re-apply them. It only asks, and normally reads only the start of one file. Returns whether
+ * VS Code is patched.
  */
 export async function checkAfterStartup(services: Services): Promise<boolean> {
 	const { config, store, ui } = services;
@@ -176,21 +177,22 @@ export async function checkAfterStartup(services: Services): Promise<boolean> {
 	const state = await store.read();
 	if (patched || !state.enabled) return patched;
 
-	// Ensure this was a genuine update and not external tampering
+	if (!config.get("remindAfterUpdate", true)) return patched;
+	// Without an update, something else replaced the file. If VS Code's own checksum vouches
+	// for it, it was restored (a reinstall, a repair); otherwise say it was changed.
+	let question: string = messages.reapply;
 	const currentCommit = await getVsCodeCommit(services.appRoot);
 	if (state.vsCodeCommit && currentCommit && state.vsCodeCommit === currentCommit) {
-		ui.error(
-			"VS Code files were modified externally. Stylesmith aborted re-patching to protect your installation."
-		);
-		return patched;
+		const html = await readFile(workbench.htmlPath, "utf-8");
+		question = (await matchesChecksum(workbench, services.appRoot, html))
+			? messages.restoredElsewhere
+			: messages.changedOutside;
 	}
-
-	if (!config.get("remindAfterUpdate", true)) return patched;
 	if (Date.now() - (state.reapplyAskedAt ?? 0) < 60_000) return patched; // another window asked
 	await store.update({ reapplyAskedAt: Date.now() });
 	// Not awaited: the answer can come much later, and startup shouldn't wait for it.
 	void ui
-		.ask(messages.reapply, messages.reapplyNow, messages.dontAskAgain)
+		.ask(question, messages.reapplyNow, messages.dontAskAgain)
 		.then(async choice => {
 			// The question already says the window reloads, so it does without asking again.
 			if (choice === messages.reapplyNow)
@@ -234,6 +236,25 @@ function reportTo(ui: Ui): (error: unknown) => void {
 			messages.somethingWrong + (error instanceof Error ? error.message : String(error))
 		);
 	};
+}
+
+/**
+ * Makes VS Code's checksum for the workbench match `content`. A failure doesn't undo Enable or
+ * Disable; the user is told VS Code may report its installation as corrupt.
+ */
+async function updateChecksum(
+	services: Services,
+	workbench: Workbench,
+	content: string
+): Promise<void> {
+	try {
+		await setChecksum(workbench, services.appRoot, content);
+	} catch (error) {
+		console.error("stylesmith: cannot update product.json", error);
+		services.ui.warn(
+			messages.checksumNotUpdated(error instanceof Error ? error.message : String(error))
+		);
+	}
 }
 
 /** Runs `task`, reporting a permission problem as one with VS Code's workbench folder. */

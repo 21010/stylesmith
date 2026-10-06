@@ -22,10 +22,16 @@ export const messages = {
 	statusInactive: "Stylesmith is off. Click for presets, effects and fonts.",
 	reapply:
 		"A VS Code update removed Stylesmith's changes. Re-apply them now? The window reloads afterwards.",
+	restoredElsewhere:
+		"Stylesmith's changes were removed from VS Code, though VS Code wasn't updated (a reinstall or repair can do this). Re-apply them now? The window reloads afterwards.",
+	changedOutside:
+		"Stylesmith's changes were removed from VS Code, though VS Code wasn't updated, and its workbench file doesn't match VS Code's own checksum. If you didn't change it yourself, reinstall VS Code before re-applying. Re-apply now? The window reloads afterwards.",
 	reapplyNow: "Re-apply",
 	dontAskAgain: "Don't Ask Again",
 	settingsChanged: "Stylesmith: your settings changed. Reload to apply them?",
 	reloadNow: "Reload",
+	checksumNotUpdated: (reason: string) =>
+		`Stylesmith couldn't update VS Code's checksum in product.json (${reason}), so VS Code may report that its installation is corrupt.`,
 	cannotLoad: (url: string, reason: string) =>
 		`Stylesmith cannot load '${url}' (${reason}). Skipping.`
 } as const;

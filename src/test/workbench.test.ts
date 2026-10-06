@@ -6,6 +6,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it, mock } from "node:test";
 import {
+	appRootOf,
 	cleanUp,
 	isPatched,
 	isPermissionError,
@@ -191,6 +192,28 @@ describe("replacing the font folder", () => {
 		await writeFile(path.join(dir, "stylesmith-fonts.notes"), "not ours");
 		await removeFonts(workbench);
 		assert.deepEqual(await readdir(dir), ["stylesmith-fonts.notes"]);
+	});
+});
+
+describe("appRootOf", () => {
+	it("finds the folder with product.json above out/", () => {
+		const appRoot = path.join(root, "resources", "app");
+		for (const segments of [
+			["vs", "code", "electron-browser", "workbench"],
+			["vs", "code", "electron-sandbox"]
+		]) {
+			const dir = path.join(appRoot, "out", ...segments);
+			assert.equal(appRootOf({ dir, htmlPath: path.join(dir, "workbench.html") }), appRoot);
+		}
+	});
+
+	it("is undefined for a workbench outside an out/ folder", () => {
+		const dir = path.join(root, "build", "vs", "code", "electron-browser", "workbench");
+		assert.equal(appRootOf({ dir, htmlPath: path.join(dir, "workbench.html") }), undefined);
+		assert.equal(
+			appRootOf({ dir: root, htmlPath: path.join(root, "workbench.html") }),
+			undefined
+		);
 	});
 });
 
