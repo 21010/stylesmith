@@ -138,41 +138,58 @@ if (sideNav.length) {
 	for (const section of document.querySelectorAll(".ergo-section")) observer.observe(section);
 }
 
-// The theme carousel: thumbnails carry the title and description, the arrow keys step
-// through them, and it advances by itself every 3 seconds unless motion is paused.
+// The theme carousel: thumbnails are buttons that carry the title and description. The arrow
+// keys step through them while one has focus. It advances by itself every 3 seconds, unless
+// motion is paused or the keyboard is in the carousel; only a choice the visitor made is
+// announced to screen readers.
 const thumbs = [...document.querySelectorAll(".carousel-thumbnails .thumb")];
 if (thumbs.length) {
 	const image = document.getElementById("mainImage");
 	const title = document.getElementById("mainTitle");
 	const description = document.getElementById("mainDesc");
+	const info = document.getElementById("mainInfo");
+	const group = document.querySelector(".carousel-thumbnails");
 	let current = 0;
 	let timer;
+	let focused = false;
 
-	const show = index => {
+	const show = (index, chosen) => {
 		current = (index + thumbs.length) % thumbs.length;
 		const thumb = thumbs[current];
 		const picture = thumb.querySelector("img");
+		info.setAttribute("aria-live", chosen ? "polite" : "off");
 		image.style.opacity = "0";
 		setTimeout(() => {
 			image.src = picture.getAttribute("src");
-			image.alt = picture.alt;
+			image.alt = thumb.dataset.title + " theme";
 			title.textContent = thumb.dataset.title;
 			description.textContent = thumb.dataset.desc;
 			image.style.opacity = "1";
 		}, 150);
-		thumbs.forEach((other, i) => other.classList.toggle("active", i === current));
+		thumbs.forEach((other, i) => other.setAttribute("aria-pressed", String(i === current)));
 		restart();
 	};
 	const restart = () => {
 		clearInterval(timer);
-		if (!motionPaused) timer = setInterval(() => show(current + 1), 3000);
+		if (!motionPaused && !focused) timer = setInterval(() => show(current + 1, false), 3000);
 	};
 	motionListeners.push(restart);
 
-	thumbs.forEach((thumb, i) => thumb.addEventListener("click", () => show(i)));
-	document.addEventListener("keydown", event => {
-		if (event.key === "ArrowRight") show(current + 1);
-		else if (event.key === "ArrowLeft") show(current - 1);
+	thumbs.forEach((thumb, i) => thumb.addEventListener("click", () => show(i, true)));
+	group.addEventListener("keydown", event => {
+		const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+		if (!step) return;
+		event.preventDefault(); // don't scroll the page
+		show(current + step, true);
+		thumbs[current].focus();
+	});
+	group.addEventListener("focusin", () => {
+		focused = true;
+		restart();
+	});
+	group.addEventListener("focusout", event => {
+		focused = group.contains(event.relatedTarget);
+		restart();
 	});
 	restart();
 }

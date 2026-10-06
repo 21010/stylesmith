@@ -1546,6 +1546,9 @@ kbd {
 }
 .thumb {
 	background: var(--bg);
+	border: 0;
+	font: inherit;
+	color: inherit;
 	padding: 1rem 0.5rem;
 	display: flex;
 	flex-direction: column;
@@ -1556,7 +1559,7 @@ kbd {
 .thumb:hover {
 	background: var(--raised);
 }
-.thumb.active {
+.thumb[aria-pressed="true"] {
 	background: rgba(95, 224, 255, 0.1);
 	border-bottom: 3px solid var(--cyan);
 }
@@ -1574,7 +1577,7 @@ kbd {
 	color: var(--muted);
 	text-align: center;
 }
-.thumb.active span {
+.thumb[aria-pressed="true"] span {
 	color: var(--cyan);
 }
 
