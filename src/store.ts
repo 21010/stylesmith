@@ -5,16 +5,21 @@
  * It's kept in a small JSON file in the extension's storage folder rather than in VS Code's
  * globalState: in older VS Code versions (seen on 1.93), a few quick globalState updates in a
  * row can lose values, which would leave the user's settings changed after Disable. The file
- * is read fresh every time, so several VS Code windows also see each other's changes.
+ * is read fresh every time, and a file-system lock coordinates updates across VS Code windows.
  */
 
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 
-// Updates to the same file, across every StateFile in this process, run one after another:
-// two updates at once would both start from the old state, and one would undo the other.
-const pending = new Map<string, Promise<void>>();
+// Updates to the same file run one after another in this process. The on-disk lock below also
+// coordinates extension hosts in other VS Code windows.
+const pending = new Map<string, Promise<unknown>>();
+
+const LOCK_RETRY_MS = 25;
+const LOCK_TIMEOUT_MS = 30_000;
+const STALE_LOCK_MS = 5 * 60_000;
+const LOCK_INIT_GRACE_MS = 5_000;
 
 /** What Stylesmith remembers about a setting it changed. */
 export interface SavedValue {
@@ -59,20 +64,133 @@ export class StateFile {
 		}
 	}
 
+	/** Atomically claims the cross-window reapply prompt, if its cooldown has elapsed. */
+	claimReapplyPrompt(now: number, cooldownMs: number): Promise<boolean> {
+		return this.transact(state => {
+			if (now - (state.reapplyAskedAt ?? 0) < cooldownMs)
+				return { change: {}, result: false };
+			return { change: { reapplyAskedAt: now }, result: true };
+		});
+	}
+
 	/** Changes some values; `undefined` removes one. */
 	update(change: Partial<StoredState>): Promise<void> {
+		return this.serialize(() => this.withLock(() => this.write(change)));
+	}
+
+	/** Reads, derives and writes state as one cross-window transaction. */
+	transact<T>(
+		derive: (
+			state: StoredState
+		) =>
+			| { change: Partial<StoredState>; result: T }
+			| Promise<{ change: Partial<StoredState>; result: T }>
+	): Promise<T> {
+		return this.serialize(() =>
+			this.withLock(async () => {
+				const state = await this.read();
+				const { change, result } = await derive(state);
+				await this.write(change, state);
+				return result;
+			})
+		);
+	}
+
+	private serialize<T>(task: () => Promise<T>): Promise<T> {
 		const key = path.resolve(this.file);
-		const next = (pending.get(key) ?? Promise.resolve())
-			.catch(() => undefined) // a failed update doesn't block the next one
-			.then(() => this.write(change));
+		const previous = pending.get(key) ?? Promise.resolve();
+		const next = previous.catch(() => undefined).then(task);
 		pending.set(key, next);
 		return next.finally(() => {
 			if (pending.get(key) === next) pending.delete(key);
 		});
 	}
 
-	private async write(change: Partial<StoredState>): Promise<void> {
-		const state: Record<string, unknown> = { ...(await this.read()), ...change };
+	/** Holds an atomic directory lock across the read/modify/write cycle. */
+	private async withLock<T>(task: () => Promise<T>): Promise<T> {
+		const lock = `${this.file}.lock`;
+		const deadline = Date.now() + LOCK_TIMEOUT_MS;
+		const token = `${process.pid}:${randomUUID()}`;
+		await mkdir(path.dirname(this.file), { recursive: true });
+		for (;;) {
+			try {
+				await mkdir(lock);
+				await writeFile(
+					path.join(lock, "owner.json"),
+					JSON.stringify({ token, pid: process.pid })
+				);
+				break;
+			} catch (error) {
+				if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
+					await rm(lock, { recursive: true, force: true }).catch(() => undefined);
+					throw error;
+				}
+				if (await this.lockIsStale(lock)) {
+					// Moving the stale directory out of the way is atomic. Check its token after
+					// the move so a waiter never deletes a different lock generation.
+					const observed = await readFile(path.join(lock, "owner.json"), "utf-8").catch(
+						() => ""
+					);
+					if (!(await this.lockIsStale(lock))) continue;
+					const stale = `${lock}.${randomUUID()}.stale`;
+					try {
+						await rename(lock, stale);
+						const owner = await readFile(path.join(stale, "owner.json"), "utf-8").catch(
+							() => ""
+						);
+						if (owner !== observed || !(await this.lockIsStale(stale))) {
+							// A different process replaced the stale generation before the move.
+							await rename(stale, lock).catch(() => undefined);
+						} else {
+							await rm(stale, { recursive: true, force: true });
+						}
+					} catch (moveError) {
+						if ((moveError as NodeJS.ErrnoException).code !== "ENOENT") throw moveError;
+					}
+					continue;
+				}
+				if (Date.now() >= deadline)
+					throw new Error("Timed out waiting for Stylesmith state lock");
+				await new Promise(resolve => setTimeout(resolve, LOCK_RETRY_MS));
+			}
+		}
+		try {
+			return await task();
+		} finally {
+			const owner = await readFile(path.join(lock, "owner.json"), "utf-8").catch(() => "");
+			if (owner.includes(token)) await rm(lock, { recursive: true, force: true });
+		}
+	}
+
+	private async lockIsStale(lock: string): Promise<boolean> {
+		try {
+			const owner = JSON.parse(await readFile(path.join(lock, "owner.json"), "utf-8")) as {
+				pid?: unknown;
+			};
+			if (typeof owner.pid === "number" && Number.isInteger(owner.pid) && owner.pid > 0) {
+				try {
+					process.kill(owner.pid, 0);
+					return false;
+				} catch (error) {
+					if ((error as NodeJS.ErrnoException).code === "EPERM") return false;
+					if ((error as NodeJS.ErrnoException).code !== "ESRCH") return false;
+					return true;
+				}
+			}
+			return Date.now() - (await stat(lock)).mtimeMs > STALE_LOCK_MS;
+		} catch {
+			// A process can stop after creating the directory but before writing owner.json.
+			// Give that brief initialization window time to finish, then recover the orphan.
+			try {
+				return Date.now() - (await stat(lock)).mtimeMs > LOCK_INIT_GRACE_MS;
+			} catch {
+				return false;
+			}
+		}
+	}
+
+	private async write(change: Partial<StoredState>, base?: StoredState): Promise<void> {
+		const state: Record<string, unknown> = { ...(base ?? (await this.read())), ...change };
 		for (const key of Object.keys(state)) {
 			if (state[key] === undefined) delete state[key];
 		}

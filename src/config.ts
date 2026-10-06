@@ -9,12 +9,12 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import type { Effect } from "./effects";
 import { DEFAULT_FONT_ID, findFont, type NerdFont } from "./fonts";
-import type { Variables } from "./imports";
+import { chooseImports, type Variables } from "./imports";
 import type { SettingsAccess } from "./managed";
 import type { ProblemLensOptions, Severity } from "./problems";
 
 export const CONFIG_SECTION = "stylesmith";
-// Settings of the original Custom CSS and JS Loader, used until Stylesmith is configured.
+// Settings of the original Custom CSS and JS Loader, read until stylesmith.imports is set.
 const LEGACY_CONFIG_SECTION = "vscode_custom_css";
 
 /**
@@ -66,12 +66,11 @@ export const vscodeConfig: Config = {
 			.update(key, value, vscode.ConfigurationTarget.Global);
 	},
 
-	imports() {
-		const own = get<unknown[]>("imports", []);
-		if (Array.isArray(own) && own.length > 0) return own;
-		const legacy = userValue<unknown[]>(LEGACY_CONFIG_SECTION, "imports", []);
-		return Array.isArray(legacy) ? legacy : [];
-	},
+	imports: () =>
+		chooseImports(
+			vscode.workspace.getConfiguration(CONFIG_SECTION).inspect("imports")?.globalValue,
+			vscode.workspace.getConfiguration(LEGACY_CONFIG_SECTION).inspect("imports")?.globalValue
+		),
 
 	isOn: effect => get(effect.setting, effect.enabledByDefault),
 

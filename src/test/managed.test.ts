@@ -153,6 +153,24 @@ describe("ManagedSettings", () => {
 		assert.match(String(settings.get("editor.fontFamily")), /JetBrainsMono/, "font untouched");
 	});
 
+	it("keeps separately managed groups when updates overlap", async () => {
+		settings.set("editor.fontFamily", "Fira Code");
+		await Promise.all([
+			managed.update(FONT_GROUP, new Map([["editor.fontFamily", fontWanted(JB, false)]])),
+			managed.update(
+				EFFECT_GROUP,
+				new Map([["editor.guides.bracketPairs", toggleWanted("active", guidesOn)]])
+			)
+		]);
+
+		assert.equal(settings.get("editor.fontFamily"), `'${JB}', Fira Code`);
+		assert.equal(settings.get("editor.guides.bracketPairs"), "active");
+		await managed.update(FONT_GROUP, new Map());
+		await managed.update(EFFECT_GROUP, new Map());
+		assert.equal(settings.get("editor.fontFamily"), "Fira Code");
+		assert.equal(settings.has("editor.guides.bracketPairs"), false);
+	});
+
 	it("puts a setting back when it's no longer wanted", async () => {
 		const guides = new Map([["editor.guides.bracketPairs", toggleWanted("active", guidesOn)]]);
 		await managed.update(EFFECT_GROUP, guides);
