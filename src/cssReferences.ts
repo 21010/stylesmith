@@ -22,10 +22,7 @@ function isNetwork(reference: string): boolean {
 	let end = withoutWhitespaceControls.length;
 	while (start < end && withoutWhitespaceControls.charCodeAt(start) <= 0x20) start++;
 	while (end > start && withoutWhitespaceControls.charCodeAt(end - 1) <= 0x20) end--;
-	const url = withoutWhitespaceControls
-		.slice(start, end)
-		.replace(/\\/g, "/")
-		.toLowerCase();
+	const url = withoutWhitespaceControls.slice(start, end).replace(/\\/g, "/").toLowerCase();
 	if (url.startsWith("//")) return true;
 	const scheme = /^([a-z][a-z0-9+.-]*):/.exec(url)?.[1];
 	return scheme !== undefined && !LOCAL_SCHEMES.has(scheme);

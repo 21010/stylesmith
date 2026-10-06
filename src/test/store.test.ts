@@ -115,7 +115,9 @@ describe("state file", () => {
 	it("lets only one window claim the same reapply prompt cooldown", async () => {
 		const now = Date.now();
 		const stores = [new StateFile(file), new StateFile(file), new StateFile(file)];
-		const claimed = await Promise.all(stores.map(store => store.claimReapplyPrompt(now, 60_000)));
+		const claimed = await Promise.all(
+			stores.map(store => store.claimReapplyPrompt(now, 60_000))
+		);
 		assert.equal(claimed.filter(Boolean).length, 1);
 		assert.equal((await stores[0]!.read()).reapplyAskedAt, now);
 	});

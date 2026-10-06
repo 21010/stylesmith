@@ -69,17 +69,14 @@ describe("networkReferences", () => {
 			'@font-face { font-family: x; src: local("X"), url(x.woff2) format("woff2") }',
 			'.c::after { content: "see https://example.com" }',
 			"/* @import 'https://commented.example/out.css'; */",
-			'.d { background: url(/**/https://h.example/a.png) }' // a relative path, oddly named
+			".d { background: url(/**/https://h.example/a.png) }" // a relative path, oddly named
 		].join("\n");
 		assert.deepEqual(networkReferences(css), []);
 	});
 
 	it("finds every reference, in order", () => {
 		const css = "@import 'https://a.example/1.css'; .x { background: url(//b.example/2.png) }";
-		assert.deepEqual(networkReferences(css), [
-			"https://a.example/1.css",
-			"//b.example/2.png"
-		]);
+		assert.deepEqual(networkReferences(css), ["https://a.example/1.css", "//b.example/2.png"]);
 	});
 
 	it("doesn't stop at unfinished input", () => {
