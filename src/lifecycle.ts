@@ -188,8 +188,9 @@ export async function checkAfterStartup(services: Services): Promise<boolean> {
 			? messages.restoredElsewhere
 			: messages.changedOutside;
 	}
-	if (Date.now() - (state.reapplyAskedAt ?? 0) < 60_000) return patched; // another window asked
-	await store.update({ reapplyAskedAt: Date.now() });
+	// Claim under the shared state lock: checking and writing separately lets two VS Code
+	// windows both pass the cooldown check and show the same prompt.
+	if (!(await store.claimReapplyPrompt(Date.now(), 60_000))) return patched;
 	// Not awaited: the answer can come much later, and startup shouldn't wait for it.
 	void ui
 		.ask(question, messages.reapplyNow, messages.dontAskAgain)

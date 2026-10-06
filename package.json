@@ -98,7 +98,7 @@
 						"type": "string"
 					},
 					"default": [],
-					"markdownDescription": "URLs of `.css` and `.js` files to add to VS Code, e.g. `file:///C:/Users/me/custom.css`. File URLs support variables such as `${userHome}`. Only read from your user settings. When you change this, Stylesmith offers to reload so it takes effect.",
+					"markdownDescription": "URLs of `.css` and `.js` files to add to VS Code, e.g. `file:///C:/Users/me/custom.css`. File URLs support variables such as `${userHome}`. Only read from your user settings. While this setting isn't set, Stylesmith uses `vscode_custom_css.imports` from Custom CSS and JS Loader, if you have it; once it is set, even to an empty list `[]`, that one is ignored. When you change this, Stylesmith offers to reload so it takes effect.",
 					"scope": "application"
 				},
 				"stylesmith.allowRemoteImports": {

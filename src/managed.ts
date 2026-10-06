@@ -116,29 +116,32 @@ export class ManagedSettings {
 	 * setting the group managed before but doesn't need now. An empty map restores them all.
 	 */
 	async update(group: Group, wanted: ReadonlyMap<string, Wanted>): Promise<void> {
-		const state = validEntries((await this.store.read())[group.name]);
+		await this.store.transact(async stored => {
+			const state = validEntries(stored[group.name]);
 
-		for (const [key, want] of wanted) {
-			const { user, default: defaultValue, known } = this.settings.read(key);
-			// A setting from a newer VS Code version (like window.density.layout) is skipped.
-			if (!known) continue;
-			const plan = planApply(user, defaultValue, state[key], want, group);
-			if (plan) {
-				if (plan.applied !== user) await this.settings.write(key, plan.applied);
-				state[key] = plan;
-			} else if (state[key]) {
-				await this.restore(key, state[key], group);
+			for (const [key, want] of wanted) {
+				const { user, default: defaultValue, known } = this.settings.read(key);
+				// A setting from a newer VS Code version (like window.density.layout) is skipped.
+				if (!known) continue;
+				const plan = planApply(user, defaultValue, state[key], want, group);
+				if (plan) {
+					if (plan.applied !== user) await this.settings.write(key, plan.applied);
+					state[key] = plan;
+				} else if (state[key]) {
+					await this.restore(key, state[key], group);
+					delete state[key];
+				}
+			}
+			for (const [key, saved] of Object.entries(state)) {
+				if (wanted.has(key)) continue;
+				await this.restore(key, saved, group);
 				delete state[key];
 			}
-		}
-		for (const [key, saved] of Object.entries(state)) {
-			if (wanted.has(key)) continue;
-			await this.restore(key, saved, group);
-			delete state[key];
-		}
 
-		await this.store.update({
-			[group.name]: Object.keys(state).length > 0 ? state : undefined
+			return {
+				change: { [group.name]: Object.keys(state).length > 0 ? state : undefined },
+				result: undefined
+			};
 		});
 	}
 

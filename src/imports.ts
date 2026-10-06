@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import { open } from "node:fs/promises";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { networkReferences } from "./cssReferences";
 import type { ImportKind, Snippet } from "./patch";
 
 /** Values for the ${...} placeholders in file:// imports. */
@@ -93,8 +94,6 @@ export function importKind(url: URL): ImportKind {
 // file:///C:/styles/theme.css#sha256-<base64 hash>. A pinned file must match it exactly.
 const PIN_PREFIX = "#sha256-";
 const PIN_RE = /^#sha256-([A-Za-z0-9+/]{43}=)$/;
-// @import or url() that loads from the network: https://, http:// or protocol-relative //.
-const REMOTE_REFERENCE = /(?:@import|url\()\s*(?:url\()?\s*["']?\s*(?:https?:)?\/\//i;
 
 /**
  * Reads one import, from a local file or (if allowed) over https, within the size limit,
@@ -109,9 +108,11 @@ export async function fetchImport(url: URL, options: LoadOptions): Promise<strin
 		if (actual !== pin) {
 			throw new Error(`the content doesn't match its pin (it is sha256-${actual})`);
 		}
-		if (importKind(url) === "css" && REMOTE_REFERENCE.test(bytes.toString("utf-8"))) {
+		// Checked whether or not remote imports are allowed: the pin is a promise about content.
+		const remote = importKind(url) === "css" ? networkReferences(bytes.toString("utf-8")) : [];
+		if (remote.length > 0) {
 			throw new Error(
-				"a pinned stylesheet can't load files from the network (@import or url()), because the pin can't cover them"
+				`a pinned stylesheet can't load files from the network (it loads ${remote[0]}): the pin covers only this file's own content, not the files it loads`
 			);
 		}
 	}
@@ -213,6 +214,17 @@ async function readFileLimited(file: string, maxBytes: number): Promise<Buffer> 
 
 function tooLarge(maxBytes: number): Error {
 	return new Error(`file is larger than ${maxBytes / 1024 / 1024} MB`);
+}
+
+/**
+ * Which import list to load, from the user's values of stylesmith.imports (`own`) and of
+ * Custom CSS and JS Loader's vscode_custom_css.imports (`legacy`), undefined when not set.
+ * Once stylesmith.imports is set it's the only list, even when empty: that is how to choose no
+ * imports. The legacy list is read only while it isn't set, so moving over needs no change.
+ */
+export function chooseImports(own: unknown, legacy: unknown): readonly unknown[] {
+	if (own !== undefined) return Array.isArray(own) ? own : [];
+	return Array.isArray(legacy) ? legacy : [];
 }
 
 /**

@@ -27,7 +27,7 @@ You can configure Stylesmith via your user `settings.json`. Workspace settings (
 
 | Setting                            | Type       | Description                                                                                                              |
 | ---------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `stylesmith.imports`               | `string[]` | Array of absolute paths to your custom `.css` and `.js` files.                                                           |
+| `stylesmith.imports`               | `string[]` | Array of absolute paths to your custom `.css` and `.js` files. While it isn't set, `vscode_custom_css.imports` is used; set it to `[]` for no imports. |
 | `stylesmith.allowRemoteImports`    | `boolean`  | Allows `https://` URLs. Modifies CSP `style-src` and `font-src` to permit external servers. (Default: `false`)           |
 | `stylesmith.silenceCorruptWarning` | `boolean`  | Updates `product.json` to silence the "[Unsupported]" warning; turning it off brings the warning back. (Default: `true`) |
 

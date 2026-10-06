@@ -6,6 +6,7 @@ import * as path from "node:path";
 import { after, before, describe, it } from "node:test";
 import { pathToFileURL } from "node:url";
 import {
+	chooseImports,
 	fetchImport,
 	importKind,
 	loadImports,
@@ -13,6 +14,19 @@ import {
 	type LoadOptions,
 	type Variables
 } from "../imports";
+
+describe("chooseImports", () => {
+	it("uses legacy imports only while the Stylesmith setting is unset", () => {
+		const legacy = ["file:///legacy.css"];
+		assert.deepEqual(chooseImports(undefined, legacy), legacy);
+		assert.deepEqual(chooseImports([], legacy), []);
+		assert.deepEqual(chooseImports(["file:///new.css"], legacy), ["file:///new.css"]);
+	});
+
+	it("treats invalid configured values as an explicit empty list", () => {
+		assert.deepEqual(chooseImports("invalid", ["file:///legacy.css"]), []);
+	});
+});
 
 const VARS: Variables = {
 	cwd: "/cwd",
@@ -319,7 +333,9 @@ describe("remote imports (https)", () => {
 		for (const css of [
 			'@import url("https://cdn.example/mutable.css");',
 			"@import '//cdn.example/x.css';",
-			".a { background: url( http://x.example/y.png ) }"
+			".a { background: url( http://x.example/y.png ) }",
+			"@import/**/url(https://cdn.example/x.css);",
+			".a { background: u\\72l(https://x.example/y.png) }"
 		]) {
 			serve(css);
 			const pin = createHash("sha256").update(css).digest("base64");
@@ -328,6 +344,23 @@ describe("remote imports (https)", () => {
 				/pinned stylesheet can't load files from the network/,
 				css
 			);
+		}
+	});
+
+	it("refuses a local pinned stylesheet that loads from the network, even with remote imports off", async () => {
+		const file = path.join(os.tmpdir(), `stylesmith-pinned-${process.pid}.css`);
+		const css = '@import url("https://cdn.example/mutable.css");';
+		await writeFile(file, css);
+		try {
+			const pin = createHash("sha256").update(css).digest("base64");
+			await assert.rejects(
+				fetchImport(new URL(`${pathToFileURL(file).href}#sha256-${pin}`), {
+					allowRemote: false
+				}),
+				/it loads https:\/\/cdn\.example\/mutable\.css\): the pin covers only this file's own content/
+			);
+		} finally {
+			await rm(file, { force: true });
 		}
 	});
 

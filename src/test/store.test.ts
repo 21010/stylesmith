@@ -1,9 +1,13 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
 import { mkdir, mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
+import { promisify } from "node:util";
 import { StateFile } from "../store";
+
+const execFileAsync = promisify(execFile);
 
 let root: string;
 let file: string;
@@ -70,6 +74,50 @@ describe("state file", () => {
 			fontSettings: { "editor.fontFamily": { previous: "Hack", applied: "x" } }
 		});
 		assert.deepEqual(await readdir(path.dirname(file)), ["state.json"], "no temporary files");
+	});
+
+	it("preserves concurrent read/modify/write transactions from separate processes", async () => {
+		const modulePath = path.resolve(__dirname, "../store.js");
+		const script = `
+			const { StateFile } = require(process.argv[1]);
+			const file = process.argv[2];
+			const key = process.argv[3];
+			(async () => {
+				const store = new StateFile(file);
+				for (let i = 0; i < 12; i++) {
+					await store.transact(async state => {
+						const fontSettings = { ...(state.fontSettings || {}) };
+						fontSettings[key] = { previous: key, applied: String(i) };
+						await new Promise(resolve => setTimeout(resolve, 2));
+						return { change: { fontSettings }, result: undefined };
+					});
+				}
+			})().catch(error => { console.error(error); process.exitCode = 1; });
+		`;
+		await Promise.all(
+			["font-a", "font-b", "font-c", "font-d", "font-e"].map(key =>
+				execFileAsync(process.execPath, ["-e", script, modulePath, file, key], {
+					timeout: 20_000
+				})
+			)
+		);
+		const state = await new StateFile(file).read();
+		assert.deepEqual(Object.keys(state.fontSettings ?? {}).sort(), [
+			"font-a",
+			"font-b",
+			"font-c",
+			"font-d",
+			"font-e"
+		]);
+		assert.deepEqual((await readdir(path.dirname(file))).sort(), ["state.json"]);
+	});
+
+	it("lets only one window claim the same reapply prompt cooldown", async () => {
+		const now = Date.now();
+		const stores = [new StateFile(file), new StateFile(file), new StateFile(file)];
+		const claimed = await Promise.all(stores.map(store => store.claimReapplyPrompt(now, 60_000)));
+		assert.equal(claimed.filter(Boolean).length, 1);
+		assert.equal((await stores[0]!.read()).reapplyAskedAt, now);
 	});
 
 	it("keeps working after an update fails", async () => {
