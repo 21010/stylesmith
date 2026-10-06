@@ -153,21 +153,47 @@ export function isWorkbenchLocation(value: unknown): value is Workbench {
 /**
  * Puts the given font files in the font folder next to the workbench HTML file, replacing any
  * that were there. The workbench loads them from there, which VS Code's security policy allows.
+ *
+ * The new files are copied into a folder of their own first, and only swapped in once they're
+ * all there: a copy that fails halfway leaves the fonts in use as they were.
  */
 export async function writeFonts(workbench: Workbench, files: readonly string[]): Promise<boolean> {
-	if (await hasFonts(workbench, files)) return false; // already there, nothing to copy
-	await removeFonts(workbench);
 	const folder = path.join(workbench.dir, FONT_FOLDER);
-	await mkdir(folder);
-	for (const file of files) {
-		await copyFile(file, path.join(folder, path.basename(file)), constants.COPYFILE_EXCL);
+	if (await hasFonts(folder, files)) return false; // already there, nothing to copy
+	await removeLeftovers(workbench);
+
+	const staged = `${folder}.${randomUUID()}.tmp`;
+	const old = `${folder}.${randomUUID()}.old`;
+	try {
+		await mkdir(staged);
+		for (const file of files) {
+			await copyFile(file, path.join(staged, path.basename(file)), constants.COPYFILE_EXCL);
+		}
+		if (!(await hasFonts(staged, files))) {
+			throw new Error("the copied font files don't match the originals");
+		}
+		const hadFonts = await rename(folder, old).then(
+			() => true,
+			(error: unknown) => {
+				if (errorCode(error) === "ENOENT") return false;
+				throw error;
+			}
+		);
+		try {
+			await rename(staged, folder);
+		} catch (error) {
+			if (hadFonts) await rename(old, folder).catch(() => undefined);
+			throw error;
+		}
+	} finally {
+		await rm(staged, { recursive: true, force: true }).catch(() => undefined);
+		await rm(old, { recursive: true, force: true }).catch(() => undefined);
 	}
 	return true;
 }
 
-/** Whether the font folder holds exactly these files, with the same content. */
-async function hasFonts(workbench: Workbench, files: readonly string[]): Promise<boolean> {
-	const folder = path.join(workbench.dir, FONT_FOLDER);
+/** Whether `folder` holds exactly these files, with the same content. */
+async function hasFonts(folder: string, files: readonly string[]): Promise<boolean> {
 	try {
 		const present = (await readdir(folder)).sort();
 		const wanted = files.map(file => path.basename(file)).sort();
@@ -191,9 +217,25 @@ async function hasFonts(workbench: Workbench, files: readonly string[]): Promise
 	}
 }
 
+// Folders writeFonts uses while it swaps the fonts; one is left behind only by a crash.
+const FONT_LEFTOVER_RE = new RegExp(
+	`^${FONT_FOLDER}\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.(?:tmp|old)$`
+);
+
 /** Removes the font folder next to the workbench HTML file, if there is one. */
 export async function removeFonts(workbench: Workbench): Promise<void> {
 	await rm(path.join(workbench.dir, FONT_FOLDER), { recursive: true, force: true });
+	await removeLeftovers(workbench);
+}
+
+/** Removes the folders an interrupted writeFonts left behind. */
+async function removeLeftovers(workbench: Workbench): Promise<void> {
+	const names = await readdir(workbench.dir).catch(() => []);
+	await Promise.all(
+		names
+			.filter(name => FONT_LEFTOVER_RE.test(name))
+			.map(name => rm(path.join(workbench.dir, name), { recursive: true, force: true }))
+	);
 }
 
 /**

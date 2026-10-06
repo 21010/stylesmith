@@ -132,6 +132,68 @@ describe("font folder", () => {
 	});
 });
 
+describe("replacing the font folder", () => {
+	let dir: string;
+	let workbench: { dir: string; htmlPath: string };
+	let source: string;
+
+	beforeEach(async () => {
+		dir = path.join(root, "wb");
+		await mkdir(dir);
+		workbench = { dir, htmlPath: path.join(dir, "workbench.html") };
+		source = path.join(root, "src");
+		await mkdir(source);
+		for (const name of ["A-Regular.woff2", "B-Regular.woff2", "B-Bold.woff2"]) {
+			await writeFile(path.join(source, name), name);
+		}
+		await writeFonts(workbench, [path.join(source, "A-Regular.woff2")]);
+	});
+
+	const fonts = () => readdir(path.join(dir, "stylesmith-fonts"));
+
+	it("keeps the fonts in use when a new file can't be copied", async () => {
+		await assert.rejects(
+			writeFonts(workbench, [
+				path.join(source, "B-Regular.woff2"),
+				path.join(source, "missing.woff2")
+			]),
+			{ code: "ENOENT" }
+		);
+		assert.deepEqual(await fonts(), ["A-Regular.woff2"]);
+		assert.deepEqual(await readdir(dir), ["stylesmith-fonts"], "nothing left behind");
+	});
+
+	it("puts the fonts in use back when the new ones can't be moved in", async () => {
+		failCall("rename", 2, "EPERM"); // the first moves the old folder aside
+		await assert.rejects(writeFonts(workbench, [path.join(source, "B-Regular.woff2")]), {
+			code: "EPERM"
+		});
+		mock.restoreAll();
+		assert.deepEqual(await fonts(), ["A-Regular.woff2"]);
+		assert.deepEqual(await readdir(dir), ["stylesmith-fonts"], "nothing left behind");
+	});
+
+	it("swaps in the complete new set", async () => {
+		await writeFonts(workbench, [
+			path.join(source, "B-Regular.woff2"),
+			path.join(source, "B-Bold.woff2")
+		]);
+		assert.deepEqual((await fonts()).sort(), ["B-Bold.woff2", "B-Regular.woff2"]);
+		assert.deepEqual(await readdir(dir), ["stylesmith-fonts"]);
+	});
+
+	it("removes folders an interrupted replacement left behind", async () => {
+		const leftovers = [
+			"stylesmith-fonts.0b9c6f1e-2a4d-4c8e-9f3a-1d2e3f4a5b6c.tmp",
+			"stylesmith-fonts.0b9c6f1e-2a4d-4c8e-9f3a-1d2e3f4a5b6d.old"
+		];
+		for (const name of leftovers) await mkdir(path.join(dir, name));
+		await writeFile(path.join(dir, "stylesmith-fonts.notes"), "not ours");
+		await removeFonts(workbench);
+		assert.deepEqual(await readdir(dir), ["stylesmith-fonts.notes"]);
+	});
+});
+
 describe("isPatched", () => {
 	it("finds the marker near the start of a large patched file", async () => {
 		const htmlPath = path.join(root, "workbench.html");
