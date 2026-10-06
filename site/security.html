@@ -11,7 +11,7 @@
 		<title>Security - Stylesmith</title>
 		<meta
 			name="description"
-			content="Discover how Stylesmith safely injects custom UI styles while preserving VS Code's native security boundaries."
+			content="Learn how Stylesmith modifies VS Code's installed workbench, what its CSP and file-recovery measures do, and where their limits are."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -91,9 +91,9 @@
 			<section class="hero" style="max-width: 800px; margin: 0 auto; text-align: center">
 				<h1>Security <span>Model</span></h1>
 				<p class="lead">
-					Modifying your editor's core files sounds terrifying. It should be. Here is
-					exactly how Stylesmith patches VS Code without blowing a hole in your machine's
-					defenses.
+					Stylesmith modifies VS Code's installed workbench and may update
+					<code>product.json</code>. This page explains those changes, the controls around
+					them, and what they cannot guarantee.
 				</p>
 			</section>
 
@@ -105,9 +105,9 @@
 					<h2>Core Pillars</h2>
 					<ul>
 						<li><a href="#csp" class="active">Content Security Policy</a></li>
-						<li><a href="#checksum">The Checksum Lock</a></li>
-						<li><a href="#failsafe">Failsafe Architecture</a></li>
-						<li><a href="#immunity">Workspace Immunity</a></li>
+						<li><a href="#checksum">Workbench checksum</a></li>
+						<li><a href="#failsafe">File changes and recovery</a></li>
+						<li><a href="#immunity">Workspace settings</a></li>
 					</ul>
 				</aside>
 				<div class="ergo-content">
@@ -162,9 +162,9 @@
 										margin: 0;
 									"
 								>
-									Disabling or blindly relaxing VS Code's Content Security Policy
-									allows any malicious extension or untrusted workspace to execute
-									untrusted scripts inside your editor context.
+									A content security policy restricts some browser resource loads.
+									It does not isolate trusted extensions or custom scripts from
+									the privileges of VS Code's workbench.
 								</p>
 							</div>
 							<div>
@@ -187,10 +187,11 @@
 										margin: 0;
 									"
 								>
-									Stylesmith injects strict CSP headers. It only permits its own
-									static assets (like bundled fonts) and local CSS. It never uses
-									<code>unsafe-eval</code> or opens broad script execution
-									vectors.
+									Stylesmith keeps the workbench's existing CSP and adds SHA-256
+									hashes for the inline scripts it inserts. With remote imports
+									on, it adds <code>https:</code> to style and font sources; it
+									also adds <code>data:</code> for fonts. Existing policy sources
+									are retained.
 								</p>
 							</div>
 						</div>
@@ -221,8 +222,10 @@
 									margin: 0;
 								"
 							>
-								You get a custom UI without opening a backdoor into your local
-								development environment.
+								A script hash identifies the exact bytes allowed by that CSP entry;
+								it does not sandbox the script or show that it is trustworthy.
+								Custom JavaScript runs in the workbench context with the privileges
+								available there. Only add code you trust.
 							</p>
 						</div>
 					</article>
@@ -247,7 +250,7 @@
 									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
 								</svg>
 							</div>
-							<h3>The Checksum Lock</h3>
+							<h3>Workbench checksum</h3>
 						</div>
 						<div
 							style="
@@ -280,10 +283,10 @@
 										margin: 0;
 									"
 								>
-									VS Code monitors its own installation files. If malware modifies
-									your editor, it displays a "corrupt installation" warning. Other
-									UI-patching tools completely disable this warning, blinding you
-									to actual threats.
+									VS Code can compare the workbench with the checksum recorded in
+									<code>product.json</code> and show an integrity warning when
+									they differ. The warning may be hidden by settings or other
+									changes, and a mismatch does not identify who changed the file.
 								</p>
 							</div>
 							<div>
@@ -306,9 +309,10 @@
 										margin: 0;
 									"
 								>
-									Stylesmith recalculates the cryptographic checksum of the core
-									HTML file <em>after</em> making its own modifications, and
-									updates the editor's lockfile to match the new hash.
+									When warning suppression is enabled and VS Code tracks this
+									file, Stylesmith writes a checksum for the workbench content it
+									generated to <code>product.json</code>. This can suppress the
+									warning for that content; it is not an authenticity check.
 								</p>
 							</div>
 						</div>
@@ -339,9 +343,9 @@
 									margin: 0;
 								"
 							>
-								VS Code's integrity check stays fully active. If a virus or rogue
-								tool alters your files later, the checksum will break and you will
-								instantly be warned.
+								Suppressing the warning can make other changes harder to notice.
+								Turn suppression off if you want VS Code to report that its recorded
+								checksum does not match the workbench.
 							</p>
 						</div>
 					</article>
@@ -370,7 +374,7 @@
 									></path>
 								</svg>
 							</div>
-							<h3>Failsafe Architecture</h3>
+							<h3>File changes and recovery</h3>
 						</div>
 						<div
 							style="
@@ -403,9 +407,10 @@
 										margin: 0;
 									"
 								>
-									VS Code updates frequently. Hard-coded UI patches can easily
-									crash the editor, leaving you locked out of your workspace after
-									a Tuesday morning update.
+									VS Code updates can replace or change installed workbench files.
+									A patch may stop applying or behave differently after an update;
+									Stylesmith cannot guarantee that every version will start
+									normally.
 								</p>
 							</div>
 							<div>
@@ -428,9 +433,10 @@
 										margin: 0;
 									"
 								>
-									Stylesmith's patches are structural and non-destructive. If an
-									upstream VS Code update breaks the CSS hooks, the modifications
-									fail without breaking the editor.
+									Before writing, Stylesmith checks that its marked patch can be
+									removed from the source string. It writes through a temporary
+									file and rename to reduce the chance of leaving a partial file.
+									These steps do not cover every crash or external file change.
 								</p>
 							</div>
 						</div>
@@ -461,8 +467,11 @@
 									margin: 0;
 								"
 							>
-								Zero downtime. Your editor will never refuse to boot because of a
-								theme.
+								Disable attempts to remove Stylesmith's marked content and bundled
+								fonts and restore managed settings. The uninstall hook attempts only
+								workbench and font cleanup; run Disable first to restore settings.
+								If cleanup fails or VS Code will not start, repair or reinstall VS
+								Code.
 							</p>
 						</div>
 					</article>
@@ -489,7 +498,7 @@
 									></path>
 								</svg>
 							</div>
-							<h3>Workspace Immunity</h3>
+							<h3>Workspace settings</h3>
 						</div>
 						<div
 							style="
@@ -522,9 +531,9 @@
 										margin: 0;
 									"
 								>
-									Extensions that globally modify UI styles often leak CSS into
-									embedded webviews (like Markdown previews or third-party
-									extension pages), breaking their layout.
+									A project can contain workspace settings and files, but its
+									settings must not select Stylesmith imports or cause project
+									files to be loaded by Stylesmith in an untrusted workspace.
 								</p>
 							</div>
 							<div>
@@ -547,9 +556,11 @@
 										margin: 0;
 									"
 								>
-									Stylesmith strictly scopes all visual modifications to the main
-									workbench container, isolating it from the rest of the
-									application.
+									Stylesmith reads imports from user settings, not project
+									settings. In untrusted workspaces it refuses
+									<code>${workspaceFolder}</code> and <code>${cwd}</code> path
+									substitutions. This does not control other extensions, tasks, or
+									code you run in VS Code.
 								</p>
 							</div>
 						</div>
@@ -580,8 +591,9 @@
 									margin: 0;
 								"
 							>
-								Your code, extension menus, and markdown previews look exactly as
-								their authors intended, with no visual artifacts.
+								Untrusted workspace protections cover Stylesmith's import sources
+								only; keep using VS Code's workspace trust controls and review other
+								extensions separately.
 							</p>
 						</div>
 					</article>
@@ -627,7 +639,7 @@
 						<line x1="12" y1="9" x2="12" y2="13"></line>
 						<line x1="12" y1="17" x2="12.01" y2="17"></line>
 					</svg>
-					CRITICAL ADVISORY: The "Corrupt Installation" Warning
+					VS Code's workbench integrity warning
 				</h3>
 				<p
 					style="
@@ -637,10 +649,11 @@
 						margin-bottom: 1rem;
 					"
 				>
-					If you ever see a
-					<strong>"Your VS Code installation appears to be corrupt"</strong> message
-					<em>while Stylesmith is active</em>, <strong>DO NOT IGNORE IT.</strong> Never
-					attempt to permanently disable this warning using third-party extensions.
+					Stylesmith changes <code>workbench.html</code>, so VS Code may report an
+					integrity warning when the recorded checksum does not match. If warning
+					suppression is enabled, Stylesmith may update that checksum for its patched
+					content. If you see an unexpected warning, check the Stylesmith setting, recent
+					VS Code updates, and whether another tool changed the installation.
 				</p>
 				<p
 					style="
@@ -650,12 +663,12 @@
 						margin-bottom: 0;
 					"
 				>
-					Because Stylesmith updates the editor's cryptographic lockfile for its own
-					modifications, seeing this warning means
-					<strong>something else</strong> has modified your editor's core files without
-					your knowledge. This usually indicates a broken VS Code update, a rogue
-					extension leaking code, or worst case, a malicious script attempting to hijack
-					your editor environment. Always investigate the root cause.
+					A warning or checksum mismatch is not proof of malware, and no warning is not
+					proof that the installation is unchanged. The checksum reports whether file
+					content matches the value in <code>product.json</code>; it does not establish
+					who produced that content. Disable Stylesmith if you want to return to the
+					workbench content it can restore. If VS Code still behaves unexpectedly, repair
+					or reinstall VS Code.
 				</p>
 			</div>
 		</main>
@@ -668,8 +681,8 @@
 						<span>Stylesmith</span>
 					</a>
 					<p>
-						The styling engine for VS Code: presets, effects and your own CSS and JS,
-						without giving up its security.
+						Themes, fonts, icons, and effects for VS Code, with optional custom CSS and
+						JavaScript. Stylesmith modifies installed workbench files.
 					</p>
 					<a
 						class="button"

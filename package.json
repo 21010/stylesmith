@@ -1,7 +1,7 @@
 {
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
-	"description": "A safe way to customize VS Code: your own CSS and JS, with its security policy kept on. A retro and cyberpunk style kit: themes, icons, fonts and effects.",
+	"description": "Customize VS Code with themes, icons, fonts, effects, and optional custom CSS and JavaScript. Stylesmith modifies installed workbench files; custom JavaScript runs with workbench privileges. Review the security notes before adding code.",
 	"version": "1.18.2",
 	"publisher": "21010",
 	"author": {
@@ -105,13 +105,13 @@
 					"type": "boolean",
 					"default": false,
 					"scope": "application",
-					"markdownDescription": "Allow `https://` URLs in `stylesmith.imports`. Off by default: remote files can change at any time, and they run with full access to your editor. `http://` is never allowed."
+					"markdownDescription": "Allow `https://` URLs in `stylesmith.imports`. Off by default. Remote resources can change at any time; JavaScript imports run in the workbench context with its available privileges. Only use trusted sources. `http://` is never allowed."
 				},
 				"stylesmith.silenceCorruptWarning": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Automatically updates VS Code's internal checksums so it stops complaining that the installation is corrupt when Stylesmith modifies files. Turn it off to see the warning: the next Enable puts VS Code's original checksum back."
+					"markdownDescription": "When VS Code tracks the workbench, writes the checksum for Stylesmith's patched content to `product.json`, which may suppress the integrity warning for that content. The checksum is not proof of authenticity. Turn this off to let VS Code report that the workbench differs from its recorded checksum."
 				},
 				"stylesmith.effects.caretAnimation": {
 					"type": "boolean",
@@ -400,7 +400,7 @@
 	"capabilities": {
 		"untrustedWorkspaces": {
 			"supported": true,
-			"description": "Stylesmith only reads user settings, and ${workspaceFolder} imports are skipped in untrusted workspaces."
+			"description": "Stylesmith reads imports from user settings. Workspace path substitutions are refused in untrusted workspaces."
 		},
 		"virtualWorkspaces": true
 	},
