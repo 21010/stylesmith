@@ -35,13 +35,13 @@ export async function run(): Promise<void> {
 	});
 
 	await step("moves and removes 1.x settings, keeping the user's imports", async () => {
+		// The migration writes one setting at a time: wait for the last one, not the first.
+		const old = ["effects.classicLayout", "effects.matrixRain", "silenceCorruptWarning"];
 		await until(
-			() => userValue("stylesmith", "effects.compactLayout") === true,
-			"classicLayout moves to compactLayout"
+			() => old.every(key => userValue("stylesmith", key) === undefined),
+			`${old.join(", ")} are removed`
 		);
-		assert.equal(userValue("stylesmith", "effects.classicLayout"), undefined);
-		assert.equal(userValue("stylesmith", "effects.matrixRain"), undefined);
-		assert.equal(userValue("stylesmith", "silenceCorruptWarning"), undefined);
+		assert.equal(userValue("stylesmith", "effects.compactLayout"), true);
 		assert.deepEqual(userValue("stylesmith", "imports"), ["file:///tmp/custom.css"]);
 	});
 
