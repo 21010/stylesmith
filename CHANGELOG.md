@@ -2,7 +2,9 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
-## 2.0.0 (2026-10-07)
+## 2.0.1 (2026-10-07)
+
+The first release of Stylesmith 2. Version 2.0.0 was tagged but never released, because its release build stalled on a CI infrastructure problem; 2.0.1 contains the same extension.
 
 Stylesmith now uses only VS Code's extension API. It no longer modifies VS Code's installation, so VS Code updates no longer undo it, and it no longer causes VS Code's "installation appears to be corrupt" warning.
 
