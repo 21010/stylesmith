@@ -2,15 +2,29 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
-## Unreleased
+## 2.0.0 (2026-10-07)
 
-### Changed
+Stylesmith now uses only VS Code's extension API. It no longer modifies VS Code's installation, so VS Code updates no longer undo it, and it no longer causes VS Code's "installation appears to be corrupt" warning.
 
-- Removed all workbench patching, checksum updates, and installation-file cleanup. Themes, icon themes, diagnostics, and supported visual options now use VS Code's documented contributions, settings, and decoration APIs.
-- Removed workbench CSS effects, canvas animations, and extension-bundled fonts because VS Code does not expose supported APIs for them. Font selection now uses system-installed font families and is off by default.
-- Removed the effects that required injected CSS or JavaScript. Remaining toggles set native VS Code settings and apply without restarting the window.
-- On first start, Stylesmith removes the workbench patch, font folder and `product.json` checksum change left by Stylesmith 1.x, and asks to reload the window. It only removes its own changes and never asks for administrator rights; if VS Code's installation isn't writable, it explains how to repair it.
-- Settings from 1.x that no longer do anything are removed from the user's settings on first start. `effects.neonBlocks`, `effects.classicLayout` and `effects.retroTerminalCursor` carry over to `effects.bracketGuides`, `effects.compactLayout` and `effects.blockTerminalCursor`. `stylesmith.imports` is kept and marked as deprecated, so users can move their custom files to another tool.
+### Breaking changes
+
+- Removed the workbench CSS effects, canvas animations (including Matrix rain, CRT flicker, the boot sequence and typing sparks), custom CSS and JavaScript imports, and the bundled fonts. VS Code has no supported API for them.
+- The remaining effects set native VS Code settings and apply without reloading the window: smooth cursor, current-line highlight, bracket pair guides, compact layout and block terminal cursor.
+- Font selection now chooses a Nerd Font installed on your system, and is off by default. Install the font first; Stylesmith no longer ships font files.
+- Presets set the color theme, icon theme and native settings; they no longer choose a font.
+
+### Upgrading from 1.x
+
+- On first start, Stylesmith removes the changes 1.x made to VS Code's installation: its workbench patch, its font folder, and a `product.json` checksum it had changed. It then asks you to reload the window. It only removes its own changes and never asks for administrator rights; if VS Code's installation isn't writable, it explains how to repair VS Code.
+- Settings from 1.x that no longer do anything are removed from your user settings. `effects.neonBlocks`, `effects.classicLayout` and `effects.retroTerminalCursor` carry over to `effects.bracketGuides`, `effects.compactLayout` and `effects.blockTerminalCursor`. `stylesmith.imports` is kept, marked as deprecated, so you can move your custom files to another tool.
+
+### Fixed
+
+- Smooth cursor now also turns on VS Code's smooth caret animation (`editor.cursorSmoothCaretAnimation`), so the cursor actually glides.
+- Switching fonts replaces the previously selected Stylesmith font instead of keeping it as a fallback.
+- Re-applying settings at startup, or after a Stylesmith setting changes, keeps effect settings you changed yourself. Running **Stylesmith: Enable** still applies Stylesmith's values.
+- Applying a preset re-applies settings once instead of once per setting.
+- A state lock left by a crash no longer blocks Enable and Disable when its process ID is in use again after a restart.
 
 ## 1.18.2 (2026-10-03)
 
