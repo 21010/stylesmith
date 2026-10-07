@@ -5,13 +5,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<title>Security - Stylesmith</title>
 		<meta
 			name="description"
-			content="Learn how Stylesmith modifies VS Code's installed workbench, what its CSP and file-recovery measures do, and where their limits are."
+			content="Stylesmith uses VS Code extension APIs and only touches the installation once, to remove changes made by Stylesmith 1.x."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -21,32 +21,11 @@
 	</head>
 	<body>
 		<a class="skip" href="#main">Skip to content</a>
-
 		<header class="top">
-			<a class="brand" href="./">
-				<img src="logo.svg" width="36" height="36" alt="" />
-				<span>Stylesmith</span>
-			</a>
+			<a class="brand" href="./"
+				><img src="logo.svg" width="36" height="36" alt="" /><span>Stylesmith</span></a
+			>
 			<button class="motion-toggle" type="button" aria-pressed="false" hidden>
-				<svg
-					class="icon-pause"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<rect x="6" y="5" width="4" height="14" fill="currentColor" />
-					<rect x="14" y="5" width="4" height="14" fill="currentColor" />
-				</svg>
-				<svg
-					class="icon-play"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path d="M7 5v14l12-7z" fill="currentColor" />
-				</svg>
 				<span class="sr-only">Pause animations</span>
 			</button>
 			<button
@@ -56,633 +35,95 @@
 				aria-controls="site-nav"
 				hidden
 			>
-				<span class="menu-icon" aria-hidden="true"></span>
-				<span class="sr-only">Menu</span>
+				<span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Menu</span>
 			</button>
 			<nav id="site-nav" aria-label="Main">
 				<div class="dropdown">
 					<button class="dropbtn" aria-expanded="false">Aesthetics</button>
 					<div class="dropdown-content">
-						<a href="themes.html">Themes</a>
-						<a href="effects.html">Effects</a>
-						<a href="fonts.html">Fonts</a>
+						<a href="themes.html">Themes</a><a href="effects.html">Native settings</a
+						><a href="fonts.html">Fonts</a>
 					</div>
 				</div>
-				<a href="security.html" style="color: var(--cyan)" aria-current="page">Security</a>
-				<a href="ergonomics.html">Ergonomics</a>
-				<div class="dropdown">
-					<button class="dropbtn" aria-expanded="false">Productivity</button>
-					<div class="dropdown-content">
-						<a href="problem-lens.html">Problem Lens</a>
-					</div>
-				</div>
-				<div class="dropdown">
-					<button class="dropbtn" aria-expanded="false">Add-ons</button>
-					<div class="dropdown-content">
-						<a href="oh-my-posh.html">Oh-My-Posh Theme</a>
-					</div>
-				</div>
-				<a href="https://github.com/21010/stylesmith">GitHub</a>
-				<a href="./#install" class="button nav-install">Install</a>
+				<a href="security.html" aria-current="page">Security</a
+				><a href="ergonomics.html">Ergonomics</a><a href="problem-lens.html">Problem Lens</a
+				><a href="https://github.com/21010/stylesmith">GitHub</a
+				><a href="./#install" class="button nav-install">Install</a>
 			</nav>
 		</header>
-
 		<main id="main">
-			<section class="hero" style="max-width: 800px; margin: 0 auto; text-align: center">
-				<h1>Security <span>Model</span></h1>
+			<section class="hero">
+				<h1>Security <span>Boundary</span></h1>
 				<p class="lead">
-					Stylesmith modifies VS Code's installed workbench and may update
-					<code>product.json</code>. This page explains those changes, the controls around
-					them, and what they cannot guarantee.
+					This build uses VS Code's extension API and contribution points. Stylesmith does
+					not patch the VS Code installation, and only writes to it once, to remove
+					changes made by Stylesmith 1.x.
 				</p>
 			</section>
-
-			<section
-				class="ergo-split"
-				style="max-width: 1000px; padding: 0 2rem; margin: 4rem auto"
-			>
-				<aside class="ergo-nav" style="align-self: start">
-					<h2>Core Pillars</h2>
-					<ul>
-						<li><a href="#csp" class="active">Content Security Policy</a></li>
-						<li><a href="#checksum">Workbench checksum</a></li>
-						<li><a href="#failsafe">File changes and recovery</a></li>
-						<li><a href="#immunity">Workspace settings</a></li>
-					</ul>
-				</aside>
-				<div class="ergo-content">
-					<article id="csp" class="security-card ergo-section" style="display: block">
-						<div class="card-header" style="margin-bottom: 2rem">
-							<div class="sec-icon">
-								<svg
-									aria-hidden="true"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-									<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-								</svg>
-							</div>
-							<h3>Content Security Policy (CSP)</h3>
-						</div>
-						<div
-							style="
-								display: grid;
-								grid-template-columns: repeat(
-									auto-fit,
-									minmax(min(100%, 200px), 1fr)
-								);
-								gap: 2rem;
-								margin-bottom: 2rem;
-							"
-						>
-							<div>
-								<h4
-									style="
-										color: var(--pink);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Risk
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--muted);
-										margin: 0;
-									"
-								>
-									A content security policy restricts some browser resource loads.
-									It does not isolate trusted extensions or custom scripts from
-									the privileges of VS Code's workbench.
-								</p>
-							</div>
-							<div>
-								<h4
-									style="
-										color: var(--cyan);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Fix
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--text);
-										margin: 0;
-									"
-								>
-									Stylesmith keeps the workbench's existing CSP and adds SHA-256
-									hashes for the inline scripts it inserts. With remote imports
-									on, it adds <code>https:</code> to style and font sources; it
-									also adds <code>data:</code> for fonts. Existing policy sources
-									are retained.
-								</p>
-							</div>
-						</div>
-						<div
-							style="
-								padding: 1.5rem;
-								background: rgba(0, 0, 0, 0.3);
-								border-left: 3px solid var(--yellow);
-								border-radius: 4px;
-							"
-						>
-							<h4
-								style="
-									color: var(--yellow);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.5rem 0;
-								"
-							>
-								Why It Matters
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
-								A script hash identifies the exact bytes allowed by that CSP entry;
-								it does not sandbox the script or show that it is trustworthy.
-								Custom JavaScript runs in the workbench context with the privileges
-								available there. Only add code you trust.
-							</p>
-						</div>
-					</article>
-					<article
-						id="checksum"
-						class="security-card ergo-section"
-						style="display: block"
-					>
-						<div class="card-header" style="margin-bottom: 2rem">
-							<div class="sec-icon">
-								<svg
-									aria-hidden="true"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-								</svg>
-							</div>
-							<h3>Workbench checksum</h3>
-						</div>
-						<div
-							style="
-								display: grid;
-								grid-template-columns: repeat(
-									auto-fit,
-									minmax(min(100%, 200px), 1fr)
-								);
-								gap: 2rem;
-								margin-bottom: 2rem;
-							"
-						>
-							<div>
-								<h4
-									style="
-										color: var(--pink);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Risk
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--muted);
-										margin: 0;
-									"
-								>
-									VS Code can compare the workbench with the checksum recorded in
-									<code>product.json</code> and show an integrity warning when
-									they differ. The warning may be hidden by settings or other
-									changes, and a mismatch does not identify who changed the file.
-								</p>
-							</div>
-							<div>
-								<h4
-									style="
-										color: var(--cyan);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Fix
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--text);
-										margin: 0;
-									"
-								>
-									When warning suppression is enabled and VS Code tracks this
-									file, Stylesmith writes a checksum for the workbench content it
-									generated to <code>product.json</code>. This can suppress the
-									warning for that content; it is not an authenticity check.
-								</p>
-							</div>
-						</div>
-						<div
-							style="
-								padding: 1.5rem;
-								background: rgba(0, 0, 0, 0.3);
-								border-left: 3px solid var(--yellow);
-								border-radius: 4px;
-							"
-						>
-							<h4
-								style="
-									color: var(--yellow);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.5rem 0;
-								"
-							>
-								Why It Matters
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
-								Suppressing the warning can make other changes harder to notice.
-								Turn suppression off if you want VS Code to report that its recorded
-								checksum does not match the workbench.
-							</p>
-						</div>
-					</article>
-					<article
-						id="failsafe"
-						class="security-card ergo-section"
-						style="display: block"
-					>
-						<div class="card-header" style="margin-bottom: 2rem">
-							<div class="sec-icon">
-								<svg
-									aria-hidden="true"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<polyline points="23 4 23 10 17 10"></polyline>
-									<polyline points="1 20 1 14 7 14"></polyline>
-									<path
-										d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
-									></path>
-								</svg>
-							</div>
-							<h3>File changes and recovery</h3>
-						</div>
-						<div
-							style="
-								display: grid;
-								grid-template-columns: repeat(
-									auto-fit,
-									minmax(min(100%, 200px), 1fr)
-								);
-								gap: 2rem;
-								margin-bottom: 2rem;
-							"
-						>
-							<div>
-								<h4
-									style="
-										color: var(--pink);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Risk
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--muted);
-										margin: 0;
-									"
-								>
-									VS Code updates can replace or change installed workbench files.
-									A patch may stop applying or behave differently after an update;
-									Stylesmith cannot guarantee that every version will start
-									normally.
-								</p>
-							</div>
-							<div>
-								<h4
-									style="
-										color: var(--cyan);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Fix
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--text);
-										margin: 0;
-									"
-								>
-									Before writing, Stylesmith checks that its marked patch can be
-									removed from the source string. It writes through a temporary
-									file and rename to reduce the chance of leaving a partial file.
-									These steps do not cover every crash or external file change.
-								</p>
-							</div>
-						</div>
-						<div
-							style="
-								padding: 1.5rem;
-								background: rgba(0, 0, 0, 0.3);
-								border-left: 3px solid var(--yellow);
-								border-radius: 4px;
-							"
-						>
-							<h4
-								style="
-									color: var(--yellow);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.5rem 0;
-								"
-							>
-								Why It Matters
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
-								Disable attempts to remove Stylesmith's marked content and bundled
-								fonts and restore managed settings. The uninstall hook attempts only
-								workbench and font cleanup; run Disable first to restore settings.
-								If cleanup fails or VS Code will not start, repair or reinstall VS
-								Code.
-							</p>
-						</div>
-					</article>
-					<article
-						id="immunity"
-						class="security-card ergo-section"
-						style="display: block"
-					>
-						<div class="card-header" style="margin-bottom: 2rem">
-							<div class="sec-icon">
-								<svg
-									aria-hidden="true"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path
-										d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
-									></path>
-								</svg>
-							</div>
-							<h3>Workspace settings</h3>
-						</div>
-						<div
-							style="
-								display: grid;
-								grid-template-columns: repeat(
-									auto-fit,
-									minmax(min(100%, 200px), 1fr)
-								);
-								gap: 2rem;
-								margin-bottom: 2rem;
-							"
-						>
-							<div>
-								<h4
-									style="
-										color: var(--pink);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Risk
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--muted);
-										margin: 0;
-									"
-								>
-									A project can contain workspace settings and files, but its
-									settings must not select Stylesmith imports or cause project
-									files to be loaded by Stylesmith in an untrusted workspace.
-								</p>
-							</div>
-							<div>
-								<h4
-									style="
-										color: var(--cyan);
-										text-transform: uppercase;
-										font-size: 0.85rem;
-										letter-spacing: 0.1em;
-										margin: 0 0 0.75rem 0;
-									"
-								>
-									The Fix
-								</h4>
-								<p
-									style="
-										font-size: 1.05rem;
-										line-height: 1.6;
-										color: var(--text);
-										margin: 0;
-									"
-								>
-									Stylesmith reads imports from user settings, not project
-									settings. In untrusted workspaces it refuses
-									<code>${workspaceFolder}</code> and <code>${cwd}</code> path
-									substitutions. This does not control other extensions, tasks, or
-									code you run in VS Code.
-								</p>
-							</div>
-						</div>
-						<div
-							style="
-								padding: 1.5rem;
-								background: rgba(0, 0, 0, 0.3);
-								border-left: 3px solid var(--yellow);
-								border-radius: 4px;
-							"
-						>
-							<h4
-								style="
-									color: var(--yellow);
-									text-transform: uppercase;
-									font-size: 0.85rem;
-									letter-spacing: 0.1em;
-									margin: 0 0 0.5rem 0;
-								"
-							>
-								Why It Matters
-							</h4>
-							<p
-								style="
-									font-size: 1.05rem;
-									line-height: 1.6;
-									color: var(--text);
-									margin: 0;
-								"
-							>
-								Untrusted workspace protections cover Stylesmith's import sources
-								only; keep using VS Code's workspace trust controls and review other
-								extensions separately.
-							</p>
-						</div>
-					</article>
-				</div>
+			<section class="content-section" aria-labelledby="api-title">
+				<h2 id="api-title">What Stylesmith does</h2>
+				<ul class="checks">
+					<li>
+						Registers color themes and file icon themes through the extension manifest.
+					</li>
+					<li>
+						Uses the diagnostics and editor decoration APIs to display Problem Lens.
+					</li>
+					<li>
+						Changes global user settings through VS Code's configuration API and
+						restores managed settings when disabled.
+					</li>
+					<li>Stores managed-setting state in its own extension storage.</li>
+					<li>
+						Does not load workspace-provided or remote CSS or JavaScript, and does not
+						inspect workspace content to choose code to run.
+					</li>
+				</ul>
 			</section>
-
-			<div
-				class="security-warning"
-				style="
-					max-width: 1000px;
-					margin: 4rem auto 2rem;
-					padding: 2rem;
-					border-left: 4px solid var(--pink);
-					background: rgba(255, 114, 216, 0.05);
-					border-radius: 4px;
-				"
-			>
-				<h3
-					style="
-						color: var(--pink);
-						margin-top: 0;
-						margin-bottom: 1rem;
-						font-size: 1.25rem;
-						display: flex;
-						align-items: center;
-						gap: 0.5rem;
-					"
-				>
-					<svg
-						aria-hidden="true"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<path
-							d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
-						></path>
-						<line x1="12" y1="9" x2="12" y2="13"></line>
-						<line x1="12" y1="17" x2="12.01" y2="17"></line>
-					</svg>
-					VS Code's workbench integrity warning
-				</h3>
-				<p
-					style="
-						font-size: 1.05rem;
-						line-height: 1.6;
-						color: var(--text);
-						margin-bottom: 1rem;
-					"
-				>
-					Stylesmith changes <code>workbench.html</code>, so VS Code may report an
-					integrity warning when the recorded checksum does not match. If warning
-					suppression is enabled, Stylesmith may update that checksum for its patched
-					content. If you see an unexpected warning, check the Stylesmith setting, recent
-					VS Code updates, and whether another tool changed the installation.
+			<section class="content-section" aria-labelledby="limits-title">
+				<h2 id="limits-title">What this boundary means</h2>
+				<p>
+					Stylesmith runs as a local VS Code extension and has the ordinary capabilities
+					granted to extensions. API-only means it does not bypass VS Code's extension
+					model to alter the workbench DOM or installed application files. It is not a
+					guarantee that extension code or its supply chain is risk-free.
 				</p>
-				<p
-					style="
-						font-size: 1.05rem;
-						line-height: 1.6;
-						color: var(--text);
-						margin-bottom: 0;
-					"
-				>
-					A warning or checksum mismatch is not proof of malware, and no warning is not
-					proof that the installation is unchanged. The checksum reports whether file
-					content matches the value in <code>product.json</code>; it does not establish
-					who produced that content. Disable Stylesmith if you want to return to the
-					workbench content it can restore. If VS Code still behaves unexpectedly, repair
-					or reinstall VS Code.
+			</section>
+			<section class="content-section" aria-labelledby="upgrade-title">
+				<h2 id="upgrade-title">Upgrading from an older release</h2>
+				<p>
+					Stylesmith 1.x could patch the workbench and install font files beside it. On
+					first start, this build removes exactly those changes: Stylesmith's marked
+					blocks in the workbench file, its font folder, and a <code>product.json</code>
+					checksum it had changed. It leaves other tools' changes alone and never asks for
+					administrator rights. If VS Code is installed where your user can't write, it
+					tells you once; repair or reinstall VS Code to restore its files.
 				</p>
-			</div>
+			</section>
+			<section class="cta-section" style="text-align: center; margin: 4rem 0">
+				<h2>Review the implementation</h2>
+				<p>
+					Stylesmith is open source. Read the security policy and source before deploying
+					it in a managed environment.
+				</p>
+				<a
+					class="button btn-primary"
+					href="https://github.com/21010/stylesmith/blob/main/SECURITY.md"
+					>Security policy</a
+				>
+			</section>
 		</main>
-
 		<footer class="site-footer">
 			<div class="footer-grid">
 				<div class="footer-brand">
-					<a class="brand" href="./">
-						<img src="logo.svg" width="36" height="36" alt="" />
-						<span>Stylesmith</span>
-					</a>
+					<a class="brand" href="./"
+						><img src="logo.svg" width="36" height="36" alt="" /><span
+							>Stylesmith</span
+						></a
+					>
 					<p>
-						Themes, fonts, icons, and effects for VS Code, with optional custom CSS and
-						JavaScript. Stylesmith modifies installed workbench files.
+						Themes, icons, diagnostics and native settings for VS Code. Stylesmith does
+						not modify installation files.
 					</p>
 					<a
 						class="button"
@@ -695,7 +136,7 @@
 						<h2 class="footer-title">Aesthetics</h2>
 						<ul>
 							<li><a href="themes.html">Themes</a></li>
-							<li><a href="effects.html">Effects</a></li>
+							<li><a href="effects.html">Native settings</a></li>
 							<li><a href="fonts.html">Fonts</a></li>
 						</ul>
 					</div>
@@ -705,7 +146,6 @@
 							<li><a href="security.html" aria-current="page">Security</a></li>
 							<li><a href="ergonomics.html">Ergonomics</a></li>
 							<li><a href="problem-lens.html">Problem Lens</a></li>
-							<li><a href="oh-my-posh.html">Oh My Posh</a></li>
 						</ul>
 					</div>
 					<div>
@@ -713,31 +153,16 @@
 						<ul>
 							<li><a href="https://github.com/21010/stylesmith">GitHub</a></li>
 							<li>
-								<a href="https://github.com/21010/stylesmith/blob/main/CHANGELOG.md"
-									>Changelog</a
+								<a href="https://github.com/21010/stylesmith/blob/main/README.md"
+									>Documentation</a
 								>
 							</li>
-							<li>
-								<a href="https://github.com/21010/stylesmith/issues"
-									>Report an issue</a
-								>
-							</li>
-							<li><a href="accessibility.html">Accessibility</a></li>
 						</ul>
 					</div>
 				</nav>
 			</div>
 			<div class="footer-bottom">
-				<p>
-					&copy; 2026 Grzegorz Zioło (21010). Released under the
-					<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt"
-						>MIT License</a
-					>.
-				</p>
-				<p>
-					Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated
-					with Microsoft.
-				</p>
+				<span>© 2026 Stylesmith</span><span>Open source under the MIT license</span>
 			</div>
 		</footer>
 	</body>

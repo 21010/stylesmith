@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { EFFECTS } from "../effects";
-import { FONTS } from "../fonts";
 import { ICON_THEME, PRESETS, presetEffects } from "../presets";
 import { manifest } from "./files";
 
@@ -32,13 +31,6 @@ describe("presets", () => {
 				assert.equal(preset.iconTheme, own?.id ?? ICON_THEME);
 			});
 
-			it("uses a bundled font", () => {
-				assert.ok(
-					FONTS.some(font => font.id === preset.font),
-					preset.font
-				);
-			});
-
 			it("decides every effect, and nothing else", () => {
 				assert.deepEqual(
 					Object.keys(preset.effects).sort(),
@@ -49,10 +41,8 @@ describe("presets", () => {
 		});
 	}
 
-	it("keep the high contrast preset free of moving effects", () => {
+	it("keeps motion low in the high contrast preset", () => {
 		const high = PRESETS.find(preset => preset.id === "high-contrast")!;
-		for (const setting of ["caretAnimation", "typingSparks", "bootSequence", "glitchOnSave"]) {
-			assert.equal(high.effects[`effects.${setting}`], false, setting);
-		}
+		assert.equal(high.effects["effects.smoothCursor"], false);
 	});
 });

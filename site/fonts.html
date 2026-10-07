@@ -11,7 +11,7 @@
 		<title>Typography - Stylesmith</title>
 		<meta
 			name="description"
-			content="Curated, zero-install Nerd Fonts bundled seamlessly into VS Code via Stylesmith."
+			content="Select a Nerd Font already installed on your system using VS Code's font settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,12 +95,13 @@
 			<section class="hero">
 				<h1>Custom <span>Typography</span></h1>
 				<p class="lead">
-					Stylesmith bundles four popular Nerd Fonts. They load directly inside VS Code as
-					web fonts, meaning you don't have to install anything on your operating system.
+					Stylesmith can select one of four Nerd Font families through VS Code's font
+					settings. Install the font on your system first; Stylesmith does not bundle or
+					install fonts.
 				</p>
 			</section>
 
-			<section id="fonts" aria-label="Bundled fonts" class="pt-2">
+			<section id="fonts" aria-label="System-installed font families" class="pt-2">
 				<div class="grid-2x2">
 					<article class="font-card">
 						<h3>JetBrainsMono</h3>
@@ -167,9 +168,8 @@
 			<section style="max-width: 800px; margin: 4rem auto 2rem; padding: 0 2rem">
 				<h2>How to apply a font</h2>
 				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.5">
-					<strong>Note:</strong> When you apply a Stylesmith preset, the optimal font for
-					that aesthetic is automatically loaded for you. However, you are always free to
-					override it or use your own custom local font.
+					Stylesmith presets choose themes, icons and native settings. They do not change
+					your font. Install a Nerd Font family on your system before selecting it here.
 				</p>
 				<ol class="steps-list" style="margin-top: 1.5rem">
 					<li>
@@ -179,15 +179,13 @@
 						>) and run <code>Stylesmith: Show Menu</code>.
 					</li>
 					<li>
-						<strong>Select Typography:</strong> Click the <strong>Font</strong> option
-						to open the typography picker.
+						<strong>Select a font:</strong> Click the <strong>Font</strong> option to
+						choose a system-installed family.
 					</li>
 					<li>
-						<strong>Pick a bundled font, or use your own:</strong> Choose one of the
-						bundled Nerd Fonts from the list. If you prefer to use a custom font
-						installed on your OS, simply select <strong>"Use my own font"</strong> to
-						disable Stylesmith's web font injection. Stylesmith will reload the editor
-						window to apply your change.
+						<strong>Choose a family:</strong> Stylesmith sets the editor and terminal
+						font names through VS Code. It does not install font files, inject web
+						fonts, or reload the window.
 					</li>
 				</ol>
 			</section>
@@ -201,8 +199,8 @@
 						<span>Stylesmith</span>
 					</a>
 					<p>
-						Themes, fonts, icons, and effects for VS Code, with optional custom CSS and
-						JavaScript. Stylesmith modifies installed workbench files.
+						Themes, icons, diagnostics and native settings for VS Code. Stylesmith does
+						not modify installation files.
 					</p>
 					<a
 						class="button"

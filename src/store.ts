@@ -1,6 +1,6 @@
 /**
  * Stylesmith's own state: the user's font and effect settings it changed (so Disable can put
- * them back), whether it's enabled, and when it last asked to re-apply.
+ * them back), and whether it's enabled.
  *
  * It's kept in a small JSON file in the extension's storage folder rather than in VS Code's
  * globalState: in older VS Code versions (seen on 1.93), a few quick globalState updates in a
@@ -34,8 +34,8 @@ export interface StoredState {
 	fontSettings?: Record<string, SavedValue>;
 	effectSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
-	reapplyAskedAt?: number;
-	vsCodeCommit?: string;
+	/** Set once the user was told the old workbench patch can't be removed, to tell them once. */
+	legacyDeniedShown?: boolean;
 }
 
 /** Reads and updates the state file. Every read is fresh; updates never overlap. */
@@ -58,19 +58,12 @@ export class StateFile {
 		}
 		try {
 			const state: unknown = JSON.parse(text);
-			return typeof state === "object" && state !== null ? state : {};
+			return typeof state === "object" && state !== null && !Array.isArray(state)
+				? state
+				: {};
 		} catch {
 			return {}; // a damaged file shouldn't break Stylesmith
 		}
-	}
-
-	/** Atomically claims the cross-window reapply prompt, if its cooldown has elapsed. */
-	claimReapplyPrompt(now: number, cooldownMs: number): Promise<boolean> {
-		return this.transact(state => {
-			if (now - (state.reapplyAskedAt ?? 0) < cooldownMs)
-				return { change: {}, result: false };
-			return { change: { reapplyAskedAt: now }, result: true };
-		});
 	}
 
 	/** Changes some values; `undefined` removes one. */
@@ -125,32 +118,9 @@ export class StateFile {
 					await rm(lock, { recursive: true, force: true }).catch(() => undefined);
 					throw error;
 				}
-				if (await this.lockIsStale(lock)) {
-					// Moving the stale directory out of the way is atomic. Check its token after
-					// the move so a waiter never deletes a different lock generation.
-					const observed = await readFile(path.join(lock, "owner.json"), "utf-8").catch(
-						() => ""
-					);
-					if (!(await this.lockIsStale(lock))) continue;
-					const stale = `${lock}.${randomUUID()}.stale`;
-					try {
-						await rename(lock, stale);
-						const owner = await readFile(path.join(stale, "owner.json"), "utf-8").catch(
-							() => ""
-						);
-						if (owner !== observed || !(await this.lockIsStale(stale))) {
-							// A different process replaced the stale generation before the move.
-							await rename(stale, lock).catch(() => undefined);
-						} else {
-							await rm(stale, { recursive: true, force: true });
-						}
-					} catch (moveError) {
-						if ((moveError as NodeJS.ErrnoException).code !== "ENOENT") throw moveError;
-					}
-					continue;
-				}
 				if (Date.now() >= deadline)
 					throw new Error("Timed out waiting for Stylesmith state lock");
+				if (await this.lockIsStale(lock)) await this.breakStaleLock(lock);
 				await new Promise(resolve => setTimeout(resolve, LOCK_RETRY_MS));
 			}
 		}
@@ -162,22 +132,47 @@ export class StateFile {
 		}
 	}
 
+	/**
+	 * Removes a stale lock. Only the holder of a second, short-lived "break" lock may do so, and
+	 * it checks staleness again while holding it: without that, two waiters could both see the
+	 * same stale lock, and the slower one would remove the fresh lock the faster one took.
+	 */
+	private async breakStaleLock(lock: string): Promise<void> {
+		const breaker = `${lock}.break`;
+		try {
+			await mkdir(breaker);
+		} catch (error) {
+			if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+			// The break lock is only held for a moment; one this old was left by a crash.
+			const since = (await stat(breaker).catch(() => undefined))?.mtimeMs ?? Date.now();
+			if (Date.now() - since > LOCK_INIT_GRACE_MS)
+				await rm(breaker, { recursive: true, force: true });
+			return;
+		}
+		try {
+			if (await this.lockIsStale(lock)) await rm(lock, { recursive: true, force: true });
+		} finally {
+			await rm(breaker, { recursive: true, force: true });
+		}
+	}
+
 	private async lockIsStale(lock: string): Promise<boolean> {
 		try {
 			const owner = JSON.parse(await readFile(path.join(lock, "owner.json"), "utf-8")) as {
 				pid?: unknown;
 			};
+			// No update takes this long. After a crash and a reboot, the owner's process id can
+			// belong to an unrelated process, so a live id alone doesn't keep a lock forever.
+			if (Date.now() - (await stat(lock)).mtimeMs > STALE_LOCK_MS) return true;
 			if (typeof owner.pid === "number" && Number.isInteger(owner.pid) && owner.pid > 0) {
 				try {
 					process.kill(owner.pid, 0);
 					return false;
 				} catch (error) {
-					if ((error as NodeJS.ErrnoException).code === "EPERM") return false;
-					if ((error as NodeJS.ErrnoException).code !== "ESRCH") return false;
-					return true;
+					return (error as NodeJS.ErrnoException).code === "ESRCH";
 				}
 			}
-			return Date.now() - (await stat(lock)).mtimeMs > STALE_LOCK_MS;
+			return false;
 		} catch {
 			// A process can stop after creating the directory but before writing owner.json.
 			// Give that brief initialization window time to finish, then recover the orphan.

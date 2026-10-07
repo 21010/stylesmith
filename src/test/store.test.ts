@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, rm, utimes, writeFile } from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
@@ -39,16 +39,21 @@ describe("state file", () => {
 
 	it("removes a value that is set to undefined", async () => {
 		const store = new StateFile(file);
-		await store.update({ enabled: true, reapplyAskedAt: 1 });
-		await store.update({ reapplyAskedAt: undefined });
-		assert.deepEqual(await store.read(), { enabled: true });
+		await store.update({ enabled: true });
+		await store.update({ enabled: undefined });
+		assert.deepEqual(await store.read(), {});
 	});
 
 	it("starts from the state of older versions until the file exists", async () => {
 		const store = new StateFile(file, () => ({ enabled: true }));
 		assert.deepEqual(await store.read(), { enabled: true });
-		await store.update({ reapplyAskedAt: 5 });
-		assert.deepEqual(await store.read(), { enabled: true, reapplyAskedAt: 5 });
+		await store.update({
+			effectSettings: { "editor.guides.bracketPairs": { previous: false, applied: "active" } }
+		});
+		assert.deepEqual(await store.read(), {
+			enabled: true,
+			effectSettings: { "editor.guides.bracketPairs": { previous: false, applied: "active" } }
+		});
 	});
 
 	it("treats a damaged file as empty", async () => {
@@ -63,14 +68,13 @@ describe("state file", () => {
 		const second = new StateFile(file);
 		await Promise.all([
 			first.update({ enabled: true }),
-			second.update({ reapplyAskedAt: 1 }),
+			second.update({ enabled: true }),
 			first.update({
 				fontSettings: { "editor.fontFamily": { previous: "Hack", applied: "x" } }
 			})
 		]);
 		assert.deepEqual(await second.read(), {
 			enabled: true,
-			reapplyAskedAt: 1,
 			fontSettings: { "editor.fontFamily": { previous: "Hack", applied: "x" } }
 		});
 		assert.deepEqual(await readdir(path.dirname(file)), ["state.json"], "no temporary files");
@@ -112,33 +116,35 @@ describe("state file", () => {
 		assert.deepEqual((await readdir(path.dirname(file))).sort(), ["state.json"]);
 	});
 
-	it("lets only one window claim the same reapply prompt cooldown", async () => {
-		const now = Date.now();
-		const stores = [new StateFile(file), new StateFile(file), new StateFile(file)];
-		const claimed = await Promise.all(
-			stores.map(store => store.claimReapplyPrompt(now, 60_000))
-		);
-		assert.equal(claimed.filter(Boolean).length, 1);
-		assert.equal((await stores[0]!.read()).reapplyAskedAt, now);
-	});
-
 	it("keeps working after an update fails", async () => {
 		const store = new StateFile(file);
 		// A folder where the state file should be: the update can't replace it.
 		await mkdir(file, { recursive: true });
 		await assert.rejects(store.update({ enabled: true }));
 		await rm(file, { recursive: true });
-		await store.update({ reapplyAskedAt: 2 });
-		assert.deepEqual(await store.read(), { reapplyAskedAt: 2 });
+		await store.update({ enabled: true });
+		assert.deepEqual(await store.read(), { enabled: true });
 		assert.deepEqual(await readdir(path.dirname(file)), ["state.json"], "no temporary files");
 	});
 
 	it("treats a file that isn't an object as empty", async () => {
 		const store = new StateFile(file);
 		await store.update({ enabled: true });
-		for (const text of ["null", "42", '"text"']) {
+		for (const text of ["null", "42", '"text"', "[1, 2]"]) {
 			await writeFile(file, text);
 			assert.deepEqual(await store.read(), {}, text);
 		}
+	});
+
+	it("recovers a lock left long ago, even if its process id is in use again", async () => {
+		const lock = `${file}.lock`;
+		await mkdir(lock, { recursive: true });
+		// This test's own process id: alive, as a reused id would be after a reboot.
+		await writeFile(path.join(lock, "owner.json"), JSON.stringify({ pid: process.pid }));
+		const longAgo = new Date(Date.now() - 60 * 60_000);
+		await utimes(lock, longAgo, longAgo);
+		await new StateFile(file).update({ enabled: true });
+		assert.deepEqual(await new StateFile(file).read(), { enabled: true });
+		assert.deepEqual(await readdir(path.dirname(file)), ["state.json"], "no lock left behind");
 	});
 });

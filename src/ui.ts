@@ -2,39 +2,14 @@ import * as vscode from "vscode";
 import { CONFIG_SECTION, type Config } from "./config";
 import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
-import type { Ui } from "./lifecycle";
 import { messages } from "./messages";
-import { permissionHelp } from "./permissions";
 import { PRESETS, presetEffects, type Preset } from "./presets";
 
-/**
- * Stylesmith's UI in VS Code: notifications, the status bar button and the menu it opens,
- * the font and preset pickers, and the help for permission problems. None of this touches
- * VS Code's files: changes go through "stylesmith.reload".
- */
+/** Stylesmith's UI uses VS Code commands, settings, themes, decorations and status bar APIs. */
 
 /** Stylesmith's messages as VS Code notifications. */
-export const vscodeUi: Ui = {
-	info: message => void vscode.window.showInformationMessage(message),
-	warn: message => void vscode.window.showWarningMessage(message),
-	error: message => void vscode.window.showErrorMessage(message),
-	ask: (message, ...choices) =>
-		Promise.resolve(vscode.window.showInformationMessage(message, ...choices)),
-	offerRestart: message => {
-		void vscode.window
-			.showInformationMessage(message, messages.reloadWindow)
-			.then(choice =>
-				choice === messages.reloadWindow
-					? vscode.commands.executeCommand("workbench.action.reloadWindow")
-					: undefined
-			);
-	},
-	restartNow: async () => {
-		await vscode.commands.executeCommand("workbench.action.reloadWindow");
-	},
-	run: async (command, ...args) => {
-		await vscode.commands.executeCommand(command, ...args);
-	}
+export const vscodeUi = {
+	error: (message: string) => void vscode.window.showErrorMessage(message)
 };
 
 /** Shows whether Stylesmith is active. */
@@ -81,7 +56,7 @@ export async function showMenu(config: Config): Promise<void> {
 	const items: MenuItem[] = [
 		{
 			label: "$(symbol-color) Apply a preset…",
-			detail: "A complete look: theme, icons, font and effects",
+			detail: "A complete look: theme, icons and VS Code API settings",
 			run: () => vscode.commands.executeCommand("stylesmith.applyPreset")
 		},
 		separator("Effects"),
@@ -92,7 +67,7 @@ export async function showMenu(config: Config): Promise<void> {
 				description: on ? "on" : "off",
 				run: async () => {
 					await config.set(effect.setting, !on);
-					await vscode.commands.executeCommand("stylesmith.reload");
+					await vscode.commands.executeCommand("stylesmith.enable");
 				}
 			};
 		}),
@@ -104,8 +79,8 @@ export async function showMenu(config: Config): Promise<void> {
 		},
 		separator(""),
 		{
-			label: "$(refresh) Reload",
-			run: () => vscode.commands.executeCommand("stylesmith.reload")
+			label: "$(refresh) Apply settings",
+			run: () => vscode.commands.executeCommand("stylesmith.enable")
 		},
 		{
 			label: "$(circle-slash) Disable",
@@ -135,11 +110,11 @@ async function pickFont(config: Config): Promise<void> {
 	if (!choice) return;
 	await config.set("fonts.enabled", choice.id !== undefined);
 	if (choice.id) await config.set("fonts.family", choice.id);
-	await vscode.commands.executeCommand("stylesmith.reload");
+	await vscode.commands.executeCommand("stylesmith.enable");
 }
 
 /**
- * Applies a preset's theme, icons, font and effects. Given a preset id (for example from a
+ * Applies a preset's theme, icons, font and supported effects. Given a preset id (for example from a
  * keyboard shortcut: "args": "night-city"), it applies that one; otherwise it asks.
  */
 export async function applyPreset(config: Config, id?: unknown): Promise<void> {
@@ -160,29 +135,10 @@ export async function applyPreset(config: Config, id?: unknown): Promise<void> {
 	}
 	if (!preset) return;
 	await usePreset(config, preset);
-	await vscode.commands.executeCommand("stylesmith.reload");
+	await vscode.commands.executeCommand("stylesmith.enable");
 }
 
 async function usePreset(config: Config, preset: Preset): Promise<void> {
 	await config.setThemes(preset.theme, preset.iconTheme);
-	await config.set("fonts.enabled", true);
-	await config.set("fonts.family", preset.font);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);
-}
-
-/** Explains how to let Stylesmith change VS Code's files, for this system and install. */
-export async function showPermissionHelp(folder: string): Promise<void> {
-	const help = permissionHelp(process.platform, folder);
-	const steps = help.steps.map((step, i) => `${i + 1}. ${step}`);
-	const detail = [...steps, ...(help.command ? [help.command] : [])].join("\n\n");
-	const buttons = help.command ? [messages.copyCommand] : [];
-	const choice = await vscode.window.showErrorMessage(
-		help.summary,
-		{ modal: true, detail },
-		...buttons
-	);
-	if (choice === messages.copyCommand && help.command) {
-		await vscode.env.clipboard.writeText(help.command);
-		void vscode.window.showInformationMessage(messages.commandCopied);
-	}
 }

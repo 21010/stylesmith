@@ -1,44 +1,36 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
-import * as path from "node:path";
 import { describe, it } from "node:test";
 import { EFFECTS } from "../effects";
 import { manifest } from "./files";
 
-// Tests run from out/test, two levels below the project root.
-const ROOT = path.join(__dirname, "..", "..");
 const settings = manifest().contributes.configuration.properties;
 
-describe("built-in effects", () => {
+describe("API-backed effects", () => {
 	for (const effect of EFFECTS) {
-		describe(effect.setting, () => {
+		it(`${effect.setting} has an application-scoped setting`, () => {
 			const setting = settings[`stylesmith.${effect.setting}`];
-
-			it("has a boolean setting in package.json", () => {
-				assert.ok(setting, "setting is declared");
-				assert.equal(setting.type, "boolean");
-			});
-
-			it("has the same default in code and package.json", () => {
-				assert.equal(setting?.default, effect.enabledByDefault);
-			});
-
-			it("can only be set in user settings", () => {
-				assert.equal(setting?.scope, "application");
-			});
-
-			it("has its file in the package, or changes VS Code settings instead", () => {
-				if (!effect.asset) {
-					assert.ok(
-						effect.editorSettings?.length,
-						"an effect without a file needs settings"
-					);
-					return;
-				}
-				const { file, kind } = effect.asset;
-				assert.ok(existsSync(path.join(ROOT, file)), file);
-				assert.equal(path.extname(file), `.${kind}`);
-			});
+			assert.ok(setting);
+			assert.equal(setting.type, "boolean");
+			assert.equal(setting.default, effect.enabledByDefault);
+			assert.equal(setting.scope, "application");
+			assert.ok(effect.editorSettings?.length, "the effect maps to VS Code settings");
 		});
 	}
+
+	it("uses only supported VS Code settings, never injected CSS or JavaScript", () => {
+		assert.deepEqual(
+			EFFECTS.flatMap(effect => effect.editorSettings ?? [])
+				.map(setting => setting.key)
+				.sort(),
+			[
+				"editor.cursorBlinking",
+				"editor.cursorSmoothCaretAnimation",
+				"editor.guides.bracketPairs",
+				"editor.renderLineHighlight",
+				"terminal.integrated.cursorBlinking",
+				"terminal.integrated.cursorStyle",
+				"window.density.layout"
+			].sort()
+		);
+	});
 });

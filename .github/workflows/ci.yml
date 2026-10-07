@@ -27,12 +27,10 @@ jobs:
       - name: Verify package signatures and provenance
         run: npm audit signatures
       - run: npm run lint
-      - name: Type-check the effect scripts
-        run: npm run typecheck:effects
       - run: npm run format:check
       - run: npm test
 
-  # Runs the effect scripts in headless Chromium, under VS Code's security policy.
+  # Checks the static website in Chromium (not the VS Code workbench).
   browser:
     runs-on: ubuntu-latest
     steps:
@@ -48,8 +46,7 @@ jobs:
         run: npx playwright-core install --with-deps chromium-headless-shell
       - run: npm run test:browser
 
-  # Runs Stylesmith inside a real VS Code: Enable, Reload, Disable and the uninstall cleanup,
-  # on the oldest supported version and on the current one.
+  # Runs Stylesmith inside VS Code: checks API settings and that the installation stays unchanged.
   integration:
     runs-on: ubuntu-latest
     strategy:

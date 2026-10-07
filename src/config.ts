@@ -4,37 +4,27 @@
  * versions, and tests pass in their own.
  */
 
-import * as os from "node:os";
-import * as path from "node:path";
 import * as vscode from "vscode";
 import type { Effect } from "./effects";
 import { DEFAULT_FONT_ID, findFont, type NerdFont } from "./fonts";
-import { chooseImports, type Variables } from "./imports";
 import type { SettingsAccess } from "./managed";
 import type { ProblemLensOptions, Severity } from "./problems";
 
 export const CONFIG_SECTION = "stylesmith";
-// Settings of the original Custom CSS and JS Loader, read until stylesmith.imports is set.
-const LEGACY_CONFIG_SECTION = "vscode_custom_css";
 
 /**
- * Stylesmith's settings. They're read from the user's settings only: workspace settings are
- * ignored on purpose, so a cloned repository can never choose what gets injected into VS Code.
+ * Stylesmith's settings. They're read from the user's settings only; workspace settings are
+ * ignored so opening a project cannot change which Stylesmith features get applied.
  */
 export interface Config {
 	get(key: string, fallback: boolean): boolean;
 	get(key: string, fallback: string): string;
 	get<T>(key: string, fallback: T): T;
 	set(key: string, value: unknown): Promise<void>;
-	/** The user's CSS and JS imports. */
-	imports(): readonly unknown[];
 	isOn(effect: Effect): boolean;
-	/** The bundled Nerd Font to use, or undefined to keep the user's own font. */
+	/** The selected system-installed Nerd Font, or undefined to keep the user's own font. */
 	font(): NerdFont | undefined;
-	allowRemoteImports(): boolean;
 	problemLens(): ProblemLensOptions;
-	/** Values for ${...} placeholders in file:// imports. */
-	variables(): Variables;
 	/** Sets VS Code's color theme and file icon theme, in the user's settings. */
 	setThemes(colorTheme: string, iconTheme: string): Promise<void>;
 }
@@ -66,18 +56,10 @@ export const vscodeConfig: Config = {
 			.update(key, value, vscode.ConfigurationTarget.Global);
 	},
 
-	imports: () =>
-		chooseImports(
-			vscode.workspace.getConfiguration(CONFIG_SECTION).inspect("imports")?.globalValue,
-			vscode.workspace.getConfiguration(LEGACY_CONFIG_SECTION).inspect("imports")?.globalValue
-		),
-
 	isOn: effect => get(effect.setting, effect.enabledByDefault),
 
 	font: () =>
-		get("fonts.enabled", true) ? findFont(get("fonts.family", DEFAULT_FONT_ID)) : undefined,
-
-	allowRemoteImports: () => get("allowRemoteImports", false),
+		get("fonts.enabled", false) ? findFont(get("fonts.family", DEFAULT_FONT_ID)) : undefined,
 
 	problemLens: () => ({
 		enabled: get("problems.enabled", true),
@@ -91,21 +73,6 @@ export const vscodeConfig: Config = {
 		const workbench = vscode.workspace.getConfiguration("workbench");
 		await workbench.update("colorTheme", colorTheme, vscode.ConfigurationTarget.Global);
 		await workbench.update("iconTheme", iconTheme, vscode.ConfigurationTarget.Global);
-	},
-
-	variables: () => {
-		// Files from an untrusted workspace must never be injected; the working folder may be one.
-		const trusted = vscode.workspace.isTrusted;
-		return {
-			cwd: trusted ? process.cwd() : undefined,
-			userHome: os.homedir(),
-			workspaceFolder: trusted
-				? (vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? "")
-				: undefined,
-			execPath: process.env.VSCODE_EXEC_PATH ?? process.execPath,
-			pathSeparator: path.sep,
-			env: process.env
-		};
 	}
 };
 

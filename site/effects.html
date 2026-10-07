@@ -5,13 +5,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
-		<title>Dynamic Effects - Stylesmith</title>
+		<title>Native Editor Settings - Stylesmith</title>
 		<meta
 			name="description"
-			content="Supercharge your VS Code environment with hardware-accelerated, zero-idle-cost visual effects."
+			content="Small visual options applied with documented VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -21,32 +21,11 @@
 	</head>
 	<body>
 		<a class="skip" href="#main">Skip to content</a>
-
 		<header class="top">
-			<a class="brand" href="./">
-				<img src="logo.svg" width="36" height="36" alt="" />
-				<span>Stylesmith</span>
-			</a>
+			<a class="brand" href="./"
+				><img src="logo.svg" width="36" height="36" alt="" /><span>Stylesmith</span></a
+			>
 			<button class="motion-toggle" type="button" aria-pressed="false" hidden>
-				<svg
-					class="icon-pause"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<rect x="6" y="5" width="4" height="14" fill="currentColor" />
-					<rect x="14" y="5" width="4" height="14" fill="currentColor" />
-				</svg>
-				<svg
-					class="icon-play"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path d="M7 5v14l12-7z" fill="currentColor" />
-				</svg>
 				<span class="sr-only">Pause animations</span>
 			</button>
 			<button
@@ -56,201 +35,98 @@
 				aria-controls="site-nav"
 				hidden
 			>
-				<span class="menu-icon" aria-hidden="true"></span>
-				<span class="sr-only">Menu</span>
+				<span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Menu</span>
 			</button>
 			<nav id="site-nav" aria-label="Main">
 				<div class="dropdown">
-					<button class="dropbtn" aria-expanded="false" style="color: var(--cyan)">
-						Aesthetics
-					</button>
+					<button class="dropbtn" aria-expanded="false">Aesthetics</button>
 					<div class="dropdown-content">
-						<a href="themes.html">Themes</a>
-						<a href="effects.html" style="color: var(--cyan)" aria-current="page"
-							>Effects</a
-						>
-						<a href="fonts.html">Fonts</a>
+						<a href="themes.html">Themes</a
+						><a href="effects.html" aria-current="page">Native settings</a
+						><a href="fonts.html">Fonts</a>
 					</div>
 				</div>
-				<a href="security.html">Security</a>
-				<a href="ergonomics.html">Ergonomics</a>
-				<div class="dropdown">
-					<button class="dropbtn" aria-expanded="false">Productivity</button>
-					<div class="dropdown-content">
-						<a href="problem-lens.html">Problem Lens</a>
-					</div>
-				</div>
-				<div class="dropdown">
-					<button class="dropbtn" aria-expanded="false">Add-ons</button>
-					<div class="dropdown-content">
-						<a href="oh-my-posh.html">Oh-My-Posh Theme</a>
-					</div>
-				</div>
-				<a href="https://github.com/21010/stylesmith">GitHub</a>
+				<a href="security.html">Security</a><a href="ergonomics.html">Ergonomics</a>
+				<a href="problem-lens.html">Problem Lens</a
+				><a href="https://github.com/21010/stylesmith">GitHub</a>
 				<a href="./#install" class="button nav-install">Install</a>
 			</nav>
 		</header>
-
 		<main id="main">
 			<section class="hero">
-				<h1>Dynamic <span>Effects</span></h1>
+				<h1>Native <span>Settings</span></h1>
 				<p class="lead">
-					Bring your editor to life. Our visual engine uses hardware acceleration to
-					deliver fluid, high-framerate effects with strictly zero background CPU cost.
-					Fully compliant with OS reduced-motion preferences.
+					These options use VS Code's documented settings API. They take effect in the
+					editor without injecting styles or scripts into the workbench.
 				</p>
 			</section>
-
-			<section id="effects" aria-label="Effects">
+			<section id="effects" aria-label="Supported settings">
 				<div class="effect-grid">
 					<article class="effect-card">
-						<div class="effect-vid-wrapper">
-							<video
-								aria-labelledby="effect-1-title"
-								aria-describedby="effect-1-text"
-								src="video/matrix-rain.webm"
-								autoplay
-								loop
-								muted
-								playsinline
-							></video>
-						</div>
 						<div class="effect-content">
-							<h3 id="effect-1-title">Matrix Rain</h3>
-							<p id="effect-1-text">
-								A highly optimized HTML5 Canvas overlay that drops fading matrix
-								characters when you type. Costing 0 bytes of memory when idle.
+							<h2>Smooth cursor</h2>
+							<p>
+								Uses <code>editor.cursorSmoothCaretAnimation: on</code> and
+								<code>editor.cursorBlinking: smooth</code>, VS Code's built-in
+								cursor animation.
 							</p>
 						</div>
 					</article>
-
 					<article class="effect-card">
-						<div class="effect-vid-wrapper">
-							<video
-								aria-labelledby="effect-2-title"
-								aria-describedby="effect-2-text"
-								src="video/crt-flicker.webm"
-								autoplay
-								loop
-								muted
-								playsinline
-							></video>
-						</div>
 						<div class="effect-content">
-							<h3 id="effect-2-title">CRT Flicker</h3>
-							<p id="effect-2-text">
-								Mimics a dying CRT monitor by injecting micro-translations into the
-								editor viewport via CSS hardware acceleration.
+							<h2>Current line</h2>
+							<p>
+								Uses <code>editor.renderLineHighlight: all</code> to highlight the
+								active line.
 							</p>
 						</div>
 					</article>
-
 					<article class="effect-card">
-						<div class="effect-vid-wrapper">
-							<video
-								aria-labelledby="effect-3-title"
-								aria-describedby="effect-3-text"
-								src="video/caret-animation.webm"
-								autoplay
-								loop
-								muted
-								playsinline
-							></video>
-						</div>
 						<div class="effect-content">
-							<h3 id="effect-3-title">Caret Animation</h3>
-							<p id="effect-3-text">
-								When the text cursor moves, it glides to its new place and leaves a
-								short trail behind it, making it easier to track your jumps.
+							<h2>Bracket guides</h2>
+							<p>
+								Uses <code>editor.guides.bracketPairs: active</code> to show the
+								guide around the active bracket pair.
 							</p>
 						</div>
 					</article>
-
 					<article class="effect-card">
-						<div class="effect-vid-wrapper">
-							<video
-								aria-labelledby="effect-4-title"
-								aria-describedby="effect-4-text"
-								src="video/typing-sparks.webm"
-								autoplay
-								loop
-								muted
-								playsinline
-							></video>
-						</div>
 						<div class="effect-content">
-							<h3 id="effect-4-title">Typing Sparks</h3>
-							<p id="effect-4-text">
-								Each key you type throws small neon pixel sparks up from the cursor
-								that obey simple gravity physics before fading out.
+							<h2>Compact layout</h2>
+							<p>
+								Uses <code>window.density.layout: compact</code> in VS Code versions
+								that provide this setting.
 							</p>
 						</div>
 					</article>
-
 					<article class="effect-card">
-						<div class="effect-vid-wrapper">
-							<video
-								aria-labelledby="effect-5-title"
-								aria-describedby="effect-5-text"
-								src="video/glitch-on-save.webm"
-								autoplay
-								loop
-								muted
-								playsinline
-							></video>
-						</div>
 						<div class="effect-content">
-							<h3 id="effect-5-title">Glitch on Save</h3>
-							<p id="effect-5-text">
-								The editor glitches for a moment with a quick red and cyan split
-								every time you press Ctrl+S.
-							</p>
-						</div>
-					</article>
-
-					<article class="effect-card">
-						<div class="effect-vid-wrapper">
-							<video
-								aria-labelledby="effect-6-title"
-								aria-describedby="effect-6-text"
-								src="video/boot-sequence.webm"
-								autoplay
-								loop
-								muted
-								playsinline
-							></video>
-						</div>
-						<div class="effect-content">
-							<h3 id="effect-6-title">Boot Sequence</h3>
-							<p id="effect-6-text">
-								A retro boot log types itself out over the window during startup and
-								quickly fades away.
-							</p>
+							<h2>Block terminal cursor</h2>
+							<p>Uses the native terminal cursor style and blinking settings.</p>
 						</div>
 					</article>
 				</div>
 			</section>
-
 			<section class="cta-section" style="text-align: center; margin: 4rem 0">
-				<h2>Ready to style your editor?</h2>
-				<p style="margin-bottom: 2rem">
-					Explore Stylesmith's workbench customization and review its security notes
-					before adding custom code.
+				<h2>Stylesmith leaves the workbench files untouched</h2>
+				<p>
+					Enable and Disable manage these settings through VS Code. Disable restores the
+					settings Stylesmith saved.
 				</p>
-				<a class="button btn-primary" href="./#install">View Installation Guide</a>
+				<a class="button btn-primary" href="security.html">Read the security notes</a>
 			</section>
 		</main>
-
 		<footer class="site-footer">
 			<div class="footer-grid">
 				<div class="footer-brand">
-					<a class="brand" href="./">
-						<img src="logo.svg" width="36" height="36" alt="" />
-						<span>Stylesmith</span>
-					</a>
+					<a class="brand" href="./"
+						><img src="logo.svg" width="36" height="36" alt="" /><span
+							>Stylesmith</span
+						></a
+					>
 					<p>
-						Themes, fonts, icons, and effects for VS Code, with optional custom CSS and
-						JavaScript. Stylesmith modifies installed workbench files.
+						Themes, icons, diagnostics and native settings for VS Code. Stylesmith does
+						not modify installation files.
 					</p>
 					<a
 						class="button"
@@ -263,7 +139,7 @@
 						<h2 class="footer-title">Aesthetics</h2>
 						<ul>
 							<li><a href="themes.html">Themes</a></li>
-							<li><a href="effects.html" aria-current="page">Effects</a></li>
+							<li><a href="effects.html" aria-current="page">Native settings</a></li>
 							<li><a href="fonts.html">Fonts</a></li>
 						</ul>
 					</div>
@@ -273,7 +149,6 @@
 							<li><a href="security.html">Security</a></li>
 							<li><a href="ergonomics.html">Ergonomics</a></li>
 							<li><a href="problem-lens.html">Problem Lens</a></li>
-							<li><a href="oh-my-posh.html">Oh My Posh</a></li>
 						</ul>
 					</div>
 					<div>
@@ -281,31 +156,16 @@
 						<ul>
 							<li><a href="https://github.com/21010/stylesmith">GitHub</a></li>
 							<li>
-								<a href="https://github.com/21010/stylesmith/blob/main/CHANGELOG.md"
-									>Changelog</a
+								<a href="https://github.com/21010/stylesmith/blob/main/README.md"
+									>Documentation</a
 								>
 							</li>
-							<li>
-								<a href="https://github.com/21010/stylesmith/issues"
-									>Report an issue</a
-								>
-							</li>
-							<li><a href="accessibility.html">Accessibility</a></li>
 						</ul>
 					</div>
 				</nav>
 			</div>
 			<div class="footer-bottom">
-				<p>
-					&copy; 2026 Grzegorz Zioło (21010). Released under the
-					<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt"
-						>MIT License</a
-					>.
-				</p>
-				<p>
-					Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated
-					with Microsoft.
-				</p>
+				<span>© 2026 Stylesmith</span><span>Open source under the MIT license</span>
 			</div>
 		</footer>
 	</body>

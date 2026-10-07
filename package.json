@@ -1,7 +1,7 @@
 {
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
-	"description": "Customize VS Code with themes, icons, fonts, effects, and optional custom CSS and JavaScript. Stylesmith modifies installed workbench files; custom JavaScript runs with workbench privileges. Review the security notes before adding code.",
+	"description": "Customize VS Code with native themes, icons, settings and editor decorations. Stylesmith does not modify VS Code installation files, apart from removing changes made by Stylesmith 1.x.",
 	"version": "1.18.2",
 	"publisher": "21010",
 	"author": {
@@ -17,9 +17,6 @@
 		"Other"
 	],
 	"keywords": [
-		"css",
-		"javascript",
-		"custom css",
 		"theme",
 		"workbench",
 		"customization",
@@ -75,7 +72,7 @@
 			},
 			{
 				"command": "stylesmith.reload",
-				"title": "Reload",
+				"title": "Apply Settings",
 				"category": "Stylesmith"
 			},
 			{
@@ -92,134 +89,11 @@
 		"configuration": {
 			"title": "Stylesmith",
 			"properties": {
-				"stylesmith.imports": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"default": [],
-					"markdownDescription": "URLs of `.css` and `.js` files to add to VS Code, e.g. `file:///C:/Users/me/custom.css`. File URLs support variables such as `${userHome}`. Only read from your user settings. While this setting isn't set, Stylesmith uses `vscode_custom_css.imports` from Custom CSS and JS Loader, if you have it; once it is set, even to an empty list `[]`, that one is ignored. When you change this, Stylesmith offers to reload so it takes effect.",
-					"scope": "application"
-				},
-				"stylesmith.allowRemoteImports": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Allow `https://` URLs in `stylesmith.imports`. Off by default. Remote resources can change at any time; JavaScript imports run in the workbench context with its available privileges. Only use trusted sources. `http://` is never allowed."
-				},
-				"stylesmith.silenceCorruptWarning": {
-					"type": "boolean",
-					"default": true,
-					"scope": "application",
-					"markdownDescription": "When VS Code tracks the workbench, writes the checksum for Stylesmith's patched content to `product.json`, which may suppress the integrity warning for that content. The checksum is not proof of authenticity. Turn this off to let VS Code report that the workbench differs from its recorded checksum."
-				},
-				"stylesmith.effects.caretAnimation": {
-					"type": "boolean",
-					"default": true,
-					"markdownDescription": "Animate the text cursor: it glides to its new position with a short trail. Built into Stylesmith, no file needed. When you change this, Stylesmith offers to reload so it takes effect.",
-					"scope": "application"
-				},
-				"stylesmith.effects.neonCurrentLine": {
-					"type": "boolean",
-					"default": true,
-					"scope": "application",
-					"markdownDescription": "Give the line with the cursor thin neon lines and a faint gradient, and a glowing line number with a neon marker in the gutter. Nothing is drawn over your code. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.neonFocusFrame": {
-					"type": "boolean",
-					"default": true,
-					"scope": "application",
-					"markdownDescription": "Give the editor you're typing in a soft neon frame and its active tab a glowing underline. Uses your theme's focus color; set `--stylesmith-neon` in your own CSS to change it. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.neonSelections": {
-					"type": "boolean",
-					"scope": "application",
-					"markdownDescription": "Give selected text, search matches and matching brackets a soft neon glow. When you change this, Stylesmith offers to reload so it takes effect.",
-					"default": true
-				},
-				"stylesmith.effects.neonBlocks": {
-					"type": "boolean",
-					"default": true,
-					"scope": "application",
-					"markdownDescription": "Highlight the code inside the brackets around your cursor with a neon line on the left and a soft tint. Turns on VS Code's bracket pair guides (`editor.guides.bracketPairs`) while it's on, and puts your setting back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.diagnosticHighlights": {
-					"type": "boolean",
-					"default": true,
-					"scope": "application",
-					"markdownDescription": "Replace the squiggly underline under errors, warnings and info messages with a calm, solid underline in the same color. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.neonGlow": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Make highlighted code glow in its own color, like a neon sign. Only in dark themes. Change the strength with `--stylesmith-glow` (default `60%`) and the size with `--stylesmith-glow-size` (default `6px`) in one of your own CSS imports. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.classicLayout": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Square corners and tabs that look like tabs, instead of VS Code's rounded modern look. Turns on VS Code's compact layout density (`window.density.layout`) while it's on, and puts your setting back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.neonTerminal": {
-					"type": "boolean",
-					"default": true,
-					"scope": "application",
-					"markdownDescription": "Give the terminal you're typing in a soft neon frame, like the editor's focus frame. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.terminalGlow": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Make the terminal's text glow in the theme's terminal text color, like an old CRT. Only in dark themes. Change the size with `--stylesmith-terminal-glow-size` (default `4px`) in one of your own CSS imports. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.retroTerminalCursor": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "A blinking block cursor in the terminal, like an old console. Sets VS Code's `terminal.integrated.cursorStyle` and `terminal.integrated.cursorBlinking` while it's on, and puts your settings back afterwards. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.crtScanlines": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Show faint CRT scanlines over the whole window, like an old monitor. Set `--stylesmith-scanlines` (default `0.12`) in your own CSS to change the strength. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.crtFlicker": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Occasionally jitter and flicker the editor, simulating a dying CRT monitor. Works well alongside CRT scanlines. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.matrixRain": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Drop Matrix-style fading characters from the cursor as you type. Set `--stylesmith-matrix-colors` in your own CSS to change the colors. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.typingSparks": {
-					"type": "boolean",
-					"default": false,
-					"scope": "application",
-					"markdownDescription": "Throw small neon sparks from the cursor as you type. Set `--stylesmith-spark-colors` in your own CSS to change the colors. When you change this, Stylesmith offers to reload so it takes effect."
-				},
-				"stylesmith.effects.bootSequence": {
-					"type": "boolean",
-					"scope": "application",
-					"markdownDescription": "Show a short retro boot log when VS Code starts. Any key skips it; it's skipped when your system is set to reduce motion. When you change this, Stylesmith offers to reload so it takes effect.",
-					"default": false
-				},
-				"stylesmith.effects.glitchOnSave": {
-					"type": "boolean",
-					"scope": "application",
-					"markdownDescription": "Make the editor glitch for a moment (a quick red/cyan split) when you save a file. Skipped when your system is set to reduce motion. When you change this, Stylesmith offers to reload so it takes effect.",
-					"default": false
-				},
 				"stylesmith.fonts.enabled": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"scope": "application",
-					"markdownDescription": "Use a bundled Nerd Font (with icons) in the editor and terminal. Stylesmith puts it first in `editor.fontFamily` and `terminal.integrated.fontFamily`, keeps your current fonts as fallbacks, and puts your settings back when you run **Stylesmith: Disable**. Nothing is installed on your system."
+					"markdownDescription": "Select a Nerd Font already installed on your system. Stylesmith changes editor and terminal font settings through VS Code’s API; it does not install fonts."
 				},
 				"stylesmith.fonts.family": {
 					"type": "string",
@@ -232,24 +106,24 @@
 						"DepartureMono"
 					],
 					"enumItemLabels": [
-						"JetBrainsMono Nerd Font",
-						"BlexMono Nerd Font",
-						"ShureTechMono Nerd Font",
-						"DepartureMono Nerd Font"
+						"JetBrainsMono Nerd Font (install separately)",
+						"BlexMono Nerd Font (install separately)",
+						"ShureTechMono Nerd Font (install separately)",
+						"DepartureMono Nerd Font (install separately)"
 					],
 					"markdownEnumDescriptions": [
-						"Modern and very readable, with ligatures. Regular and bold. Based on JetBrains Mono.",
-						"Classic IBM terminal feel. Regular and bold. Based on IBM Plex Mono.",
-						"Sci-fi, cyberpunk HUD look. Based on Share Tech Mono.",
-						"Pixel-style retro terminal. Sharpest at font sizes that are multiples of 11. Based on Departure Mono."
+						"Requires the JetBrainsMono Nerd Font family to be installed on your system.",
+						"Requires the BlexMono Nerd Font family to be installed on your system.",
+						"Requires the ShureTechMono Nerd Font family to be installed on your system.",
+						"Requires the DepartureMono Nerd Font family to be installed on your system."
 					],
-					"markdownDescription": "Which bundled Nerd Font to use when `stylesmith.fonts.enabled` is on. When you change this, Stylesmith offers to reload so it takes effect."
+					"markdownDescription": "Which font family to use. The font must be already installed on your system. The setting takes effect immediately."
 				},
 				"stylesmith.problems.enabled": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"markdownDescription": "Show errors and warnings right on their line: a soft tint, a pixel icon in the gutter, and a terminal-style message at the end of the line, like \"Error Lens\". Works without **Stylesmith: Enable** and updates live."
+					"markdownDescription": "Show diagnostics inline with VS Code editor decorations. Works without Enable and updates live."
 				},
 				"stylesmith.problems.minimumSeverity": {
 					"type": "string",
@@ -288,14 +162,167 @@
 				"stylesmith.statusbar": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show the Stylesmith button in the status bar. It opens a menu with presets, effects and fonts.",
+					"description": "Show the Stylesmith button in the status bar. It opens a menu with presets, supported effects and fonts.",
 					"scope": "application"
+				},
+				"stylesmith.effects.smoothCursor": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "Use VS Code’s native smooth caret animation and smooth cursor blinking."
+				},
+				"stylesmith.effects.currentLine": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "Highlight the current editor line using VS Code’s native line highlight."
+				},
+				"stylesmith.effects.bracketGuides": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"description": "Show VS Code’s native active bracket pair guides."
+				},
+				"stylesmith.effects.compactLayout": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Use compact layout density where supported by this VS Code version."
+				},
+				"stylesmith.effects.blockTerminalCursor": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Use VS Code’s native blinking block terminal cursor."
+				},
+				"stylesmith.effects.neonBlocks": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0. Use `stylesmith.effects.bracketGuides` instead; Stylesmith moves your value there and removes this setting."
+				},
+				"stylesmith.effects.classicLayout": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0. Use `stylesmith.effects.compactLayout` instead; Stylesmith moves your value there and removes this setting."
+				},
+				"stylesmith.effects.retroTerminalCursor": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0. Use `stylesmith.effects.blockTerminalCursor` instead; Stylesmith moves your value there and removes this setting."
+				},
+				"stylesmith.allowRemoteImports": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.silenceCorruptWarning": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
 				},
 				"stylesmith.remindAfterUpdate": {
 					"type": "boolean",
 					"default": true,
 					"scope": "application",
-					"description": "When Stylesmith's changes are removed, usually by a VS Code update, offer to re-apply them."
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.caretAnimation": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.neonCurrentLine": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.neonFocusFrame": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.neonSelections": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.diagnosticHighlights": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.neonGlow": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.neonTerminal": {
+					"type": "boolean",
+					"default": true,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.terminalGlow": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.crtScanlines": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.crtFlicker": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.matrixRain": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.typingSparks": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.bootSequence": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.effects.glitchOnSave": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer changes VS Code's installation. Stylesmith removes this setting automatically."
+				},
+				"stylesmith.imports": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"scope": "application",
+					"markdownDeprecationMessage": "Removed in Stylesmith 2.0, which no longer loads custom CSS or JavaScript. Stylesmith keeps your list here so you can move it to another tool; delete this setting when you no longer need it."
 				}
 			}
 		},
@@ -360,24 +387,21 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
+		"vscode:prepublish": "node scripts/clean.mjs && tsc -p tsconfig.extension.json",
+		"precompile": "node scripts/clean.mjs",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"lint": "eslint .",
-		"format": "prettier --write src assets scripts site extras eslint.config.mjs tsconfig*.json package.json \"*.md\"",
-		"format:check": "prettier --check src assets scripts site extras eslint.config.mjs tsconfig*.json package.json \"*.md\"",
+		"format": "prettier --write src scripts site extras eslint.config.mjs tsconfig*.json package.json \"*.md\"",
+		"format:check": "prettier --check src scripts site extras eslint.config.mjs tsconfig*.json package.json \"*.md\"",
 		"pretest": "npm run compile",
 		"test": "node --test \"out/test/**/*.test.js\"",
 		"themes": "npm run compile && node scripts/build-themes.mjs",
-		"fonts": "node scripts/build-fonts.mjs",
 		"icons": "npm run compile && node scripts/build-icons.mjs",
 		"screenshots": "npm run compile && node scripts/build-screenshots.mjs",
-		"videos": "npm run compile && node scripts/record-effects.mjs",
-		"vscode:uninstall": "node ./out/uninstall",
-		"test:browser": "npm run compile && tsc -p tsconfig.browser.json && node --test \"out/test-browser/**/*.test.js\"",
-		"typecheck:effects": "tsc -p tsconfig.effects.json",
 		"test:integration": "npm run compile && node out/test-integration/runTest.js",
-		"release": "release-it"
+		"release": "release-it",
+		"test:browser": "npm run compile && tsc -p tsconfig.browser.json && node --test \"out/test-browser/**/*.test.js\""
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.5",
@@ -394,13 +418,12 @@
 		"prettier": "^3.9.9",
 		"release-it": "^21.1.0",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.71.0",
-		"wawoff2": "^2.0.1"
+		"typescript-eslint": "^8.71.0"
 	},
 	"capabilities": {
 		"untrustedWorkspaces": {
 			"supported": true,
-			"description": "Stylesmith reads imports from user settings. Workspace path substitutions are refused in untrusted workspaces."
+			"description": "Stylesmith uses only its built-in assets and VS Code APIs; it does not load code or configuration from the workspace."
 		},
 		"virtualWorkspaces": true
 	},
