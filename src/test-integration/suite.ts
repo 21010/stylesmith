@@ -1,10 +1,11 @@
 /** End-to-end tests of Stylesmith's documented VS Code API contributions. */
 
 import assert from "node:assert/strict";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
 import { EFFECTS } from "../effects";
+import { locateWorkbench } from "../legacyCleanup";
 import { PRESETS } from "../presets";
 
 function userValue(section: string, key: string): unknown {
@@ -24,21 +25,6 @@ function withTimeout(work: Thenable<unknown>, what: string, ms = 60_000): Promis
 		.finally(() => clearTimeout(timer));
 }
 
-function findWorkbench(dir: string, depth = 7): string | undefined {
-	if (depth < 0) return undefined;
-	for (const entry of readdirSync(dir, { withFileTypes: true })) {
-		if (entry.isFile() && entry.name === "workbench.html") return path.join(dir, entry.name);
-		if (
-			entry.isDirectory() &&
-			["out", "vs", "code", "electron-browser", "workbench"].includes(entry.name)
-		) {
-			const found = findWorkbench(path.join(dir, entry.name), depth - 1);
-			if (found) return found;
-		}
-	}
-	return undefined;
-}
-
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function step(name: string, check: () => Promise<void> | void): Promise<void> {
@@ -51,7 +37,8 @@ export async function run(): Promise<void> {
 	assert.ok(extension, "Stylesmith is installed");
 	await extension.activate();
 
-	const workbench = findWorkbench(vscode.env.appRoot);
+	// The same lookup the 1.x cleanup uses, so this also checks it finds the file in this version.
+	const workbench = locateWorkbench(vscode.env.appRoot)?.htmlPath;
 	assert.ok(workbench, "test can find the workbench to verify it remains unchanged");
 	const workbenchBefore = readFileSync(workbench);
 	const product = path.join(vscode.env.appRoot, "product.json");
