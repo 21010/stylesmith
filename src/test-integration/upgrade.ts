@@ -22,17 +22,28 @@ export async function run(): Promise<void> {
 		until(() => readFileSync(workbench.htmlPath).equals(original), "the patch is removed")
 	);
 
-	await step("puts back the product.json checksum that 1.x had changed", () => {
+	// The cleanup restores the file, then the checksum, then removes the fonts: each step waits
+	// for its own result, not just for the one before it.
+	await step("puts back the product.json checksum that 1.x had changed", async () => {
 		if (!checksum) return; // this VS Code doesn't check the workbench
-		const product = JSON.parse(
-			readFileSync(path.join(vscode.env.appRoot, "product.json"), "utf-8")
-		) as { checksums: Record<string, string> };
-		assert.ok(Object.values(product.checksums).includes(checksum));
+		const checksums = () =>
+			(
+				JSON.parse(
+					readFileSync(path.join(vscode.env.appRoot, "product.json"), "utf-8")
+				) as { checksums: Record<string, string> }
+			).checksums;
+		await until(
+			() => Object.values(checksums()).includes(checksum),
+			"the checksum is put back"
+		);
 	});
 
-	await step("removes the 1.x font folder", () => {
-		assert.ok(!existsSync(path.join(workbench.dir, "stylesmith-fonts")));
-	});
+	await step("removes the 1.x font folder", () =>
+		until(
+			() => !existsSync(path.join(workbench.dir, "stylesmith-fonts")),
+			"the font folder is removed"
+		)
+	);
 
 	await step("moves and removes 1.x settings, keeping the user's imports", async () => {
 		// The migration writes one setting at a time: wait for the last one, not the first.
