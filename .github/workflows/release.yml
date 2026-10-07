@@ -27,6 +27,7 @@ jobs:
   package:
     needs: ci
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       id-token: write # to sign the build provenance
@@ -70,6 +71,7 @@ jobs:
   github-release:
     needs: package
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write # to create the release
     steps:
