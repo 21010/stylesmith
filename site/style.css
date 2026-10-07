@@ -105,9 +105,15 @@ html {
 	display: flex;
 	gap: 0.6rem;
 	align-items: center;
+	min-width: 0;
 	color: var(--text);
-	font: 700 1.25rem var(--mono);
+	/* 1.25rem from 400 px up; a little smaller on narrower screens, so the name still fits
+	   at 200% text size on a 320 px screen (WCAG 1.4.4, 1.4.10). */
+	font: 700 clamp(1rem, 6.25vw, 1.25rem) var(--mono);
 	text-decoration: none;
+}
+.brand span {
+	overflow-wrap: anywhere;
 }
 
 .top nav {
@@ -1575,6 +1581,17 @@ kbd {
 .preset-parts dd {
 	margin: 0;
 	color: var(--text);
+	overflow-wrap: anywhere;
+}
+/* On narrow screens each label goes above its value, so long names and large text fit. */
+@media (max-width: 30em) {
+	.preset-parts {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.1rem;
+	}
+	.preset-parts dd {
+		margin-bottom: 0.5rem;
+	}
 }
 /* A few lines of code in a theme's own editor colors (taken from its theme file; a test
    keeps them in step). Wrapped, so narrow screens never scroll sideways. */
