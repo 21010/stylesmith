@@ -241,13 +241,11 @@ describe("website in the browser", () => {
 		const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 		await page.goto(base, { waitUntil: "networkidle" });
 		const pause = page.locator(".motion-toggle");
-		const video = page.locator("video[autoplay]").first();
 		assert.equal(await pause.getAttribute("aria-pressed"), "false");
-		assert.equal(await video.evaluate(v => (v as HTMLVideoElement).paused), false, "playing");
+		assert.equal(await page.locator("video[autoplay]").count(), 0, "no product demo video");
 
 		await pause.click();
 		assert.equal(await pause.getAttribute("aria-pressed"), "true");
-		assert.equal(await video.evaluate(v => (v as HTMLVideoElement).paused), true, "video");
 		const animations = await page.evaluate(() => ({
 			caret: getComputedStyle(document.querySelector(".caret")!).animationName,
 			carousel: getComputedStyle(document.querySelector(".carousel img")!).animationPlayState
@@ -340,13 +338,7 @@ describe("website in the browser", () => {
 	it("starts paused when the system asks for reduced motion", async () => {
 		const { page } = await open({ reducedMotion: true });
 		assert.equal(await page.locator(".motion-toggle").getAttribute("aria-pressed"), "true");
-		assert.equal(
-			await page
-				.locator("video[autoplay]")
-				.first()
-				.evaluate(v => (v as HTMLVideoElement).paused),
-			true
-		);
+		assert.equal(await page.locator("video[autoplay]").count(), 0);
 		await page.close();
 	});
 

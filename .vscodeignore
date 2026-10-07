@@ -1,7 +1,10 @@
 .github/
 .vscode/
+.agents/
 src/
-out/test/
+!out
+!out/**
+out/test/**
 **/*.map
 **/*.ts
 node_modules/
@@ -12,8 +15,8 @@ tsconfig*.json
 images/logo.svg
 scripts/
 .workbench-location.json
-out/test-integration/
-out/test-browser/
+out/test-integration/**
+out/test-browser/**
 .vscode-test/
 site/
 images/menu.png

@@ -71,7 +71,6 @@ const promptCount = () =>
 async function shootOhMyPosh(vscode, preset) {
 	const { page, project, close } = await openVSCode(vscode, preset, {
 		size: OMP_SIZE,
-		effects: { "effects.bootSequence": false },
 		settings: {
 			"terminal.integrated.profiles.windows": {
 				"Oh My Posh": {
@@ -173,7 +172,6 @@ async function shootProblemLens(vscode) {
 		size: LENS_SIZE,
 		files: LENS_PROJECT,
 		open: "src/cart.ts",
-		effects: { "effects.bootSequence": false },
 		settings: {
 			"stylesmith.problems.minimumSeverity": "info",
 			"editor.fontSize": 16,
@@ -210,10 +208,6 @@ const MENU_PRESET = "night-city";
 async function shootMenu(page) {
 	const button = ".statusbar-item:has(.codicon-paintcan)";
 	await page.click(button);
-	// Outline the button in the theme's focus color, so the picture shows what opens the menu.
-	await page.addStyleTag({
-		content: `${button} { outline: 2px solid var(--vscode-focusBorder); outline-offset: -2px; }`
-	});
 	await page.waitForSelector(".quick-input-widget .monaco-list-row", { timeout: 10_000 });
 	await page.mouse.move(5, 5); // no hover highlight or tooltip
 	await page.waitForTimeout(600);

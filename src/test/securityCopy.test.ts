@@ -1,53 +1,57 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { ROOT } from "./files";
 
 const read = (file: string) => readFileSync(path.join(ROOT, file), "utf-8");
-const readme = read("README.md");
-const policy = read("SECURITY.md");
 const manifest = JSON.parse(read("package.json")) as {
 	description: string;
+	capabilities?: { untrustedWorkspaces?: { supported?: boolean } };
 	contributes: {
-		configuration: { properties: Record<string, { markdownDescription?: string }> };
+		configuration: {
+			properties: Record<string, { markdownDeprecationMessage?: string } | undefined>;
+		};
 	};
 };
-const homepage = read("site/index.html");
-const securityPage = read("site/security.html");
+const sources = readdirSync(path.join(ROOT, "src")).filter(file => file.endsWith(".ts"));
 
-describe("public security and recovery copy", () => {
-	it("says that Stylesmith modifies installed workbench files", () => {
-		assert.match(readme, /modifies the installed VS Code workbench files/);
-		assert.match(policy, /modifies VS Code's installed workbench files/);
-		assert.match(manifest.description, /modifies installed workbench files/);
-		assert.match(homepage, /modifies installed workbench files/);
-		assert.match(securityPage, /modifies VS Code's installed workbench/);
+describe("API-only security boundary", () => {
+	it("declares that Stylesmith does not modify the VS Code installation", () => {
+		assert.match(manifest.description, /does not modify VS Code installation files/);
+		assert.equal(manifest.capabilities?.untrustedWorkspaces?.supported, true);
 	});
 
-	it("explains that custom JavaScript retains workbench privileges", () => {
-		assert.match(readme, /Your own JavaScript runs in VS Code's workbench context/);
-		assert.match(policy, /Custom JavaScript runs in the workbench context/);
-		assert.match(manifest.description, /custom JavaScript runs with workbench privileges/);
-		assert.match(homepage, /do not\s+sandbox custom JavaScript/);
-		assert.match(securityPage, /Custom JavaScript runs in the workbench context/);
+	it("does not expose custom imports or checksum-suppression settings", () => {
+		const settings = manifest.contributes.configuration.properties;
+		for (const key of [
+			"stylesmith.imports",
+			"stylesmith.allowCustomJavaScript",
+			"stylesmith.allowRemoteImports",
+			"stylesmith.silenceCorruptWarning"
+		]) {
+			// An old setting may only be declared as deprecated, so Stylesmith can remove it.
+			const schema = settings[key];
+			if (schema) assert.ok(schema.markdownDeprecationMessage, key);
+			const name = `"${key.replace("stylesmith.", "")}"`;
+			for (const file of sources.filter(file => file !== "oldSettings.ts"))
+				assert.ok(!read(`src/${file}`).includes(name), `${file} uses ${key}`);
+		}
 	});
 
-	it("does not present a workbench checksum as proof of authenticity", () => {
-		assert.match(readme, /checksum is not an authenticity guarantee/);
-		assert.match(policy, /checksum is not proof of authenticity/);
-		assert.match(
-			manifest.contributes.configuration.properties["stylesmith.silenceCorruptWarning"]
-				?.markdownDescription ?? "",
-			/not proof of authenticity/
-		);
-		assert.match(homepage, /checksum is not proof of authenticity/);
-		assert.match(securityPage, /not an authenticity check/);
+	it("documents the API-only boundary", () => {
+		assert.match(read("README.md"), /does not modify VS Code installation files/);
+		assert.match(read("SECURITY.md"), /does not read or write VS Code installation files/);
 	});
 
-	it("distinguishes Disable recovery from the best-effort uninstall hook", () => {
-		assert.match(readme, /uninstall hook .*does not restore managed user settings/);
-		assert.match(policy, /does not restore managed user settings/);
-		assert.match(securityPage, /uninstall hook attempts only\s+workbench and font cleanup/);
+	it("touches the installation only in the documented 1.x cleanup", () => {
+		const touching = readdirSync(path.join(ROOT, "src"))
+			.filter(file => file.endsWith(".ts"))
+			.filter(file => /appRoot|product\.json|workbench\.html/.test(read(`src/${file}`)));
+		// extension.ts only passes vscode.env.appRoot to the cleanup.
+		assert.deepEqual(touching.sort(), ["extension.ts", "legacyCleanup.ts"]);
+		assert.match(read("src/extension.ts"), /removeLegacyPatch\(vscode\.env\.appRoot\)/);
+		assert.equal(read("src/extension.ts").match(/appRoot/g)?.length, 1);
+		assert.match(read("SECURITY.md"), /src\/legacyCleanup\.ts/);
 	});
 });

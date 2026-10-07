@@ -42,10 +42,6 @@ export default defineConfig(
 		}
 	},
 	{
-		files: ["assets/**/*.js"],
-		languageOptions: { sourceType: "script", globals: globals.browser }
-	},
-	{
 		files: ["site/**/*.js"],
 		languageOptions: { sourceType: "script", globals: globals.browser }
 	},

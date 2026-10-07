@@ -18,19 +18,27 @@ export interface Group {
 	name: "fontSettings" | "effectSettings";
 	/** The user's own part of a value they changed after Stylesmith; what to put back. */
 	userPart(current: unknown): unknown;
+	/**
+	 * Whether a value the user changed after Stylesmith replaces Stylesmith's value outright.
+	 * Automatic re-applies then leave it alone; an explicit Enable still applies over it.
+	 */
+	userChangeWins: boolean;
 }
 
 /** Font lists: the user's part is the list without Stylesmith's fonts. */
 export const FONT_GROUP: Group = {
 	name: "fontSettings",
 	userPart: current =>
-		typeof current === "string" ? withoutStylesmithFonts(current) || undefined : current
+		typeof current === "string" ? withoutStylesmithFonts(current) || undefined : current,
+	// The user's font list is kept as fallbacks, so re-applying never discards their change.
+	userChangeWins: false
 };
 
 /** Settings effects turn on: a value the user changed is entirely theirs. */
 export const EFFECT_GROUP: Group = {
 	name: "effectSettings",
-	userPart: current => current
+	userPart: current => current,
+	userChangeWins: true
 };
 
 /** Puts `family` first in the font list, keeping the user's fonts as fallbacks. */
@@ -114,8 +122,14 @@ export class ManagedSettings {
 	/**
 	 * Makes exactly the `wanted` settings managed in `group`: applies them, and puts back any
 	 * setting the group managed before but doesn't need now. An empty map restores them all.
+	 * With `keepUserChanges`, a setting the user changed since Stylesmith applied it stays as
+	 * the user left it (in groups where the user's change wins); it's still restored on Disable.
 	 */
-	async update(group: Group, wanted: ReadonlyMap<string, Wanted>): Promise<void> {
+	async update(
+		group: Group,
+		wanted: ReadonlyMap<string, Wanted>,
+		{ keepUserChanges = false }: { keepUserChanges?: boolean } = {}
+	): Promise<void> {
 		await this.store.transact(async stored => {
 			const state = validEntries(stored[group.name]);
 
@@ -123,6 +137,9 @@ export class ManagedSettings {
 				const { user, default: defaultValue, known } = this.settings.read(key);
 				// A setting from a newer VS Code version (like window.density.layout) is skipped.
 				if (!known) continue;
+				const saved = state[key];
+				if (keepUserChanges && group.userChangeWins && saved && user !== saved.applied)
+					continue;
 				const plan = planApply(user, defaultValue, state[key], want, group);
 				if (plan) {
 					if (plan.applied !== user) await this.settings.write(key, plan.applied);

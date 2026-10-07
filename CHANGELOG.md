@@ -2,6 +2,16 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Changed
+
+- Removed all workbench patching, checksum updates, and installation-file cleanup. Themes, icon themes, diagnostics, and supported visual options now use VS Code's documented contributions, settings, and decoration APIs.
+- Removed workbench CSS effects, canvas animations, and extension-bundled fonts because VS Code does not expose supported APIs for them. Font selection now uses system-installed font families and is off by default.
+- Removed the effects that required injected CSS or JavaScript. Remaining toggles set native VS Code settings and apply without restarting the window.
+- On first start, Stylesmith removes the workbench patch, font folder and `product.json` checksum change left by Stylesmith 1.x, and asks to reload the window. It only removes its own changes and never asks for administrator rights; if VS Code's installation isn't writable, it explains how to repair it.
+- Settings from 1.x that no longer do anything are removed from the user's settings on first start. `effects.neonBlocks`, `effects.classicLayout` and `effects.retroTerminalCursor` carry over to `effects.bracketGuides`, `effects.compactLayout` and `effects.blockTerminalCursor`. `stylesmith.imports` is kept and marked as deprecated, so users can move their custom files to another tool.
+
 ## 1.18.2 (2026-10-03)
 
 ### Added

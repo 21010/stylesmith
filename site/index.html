@@ -11,7 +11,7 @@
 		<title>Stylesmith: Deep UI Customization for VS Code</title>
 		<meta
 			name="description"
-			content="Themes, fonts, effects, and optional custom CSS or JavaScript for VS Code. Stylesmith modifies installed workbench files; review its security and recovery limits."
+			content="Themes, file icons, diagnostics and native settings for VS Code. Stylesmith does not modify VS Code installation files."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -98,8 +98,8 @@
 				</p>
 				<h1><span>Hack the look.</span><small>Stay secure. Protect your eyes.</small></h1>
 				<p class="lead">
-					A complete UI overhaul for VS Code. Apply presets, dynamic visual effects, or
-					inject your own CSS and JS.
+					Themes, file icons, diagnostic decorations and native editor settings for VS
+					Code.
 				</p>
 				<div class="actions hero-actions">
 					<a
@@ -111,22 +111,12 @@
 				</div>
 				<p class="hero-facts">Free &amp; open source (MIT) · VS Code 1.93+</p>
 				<figure class="screen">
-					<video
-						autoplay
-						loop
-						muted
-						playsinline
-						poster="img/night-city.png"
-						aria-label="Demo of the Night City preset: code is typed with sparks, saved with a glitch, and the cursor glides between lines"
-					>
-						<source src="video/night-city.webm" type="video/webm" />
-						<img
-							src="img/night-city.png"
-							width="1280"
-							height="760"
-							alt="VS Code with the Night City preset"
-						/>
-					</video>
+					<img
+						src="img/night-city.png"
+						width="1280"
+						height="760"
+						alt="VS Code with the Night City theme, pixel icons and native editor settings"
+					/>
 				</figure>
 			</section>
 
@@ -157,7 +147,9 @@
 						<h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text)">
 							Dynamic Effects
 						</h3>
-						<p>Hardware-accelerated neon glows, CRT scanlines, and Matrix rain.</p>
+						<p>
+							Native cursor, current-line, bracket-guide and terminal cursor settings.
+						</p>
 					</article>
 				</div>
 				<div class="carousel-wrapper" style="max-width: 60rem; margin: 0 auto">
@@ -269,8 +261,8 @@
 					<article class="feature-card">
 						<h3>Dynamic Effects</h3>
 						<p>
-							Hardware-accelerated visual effects: a gliding caret, Matrix rain, CRT
-							flicker, typing sparks, and glowing neon code blocks.
+							Choose native VS Code settings for a smooth cursor, current-line
+							highlight, bracket guides, compact density, and terminal cursor.
 						</p>
 						<div class="card-actions" style="margin-top: auto">
 							<a
@@ -297,10 +289,11 @@
 						</div>
 					</article>
 					<article class="feature-card">
-						<h3>Bundled Nerd Fonts</h3>
+						<h3>System-installed Nerd Fonts</h3>
 						<p>
-							JetBrainsMono, BlexMono, ShureTechMono, and DepartureMono come bundled
-							and pre-configured for your editor and terminal.
+							Select one of four font families already installed on your system.
+							Stylesmith changes the editor and terminal font settings through VS
+							Code.
 						</p>
 						<div class="card-actions" style="margin-top: auto">
 							<a
@@ -316,43 +309,24 @@
 
 			<section id="custom-css" aria-labelledby="custom-css-title">
 				<h2 id="custom-css-title">
-					<span aria-hidden="true">03 //</span> Deep Customization
+					<span aria-hidden="true">03 //</span> Built-in Customization
 				</h2>
 				<div class="split-section">
 					<div class="split-text">
 						<ul class="checks">
 							<li>
-								<strong>Bring Your Own Code:</strong> Inject any number of custom
-								files via your <code>settings.json</code>.
+								<strong>Extension API only:</strong> Stylesmith does not read or
+								write VS Code installation files.
 							</li>
 							<li>
-								<strong>After updates:</strong> If a VS Code update removes
-								Stylesmith's changes, it can offer to apply them again.
+								<strong>VS Code settings:</strong> Features that have supported
+								settings use those directly.
 							</li>
 							<li>
-								<strong>CSP hashes:</strong> Stylesmith adds SHA-256 hashes for the
-								inline scripts it inserts. Hashes identify script bytes; they do not
-								sandbox custom JavaScript or make it trustworthy.
+								<strong>No injected code:</strong> Stylesmith does not add CSS or
+								JavaScript to the workbench.
 							</li>
 						</ul>
-					</div>
-					<div class="editor-window">
-						<div class="editor-header" aria-hidden="true">
-							<div class="editor-dots">
-								<span class="dot red"></span>
-								<span class="dot yellow"></span>
-								<span class="dot green"></span>
-							</div>
-							<span class="filename">settings.json</span>
-						</div>
-						<div class="editor-body">
-							<pre><code><span class="token-punctuation">{</span>
-  <span class="token-key">"stylesmith.imports"</span><span class="token-punctuation">:</span> <span class="token-punctuation">[</span>
-    <span class="token-string">"file:///Users/me/.vscode/custom.css"</span><span class="token-punctuation">,</span>
-    <span class="token-string">"file:///Users/me/.vscode/custom.js"</span>
-  <span class="token-punctuation">]</span>
-<span class="token-punctuation">}</span></code></pre>
-						</div>
 					</div>
 				</div>
 			</section>
@@ -479,13 +453,12 @@
 									<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
 								</svg>
 							</div>
-							<h3>Extends VS Code's CSP</h3>
+							<h3>Uses documented extension APIs</h3>
 						</div>
 						<p>
-							Stylesmith keeps and extends the workbench's existing Content Security
-							Policy (CSP). A CSP hash identifies the script it permits; custom
-							JavaScript still runs with workbench privileges. Only add code you
-							trust.
+							Themes and icon themes are manifest contributions. Problem Lens uses
+							editor decorations and diagnostics APIs. Settings are changed through VS
+							Code.
 						</p>
 					</article>
 					<article class="security-card">
@@ -505,13 +478,11 @@
 									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
 								</svg>
 							</div>
-							<h3>Explains integrity warnings</h3>
+							<h3>Leaves installation files alone</h3>
 						</div>
 						<p>
-							Stylesmith may update <code>product.json</code> to record the checksum
-							for its patched workbench. This can suppress VS Code's warning for that
-							content; the checksum is not proof of authenticity and may hide other
-							changes while suppression is on.
+							Stylesmith does not read or write <code>workbench.html</code>,
+							<code>product.json</code>, or other files in the VS Code installation.
 						</p>
 					</article>
 					<article class="security-card">
@@ -535,13 +506,11 @@
 									></path>
 								</svg>
 							</div>
-							<h3>File replacement and cleanup</h3>
+							<h3>Does not run workspace code</h3>
 						</div>
 						<p>
-							Stylesmith uses temporary files and rename to reduce partial-write risk.
-							Disable and uninstall attempt to remove its changes, but cleanup can
-							fail and VS Code updates can replace the workbench. Repair or reinstall
-							may be needed if VS Code will not start.
+							Stylesmith does not load project files or settings to select and execute
+							code, and it declares support for untrusted workspaces.
 						</p>
 					</article>
 					<article class="security-card">
@@ -566,9 +535,9 @@
 							<h3>Workspace Immunity</h3>
 						</div>
 						<p>
-							Stylesmith reads imports from user settings, not project settings, and
-							refuses workspace path substitutions in untrusted workspaces. Other
-							extensions and code remain subject to VS Code's own trust controls.
+							Stylesmith does not load code or configuration from the opened
+							workspace. Other extensions and code remain subject to VS Code's own
+							trust controls.
 						</p>
 					</article>
 				</div>
@@ -677,8 +646,8 @@
 						<span>Stylesmith</span>
 					</a>
 					<p>
-						Themes, fonts, icons, and effects for VS Code, with optional custom CSS and
-						JavaScript. Stylesmith modifies installed workbench files.
+						Themes, icons, diagnostics and native settings for VS Code. Stylesmith does
+						not modify installation files.
 					</p>
 					<a
 						class="button"

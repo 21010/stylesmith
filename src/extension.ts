@@ -1,43 +1,24 @@
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { SettingChanges, markingOwnChanges } from "./changes";
 import { vscodeConfig, vscodeSettings } from "./config";
-import {
-	ReloadOffer,
-	checkAfterStartup,
-	disable,
-	enable,
-	type EnableOptions,
-	type Services
-} from "./lifecycle";
+import { removeLegacyPatch } from "./legacyCleanup";
+import { checkAfterStartup, disable, enable, type Services } from "./lifecycle";
 import { ManagedSettings } from "./managed";
+import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
-import { PermissionDeniedError } from "./permissions";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
-import { applyPreset, createStatusButton, showMenu, showPermissionHelp, vscodeUi } from "./ui";
-import { LOCATION_FILE } from "./uninstall";
-import { isPermissionError, locateWorkbench } from "./workbench";
+import { applyPreset, createStatusButton, showMenu, vscodeUi } from "./ui";
 
-/**
- * Stylesmith's entry point: it only connects the parts. What Stylesmith does lives in
- * lifecycle.ts, its UI in ui.ts, and settings in config.ts and managed.ts.
- */
+// A preset or the menu changes several settings in a row; re-apply once for all of them.
+const REAPPLY_DELAY = 100; // ms
 
-// Where Stylesmith versions up to 1.9 kept their state in VS Code's globalState. It's read
-// once, to move it into the state file (see store.ts for why).
 const LEGACY_STATE_KEYS = {
 	fontSettings: "stylesmith.fontSettings",
 	effectSettings: "stylesmith.effectSettings",
-	enabled: "stylesmith.enabled",
-	reapplyAskedAt: "stylesmith.reapplyAskedAt"
+	enabled: "stylesmith.enabled"
 } as const;
 
-// How long to wait after the last settings change before offering to reload, so that
-// changing several settings in a row asks only once.
-const RELOAD_OFFER_DELAY = 1000; // ms
-
-/** Called by VS Code once it has started: builds the parts and registers the commands. */
 export function activate(context: vscode.ExtensionContext): void {
 	const store = new StateFile(path.join(context.globalStorageUri.fsPath, "state.json"), () =>
 		Object.fromEntries(
@@ -47,101 +28,91 @@ export function activate(context: vscode.ExtensionContext): void {
 			])
 		)
 	);
-	const changes = new SettingChanges();
 	const services: Services = {
-		config: markingOwnChanges(vscodeConfig, changes),
+		config: vscodeConfig,
 		managed: new ManagedSettings(vscodeSettings, store),
-		store,
-		ui: vscodeUi,
-		findWorkbench: () => locateWorkbench(vscodeAppDirs()),
-		asAbsolutePath: relativePath => context.asAbsolutePath(relativePath),
-		locationFile: LOCATION_FILE,
-		appRoot: vscode.env.appRoot
+		store
 	};
 
-	// Commands that change VS Code's files run one at a time, through this queue.
 	let queue = Promise.resolve();
 	const queued = (command: string, task: (...args: unknown[]) => Promise<void>) =>
 		vscode.commands.registerCommand(command, (...args: unknown[]) => {
 			queue = queue.then(() => reportErrors(() => task(...args)));
 			return queue;
 		});
-	// Commands that only ask the user and change settings stay outside the queue. They run
-	// "stylesmith.reload", which joins the queue itself: a queued command that waited for
-	// another queued command would wait forever.
-	const direct = (command: string, task: (...args: unknown[]) => Promise<void>) =>
-		vscode.commands.registerCommand(command, (...args: unknown[]) =>
-			reportErrors(() => task(...args))
-		);
-
 	const status = createStatusButton(context, services.config);
-	const reloadOffer = new ReloadOffer(services);
-	let offerTimer: ReturnType<typeof setTimeout> | undefined;
+	let reapply: ReturnType<typeof setTimeout> | undefined;
 
 	context.subscriptions.push(
-		// Enabling always starts from the pristine file, so it doubles as "reload".
 		queued("stylesmith.enable", async () => status.show(await enable(services))),
-		queued("stylesmith.reload", async options =>
-			status.show(await enable(services, enableOptions(options)))
-		),
+		// Kept as a compatibility alias; API-backed settings take effect without reloading VS Code.
+		queued("stylesmith.reload", async () => status.show(await enable(services))),
 		queued("stylesmith.disable", async () => {
 			await disable(services);
 			status.show(false);
 		}),
-		direct("stylesmith.applyPreset", id => applyPreset(services.config, id)),
-		direct("stylesmith.menu", () => showMenu(services.config)),
-		// Live, through VS Code's API: it needs no Enable and no restart.
+		// Not queued: these run stylesmith.enable themselves, which would wait behind them.
+		vscode.commands.registerCommand("stylesmith.applyPreset", (id?: unknown) =>
+			reportErrors(() => applyPreset(services.config, id))
+		),
+		vscode.commands.registerCommand("stylesmith.menu", () =>
+			reportErrors(() => showMenu(services.config))
+		),
 		new ProblemLens(context, () => services.config.problemLens()),
 		vscode.workspace.onDidChangeConfiguration(event => {
-			if (!changes.needsReload(section => event.affectsConfiguration(section))) return;
-			clearTimeout(offerTimer);
-			offerTimer = setTimeout(
-				() => void reportErrors(() => reloadOffer.offer()),
-				RELOAD_OFFER_DELAY
-			);
+			if (
+				!event.affectsConfiguration("stylesmith.effects") &&
+				!event.affectsConfiguration("stylesmith.fonts")
+			)
+				return;
+			clearTimeout(reapply);
+			reapply = setTimeout(() => {
+				queue = queue.then(() =>
+					reportErrors(async () => {
+						if ((await store.read()).enabled)
+							status.show(await enable(services, { keepUserChanges: true }));
+					})
+				);
+			}, REAPPLY_DELAY);
 		}),
-		{ dispose: () => clearTimeout(offerTimer) }
+		{ dispose: () => clearTimeout(reapply) }
 	);
 
-	void reportErrors(async () => status.show(await checkAfterStartup(services)));
+	void reportErrors(async () => {
+		// First, so a moved setting (such as compact layout) is in place when settings are applied.
+		await migrateOldSettings(vscodeSettings);
+		status.show(await checkAfterStartup(services));
+	});
+	void reportErrors(() => cleanUpAfterVersion1(store));
 }
 
-/** Nothing to do: everything is registered in context.subscriptions, which VS Code disposes. */
+/** Removes a workbench patch Stylesmith 1.x left behind, and tells the user what happened. */
+async function cleanUpAfterVersion1(store: StateFile): Promise<void> {
+	const result = await removeLegacyPatch(vscode.env.appRoot);
+	if (result === "removed") {
+		const choice = await vscode.window.showInformationMessage(
+			messages.legacyRemoved,
+			messages.reloadWindow
+		);
+		if (choice === messages.reloadWindow)
+			await vscode.commands.executeCommand("workbench.action.reloadWindow");
+	} else if (result === "denied") {
+		const tell = await store.transact(state => ({
+			change: { legacyDeniedShown: true },
+			result: !state.legacyDeniedShown
+		}));
+		if (tell) void vscode.window.showWarningMessage(messages.legacyDenied);
+	}
+}
+
 export function deactivate(): void {}
-
-/** Reads Reload's options. Commands can be run with any argument, so only known ones count. */
-function enableOptions(value: unknown): EnableOptions {
-	const restartNow =
-		typeof value === "object" &&
-		value !== null &&
-		"restartNow" in value &&
-		value.restartNow === true;
-	return { restartNow };
-}
-
-/** Where VS Code's application files are, in the order to try them. */
-function vscodeAppDirs(): string[] {
-	return [
-		require.main && path.dirname(require.main.filename),
-		(globalThis as { _VSCODE_FILE_ROOT?: string })._VSCODE_FILE_ROOT,
-		path.join(vscode.env.appRoot, "out")
-	].filter((dir): dir is string => Boolean(dir));
-}
 
 async function reportErrors(task: () => Promise<void>): Promise<void> {
 	try {
 		await task();
 	} catch (error) {
 		console.error("stylesmith:", error);
-		if (error instanceof PermissionDeniedError) {
-			void showPermissionHelp(error.folder);
-		} else {
-			const reason = error instanceof Error ? error.message : String(error);
-			vscodeUi.error(
-				isPermissionError(error)
-					? messages.notAllowed(reason)
-					: messages.somethingWrong + reason
-			);
-		}
+		const reason = error instanceof Error ? error.message : String(error);
+		vscodeUi.error(messages.somethingWrong + reason);
 	}
 }

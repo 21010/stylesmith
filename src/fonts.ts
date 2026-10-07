@@ -1,103 +1,50 @@
-/**
- * Nerd Fonts bundled with Stylesmith. The selected font's files are copied next to VS Code's
- * workbench HTML file and loaded from there as web fonts (so nothing is installed on the
- * system, and the HTML file stays small), and the editor and terminal font settings put them
- * first.
- */
-
-import { FONT_FOLDER } from "./workbench";
+/** Font families Stylesmith can select when the user has installed them on their system. */
 
 export interface NerdFont {
-	/** Value of the `stylesmith.fonts.family` setting. */
 	id: string;
-	/** Name shown in the Stylesmith menu. */
 	label: string;
-	/** The font's family name, exactly as Nerd Fonts publishes it. */
 	family: string;
-	files: readonly { file: string; weight: number }[];
 }
 
-/** The bundled fonts; the first one is the default (a test checks this). */
+/** These are names only: Stylesmith does not install or bundle fonts. */
 export const FONTS: readonly [NerdFont, ...NerdFont[]] = [
 	{
 		id: "JetBrainsMono",
-		label: "JetBrainsMono Nerd Font",
-		family: "JetBrainsMono Nerd Font Mono",
-		files: [
-			{ file: "assets/fonts/JetBrainsMonoNerdFontMono-Regular.woff2", weight: 400 },
-			{ file: "assets/fonts/JetBrainsMonoNerdFontMono-Bold.woff2", weight: 700 }
-		]
+		label: "JetBrainsMono Nerd Font (install separately)",
+		family: "JetBrainsMono Nerd Font Mono"
 	},
 	{
 		id: "BlexMono",
-		label: "BlexMono Nerd Font",
-		family: "BlexMono Nerd Font Mono",
-		files: [
-			{ file: "assets/fonts/BlexMonoNerdFontMono-Regular.woff2", weight: 400 },
-			{ file: "assets/fonts/BlexMonoNerdFontMono-Bold.woff2", weight: 700 }
-		]
+		label: "BlexMono Nerd Font (install separately)",
+		family: "BlexMono Nerd Font Mono"
 	},
 	{
 		id: "ShureTechMono",
-		label: "ShureTechMono Nerd Font",
-		family: "ShureTechMono Nerd Font Mono",
-		files: [{ file: "assets/fonts/ShureTechMonoNerdFontMono-Regular.woff2", weight: 400 }]
+		label: "ShureTechMono Nerd Font (install separately)",
+		family: "ShureTechMono Nerd Font Mono"
 	},
 	{
 		id: "DepartureMono",
-		label: "DepartureMono Nerd Font",
-		family: "DepartureMono Nerd Font Mono",
-		files: [{ file: "assets/fonts/DepartureMonoNerdFontMono-Regular.woff2", weight: 400 }]
+		label: "DepartureMono Nerd Font (install separately)",
+		family: "DepartureMono Nerd Font Mono"
 	}
 ];
 
 export const DEFAULT_FONT_ID = "JetBrainsMono";
 
-/** The bundled font with this id; the default font for an unknown id. */
 export function findFont(id: string): NerdFont {
 	return FONTS.find(font => font.id === id) ?? FONTS[0];
 }
 
 /**
- * `@font-face` rules that load the font files from the font folder next to the workbench HTML
- * file (see writeFonts), so no network access is needed.
+ * Prepends the selected system-installed family while keeping the user's fallbacks. A
+ * previously selected Stylesmith family is replaced rather than kept as a fallback.
  */
-export function fontFaceCss(font: NerdFont): string {
-	return font.files
-		.map(
-			({ file, weight }) =>
-				`@font-face { font-family: ${JSON.stringify(font.family)}; ` +
-				`src: url("${FONT_FOLDER}/${fontFileName(file)}") format("woff2"); ` +
-				`font-weight: ${weight}; font-style: normal; font-display: block; }`
-		)
-		.join("\n");
-}
-
-/** The name a font file gets in the font folder. */
-export function fontFileName(file: string): string {
-	return file.slice(file.lastIndexOf("/") + 1);
-}
-
-/**
- * A script that starts loading the font right away. VS Code measures the editor and terminal
- * font when they open; loading early means they measure the Nerd Font, not a fallback.
- */
-export function preloadScript(family: string, weights: readonly number[]): string {
-	return (
-		"if (document.fonts) {\n" +
-		weights
-			.map(w => `\tdocument.fonts.load(${JSON.stringify(`${w} 16px "${family}"`)});\n`)
-			.join("") +
-		"}\n"
-	);
-}
-
-/** Puts `family` first in a CSS font-family list, keeping the rest as fallbacks. */
 export function withFontFirst(fontFamily: string, family: string): string {
 	return [`'${family}'`, ...splitFamilies(withoutStylesmithFonts(fontFamily))].join(", ");
 }
 
-/** Removes every font Stylesmith adds from a CSS font-family list. */
+/** Removes a Stylesmith-selected family while preserving all other user choices. */
 export function withoutStylesmithFonts(fontFamily: string): string {
 	const ours = new Set(FONTS.map(font => font.family.toLowerCase()));
 	return splitFamilies(fontFamily)

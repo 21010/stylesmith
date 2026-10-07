@@ -4,7 +4,7 @@
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-// Motion: the videos, both carousels and the blinking caret move by themselves. The header's
+// Motion: the carousels and blinking caret move by themselves. The header's
 // pause button stops all of them (WCAG 2.2.2). It starts paused when the system asks for
 // reduced motion, and remembers the visitor's choice from page to page.
 const MOTION_KEY = "stylesmith-motion";

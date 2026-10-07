@@ -1,170 +1,86 @@
-/** The presets: complete looks (theme, icons, font and effects) applied in one step. */
-
 import { EFFECTS } from "./effects";
 
-/** A complete look: a color theme, its pixel icons, a font and a set of effects. */
+/** A preset changes VS Code theme settings and supported native editor settings. */
 export interface Preset {
 	id: string;
 	label: string;
 	description: string;
-	/** Color theme label, as listed in package.json. */
 	theme: string;
-	/** File icon theme id, as listed in package.json: the theme's own pixel icons, if it has them. */
 	iconTheme: string;
-	/** Nerd Font id, as used by `stylesmith.fonts.family`. */
-	font: string;
-	/** Every effect's setting (e.g. `effects.crtScanlines`) and whether it's on. */
 	effects: Record<string, boolean>;
 }
 
-/** Stylesmith Pixel with each file type's own color, for themes without their own icons. */
 export const ICON_THEME = "stylesmith-pixel";
 
-// Effects that are on in every preset: subtle, and they follow the theme's colors.
 const BASE = {
-	"effects.caretAnimation": true,
-	"effects.neonCurrentLine": true,
-	"effects.neonFocusFrame": true,
-	"effects.neonSelections": true,
-	"effects.neonBlocks": true,
-	"effects.diagnosticHighlights": true,
-	"effects.neonTerminal": true
+	"effects.smoothCursor": true,
+	"effects.currentLine": true,
+	"effects.bracketGuides": true
 };
 
 export const PRESETS: readonly Preset[] = [
 	{
 		id: "night-city",
 		label: "Night City",
-		description:
-			"Cyberpunk neon: Neon Night, JetBrains Mono, glowing code, sparks, boot sequence and glitch",
+		description: "Cyberpunk colors, pixel icons and smooth editor settings",
 		theme: "Stylesmith Neon Night",
 		iconTheme: ICON_THEME,
-		font: "JetBrainsMono",
-		effects: {
-			...BASE,
-			"effects.crtScanlines": false,
-			"effects.crtFlicker": false,
-			"effects.matrixRain": false,
-			"effects.typingSparks": true,
-			"effects.bootSequence": true,
-			"effects.glitchOnSave": true,
-			"effects.neonGlow": true,
-			"effects.classicLayout": false,
-			"effects.terminalGlow": true,
-			"effects.retroTerminalCursor": true
-		}
+		effects: { ...BASE, "effects.compactLayout": false, "effects.blockTerminalCursor": true }
 	},
 	{
 		id: "phosphor-terminal",
 		label: "Phosphor Terminal",
-		description:
-			"Green CRT terminal: Phosphor, Departure Mono, scanlines, boot sequence, square layout",
+		description: "Green phosphor colors, compact layout and a block terminal cursor",
 		theme: "Stylesmith Phosphor",
 		iconTheme: "stylesmith-pixel-phosphor",
-		font: "DepartureMono",
-		effects: {
-			...BASE,
-			"effects.crtScanlines": true,
-			"effects.crtFlicker": false,
-			"effects.matrixRain": false,
-			"effects.typingSparks": false,
-			"effects.bootSequence": true,
-			"effects.glitchOnSave": false,
-			"effects.neonGlow": false,
-			"effects.classicLayout": true,
-			"effects.terminalGlow": true,
-			"effects.retroTerminalCursor": true
-		}
+		effects: { ...BASE, "effects.compactLayout": true, "effects.blockTerminalCursor": true }
 	},
 	{
 		id: "amber-monitor",
 		label: "Amber Monitor",
-		description: "Amber monochrome monitor: Amber, BlexMono, scanlines and square layout",
+		description: "Amber colors, compact layout and a block terminal cursor",
 		theme: "Stylesmith Amber",
 		iconTheme: "stylesmith-pixel-amber",
-		font: "BlexMono",
-		effects: {
-			...BASE,
-			"effects.crtScanlines": true,
-			"effects.crtFlicker": false,
-			"effects.matrixRain": false,
-			"effects.typingSparks": false,
-			"effects.bootSequence": false,
-			"effects.glitchOnSave": false,
-			"effects.neonGlow": false,
-			"effects.classicLayout": true,
-			"effects.terminalGlow": true,
-			"effects.retroTerminalCursor": true
-		}
+		effects: { ...BASE, "effects.compactLayout": true, "effects.blockTerminalCursor": true }
 	},
 	{
 		id: "black-ice",
 		label: "Black ICE",
-		description:
-			"Cold white phosphor: ICE, ShureTechMono, glowing code and terminal, scanlines",
+		description: "Cool high-contrast colors and smooth editor settings",
 		theme: "Stylesmith ICE",
 		iconTheme: "stylesmith-pixel-ice",
-		font: "ShureTechMono",
-		effects: {
-			...BASE,
-			"effects.crtScanlines": true,
-			"effects.crtFlicker": false,
-			"effects.matrixRain": false,
-			"effects.typingSparks": false,
-			"effects.bootSequence": true,
-			"effects.glitchOnSave": false,
-			"effects.neonGlow": true,
-			"effects.classicLayout": false,
-			"effects.terminalGlow": true,
-			"effects.retroTerminalCursor": true
-		}
+		effects: { ...BASE, "effects.compactLayout": false, "effects.blockTerminalCursor": false }
 	},
 	{
 		id: "daylight",
 		label: "Daylight",
-		description: "Calm and bright: Daylight, JetBrains Mono and the subtle effects only",
+		description: "Bright colors with a smooth cursor and current-line highlight",
 		theme: "Stylesmith Daylight",
 		iconTheme: ICON_THEME,
-		font: "JetBrainsMono",
 		effects: {
-			...BASE,
-			"effects.crtScanlines": false,
-			"effects.crtFlicker": false,
-			"effects.matrixRain": false,
-			"effects.typingSparks": false,
-			"effects.bootSequence": false,
-			"effects.glitchOnSave": false,
-			"effects.neonGlow": false,
-			"effects.classicLayout": false,
-			"effects.terminalGlow": false,
-			"effects.retroTerminalCursor": false
+			"effects.smoothCursor": true,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": false
 		}
 	},
 	{
 		id: "high-contrast",
 		label: "High Contrast",
-		description: "Maximum readability: Neon High Contrast, JetBrains Mono, no moving effects",
+		description: "High-contrast colors with minimal motion and clear bracket guides",
 		theme: "Stylesmith Neon High Contrast",
 		iconTheme: ICON_THEME,
-		font: "JetBrainsMono",
 		effects: {
-			...BASE,
-			"effects.caretAnimation": false,
-			"effects.crtScanlines": false,
-			"effects.crtFlicker": false,
-			"effects.matrixRain": false,
-			"effects.typingSparks": false,
-			"effects.bootSequence": false,
-			"effects.glitchOnSave": false,
-			"effects.neonGlow": false,
-			"effects.classicLayout": false,
-			"effects.terminalGlow": false,
-			"effects.retroTerminalCursor": false
+			"effects.smoothCursor": false,
+			"effects.currentLine": true,
+			"effects.bracketGuides": true,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": false
 		}
 	}
 ];
 
-/** Every effect a preset turns on or off, in the order of EFFECTS. */
 export function presetEffects(preset: Preset): [string, boolean][] {
 	return EFFECTS.map(effect => [effect.setting, preset.effects[effect.setting] ?? false]);
 }

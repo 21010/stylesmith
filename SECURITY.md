@@ -1,35 +1,27 @@
 # Security policy
 
-Stylesmith modifies VS Code's installed workbench files and can add custom CSS and JavaScript to the editor window. These controls reduce specific risks; they do not make the workbench supported by VS Code or sandbox user-supplied code.
+## Scope
 
-## Reporting a problem
+Apart from the one-time cleanup described under [Upgrade recovery](#upgrade-recovery), the API-only Stylesmith build does not read or write VS Code installation files. It does not patch `workbench.html`, update `product.json`, load custom or remote CSS/JavaScript, or install fonts. Themes and icon themes are declared contributions; Problem Lens uses the VS Code decoration and diagnostics APIs; settings are changed through the VS Code configuration API.
 
-Please **don't open a public issue** for a security problem.
+Stylesmith does not read workspace content or workspace settings to choose or execute code. Its manifest declares support for untrusted workspaces. Its extension code still runs with the normal capabilities granted to a local VS Code extension, so installing it remains a trust decision.
 
-Report it privately on GitHub instead: go to the [Security tab](https://github.com/21010/stylesmith/security) and click **Report a vulnerability**. Please include:
+## Features removed for this boundary
 
-- what the problem is and what someone could do with it
-- steps to reproduce it
-- the Stylesmith and VS Code versions you used
+Visual effects that needed private workbench DOM access, injected styles or scripts, and extension-bundled web fonts are not available in this build. Remaining effects set documented VS Code settings. Font selection only chooses a family already installed on the user's system.
 
-You'll get a reply within a few days. Once a fix is released, the report is published with credit to you, unless you'd rather stay anonymous.
+## Upgrade recovery
 
-## Supported versions
+Stylesmith 1.x could modify the installed workbench. VS Code updates extensions automatically, so most users can't run **Stylesmith: Disable** in the old version before upgrading. On startup this build therefore checks for, and removes, changes left by Stylesmith 1.x. This is the only code that reads or writes the installation (`src/legacyCleanup.ts`), and it is limited to undoing Stylesmith's own changes:
 
-Only the latest release gets security fixes.
+- In the workbench HTML file, it removes only blocks between Stylesmith's own markers, and restores the original Content-Security-Policy that Stylesmith kept in a comment. Blocks from other tools are left in place.
+- It removes the `stylesmith-fonts` folder (and leftovers of an interrupted font copy) next to that file.
+- It updates the workbench checksum in `product.json` only when that checksum matches the patched file, which means Stylesmith set it. It then sets the checksum of the restored file. A checksum that doesn't match is left alone, so a file changed by something else is never made to look genuine.
+- Files are replaced atomically (written to a temporary file, then renamed) and keep their permissions.
+- It never requests elevated permissions. If the installation isn't writable by the user, Stylesmith shows a one-time notice; use VS Code's repair or reinstall process to restore its files.
 
-## Security controls and their limits
+Stylesmith restores the user settings it changed only when **Stylesmith: Disable** runs. Run it before uninstalling; otherwise the applied values remain in the user's settings and can be reset by hand.
 
-Stylesmith keeps the workbench's existing Content Security Policy (CSP) and extends selected directives for its additions. It adds SHA-256 hashes for inline scripts it inserts. A hash identifies exact script bytes; it does not restrict what the script can do, prove that it is trustworthy, or protect against other code already running in VS Code. Custom JavaScript runs in the workbench context with the privileges available there. Only add code you trust.
+## Reporting a vulnerability
 
-- **Settings:** Import settings are read from user settings, not project settings. `${workspaceFolder}` and `${cwd}` substitutions are refused in untrusted workspaces. Other extensions and code that can modify user settings or VS Code files are outside this protection.
-- **Network access:** Remote imports are off by default. When enabled, HTTPS is allowed for imports and for resources referenced by unpinned CSS; redirects to HTTP are refused. Remote content may change at any time. `file://` network paths are refused. A `#sha256-…` pin checks an import's bytes; it is not a safety review. Pinned CSS that references network resources is rejected.
-- **File writes:** Stylesmith checks its patch transformation and replaces workbench or metadata files through a temporary file and rename, instead of writing the target in place. This reduces the risk of a partial write; it cannot guarantee recovery from every crash, disk failure, permission change, or concurrent external modification.
-- **Disable and uninstall:** Disable attempts to remove marked workbench content and bundled font files, restore settings Stylesmith manages, and write the restored workbench checksum when VS Code tracks it. The uninstall hook attempts workbench and font cleanup, but does not restore managed user settings; run Disable before uninstalling to restore those. Cleanup or checksum writes can fail. If VS Code still fails to start or files remain changed, use VS Code's repair or reinstall process.
-- **Integrity warning:** With `stylesmith.silenceCorruptWarning` enabled, Stylesmith may update `product.json` to record the checksum of the workbench content it generated. This can suppress VS Code's warning for that content. The checksum is not proof of authenticity, and suppressing the warning can make unrelated changes harder to notice. Turn the setting off if you want VS Code to report that the workbench differs from its recorded checksum.
-- **Reapplying after updates:** If Stylesmith's markers disappear while its saved state says it was enabled, Stylesmith may offer to apply its changes again. When the VS Code build identifier is unchanged, it compares the workbench to the recorded checksum and can report a mismatch. This check cannot identify who made a change or detect every modification.
-
-## What is out of scope
-
-- **Code you choose to add.** Scripts in `stylesmith.imports` run in the VS Code workbench context and can use the privileges available there. HTTPS and SHA-256 pins do not sandbox code or make it trustworthy.
-- **Someone who can already change VS Code's files,** or your user settings. They don't need Stylesmith to take control of VS Code.
+Please report security issues privately to the maintainers through the contact details in the repository's GitHub security policy. Include the affected version, environment, and steps to reproduce. Do not include private project contents or credentials.
