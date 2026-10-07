@@ -7,30 +7,7 @@ import * as vscode from "vscode";
 import { EFFECTS } from "../effects";
 import { locateWorkbench } from "../legacyCleanup";
 import { PRESETS } from "../presets";
-
-function userValue(section: string, key: string): unknown {
-	return vscode.workspace.getConfiguration(section).inspect(key)?.globalValue;
-}
-
-function withTimeout(work: Thenable<unknown>, what: string, ms = 60_000): Promise<void> {
-	let timer: ReturnType<typeof setTimeout> | undefined;
-	const timeout = new Promise<never>((_, reject) => {
-		timer = setTimeout(() => reject(new Error(`${what} timed out`)), ms);
-	});
-	return Promise.race([work, timeout])
-		.then(
-			() => undefined,
-			(error: unknown) => Promise.reject(error)
-		)
-		.finally(() => clearTimeout(timer));
-}
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function step(name: string, check: () => Promise<void> | void): Promise<void> {
-	await check();
-	console.log(`  ✔ ${name}`);
-}
+import { sleep, step, userValue, withTimeout } from "./helpers";
 
 export async function run(): Promise<void> {
 	const extension = vscode.extensions.getExtension("21010.stylesmith");
