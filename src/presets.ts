@@ -46,7 +46,7 @@ export const PRESETS: readonly Preset[] = [
 	{
 		id: "black-ice",
 		label: "Black ICE",
-		description: "Cool high-contrast colors and smooth editor settings",
+		description: "Cold white-phosphor colors and smooth editor settings",
 		theme: "Stylesmith ICE",
 		iconTheme: "stylesmith-pixel-ice",
 		effects: { ...BASE, "effects.compactLayout": false, "effects.blockTerminalCursor": false }

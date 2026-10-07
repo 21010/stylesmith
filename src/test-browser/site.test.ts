@@ -252,12 +252,9 @@ describe("website in the browser", () => {
 		}));
 		assert.deepEqual(animations, { caret: "none", carousel: "paused" });
 
-		// On the next page it's still paused: the theme carousel doesn't advance.
+		// On the next page it's still paused.
 		await page.goto(base + "themes.html");
 		assert.equal(await pause.getAttribute("aria-pressed"), "true", "remembered");
-		const title = await page.textContent("#mainTitle");
-		await page.waitForTimeout(3500); // it advances every 3 s
-		assert.equal(await page.textContent("#mainTitle"), title);
 		await page.close();
 	});
 
@@ -281,57 +278,46 @@ describe("website in the browser", () => {
 		await page.close();
 	});
 
-	it("lets the keyboard choose a theme on the Themes page (WCAG 2.1.1)", async () => {
+	it("shows every preset and theme on the Themes page, with nothing that moves", async () => {
 		const { page, problems } = await open({ page: "themes.html" });
-		const thumbs = page.locator(".carousel-thumbnails .thumb");
-		const shownTitle = async () => {
-			await page.waitForTimeout(300); // the picture fades for 150 ms
-			return page.textContent("#mainTitle");
-		};
+		assert.equal(await page.locator(".preset-card").count(), 6);
+		assert.equal(await page.locator(".theme-card").count(), 7);
+		const highContrast = await page
+			.locator(".theme-card.high-contrast .theme-kind")
+			.allTextContents();
+		assert.deepEqual(highContrast, ["High contrast, dark", "High contrast, light"]);
 
-		// Tab reaches the thumbnails, which say which one is shown.
-		for (let i = 0; i < 50; i++) {
-			await page.keyboard.press("Tab");
-			if (await page.evaluate(() => document.activeElement?.closest(".thumb") !== null))
-				break;
-		}
-		assert.equal(
-			(await thumbs.first().ariaSnapshot()).trim(),
-			'- button "Night City" [pressed]'
+		// Nothing to operate and nothing that moves: no buttons or animations in the content.
+		assert.equal(await page.locator("main button, main [tabindex]").count(), 0);
+		const moving = await page.evaluate(
+			() =>
+				[...document.querySelectorAll("main *")].filter(
+					element => getComputedStyle(element).animationName !== "none"
+				).length
 		);
-		assert.equal(
-			await page.evaluate(() => document.activeElement?.textContent?.trim()),
-			"Night City"
-		);
-
-		// The arrow keys step through them and move the focus along.
-		await page.keyboard.press("ArrowRight");
-		assert.equal(await shownTitle(), "Phosphor Terminal");
-		assert.equal(await thumbs.nth(1).getAttribute("aria-pressed"), "true");
-		assert.equal(await thumbs.nth(0).getAttribute("aria-pressed"), "false");
-		assert.equal(
-			await page.evaluate(() => document.activeElement?.textContent?.trim()),
-			"Phosphor Terminal"
-		);
-
-		// Tab and Enter choose one too.
-		await page.keyboard.press("Tab");
-		await page.keyboard.press("Enter");
-		assert.equal(await shownTitle(), "Amber Monitor");
-
-		// Elsewhere on the page, the arrow keys don't touch the carousel.
-		await page.locator("#mainTitle").click();
-		await page.keyboard.press("ArrowLeft");
-		assert.equal(await shownTitle(), "Amber Monitor");
+		assert.equal(moving, 0);
 		assert.deepEqual(problems, []);
 		await page.close();
 	});
 
-	it("doesn't advance the Themes carousel while the keyboard is in it", async () => {
-		const { page } = await open({ page: "themes.html" });
-		await page.locator(".carousel-thumbnails .thumb").first().focus();
-		await page.waitForTimeout(3500); // it advances every 3 s
-		assert.equal(await page.textContent("#mainTitle"), "Night City");
+	it("keeps the Themes page within a 320 px wide screen, at 200% text size (WCAG 1.4.4, 1.4.10)", async () => {
+		const page = await browser.newPage({ viewport: { width: 320, height: 800 } });
+		await page.goto(base + "themes.html", { waitUntil: "networkidle" });
+		await page.addStyleTag({ content: "html { font-size: 200%; }" });
+		// The elements that stick out on the right, so a failure says what to fix.
+		const wide = await page.evaluate(() => {
+			const width = document.documentElement.clientWidth;
+			return [...document.querySelectorAll("body *")]
+				.filter(element => element.getBoundingClientRect().right > width + 0.5)
+				.map(element => {
+					const name = element.tagName.toLowerCase();
+					const id = element.id ? `#${element.id}` : "";
+					const classes = [...element.classList].map(c => `.${c}`).join("");
+					return `${name}${id}${classes} (${Math.round(element.getBoundingClientRect().right)}px)`;
+				})
+				.slice(0, 10);
+		});
+		assert.deepEqual(wide, [], "no sideways scrolling");
 		await page.close();
 	});
 

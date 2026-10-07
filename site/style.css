@@ -105,9 +105,15 @@ html {
 	display: flex;
 	gap: 0.6rem;
 	align-items: center;
+	min-width: 0;
 	color: var(--text);
-	font: 700 1.25rem var(--mono);
+	/* 1.25rem from 400 px up; a little smaller on narrower screens, so the name still fits
+	   at 200% text size on a 320 px screen (WCAG 1.4.4, 1.4.10). */
+	font: 700 clamp(1rem, 6.25vw, 1.25rem) var(--mono);
 	text-decoration: none;
+}
+.brand span {
+	overflow-wrap: anywhere;
 }
 
 .top nav {
@@ -183,7 +189,7 @@ html {
 }
 
 /* Paused: every animation stops where it is, the caret stops blinking, and the boot log
-   doesn't play. app.js pauses the videos and the theme carousel. */
+   doesn't play. app.js pauses any autoplaying video. */
 .motion-paused *,
 .motion-paused *::before,
 .motion-paused *::after {
@@ -461,7 +467,11 @@ h1 small {
 
 .button {
 	display: inline-block;
-	padding: 0.75rem 1.6rem;
+	/* Never wider than its container: at 200% text on a 320 px screen, a long word plus the
+	   side padding would otherwise stick out (WCAG 1.4.10). */
+	max-width: 100%;
+	padding: 0.75rem clamp(0.8rem, 5vw, 1.6rem);
+	overflow-wrap: anywhere;
 	border: 2px solid var(--cyan);
 	border-radius: 0;
 	background: var(--cyan);
@@ -1503,82 +1513,120 @@ kbd {
 	line-height: 1;
 }
 
-/* Theme Carousel */
-.carousel-container {
-	margin-top: 2rem;
+/* Themes page: preset and theme cards */
+.theme-section {
+	margin-top: 3rem;
+}
+.section-lead {
+	max-width: 70ch;
+	color: var(--muted);
+	line-height: 1.6;
+}
+.preset-grid,
+.theme-grid {
+	list-style: none;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+	gap: 1.5rem;
+}
+.preset-card,
+.theme-card {
+	display: flex;
+	flex-direction: column;
+	background: rgba(0, 0, 0, 0.2);
 	border: 1px solid var(--border);
 	border-top: 3px solid var(--cyan);
 	border-radius: 6px;
 	overflow: hidden;
-	background: rgba(0, 0, 0, 0.2);
 }
-.carousel-main {
-	position: relative;
-	background: var(--bg-deep);
+.theme-card.high-contrast {
+	border-top-color: var(--yellow);
 }
-.carousel-main img {
+.preset-card > img {
 	display: block;
 	width: 100%;
 	height: auto;
 	border-bottom: 1px solid var(--border);
-	transition: opacity 0.3s ease;
 }
-.carousel-main .main-info {
-	padding: 1.5rem;
-	display: flex;
-	flex-direction: column;
+.card-body {
+	padding: 1.25rem 1.5rem 1.5rem;
 }
-.carousel-main h3 {
+.card-body h3 {
 	margin: 0 0 0.5rem;
 	color: var(--text);
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 }
-.carousel-main p {
-	margin: 0;
+.card-body p {
+	margin: 0 0 1rem;
 	color: var(--muted);
 	line-height: 1.5;
 }
-.carousel-thumbnails {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	gap: 1px;
-	background: var(--border);
-}
-.thumb {
-	background: var(--bg);
-	border: 0;
-	font: inherit;
-	color: inherit;
-	padding: 1rem 0.5rem;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	cursor: pointer;
-	transition: background 0.2s;
-}
-.thumb:hover {
-	background: var(--raised);
-}
-.thumb[aria-pressed="true"] {
-	background: rgba(95, 224, 255, 0.1);
-	border-bottom: 3px solid var(--cyan);
-}
-.thumb img {
-	width: 100%;
-	max-width: 120px;
-	height: auto;
-	border: 1px solid var(--border);
-	border-radius: 4px;
+.card-body .theme-kind {
 	margin-bottom: 0.75rem;
-}
-.thumb span {
+	color: var(--yellow);
 	font-family: var(--mono);
-	font-size: 0.8rem;
-	color: var(--muted);
-	text-align: center;
+	font-size: 0.85rem;
 }
-.thumb[aria-pressed="true"] span {
+.theme-card:not(.high-contrast) .theme-kind {
 	color: var(--cyan);
+}
+.preset-parts {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0.35rem 1rem;
+	margin: 0;
+	font-size: 0.9rem;
+}
+.preset-parts dt {
+	color: var(--muted);
+}
+.preset-parts dd {
+	margin: 0;
+	color: var(--text);
+	overflow-wrap: anywhere;
+}
+/* On narrow screens each label goes above its value, so long names and large text fit. */
+@media (max-width: 30em) {
+	.preset-parts {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.1rem;
+	}
+	.preset-parts dd {
+		margin-bottom: 0.5rem;
+	}
+}
+/* A few lines of code in a theme's own editor colors (taken from its theme file; a test
+   keeps them in step). Wrapped, so narrow screens never scroll sideways. */
+.theme-sample {
+	margin: 0;
+	padding: 1rem 1.25rem;
+	background: var(--sample-bg);
+	color: var(--sample-fg);
+	border-bottom: 1px solid var(--sample-border, var(--border));
+	outline: 2px solid var(--sample-border, transparent);
+	outline-offset: -2px;
+	font-family: var(--mono);
+	font-size: 0.85rem;
+	line-height: 1.6;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+.theme-sample .kw {
+	color: var(--sample-kw);
+}
+.theme-sample .fn {
+	color: var(--sample-fn);
+}
+.theme-sample .str {
+	color: var(--sample-str);
+}
+.theme-sample .num {
+	color: var(--sample-num);
+}
+.theme-sample .cm {
+	color: var(--sample-cm);
 }
 
 /* Effect Cards */
