@@ -304,10 +304,20 @@ describe("website in the browser", () => {
 		const page = await browser.newPage({ viewport: { width: 320, height: 800 } });
 		await page.goto(base + "themes.html", { waitUntil: "networkidle" });
 		await page.addStyleTag({ content: "html { font-size: 200%; }" });
-		const overflow = await page.evaluate(
-			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
-		);
-		assert.equal(overflow, 0, "no sideways scrolling");
+		// The elements that stick out on the right, so a failure says what to fix.
+		const wide = await page.evaluate(() => {
+			const width = document.documentElement.clientWidth;
+			return [...document.querySelectorAll("body *")]
+				.filter(element => element.getBoundingClientRect().right > width + 0.5)
+				.map(element => {
+					const name = element.tagName.toLowerCase();
+					const id = element.id ? `#${element.id}` : "";
+					const classes = [...element.classList].map(c => `.${c}`).join("");
+					return `${name}${id}${classes} (${Math.round(element.getBoundingClientRect().right)}px)`;
+				})
+				.slice(0, 10);
+		});
+		assert.deepEqual(wide, [], "no sideways scrolling");
 		await page.close();
 	});
 
