@@ -11,7 +11,7 @@
 		<title>Ergonomics - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith is engineered for ergonomics, meeting the WCAG 2.2 contrast criteria and minimizing eye strain during long coding sessions."
+			content="What Stylesmith's theme tests check, contrast, a maximum-contrast cap and color differences under simulated color-vision deficiencies, and what they don't."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,9 +95,8 @@
 			<section class="hero" style="max-width: 800px; margin: 0 auto">
 				<h1>Ergonomics <span>First</span></h1>
 				<p class="lead">
-					Themes are more than aesthetics; they define your workspace environment. Here is
-					how Stylesmith enforces strict accessibility standards, guarantees legibility,
-					and actively prevents eye strain.
+					Readable, comfortable themes are a design goal of Stylesmith. This page lists
+					what the automated theme tests check for every theme, and what they don&rsquo;t.
 				</p>
 			</section>
 
@@ -105,8 +104,8 @@
 				<aside class="ergo-nav">
 					<h2>Core Pillars</h2>
 					<ul>
-						<li><a href="#wcag" class="active">WCAG 2.2 Contrast</a></li>
-						<li><a href="#eyestrain">Eye Strain Protection</a></li>
+						<li><a href="#wcag" class="active">Minimum Contrast</a></li>
+						<li><a href="#glare">Maximum Contrast</a></li>
 						<li><a href="#cvd">Color-Vision Deficiencies</a></li>
 					</ul>
 				</aside>
@@ -132,38 +131,42 @@
 									<path d="M12 16h.01"></path>
 								</svg>
 							</div>
-							WCAG 2.2 Contrast
+							Minimum Contrast
 						</h3>
 						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
 							<h4 style="color: var(--pink)">The Challenge</h4>
 							<p style="color: var(--muted)">
-								Many custom themes ignore contrast ratios entirely, leading to
-								gray-on-gray syntax highlighting that becomes illegible in bright
-								rooms or on low-brightness monitors.
+								Low-contrast syntax colors, like grey on grey, can be hard to read,
+								especially in a bright room or on a dim screen.
 							</p>
 						</div>
 						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
-								Every palette is tested against the WCAG 2.2 contrast criteria: at
-								least 7:1 (AAA) for editor and terminal text, at least 4.5:1 (AA)
-								for every syntax color, also on the current line and on highlighted
-								lines, and at least 3:1 for markers like the cursor and the focus
-								outline. High contrast themes hold all text to 7:1.
+								Every theme is tested with the WCAG contrast formula. Editor text,
+								terminal text and key interface text (the active tab, inputs,
+								suggestions, the selected list item) need at least 7:1. Every syntax
+								color needs at least 4.5:1 on the editor background, on the current
+								line and on lines Problem Lens tints, and so do line numbers, the
+								status bar, tabs, buttons and the terminal&rsquo;s ANSI colors.
+								Markers such as the cursor, the focus outline and the git gutter
+								bars need at least 3:1. In the two high-contrast themes, all text
+								needs 7:1 and markers 4.5:1.
 							</p>
 						</div>
 						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
-							<h4 style="color: var(--yellow)">Why It Matters</h4>
+							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
 							<p style="color: var(--text)">
-								Your code remains perfectly readable regardless of ambient lighting
-								conditions or screen hardware, preventing squinting and posture
-								deterioration.
+								Contrast ratios are computed from the colors in the theme files.
+								They don&rsquo;t measure how your screen, its brightness, the light
+								in the room or your eyesight change what you see, and a good ratio
+								alone doesn&rsquo;t make a theme comfortable for everyone.
 							</p>
 						</div>
 					</article>
 
 					<!-- Section 2 -->
-					<article id="eyestrain" class="ergo-section">
+					<article id="glare" class="ergo-section">
 						<h3>
 							<div class="sec-icon pink">
 								<svg
@@ -181,29 +184,30 @@
 									<circle cx="12" cy="12" r="3"></circle>
 								</svg>
 							</div>
-							Eye Strain Protection
+							Maximum Contrast
 						</h3>
 						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
 							<h4 style="color: var(--pink)">The Challenge</h4>
 							<p style="color: var(--muted)">
-								While low contrast is bad, extreme high contrast (like pure #FFFFFF
-								text on a pure #000000 background) causes text glare and halo
-								effects, which rapidly tires the eyes.
+								Some people find very high contrast, like pure white text on pure
+								black, uncomfortable: text can seem to glow or bleed into the
+								background.
 							</p>
 						</div>
 						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
-								We enforce a strict <em>maximum</em> contrast ratio cap. Backgrounds
-								are slightly lifted, and text is gently dimmed to neutralize
-								halation.
+								In every theme except the two high-contrast ones, the tests reject a
+								pure black or pure white background and text, and cap editor text at
+								16:1. The current themes measure between 13.5:1 and 15.2:1.
 							</p>
 						</div>
 						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
-							<h4 style="color: var(--yellow)">Why It Matters</h4>
+							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
 							<p style="color: var(--text)">
-								It eliminates visual glare and drastically reduces optical fatigue,
-								allowing for much longer, more comfortable coding sessions.
+								The cap is a design choice meant to reduce glare. It isn&rsquo;t
+								proven to prevent eye strain or fatigue. If you need the most
+								contrast, use a high-contrast theme, which has no cap.
 							</p>
 						</div>
 					</article>
@@ -242,17 +246,20 @@
 						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
-								We compute precise Delta-E color differences across our palettes,
-								ensuring varying luminance and saturation, rather than just hue,
-								separate critical UI elements.
+								For each theme, the tests simulate protanopia, deuteranopia and
+								tritanopia, and require a clear color difference (CIE76 &Delta;E of
+								at least 15) between the git gutter colors for added, modified and
+								deleted lines, between error and warning colors, and between the
+								terminal&rsquo;s red and green.
 							</p>
 						</div>
 						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
-							<h4 style="color: var(--yellow)">Why It Matters</h4>
+							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
 							<p style="color: var(--text)">
-								Diagnostic errors, warnings, and syntax keywords remain clearly
-								distinguishable to all developers, preventing simple visual
-								mistakes.
+								Syntax colors aren&rsquo;t compared with each other, and milder
+								forms of color blindness and monochromacy aren&rsquo;t simulated.
+								Problem Lens doesn&rsquo;t rely on color alone: each severity has
+								its own gutter icon shape and a label (ERR, WARN, INFO).
 							</p>
 						</div>
 					</article>

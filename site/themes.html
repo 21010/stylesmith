@@ -9,7 +9,10 @@
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<title>Themes - Stylesmith</title>
-		<meta name="description" content="Explore curated presets and themes for VS Code." />
+		<meta
+			name="description"
+			content="Stylesmith's seven color themes, including two high-contrast themes, and the six presets that combine them with icons and native VS Code settings."
+		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
 		<link rel="icon" href="logo.svg" type="image/svg+xml" />
@@ -90,86 +93,425 @@
 
 		<main id="main">
 			<section class="hero">
-				<h1>Aesthetics & <span>Themes</span></h1>
+				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Instantly apply a complete editor aesthetic. Each preset includes a tailored
-					color palettes, file icons and native VS Code settings.
+					Stylesmith has seven color themes you can use on their own, and six presets that
+					combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
 
-			<section id="presets">
-				<div class="carousel-container">
-					<div class="carousel-main">
+			<section class="theme-section" aria-labelledby="presets-title">
+				<h2 id="presets-title">Presets</h2>
+				<p class="section-lead">
+					A preset sets the color theme, the file icon theme and the native settings
+					listed on its card. Apply one from the Stylesmith button in the status bar, or
+					with the command <strong>Stylesmith: Apply Preset&hellip;</strong>. It
+					doesn&rsquo;t choose a font.
+				</p>
+				<ul class="preset-grid">
+					<li class="preset-card">
 						<img
-							id="mainImage"
 							src="img/night-city.png"
 							width="1280"
 							height="760"
-							alt="Night City theme"
+							alt="VS Code with the Night City preset"
+							loading="lazy"
 						/>
-						<div class="main-info" id="mainInfo" aria-live="off">
-							<h3 id="mainTitle">Night City</h3>
-							<p id="mainDesc">
-								Inspired by the rain-slicked streets of classic 80s cyberpunk
-								cinema. Features piercing neon pinks and cyans, sparking cursor
-								native editor settings for cursor motion, line highlighting and
-								bracket guides.
+						<div class="card-body">
+							<h3>Night City</h3>
+							<p>
+								Neon pinks and cyans on deep indigo, the look of a city at night,
+								with pixel file icons and a block cursor in the terminal.
 							</p>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Neon Night</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Bracket pair guides,
+									Block terminal cursor
+								</dd>
+							</dl>
 						</div>
-					</div>
-					<div class="carousel-thumbnails" role="group" aria-label="Presets">
-						<button
-							type="button"
-							class="thumb"
-							aria-pressed="true"
-							data-title="Night City"
-							data-desc="Inspired by the rain-slicked streets of classic 80s cyberpunk cinema, with neon pinks and cyans, pixel icons and supported native editor settings."
-						>
-							<img src="img/night-city.png" width="1280" height="760" alt="" />
-							<span>Night City</span>
-						</button>
-						<button
-							type="button"
-							class="thumb"
-							aria-pressed="false"
-							data-title="Phosphor Terminal"
-							data-desc="A nostalgic tribute to the VT100 and early UNIX mainframes, with a green phosphor palette, matching pixel icons and compact layout settings."
-						>
-							<img src="img/phosphor-terminal.png" width="1280" height="760" alt="" />
-							<span>Phosphor Terminal</span>
-						</button>
-						<button
-							type="button"
-							class="thumb"
-							aria-pressed="false"
-							data-title="Amber Monitor"
-							data-desc="Uses a warm amber palette inspired by the IBM 5151 monochrome display, with matching file icons."
-						>
-							<img src="img/amber-monitor.png" width="1280" height="760" alt="" />
-							<span>Amber Monitor</span>
-						</button>
-						<button
-							type="button"
-							class="thumb"
-							aria-pressed="false"
-							data-title="Black ICE"
-							data-desc="A cool high-contrast palette with matching file icons, designed for clear code and restrained motion."
-						>
-							<img src="img/black-ice.png" width="1280" height="760" alt="" />
-							<span>Black ICE</span>
-						</button>
-						<button
-							type="button"
-							class="thumb"
-							aria-pressed="false"
-							data-title="Daylight"
-							data-desc="A clean, modern aesthetic designed for highly-lit environments. Strips away the heavy retro filters in favor of crisp typography, subtle transitions, and high-contrast readability."
-						>
-							<img src="img/daylight.png" width="1280" height="760" alt="" />
-							<span>Daylight</span>
-						</button>
-					</div>
-				</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/phosphor-terminal.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Phosphor Terminal preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h3>Phosphor Terminal</h3>
+							<p>
+								A late-1970s green-phosphor video terminal: green on near-black,
+								pixel icons in the same greens, and a dense, compact layout.
+							</p>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Phosphor</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel Phosphor</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Bracket pair guides,
+									Compact layout, Block terminal cursor
+								</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/amber-monitor.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Amber Monitor preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h3>Amber Monitor</h3>
+							<p>
+								An early-1980s amber monochrome monitor: warm amber tones, matching
+								pixel icons and a compact layout.
+							</p>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Amber</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel Amber</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Bracket pair guides,
+									Compact layout, Block terminal cursor
+								</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/black-ice.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Black ICE preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h3>Black ICE</h3>
+							<p>
+								A cold white-phosphor screen with ice-blue accents and matching
+								pixel icons, and only the calmer editor settings.
+							</p>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith ICE</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel ICE</dd>
+								<dt>Settings on</dt>
+								<dd>Smooth cursor, Highlight current line, Bracket pair guides</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/daylight.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Daylight preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h3>Daylight</h3>
+							<p>
+								Dark ink on a warm, paper-like background for well-lit rooms, with
+								pixel file icons.
+							</p>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Daylight</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>Smooth cursor, Highlight current line</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Neon High Contrast"
+							style="
+								--sample-bg: #000000;
+								--sample-fg: #ffffff;
+								--sample-kw: #ff9ce6;
+								--sample-fn: #8cedff;
+								--sample-str: #fff29a;
+								--sample-num: #ffc98a;
+								--sample-cm: #c5cbee;
+								--sample-border: #6fe6ff;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>High Contrast</h3>
+							<p>
+								The high-contrast theme with borders around every area, no smooth
+								cursor animation, and clear bracket guides.
+							</p>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Neon High Contrast</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>Highlight current line, Bracket pair guides</dd>
+							</dl>
+						</div>
+					</li>
+				</ul>
+			</section>
+
+			<section class="theme-section" aria-labelledby="themes-title">
+				<h2 id="themes-title">Color themes</h2>
+				<p class="section-lead">
+					Every theme works on its own: choose it in VS Code with
+					<strong>Preferences: Color Theme</strong>, without a preset or any Stylesmith
+					setting. The contrast shown is the measured ratio of the editor text to the
+					editor background; the <a href="ergonomics.html">ergonomics page</a> lists
+					everything the theme tests check.
+				</p>
+				<ul class="theme-grid">
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Neon Night"
+							style="
+								--sample-bg: #0f1120;
+								--sample-fg: #e2e4f3;
+								--sample-kw: #ff72d8;
+								--sample-fn: #5fe0ff;
+								--sample-str: #f4e27c;
+								--sample-num: #ffae5c;
+								--sample-cm: #8a91c0;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith Neon Night</h3>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Neon signs reflected on wet streets at night: hot pink and cyan
+								accents and yellow strings on a deep indigo background.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>14.8:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Night City</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Phosphor"
+							style="
+								--sample-bg: #0b130d;
+								--sample-fg: #b9f2b4;
+								--sample-kw: #6dff9a;
+								--sample-fn: #d6f5b0;
+								--sample-str: #8fe3d0;
+								--sample-num: #ffcf73;
+								--sample-cm: #6fa878;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith Phosphor</h3>
+							<p class="theme-kind">Dark</p>
+							<p>
+								A late-1970s video terminal with green phosphor: one green range on
+								near-black, with comments dimmed like a fading trace.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>14.8:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Phosphor Terminal</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Amber"
+							style="
+								--sample-bg: #140f07;
+								--sample-fg: #ffd28f;
+								--sample-kw: #ffae40;
+								--sample-fn: #ffe6b8;
+								--sample-str: #e9c27e;
+								--sample-num: #ff9466;
+								--sample-cm: #b08a55;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith Amber</h3>
+							<p class="theme-kind">Dark</p>
+							<p>
+								An early-1980s monochrome monitor with amber phosphor: warm amber
+								and orange tones on a dark brown-black background.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>13.5:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Amber Monitor</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith ICE"
+							style="
+								--sample-bg: #0c121a;
+								--sample-fg: #dce9f5;
+								--sample-kw: #9fe6ff;
+								--sample-fn: #eef6ff;
+								--sample-str: #b4d6f0;
+								--sample-num: #c9c2ff;
+								--sample-cm: #8196ab;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith ICE</h3>
+							<p class="theme-kind">Dark</p>
+							<p>
+								A cold white-phosphor screen at night: pale ice-blue text and
+								accents on a dark blue-grey background.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>15.2:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Black ICE</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Daylight"
+							style="
+								--sample-bg: #f7f2e4;
+								--sample-fg: #1e2230;
+								--sample-kw: #a0127a;
+								--sample-fn: #005c80;
+								--sample-str: #6e5200;
+								--sample-num: #a63c16;
+								--sample-cm: #5c604c;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith Daylight</h3>
+							<p class="theme-kind">Light</p>
+							<p>
+								Dark ink on a warm, paper-like background, with deep magenta, blue
+								and brown accents. Made for well-lit rooms.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>14.2:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Daylight</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card high-contrast">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Neon High Contrast"
+							style="
+								--sample-bg: #000000;
+								--sample-fg: #ffffff;
+								--sample-kw: #ff9ce6;
+								--sample-fn: #8cedff;
+								--sample-str: #fff29a;
+								--sample-num: #ffc98a;
+								--sample-cm: #c5cbee;
+								--sample-border: #6fe6ff;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith Neon High Contrast</h3>
+							<p class="theme-kind">High contrast, dark</p>
+							<p>
+								Neon Night's accents at full strength: white text on black, every
+								text color at least 7:1, and borders around every area.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>21.0:1</dd>
+								<dt>Used by preset</dt>
+								<dd>High Contrast</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card high-contrast">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Daylight High Contrast"
+							style="
+								--sample-bg: #ffffff;
+								--sample-fg: #000000;
+								--sample-kw: #7a005c;
+								--sample-fn: #003f60;
+								--sample-str: #4f3700;
+								--sample-num: #7f2800;
+								--sample-cm: #35392a;
+								--sample-border: #0f4a6e;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h3>Stylesmith Daylight High Contrast</h3>
+							<p class="theme-kind">High contrast, light</p>
+							<p>
+								Black text on white with dark, saturated accents, every text color
+								at least 7:1, and borders around every area.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>21.0:1</dd>
+								<dt>Used by preset</dt>
+								<dd>None; use it on its own</dd>
+							</dl>
+						</div>
+					</li>
+				</ul>
 			</section>
 
 			<section class="cta-section" style="text-align: center; margin: 4rem 0">

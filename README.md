@@ -87,3 +87,9 @@ npm run lint
 ```
 
 See [SECURITY.md](SECURITY.md) for the security boundary and recovery notes.
+
+## Credits
+
+Stylesmith began as a fork of [Custom CSS and JS Loader](https://github.com/be5invis/vscode-custom-css) by Belleve Invis, whose MIT license also carries Roberto Huertas's copyright. Both notices are kept in [LICENSE.txt](LICENSE.txt).
+
+Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated with Microsoft. Theme and preset names and stories describe their inspiration in our own words and don't refer to any film, game or product.
