@@ -36,6 +36,29 @@ Choose a Stylesmith color theme or file icon theme from the normal VS Code selec
 
 Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`.
 
+## Presets and themes
+
+A preset sets a color theme, a file icon theme and native VS Code settings. Every color theme also works on its own. The [Themes page](https://stylesmith.dev/themes.html) shows each one.
+
+### Presets
+
+- **Night City**: Neon pinks and cyans on deep indigo, the look of a city at night, with pixel file icons and a block cursor in the terminal.
+- **Phosphor Terminal**: A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, and a dense, compact layout.
+- **Amber Monitor**: An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons and a compact layout.
+- **Black ICE**: A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.
+- **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
+- **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
+
+### Color themes
+
+- **Stylesmith Neon Night**: Neon signs reflected on wet streets at night: hot pink and cyan accents and yellow strings on a deep indigo background.
+- **Stylesmith Phosphor**: A late-1970s video terminal with green phosphor: one green range on near-black, with comments dimmed like a fading trace.
+- **Stylesmith Amber**: An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.
+- **Stylesmith ICE**: A cold white-phosphor screen at night: pale ice-blue text and accents on a dark blue-grey background.
+- **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
+- **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
+- **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.
+
 ## Settings
 
 All Stylesmith settings are global user settings. The font settings select a family name; that font must be installed by the user.

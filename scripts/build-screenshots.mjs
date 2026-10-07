@@ -26,6 +26,7 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"amber-monitor",
 	"black-ice",
 	"daylight",
+	"high-contrast",
 	"problem-lens",
 	"oh-my-posh"
 ];

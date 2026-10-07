@@ -11,7 +11,7 @@
 		<title>Ergonomics - Stylesmith</title>
 		<meta
 			name="description"
-			content="What Stylesmith's theme tests check, contrast, a maximum-contrast cap and color differences under simulated color-vision deficiencies, and what they don't."
+			content="What Stylesmith's theme tests check (minimum contrast, a maximum-contrast cap, and color differences under simulated color blindness) and what they don't."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -144,14 +144,16 @@
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
 								Every theme is tested with the WCAG contrast formula. Editor text,
-								terminal text and key interface text (the active tab, inputs,
-								suggestions, the selected list item) need at least 7:1. Every syntax
-								color needs at least 4.5:1 on the editor background, on the current
-								line and on lines Problem Lens tints, and so do line numbers, the
-								status bar, tabs, buttons and the terminal&rsquo;s ANSI colors.
-								Markers such as the cursor, the focus outline and the git gutter
-								bars need at least 3:1. In the two high-contrast themes, all text
-								needs 7:1 and markers 4.5:1.
+								terminal text and key interface text, such as the active tab, the
+								side bar, inputs, suggestions and the selected list item, need at
+								least 7:1. Every syntax color needs at least 4.5:1 on the editor
+								background, on the current line and on lines Problem Lens tints, and
+								so do line numbers, the status bar, tabs, buttons and the
+								terminal&rsquo;s ANSI colors (except the one terminal programs use
+								as a background: black, or white in light themes). Markers such as
+								the cursor, the focus outline and the git gutter bars need at least
+								3:1. In the two high-contrast themes, all text needs 7:1 and markers
+								4.5:1.
 							</p>
 						</div>
 						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
@@ -197,9 +199,10 @@
 						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
-								In every theme except the two high-contrast ones, the tests reject a
-								pure black or pure white background and text, and cap editor text at
-								16:1. The current themes measure between 13.5:1 and 15.2:1.
+								In every theme except the two high-contrast ones, the tests reject
+								pure black and pure white for the editor background and for editor
+								text, and cap the contrast of editor text at 16:1. The current
+								themes measure between 13.5:1 and 15.2:1.
 							</p>
 						</div>
 						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
@@ -237,18 +240,19 @@
 						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
 							<h4 style="color: var(--pink)">The Challenge</h4>
 							<p style="color: var(--muted)">
-								Themes that rely solely on slight hue variations for syntax
-								highlighting (e.g., red errors vs green strings) often become
-								indistinguishable for developers with color-vision deficiencies
-								(CVD).
+								Colors that differ mainly in hue, such as red and green, can look
+								alike to people with color blindness, for example git&rsquo;s added
+								and deleted lines, or a terminal&rsquo;s red and green.
 							</p>
 						</div>
 						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
 							<h4 style="color: var(--cyan)">Our Approach</h4>
 							<p style="color: var(--text)">
-								For each theme, the tests simulate protanopia, deuteranopia and
-								tritanopia, and require a clear color difference (CIE76 &Delta;E of
-								at least 15) between the git gutter colors for added, modified and
+								For each theme, the tests simulate full protanopia, deuteranopia and
+								tritanopia (the Machado, Oliveira &amp; Fernandes 2009 model) and
+								require a color difference of at least 15 (CIE76 &Delta;E, where
+								about 2 is barely noticeable and 15 is clearly different at a
+								glance) between the git gutter colors for added, modified and
 								deleted lines, between error and warning colors, and between the
 								terminal&rsquo;s red and green.
 							</p>
@@ -257,9 +261,11 @@
 							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
 							<p style="color: var(--text)">
 								Syntax colors aren&rsquo;t compared with each other, and milder
-								forms of color blindness and monochromacy aren&rsquo;t simulated.
-								Problem Lens doesn&rsquo;t rely on color alone: each severity has
-								its own gutter icon shape and a label (ERR, WARN, INFO).
+								forms of color blindness and total color blindness (monochromacy)
+								aren&rsquo;t simulated. Problem Lens doesn&rsquo;t rely on color
+								alone by default: each severity has its own gutter icon shape and a
+								label (ERR, WARN, INFO), unless you turn the gutter icons and inline
+								messages off.
 							</p>
 						</div>
 					</article>
