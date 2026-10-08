@@ -1,14 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import * as path from "node:path";
 import { describe, it } from "node:test";
 import { DEFAULT_FONT_ID, FONTS, findFont, withFontFirst, withoutStylesmithFonts } from "../fonts";
-import { manifest } from "./files";
+import { manifest, ROOT } from "./files";
 
 const settings = manifest().contributes.configuration.properties;
 const JB = "JetBrainsMono Nerd Font Mono";
 const DEFAULT = "Consolas, 'Courier New', monospace";
 
 describe("system-installed fonts", () => {
-	it("matches the font setting and does not claim to bundle or install font files", () => {
+	it("matches the font setting, and says installing needs the user's confirmation", () => {
 		const setting = settings["stylesmith.fonts.family"];
 		assert.ok(setting);
 		assert.deepEqual(
@@ -17,7 +19,10 @@ describe("system-installed fonts", () => {
 		);
 		assert.equal(setting.default, DEFAULT_FONT_ID);
 		assert.equal(setting.scope, "application");
-		assert.match(setting.markdownDescription ?? "", /already installed on your system/);
+		assert.match(
+			setting.markdownDescription ?? "",
+			/install it for your user account .*after you confirm/
+		);
 	});
 
 	it("falls back to the default font for an unknown setting value", () => {
@@ -41,4 +46,18 @@ describe("font-family settings", () => {
 			"Fira Code, monospace"
 		);
 	});
+});
+
+describe("Fonts page", () => {
+	const page = readFileSync(path.join(ROOT, "site", "fonts.html"), "utf-8");
+	for (const font of FONTS) {
+		it(`shows ${font.id} with a link to download it`, () => {
+			const card = new RegExp(`<h3>${font.id}</h3>[\\s\\S]*?</article>`).exec(page)?.[0];
+			assert.ok(card, "a card");
+			assert.match(
+				card,
+				/href="https:\/\/github\.com\/ryanoasis\/nerd-fonts\/releases\/download\/v[\d.]+\/\w+\.zip"/
+			);
+		});
+	}
 });

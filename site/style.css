@@ -1713,6 +1713,21 @@ kbd {
 	src: url("fonts/DepartureMonoNerdFontMono-Regular.woff2") format("woff2");
 	font-weight: 400;
 }
+@font-face {
+	font-family: "GeistMono Nerd Font";
+	src: url("fonts/GeistMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "SpaceMono Nerd Font";
+	src: url("fonts/SpaceMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "AtkynsonMono Nerd Font";
+	src: url("fonts/AtkynsonMonoNerdFontMono-Regular.woff2") format("woff2");
+	font-weight: 400;
+}
 
 .pt-2 {
 	padding-top: 2rem;
@@ -1771,6 +1786,19 @@ kbd {
 }
 .font-preview.departure {
 	font-family: "DepartureMono Nerd Font", monospace;
+}
+.font-preview.geist {
+	font-family: "GeistMono Nerd Font", monospace;
+}
+.font-preview.space {
+	font-family: "SpaceMono Nerd Font", monospace;
+}
+.font-preview.atkynson {
+	font-family: "AtkynsonMono Nerd Font", monospace;
+}
+.font-card .font-download {
+	margin: -1rem 0 1.5rem;
+	font-size: 0.9rem;
 }
 
 .pt-2 {

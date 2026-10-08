@@ -84,6 +84,16 @@
 				"command": "stylesmith.menu",
 				"title": "Show Menu",
 				"category": "Stylesmith"
+			},
+			{
+				"command": "stylesmith.installFont",
+				"title": "Install Font…",
+				"category": "Stylesmith"
+			},
+			{
+				"command": "stylesmith.removeFonts",
+				"title": "Remove Installed Fonts…",
+				"category": "Stylesmith"
 			}
 		],
 		"configuration": {
@@ -93,7 +103,7 @@
 					"type": "boolean",
 					"default": false,
 					"scope": "application",
-					"markdownDescription": "Select a Nerd Font already installed on your system. Stylesmith changes editor and terminal font settings through VS Code’s API; it does not install fonts."
+					"markdownDescription": "Use a Nerd Font in the editor and terminal, set through VS Code’s font settings. The font must be installed; Stylesmith can install it for your user account, after you confirm."
 				},
 				"stylesmith.fonts.family": {
 					"type": "string",
@@ -103,21 +113,30 @@
 						"JetBrainsMono",
 						"BlexMono",
 						"ShureTechMono",
-						"DepartureMono"
+						"DepartureMono",
+						"GeistMono",
+						"SpaceMono",
+						"AtkynsonMono"
 					],
 					"enumItemLabels": [
-						"JetBrainsMono Nerd Font (install separately)",
-						"BlexMono Nerd Font (install separately)",
-						"ShureTechMono Nerd Font (install separately)",
-						"DepartureMono Nerd Font (install separately)"
+						"JetBrainsMono Nerd Font",
+						"BlexMono Nerd Font",
+						"ShureTechMono Nerd Font",
+						"DepartureMono Nerd Font",
+						"GeistMono Nerd Font",
+						"SpaceMono Nerd Font",
+						"AtkynsonMono Nerd Font"
 					],
 					"markdownEnumDescriptions": [
-						"Requires the JetBrainsMono Nerd Font family to be installed on your system.",
-						"Requires the BlexMono Nerd Font family to be installed on your system.",
-						"Requires the ShureTechMono Nerd Font family to be installed on your system.",
-						"Requires the DepartureMono Nerd Font family to be installed on your system."
+						"Needs the JetBrainsMono Nerd Font family installed; Stylesmith can install it for you.",
+						"Needs the BlexMono Nerd Font family installed; Stylesmith can install it for you.",
+						"Needs the ShureTechMono Nerd Font family installed; Stylesmith can install it for you.",
+						"Needs the DepartureMono Nerd Font family installed; Stylesmith can install it for you.",
+						"Needs the GeistMono Nerd Font family installed; Stylesmith can install it for you. Based on Geist Mono.",
+						"Needs the SpaceMono Nerd Font family installed; Stylesmith can install it for you. Based on Space Mono.",
+						"Needs the AtkynsonMono Nerd Font family installed; Stylesmith can install it for you. Based on Atkinson Hyperlegible Mono, designed by the Braille Institute for readers with low vision."
 					],
-					"markdownDescription": "Which font family to use. The font must be already installed on your system. The setting takes effect immediately."
+					"markdownDescription": "Which font family to use. It must be installed on your system: install it yourself, or let Stylesmith install it for your user account from the Stylesmith menu, after you confirm. The setting takes effect immediately."
 				},
 				"stylesmith.problems.enabled": {
 					"type": "boolean",
@@ -429,7 +448,7 @@
 	"capabilities": {
 		"untrustedWorkspaces": {
 			"supported": true,
-			"description": "Stylesmith uses only its built-in assets and VS Code APIs; it does not load code or configuration from the workspace."
+			"description": "Stylesmith uses its built-in assets and VS Code APIs, and downloads a font only when you ask it to install one; it does not load code or configuration from the workspace."
 		},
 		"virtualWorkspaces": true
 	},
