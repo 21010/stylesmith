@@ -473,6 +473,7 @@
 		"pretest": "npm run compile",
 		"test": "node --test \"out/test/**/*.test.js\"",
 		"themes": "npm run compile && node scripts/build-themes.mjs",
+		"themes-page": "npm run compile && node scripts/build-themes-page.mjs",
 		"icons": "npm run compile && node scripts/build-icons.mjs",
 		"screenshots": "npm run compile && node scripts/build-screenshots.mjs",
 		"test:integration": "npm run compile && node out/test-integration/runTest.js",

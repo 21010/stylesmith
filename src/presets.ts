@@ -7,6 +7,8 @@ export interface Preset {
 	description: string;
 	theme: string;
 	iconTheme: string;
+	/** The font that suits it (a FONTS id). Presets don't set fonts; the website recommends this. */
+	font: string;
 	effects: Record<string, boolean>;
 }
 
@@ -25,6 +27,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Cyberpunk colors, pixel icons and smooth editor settings",
 		theme: "Stylesmith Neon Night",
 		iconTheme: ICON_THEME,
+		font: "JetBrainsMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -39,6 +42,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Green phosphor colors, compact layout and block cursors without animation",
 		theme: "Stylesmith Phosphor",
 		iconTheme: "stylesmith-pixel-phosphor",
+		font: "DepartureMono",
 		effects: {
 			...BASE,
 			"effects.smoothCursor": false,
@@ -54,6 +58,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Amber colors, compact layout and block cursors without animation",
 		theme: "Stylesmith Amber",
 		iconTheme: "stylesmith-pixel-amber",
+		font: "BlexMono",
 		effects: {
 			...BASE,
 			"effects.smoothCursor": false,
@@ -69,6 +74,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Cold white-phosphor colors and smooth editor settings",
 		theme: "Stylesmith ICE",
 		iconTheme: "stylesmith-pixel-ice",
+		font: "ShureTechMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -83,6 +89,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Calm blue-grey colors, quiet editor settings and dimmed unfocused editors",
 		theme: "Stylesmith Monolith",
 		iconTheme: ICON_THEME,
+		font: "GeistMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -98,6 +105,7 @@ export const PRESETS: readonly Preset[] = [
 			"Warm concrete colors with a coral accent, quiet settings and dimmed unfocused editors",
 		theme: "Stylesmith Glass Lab",
 		iconTheme: ICON_THEME,
+		font: "GeistMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -112,6 +120,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Navy and vault-yellow colors with a block terminal cursor",
 		theme: "Stylesmith Vault",
 		iconTheme: ICON_THEME,
+		font: "SpaceMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -126,6 +135,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Layered green colors with a block terminal cursor",
 		theme: "Stylesmith Digital Rain",
 		iconTheme: ICON_THEME,
+		font: "JetBrainsMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -140,6 +150,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Bright colors with a smooth cursor and current-line highlight",
 		theme: "Stylesmith Daylight",
 		iconTheme: ICON_THEME,
+		font: "JetBrainsMono",
 		effects: {
 			"effects.smoothCursor": true,
 			"effects.currentLine": true,
@@ -156,6 +167,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "High-contrast colors with minimal motion and clear bracket guides",
 		theme: "Stylesmith Neon High Contrast",
 		iconTheme: ICON_THEME,
+		font: "AtkynsonMono",
 		effects: {
 			"effects.smoothCursor": false,
 			"effects.currentLine": true,

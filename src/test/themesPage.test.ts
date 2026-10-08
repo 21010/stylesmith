@@ -4,6 +4,7 @@ import * as path from "node:path";
 import { describe, it } from "node:test";
 import { contrast } from "../color";
 import { EFFECTS } from "../effects";
+import { FONTS } from "../fonts";
 import { PRESETS } from "../presets";
 import { manifest, readJson, ROOT, type ColorTheme } from "./files";
 
@@ -139,12 +140,59 @@ describe("Themes page", () => {
 			);
 			assert.equal(detail(card, "Color theme"), preset.theme);
 			assert.equal(detail(card, "File icons"), icons?.label);
+			const font = FONTS.find(candidate => candidate.id === preset.font);
+			assert.equal(detail(card, "Recommended font"), font?.label);
+			assert.match(card, new RegExp(`href="fonts\\.html#font-${preset.font}"`));
 			assert.equal(
 				detail(card, "Settings on"),
 				EFFECTS.filter(effect => preset.effects[effect.setting])
 					.map(effect => effect.label)
 					.join(", ")
 			);
+		});
+	}
+});
+
+describe("Compare presets table", () => {
+	const rows = new Map(
+		[...page.matchAll(/<tr>\s*<th scope="row">([^<]+)<\/th>([\s\S]*?)<\/tr>/g)].map(
+			([, label, cells]) => [
+				label,
+				[...cells!.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map(([, cell]) => words(cell!))
+			]
+		)
+	);
+
+	it("has a row for every preset", () => {
+		assert.deepEqual([...rows.keys()].sort(), PRESETS.map(preset => preset.label).sort());
+	});
+
+	it("has a column for every effect, then the recommended font", () => {
+		const header = /<thead>([\s\S]*?)<\/thead>/.exec(page)?.[1] ?? "";
+		const columns = [...header.matchAll(/<th scope="col">([^<]+)<\/th>/g)].map(([, c]) => c);
+		assert.deepEqual(columns, [
+			"Preset",
+			...EFFECTS.map(effect => effect.label),
+			"Recommended font"
+		]);
+	});
+
+	for (const preset of PRESETS) {
+		it(`shows what ${preset.label} turns on`, () => {
+			const font = FONTS.find(candidate => candidate.id === preset.font);
+			assert.deepEqual(rows.get(preset.label), [
+				...EFFECTS.map(effect => (preset.effects[effect.setting] ? "on" : "off")),
+				font?.label
+			]);
+		});
+	}
+});
+
+describe("Fonts page", () => {
+	const fontsPage = readFileSync(path.join(ROOT, "site", "fonts.html"), "utf-8");
+	for (const font of FONTS) {
+		it(`has a link target for ${font.id}`, () => {
+			assert.match(fontsPage, new RegExp(`id="font-${font.id}"`));
 		});
 	}
 });
