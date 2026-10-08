@@ -112,6 +112,13 @@ describe("color themes", () => {
 				strong
 			],
 			["breadcrumbs", c("breadcrumb.foreground"), background, text],
+			["inline blame", c("git.blame.editorDecorationForeground"), background, text],
+			[
+				"inline blame on the current line",
+				c("git.blame.editorDecorationForeground"),
+				c("editor.lineHighlightBackground"),
+				text
+			],
 			["terminal text", c("terminal.foreground"), c("terminal.background"), strong],
 			["error text", c("editorError.foreground"), background, text],
 			["warning text", c("editorWarning.foreground"), background, text],

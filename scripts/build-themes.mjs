@@ -83,6 +83,9 @@ function theme(p) {
 			"editorGutter.addedBackground": p.status.added,
 			"editorGutter.modifiedBackground": p.status.modified,
 			"editorGutter.deletedBackground": p.status.deleted,
+			// VS Code's inline git blame, at the end of the cursor's line: muted, like other
+			// text that isn't code, and readable on the current-line highlight (themes.test.ts).
+			"git.blame.editorDecorationForeground": p.muted,
 			"editorOverviewRuler.border": "#00000000",
 			"editorWidget.background": p.bgRaised,
 			"editorWidget.foreground": p.fg,
