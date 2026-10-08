@@ -5,6 +5,7 @@ import { EFFECTS, type Effect } from "./effects";
 import {
 	EFFECT_GROUP,
 	FONT_GROUP,
+	THEME_GROUP,
 	fontWanted,
 	toggleWanted,
 	type ManagedSettings,
@@ -42,10 +43,30 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 	return true;
 }
 
+/**
+ * Sets the color theme and file icon theme a preset chose, as managed settings: Disable puts
+ * the user's own themes back. Enable never touches them; only presets set themes.
+ */
+export async function applyThemes(
+	services: Services,
+	colorTheme: string,
+	iconTheme: string
+): Promise<void> {
+	const same = (expected: string) => (value: unknown) => value === expected;
+	await services.managed.update(
+		THEME_GROUP,
+		new Map([
+			["workbench.colorTheme", toggleWanted(colorTheme, same(colorTheme))],
+			["workbench.iconTheme", toggleWanted(iconTheme, same(iconTheme))]
+		])
+	);
+}
+
 /** Restores the user's prior settings through the VS Code configuration API. */
 export async function disable(services: Services): Promise<void> {
 	await services.managed.update(FONT_GROUP, new Map());
 	await services.managed.update(EFFECT_GROUP, new Map());
+	await services.managed.update(THEME_GROUP, new Map());
 	await services.store.update({ enabled: false });
 }
 

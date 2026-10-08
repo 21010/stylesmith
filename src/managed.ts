@@ -15,7 +15,7 @@ export type Wanted = (userValue: unknown) => unknown;
 
 /** A kind of managed setting: where it's remembered, and what part of a value is the user's. */
 export interface Group {
-	name: "fontSettings" | "effectSettings";
+	name: "fontSettings" | "effectSettings" | "themeSettings";
 	/** The user's own part of a value they changed after Stylesmith; what to put back. */
 	userPart(current: unknown): unknown;
 	/**
@@ -37,6 +37,16 @@ export const FONT_GROUP: Group = {
 /** Settings effects turn on: a value the user changed is entirely theirs. */
 export const EFFECT_GROUP: Group = {
 	name: "effectSettings",
+	userPart: current => current,
+	userChangeWins: true
+};
+
+/**
+ * The color theme and file icon theme a preset chose: a value the user changed is entirely
+ * theirs, so Disable keeps a theme they picked after the preset.
+ */
+export const THEME_GROUP: Group = {
+	name: "themeSettings",
 	userPart: current => current,
 	userChangeWins: true
 };

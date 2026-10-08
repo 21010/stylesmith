@@ -33,9 +33,15 @@ export interface SavedValue {
 export interface StoredState {
 	fontSettings?: Record<string, SavedValue>;
 	effectSettings?: Record<string, SavedValue>;
+	/** The color and icon theme a preset chose, so Disable can put the user's own back. */
+	themeSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
 	/** Set once the user was told the old workbench patch can't be removed, to tell them once. */
 	legacyDeniedShown?: boolean;
+	/** When Stylesmith first ran on this computer, for the one-time feedback question. */
+	firstRunAt?: number;
+	/** Set once the feedback question was shown, whatever the answer. */
+	feedbackAsked?: boolean;
 	/** Fonts Stylesmith installed for the user, by font id: what to remove again. */
 	installedFonts?: Record<string, { files: string[]; registry: string[] }>;
 }

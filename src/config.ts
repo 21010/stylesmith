@@ -27,8 +27,6 @@ export interface Config {
 	problemLens(): ProblemLensOptions;
 	/** Whether to tint the lines an undo changed, briefly. */
 	undoHighlight(): boolean;
-	/** Sets VS Code's color theme and file icon theme, in the user's settings. */
-	setThemes(colorTheme: string, iconTheme: string): Promise<void>;
 }
 
 function userValue<T>(section: string, key: string, fallback: T): T {
@@ -72,13 +70,7 @@ export const vscodeConfig: Config = {
 		gutterIcons: get("problems.gutterIcons", true),
 		statusBar: get("problems.statusBar", true),
 		errorSignal: get("problems.errorSignal", false)
-	}),
-
-	async setThemes(colorTheme, iconTheme) {
-		const workbench = vscode.workspace.getConfiguration("workbench");
-		await workbench.update("colorTheme", colorTheme, vscode.ConfigurationTarget.Global);
-		await workbench.update("iconTheme", iconTheme, vscode.ConfigurationTarget.Global);
-	}
+	})
 };
 
 /** The user's own (global) VS Code settings, for the settings Stylesmith manages. */

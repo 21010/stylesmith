@@ -147,7 +147,11 @@ export async function installFontCommand(config: Config, fonts: FontInstaller): 
  * Applies a preset's theme, icons, font and supported effects. Given a preset id (for example from a
  * keyboard shortcut: "args": "night-city"), it applies that one; otherwise it asks.
  */
-export async function applyPreset(config: Config, id?: unknown): Promise<void> {
+export async function applyPreset(
+	config: Config,
+	setThemes: (colorTheme: string, iconTheme: string) => Promise<void>,
+	id?: unknown
+): Promise<void> {
 	let preset: Preset | undefined;
 	if (typeof id === "string") {
 		preset = PRESETS.find(candidate => candidate.id === id);
@@ -164,11 +168,7 @@ export async function applyPreset(config: Config, id?: unknown): Promise<void> {
 		preset = choice?.preset;
 	}
 	if (!preset) return;
-	await usePreset(config, preset);
-	await vscode.commands.executeCommand("stylesmith.enable");
-}
-
-async function usePreset(config: Config, preset: Preset): Promise<void> {
-	await config.setThemes(preset.theme, preset.iconTheme);
+	await setThemes(preset.theme, preset.iconTheme);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);
+	await vscode.commands.executeCommand("stylesmith.enable");
 }

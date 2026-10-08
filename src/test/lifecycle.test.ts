@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, it } from "node:test";
 import type { Config } from "../config";
 import { DEFAULT_FONT_ID, findFont } from "../fonts";
 import { EFFECTS } from "../effects";
-import { checkAfterStartup, disable, enable, type Services } from "../lifecycle";
+import { applyThemes, checkAfterStartup, disable, enable, type Services } from "../lifecycle";
 import { ManagedSettings, type SettingsAccess } from "../managed";
 import { StateFile } from "../store";
 
@@ -20,6 +20,8 @@ beforeEach(async () => {
 		["editor.fontFamily", "Consolas, monospace"],
 		["terminal.integrated.fontFamily", ""],
 		["editor.cursorBlinking", "blink"],
+		["workbench.iconTheme", "vs-seti"],
+		["workbench.colorTheme", "Default Dark Modern"],
 		["editor.cursorSmoothCaretAnimation", "off"],
 		["editor.renderLineHighlight", "line"],
 		["editor.guides.bracketPairs", false],
@@ -31,6 +33,8 @@ beforeEach(async () => {
 		["editor.fontFamily", "monospace"],
 		["terminal.integrated.fontFamily", ""],
 		["editor.cursorBlinking", "blink"],
+		["workbench.iconTheme", "vs-seti"],
+		["workbench.colorTheme", "Default Dark Modern"],
 		["editor.cursorSmoothCaretAnimation", "off"],
 		["editor.renderLineHighlight", "line"],
 		["editor.guides.bracketPairs", false],
@@ -63,8 +67,7 @@ beforeEach(async () => {
 			statusBar: true,
 			errorSignal: false
 		}),
-		undoHighlight: () => false,
-		setThemes: async () => {}
+		undoHighlight: () => false
 	};
 	const store = new StateFile(path.join(root, "state.json"));
 	services = { config, managed: new ManagedSettings(settings, store), store };
@@ -123,6 +126,33 @@ describe("API-only lifecycle", () => {
 			values.get("editor.fontFamily"),
 			"'JetBrainsMono Nerd Font Mono', Consolas, monospace"
 		);
+	});
+
+	it("puts the user's own themes back on Disable after a preset", async () => {
+		values.set("workbench.colorTheme", "My Theme");
+		await applyThemes(services, "Stylesmith Phosphor", "stylesmith-pixel-phosphor");
+		assert.equal(values.get("workbench.colorTheme"), "Stylesmith Phosphor");
+		assert.equal(values.get("workbench.iconTheme"), "stylesmith-pixel-phosphor");
+		await enable(services);
+		assert.equal(values.get("workbench.colorTheme"), "Stylesmith Phosphor", "Enable leaves it");
+		await disable(services);
+		assert.equal(values.get("workbench.colorTheme"), "My Theme");
+		assert.equal(values.get("workbench.iconTheme"), "vs-seti");
+	});
+
+	it("keeps a theme the user picked after the preset", async () => {
+		await applyThemes(services, "Stylesmith Amber", "stylesmith-pixel-amber");
+		values.set("workbench.colorTheme", "Their Own Theme");
+		await disable(services);
+		assert.equal(values.get("workbench.colorTheme"), "Their Own Theme");
+		assert.equal(values.get("workbench.iconTheme"), "vs-seti", "the icons go back");
+	});
+
+	it("doesn't take over a theme the user already had", async () => {
+		values.set("workbench.colorTheme", "Stylesmith ICE");
+		await applyThemes(services, "Stylesmith ICE", "stylesmith-pixel-ice");
+		await disable(services);
+		assert.equal(values.get("workbench.colorTheme"), "Stylesmith ICE");
 	});
 
 	it("re-applies active settings on startup only when enabled", async () => {

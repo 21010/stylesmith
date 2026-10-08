@@ -75,6 +75,9 @@ export async function run(): Promise<void> {
 		assert.equal(userValue("editor", "renderLineHighlight"), undefined);
 		assert.equal(userValue("editor.guides", "bracketPairs"), undefined);
 		assert.equal(userValue("editor", "fontFamily"), undefined);
+		// The preset's themes are managed too: the test profile had none of its own.
+		assert.equal(userValue("workbench", "colorTheme"), undefined);
+		assert.equal(userValue("workbench", "iconTheme"), undefined);
 	});
 
 	await step("Problem Lens follows diagnostics and its settings", async () => {

@@ -1,7 +1,7 @@
 {
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
-	"description": "Customize VS Code with native themes, icons, settings and editor decorations. Stylesmith does not modify VS Code installation files, apart from removing changes made by Stylesmith 1.x.",
+	"description": "One click for a complete look in VS Code and your terminal: themes, pixel icons and editor settings that belong together, tested for readability, with a matching Nerd Font if you want one. One click to undo it. Stylesmith does not modify VS Code installation files, apart from removing changes made by Stylesmith 1.x.",
 	"version": "2.1.0",
 	"publisher": "21010",
 	"author": {
@@ -18,7 +18,6 @@
 	],
 	"keywords": [
 		"theme",
-		"workbench",
 		"customization",
 		"color theme",
 		"dark theme",
@@ -31,7 +30,9 @@
 		"light theme",
 		"accessibility",
 		"icon theme",
-		"presets"
+		"presets",
+		"terminal",
+		"oh my posh"
 	],
 	"repository": {
 		"type": "git",

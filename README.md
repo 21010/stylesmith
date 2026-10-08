@@ -1,6 +1,12 @@
 # Stylesmith
 
-Stylesmith adds color themes, file icon themes, diagnostic decorations, presets, and a small set of visual options to Visual Studio Code. It uses VS Code's extension API and contribution points only. **It does not modify VS Code installation files: it never injects CSS or JavaScript into the workbench or alters `product.json`.** The one exception is a one-time cleanup that removes changes left by Stylesmith 1.x (see below).
+**One click for a complete look in VS Code and your terminal: a color theme, pixel file icons and editor settings that belong together, with a matching Nerd Font if you want one. One click to undo it.**
+
+Pick a preset, such as a green-phosphor terminal, a neon city at night or a calm blue-grey studio, and Stylesmith applies it through VS Code's own settings. It can install the matching Nerd Font for you after you confirm, and the optional Oh My Posh prompt gives your terminal the same colors. **Stylesmith: Disable** puts your own theme, icons and settings back.
+
+Every theme is tested for readability: contrast for text, syntax and markers, and color-blindness checks for errors, warnings, git and terminal colors. Problem Lens shows problems on their line with shapes and words, not color alone.
+
+Stylesmith uses only VS Code's extension API. It does not modify VS Code installation files: it never injects CSS or JavaScript into the workbench or alters `product.json`. The one exception is a one-time cleanup that removes changes left by Stylesmith 1.x (see below). Glow, scanlines and other effects that need such changes aren't available.
 
 ## Features
 
@@ -9,8 +15,6 @@ Stylesmith adds color themes, file icon themes, diagnostic decorations, presets,
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
 - Optional font selection through VS Code's `editor.fontFamily` and `terminal.integrated.fontFamily` settings. The selected Nerd Font family must be installed on your system: install it yourself, or let Stylesmith install it for your user account after you confirm (see [Installing a font](#installing-a-font)).
-
-CSS effects on workbench UI chrome, canvas animations, and fonts loaded directly from the extension have been removed because VS Code has no supported API for them.
 
 ## Security model
 
@@ -32,7 +36,7 @@ Settings from 1.x that no longer do anything are removed from your user settings
 
 ## Use
 
-Choose a Stylesmith color theme or file icon theme from the normal VS Code selectors, or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores settings Stylesmith previously managed. These operations do not require a window reload.
+Choose a Stylesmith color theme or file icon theme from the normal VS Code selectors, or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and icon theme a preset chose. These operations do not require a window reload.
 
 Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up.
 
@@ -113,6 +117,7 @@ Stylesmith manages the following VS Code settings while enabled. Disable restore
 
 | VS Code setting                                                         | Stylesmith option                                     |
 | ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `workbench.colorTheme`, `workbench.iconTheme`                           | the preset you apply                                  |
 | `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
 | `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`            | `stylesmith.effects.smoothCursor`                     |
 | `editor.renderLineHighlight`                                            | `stylesmith.effects.currentLine`                      |

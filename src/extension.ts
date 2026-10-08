@@ -1,8 +1,9 @@
 import * as path from "node:path";
 import * as vscode from "vscode";
 import { vscodeConfig, vscodeSettings } from "./config";
+import { FEEDBACK_URL, feedbackStep } from "./feedback";
 import { removeLegacyPatch } from "./legacyCleanup";
-import { checkAfterStartup, disable, enable, type Services } from "./lifecycle";
+import { applyThemes, checkAfterStartup, disable, enable, type Services } from "./lifecycle";
 import { ManagedSettings } from "./managed";
 import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
@@ -59,7 +60,13 @@ export function activate(context: vscode.ExtensionContext): void {
 		}),
 		// Not queued: these run stylesmith.enable themselves, which would wait behind them.
 		vscode.commands.registerCommand("stylesmith.applyPreset", (id?: unknown) =>
-			reportErrors(() => applyPreset(services.config, id))
+			reportErrors(() =>
+				applyPreset(
+					services.config,
+					(colorTheme, iconTheme) => applyThemes(services, colorTheme, iconTheme),
+					id
+				)
+			)
 		),
 		vscode.commands.registerCommand("stylesmith.menu", () =>
 			reportErrors(() => showMenu(services.config, fonts))
@@ -97,6 +104,23 @@ export function activate(context: vscode.ExtensionContext): void {
 		status.show(await checkAfterStartup(services));
 	});
 	void reportErrors(() => cleanUpAfterVersion1(store));
+	void reportErrors(() => askForFeedback(store));
+}
+
+/** Asks once, after about a week of use, what the user uses Stylesmith for (see feedback.ts). */
+async function askForFeedback(store: StateFile): Promise<void> {
+	const ask = await store.transact(state => {
+		const { change, ask } = feedbackStep(state, Date.now());
+		return { change, result: ask };
+	});
+	if (!ask) return;
+	const answer = "Answer on GitHub";
+	const choice = await vscode.window.showInformationMessage(
+		"Stylesmith: what do you use it for? One click in a public GitHub poll helps decide what to build next. Stylesmith itself sends nothing, and won't ask again.",
+		answer,
+		"No, thanks"
+	);
+	if (choice === answer) await vscode.env.openExternal(vscode.Uri.parse(FEEDBACK_URL));
 }
 
 /** Removes a workbench patch Stylesmith 1.x left behind, and tells the user what happened. */

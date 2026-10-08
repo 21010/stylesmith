@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- After about a week of use, Stylesmith asks once what you use it for, with a link to a public GitHub poll. It sends nothing itself, and doesn't ask again whatever you choose.
 - **Block editor cursor** (`stylesmith.effects.blockCursor`, off by default): a terminal-style block cursor in the editor, through VS Code's native `editor.cursorStyle`.
 - **Four new color themes, each with a preset:** Monolith (calm blue-grey with one deep blue), Glass Lab (warm concrete greys with a coral accent), Vault (navy and vault yellow, retro-futurist) and Digital Rain (layered greens). Monolith and Glass Lab dim unfocused editors; Vault and Digital Rain use a block terminal cursor. All four pass the same contrast and color-blindness checks as the other themes.
 - **Error signal** (`stylesmith.problems.errorSignal`, off by default): when the number of errors goes up, the status bar shows the new count for a moment, on the error background. It shows once, at most every two seconds, so it never flashes.
@@ -13,6 +14,8 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **Disable now restores your own color theme and icon theme** after a preset changed them, unless you picked another theme yourself in the meantime. The theme and icons a preset chooses are managed settings, like the others.
+- The README, Marketplace description and website now lead with what Stylesmith is for: one click for a complete look in VS Code and your terminal, and one click to undo it.
 - **Retro terminals refined around their phosphor:** Phosphor's syntax colors now all stay within its green, told apart by brightness, and ICE's numbers and types are blue-white instead of lavender and aqua. Errors, warnings, git and terminal colors are unchanged. Amber was already within its amber.
 - **Phosphor Terminal and Amber Monitor** now use block cursors in the editor and terminal that blink without the smooth animation, like the terminals they're modeled on.
 - The Themes page groups the presets and themes into retro terminals, film-inspired themes and everyday themes.
