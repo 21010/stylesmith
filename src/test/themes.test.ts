@@ -3,6 +3,7 @@ import { readdirSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { colorDifference, contrast, mix, VISION } from "../color";
+import { LEVELS, MAX_BODY_CONTRAST, MIN_COLOR_DIFFERENCE } from "../readability";
 import { LINE_TINT } from "../problems";
 import { manifest, readJson } from "./files";
 
@@ -25,19 +26,6 @@ const UI_THEME: Record<string, string> = {
 	hc: "hc-black",
 	hcLight: "hc-light"
 };
-
-// WCAG 2 contrast levels: 4.5:1 for normal text (AA, 1.4.3), 7:1 for enhanced contrast
-// (AAA, 1.4.6), and 3:1 for UI parts you need to find, like the cursor (non-text, 1.4.11).
-// High contrast themes are held to AAA for all text and 4.5:1 for non-text parts.
-const LEVELS = {
-	normal: { strong: 7, text: 4.5, nonText: 3 },
-	high: { strong: 7, text: 7, nonText: 4.5 }
-};
-// Above this, text starts to glare. High contrast themes are exempt: maximum contrast is their job.
-const MAX_BODY_CONTRAST = 16;
-// Colors that carry meaning must stay this far apart (CIE76 ΔE) with every kind of color
-// blindness. About 2 is barely noticeable; 15 and more is clearly different at a glance.
-const MIN_COLOR_DIFFERENCE = 15;
 
 // How strongly the Problem Lens tints a problem's line, for each kind of theme.
 const PROBLEM_TINT: Record<string, number> = {
