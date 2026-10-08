@@ -103,19 +103,28 @@
 						"JetBrainsMono",
 						"BlexMono",
 						"ShureTechMono",
-						"DepartureMono"
+						"DepartureMono",
+						"GeistMono",
+						"SpaceMono",
+						"AtkynsonMono"
 					],
 					"enumItemLabels": [
 						"JetBrainsMono Nerd Font (install separately)",
 						"BlexMono Nerd Font (install separately)",
 						"ShureTechMono Nerd Font (install separately)",
-						"DepartureMono Nerd Font (install separately)"
+						"DepartureMono Nerd Font (install separately)",
+						"GeistMono Nerd Font (install separately)",
+						"SpaceMono Nerd Font (install separately)",
+						"AtkynsonMono Nerd Font (install separately)"
 					],
 					"markdownEnumDescriptions": [
 						"Requires the JetBrainsMono Nerd Font family to be installed on your system.",
 						"Requires the BlexMono Nerd Font family to be installed on your system.",
 						"Requires the ShureTechMono Nerd Font family to be installed on your system.",
-						"Requires the DepartureMono Nerd Font family to be installed on your system."
+						"Requires the DepartureMono Nerd Font family to be installed on your system.",
+						"Requires the GeistMono Nerd Font family to be installed on your system. Based on Geist Mono.",
+						"Requires the SpaceMono Nerd Font family to be installed on your system. Based on Space Mono.",
+						"Requires the AtkynsonMono Nerd Font family to be installed on your system. Based on Atkinson Hyperlegible Mono, designed by the Braille Institute for readers with low vision."
 					],
 					"markdownDescription": "Which font family to use. The font must be already installed on your system. The setting takes effect immediately."
 				},

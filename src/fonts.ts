@@ -27,6 +27,21 @@ export const FONTS: readonly [NerdFont, ...NerdFont[]] = [
 		id: "DepartureMono",
 		label: "DepartureMono Nerd Font (install separately)",
 		family: "DepartureMono Nerd Font Mono"
+	},
+	{
+		id: "GeistMono",
+		label: "GeistMono Nerd Font (install separately)",
+		family: "GeistMono Nerd Font Mono"
+	},
+	{
+		id: "SpaceMono",
+		label: "SpaceMono Nerd Font (install separately)",
+		family: "SpaceMono Nerd Font Mono"
+	},
+	{
+		id: "AtkynsonMono",
+		label: "AtkynsonMono Nerd Font (install separately)",
+		family: "AtkynsonMono Nerd Font Mono"
 	}
 ];
 
