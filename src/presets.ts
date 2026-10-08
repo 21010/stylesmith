@@ -25,7 +25,12 @@ export const PRESETS: readonly Preset[] = [
 		description: "Cyberpunk colors, pixel icons and smooth editor settings",
 		theme: "Stylesmith Neon Night",
 		iconTheme: ICON_THEME,
-		effects: { ...BASE, "effects.compactLayout": false, "effects.blockTerminalCursor": true }
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false
+		}
 	},
 	{
 		id: "phosphor-terminal",
@@ -33,7 +38,12 @@ export const PRESETS: readonly Preset[] = [
 		description: "Green phosphor colors, compact layout and a block terminal cursor",
 		theme: "Stylesmith Phosphor",
 		iconTheme: "stylesmith-pixel-phosphor",
-		effects: { ...BASE, "effects.compactLayout": true, "effects.blockTerminalCursor": true }
+		effects: {
+			...BASE,
+			"effects.compactLayout": true,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false
+		}
 	},
 	{
 		id: "amber-monitor",
@@ -41,7 +51,12 @@ export const PRESETS: readonly Preset[] = [
 		description: "Amber colors, compact layout and a block terminal cursor",
 		theme: "Stylesmith Amber",
 		iconTheme: "stylesmith-pixel-amber",
-		effects: { ...BASE, "effects.compactLayout": true, "effects.blockTerminalCursor": true }
+		effects: {
+			...BASE,
+			"effects.compactLayout": true,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false
+		}
 	},
 	{
 		id: "black-ice",
@@ -49,7 +64,12 @@ export const PRESETS: readonly Preset[] = [
 		description: "Cold white-phosphor colors and smooth editor settings",
 		theme: "Stylesmith ICE",
 		iconTheme: "stylesmith-pixel-ice",
-		effects: { ...BASE, "effects.compactLayout": false, "effects.blockTerminalCursor": false }
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false
+		}
 	},
 	{
 		id: "daylight",
@@ -62,7 +82,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.currentLine": true,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": false,
-			"effects.blockTerminalCursor": false
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false
 		}
 	},
 	{
@@ -76,7 +97,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.currentLine": true,
 			"effects.bracketGuides": true,
 			"effects.compactLayout": false,
-			"effects.blockTerminalCursor": false
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false
 		}
 	}
 ];

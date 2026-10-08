@@ -195,6 +195,12 @@
 					"scope": "application",
 					"description": "Use VS Code’s native blinking block terminal cursor."
 				},
+				"stylesmith.effects.dimUnfocused": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Dim editors and terminals that don't have focus, with VS Code’s native accessibility.dimUnfocused setting, so the one you're working in stands out."
+				},
 				"stylesmith.effects.neonBlocks": {
 					"type": "boolean",
 					"default": true,

@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Added
+
+- **Dim unfocused editors** (`stylesmith.effects.dimUnfocused`, off by default): turns on VS Code's native `accessibility.dimUnfocused.enabled`, so the editor or terminal you're working in stands out. Like the other effects, **Stylesmith: Disable** puts your own value back.
+
 ## 2.0.1 (2026-10-07)
 
 The first release of Stylesmith 2. Version 2.0.0 was tagged but never released, because its release build stalled on a CI infrastructure problem; 2.0.1 contains the same extension.
