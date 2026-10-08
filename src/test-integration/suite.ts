@@ -31,6 +31,21 @@ export async function run(): Promise<void> {
 		assert.equal(userValue("editor.guides", "bracketPairs"), "active");
 	});
 
+	await step("dims unfocused editors when that effect is on", async () => {
+		const setting = vscode.workspace
+			.getConfiguration("accessibility")
+			.inspect("dimUnfocused.enabled");
+		assert.notEqual(setting?.defaultValue, undefined, "this VS Code has the setting");
+		await vscode.workspace
+			.getConfiguration("stylesmith")
+			.update("effects.dimUnfocused", true, true);
+		await withTimeout(vscode.commands.executeCommand("stylesmith.enable"), "Enable");
+		assert.equal(userValue("accessibility", "dimUnfocused.enabled"), true);
+		await vscode.workspace
+			.getConfiguration("stylesmith")
+			.update("effects.dimUnfocused", undefined, true);
+	});
+
 	await step(
 		"presets change themes and native settings without editing the installation",
 		async () => {

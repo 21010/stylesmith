@@ -23,6 +23,7 @@ describe("API-backed effects", () => {
 				.map(setting => setting.key)
 				.sort(),
 			[
+				"accessibility.dimUnfocused.enabled",
 				"editor.cursorBlinking",
 				"editor.cursorSmoothCaretAnimation",
 				"editor.guides.bracketPairs",

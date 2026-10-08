@@ -7,7 +7,7 @@ Stylesmith adds color themes, file icon themes, diagnostic decorations, presets,
 - Seven color themes and four file icon themes contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
-- Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, and a block terminal cursor.
+- Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, a block terminal cursor, and dimming unfocused editors.
 - Optional font selection through VS Code's `editor.fontFamily` and `terminal.integrated.fontFamily` settings. The selected Nerd Font family must be installed on your system: install it yourself, or let Stylesmith install it for your user account after you confirm (see [Installing a font](#installing-a-font)).
 
 CSS effects on workbench UI chrome, canvas animations, and fonts loaded directly from the extension have been removed because VS Code has no supported API for them.
@@ -84,6 +84,7 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.effects.bracketGuides": true,
 	"stylesmith.effects.compactLayout": false,
 	"stylesmith.effects.blockTerminalCursor": false,
+	"stylesmith.effects.dimUnfocused": false,
 	"stylesmith.problems.enabled": true,
 	"stylesmith.problems.minimumSeverity": "warning",
 	"stylesmith.problems.inlineMessages": true,
@@ -105,6 +106,7 @@ Stylesmith manages the following VS Code settings while enabled. Disable restore
 | `editor.guides.bracketPairs`                                            | `stylesmith.effects.bracketGuides`                    |
 | `window.density.layout`                                                 | `stylesmith.effects.compactLayout`                    |
 | `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
+| `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
 
 Settings that are not available in the installed VS Code version are skipped. Stylesmith writes user (global) settings only, so a workspace or folder value for the same setting takes precedence in that workspace.
 

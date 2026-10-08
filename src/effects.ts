@@ -61,5 +61,13 @@ export const EFFECTS: readonly Effect[] = [
 			{ key: "terminal.integrated.cursorStyle", value: "block", isOn: equals("block") },
 			{ key: "terminal.integrated.cursorBlinking", value: true, isOn: equals(true) }
 		]
+	},
+	{
+		setting: "effects.dimUnfocused",
+		label: "Dim unfocused editors",
+		enabledByDefault: false,
+		editorSettings: [
+			{ key: "accessibility.dimUnfocused.enabled", value: true, isOn: equals(true) }
+		]
 	}
 ];
