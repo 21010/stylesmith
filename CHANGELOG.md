@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- Three more font choices: GeistMono, SpaceMono and AtkynsonMono Nerd Font (based on Atkinson Hyperlegible Mono, designed for readers with low vision). As with the others, install the font first; the Fonts page links each download and explains how to install it.
 - Every theme now colors VS Code's inline git blame, readable on the editor background and on the current line.
 
 ## 2.0.1 (2026-10-07)
