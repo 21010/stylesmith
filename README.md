@@ -7,7 +7,7 @@ Stylesmith adds color themes, file icon themes, diagnostic decorations, presets,
 - Eleven color themes and four file icon themes contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
-- Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, a block terminal cursor, and dimming unfocused editors.
+- Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
 - Optional font selection through VS Code's `editor.fontFamily` and `terminal.integrated.fontFamily` settings. The selected Nerd Font family must be installed on your system: install it yourself, or let Stylesmith install it for your user account after you confirm (see [Installing a font](#installing-a-font)).
 
 CSS effects on workbench UI chrome, canvas animations, and fonts loaded directly from the extension have been removed because VS Code has no supported API for them.
@@ -45,8 +45,8 @@ A preset sets a color theme, a file icon theme and native VS Code settings. Ever
 ### Presets
 
 - **Night City**: Neon pinks and cyans on deep indigo, the look of a city at night, with pixel file icons and a block cursor in the terminal.
-- **Phosphor Terminal**: A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, and a dense, compact layout.
-- **Amber Monitor**: An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons and a compact layout.
+- **Phosphor Terminal**: A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, a dense, compact layout, and block cursors that blink without animation.
+- **Amber Monitor**: An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons, a compact layout, and block cursors that blink without animation.
 - **Black ICE**: A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.
 - **Monolith**: Blue-grey stone with one deep blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.
 - **Glass Lab**: Warm concrete greys, soft off-white text and one coral accent, with the quiet editor settings and dimmed unfocused editors.
@@ -60,7 +60,7 @@ A preset sets a color theme, a file icon theme and native VS Code settings. Ever
 - **Stylesmith Neon Night**: Neon signs reflected on wet streets at night: hot pink and cyan accents and yellow strings on a deep indigo background.
 - **Stylesmith Phosphor**: A late-1970s video terminal with green phosphor: one green range on near-black, with comments dimmed like a fading trace.
 - **Stylesmith Amber**: An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.
-- **Stylesmith ICE**: A cold white-phosphor screen at night: pale ice-blue text and accents on a dark blue-grey background.
+- **Stylesmith ICE**: A cold white-phosphor screen at night: blue-white text, accents and syntax on a dark blue-grey background.
 - **Stylesmith Monolith**: Blue-grey stone and a single deep blue accent: a calm, minimal dark theme, with syntax in quiet greys and sage.
 - **Stylesmith Glass Lab**: Warm concrete greys, soft off-white text and one coral accent. Errors lean magenta and deleted lines orange, so neither reads as the accent.
 - **Stylesmith Vault**: A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.
@@ -93,6 +93,7 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.effects.currentLine": true,
 	"stylesmith.effects.bracketGuides": true,
 	"stylesmith.effects.compactLayout": false,
+	"stylesmith.effects.blockCursor": false,
 	"stylesmith.effects.blockTerminalCursor": false,
 	"stylesmith.effects.dimUnfocused": false,
 	"stylesmith.problems.enabled": true,
@@ -117,6 +118,7 @@ Stylesmith manages the following VS Code settings while enabled. Disable restore
 | `editor.renderLineHighlight`                                            | `stylesmith.effects.currentLine`                      |
 | `editor.guides.bracketPairs`                                            | `stylesmith.effects.bracketGuides`                    |
 | `window.density.layout`                                                 | `stylesmith.effects.compactLayout`                    |
+| `editor.cursorStyle`                                                    | `stylesmith.effects.blockCursor`                      |
 | `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
 | `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
 

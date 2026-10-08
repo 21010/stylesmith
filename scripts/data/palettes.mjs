@@ -63,7 +63,8 @@ export const palettes = [
 	{
 		id: "phosphor",
 		name: "Stylesmith Phosphor",
-		// Retro green CRT terminal, with amber for numbers and constants.
+		// A late-1970s green (P1) phosphor terminal: every syntax color stays within its green and
+		// is told apart by brightness. Only errors, warnings, git and terminal colors leave it.
 		bg: "#0b130d",
 		bgDark: "#070e09",
 		bgRaised: "#122018",
@@ -74,21 +75,21 @@ export const palettes = [
 		muted: "#8cc294",
 		lineNumber: "#6b9e73",
 		accent: "#4dff88",
-		accentAlt: "#ffcf73",
+		accentAlt: "#d8ff8a",
 		onAccent: "#07100a",
 		selection: "#2e6b3f80",
 		findMatch: "#ffcf7355",
 		tokens: {
 			comment: "#6fa878",
 			keyword: "#6dff9a",
-			function: "#d6f5b0",
-			string: "#8fe3d0",
-			number: "#ffcf73",
+			function: "#ccf7c0",
+			string: "#9bdcb0",
+			number: "#d8ff8a",
 			type: "#a6ffd0",
 			property: "#c8f0a0",
-			regexp: "#ffcf73",
+			regexp: "#d8ff8a",
 			tag: "#6dff9a",
-			attribute: "#8fe3d0",
+			attribute: "#9bdcb0",
 			operator: "#a3dfa9"
 		},
 		status: {
@@ -213,7 +214,7 @@ export const palettes = [
 		muted: "#9fb3c8",
 		lineNumber: "#71879d",
 		accent: "#9fe6ff",
-		accentAlt: "#c9c2ff",
+		accentAlt: "#c2d4ff",
 		onAccent: "#080c12",
 		selection: "#3a5a7a80",
 		findMatch: "#9fe6ff40",
@@ -222,10 +223,10 @@ export const palettes = [
 			keyword: "#9fe6ff",
 			function: "#eef6ff",
 			string: "#b4d6f0",
-			number: "#c9c2ff",
-			type: "#a6f0ee",
+			number: "#c2d4ff",
+			type: "#a8dcf5",
 			property: "#cfe0f0",
-			regexp: "#c9c2ff",
+			regexp: "#c2d4ff",
 			tag: "#9fe6ff",
 			attribute: "#b4d6f0",
 			operator: "#a9bfd4"

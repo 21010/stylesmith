@@ -54,6 +54,12 @@ export const EFFECTS: readonly Effect[] = [
 		]
 	},
 	{
+		setting: "effects.blockCursor",
+		label: "Block editor cursor",
+		enabledByDefault: false,
+		editorSettings: [{ key: "editor.cursorStyle", value: "block", isOn: equals("block") }]
+	},
+	{
 		setting: "effects.blockTerminalCursor",
 		label: "Block terminal cursor",
 		enabledByDefault: false,
