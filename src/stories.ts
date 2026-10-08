@@ -19,6 +19,13 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons and a compact layout.",
 	"Black ICE":
 		"A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.",
+	Monolith:
+		"Blue-grey stone with one deep blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.",
+	"Glass Lab":
+		"Warm concrete greys, soft off-white text and one coral accent, with the quiet editor settings and dimmed unfocused editors.",
+	Vault: "Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.",
+	"Digital Rain":
+		"Layered greens on a green-black screen, a sleek late-1990s hacker mood, with a block cursor in the terminal.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -35,6 +42,14 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.",
 	"Stylesmith ICE":
 		"A cold white-phosphor screen at night: pale ice-blue text and accents on a dark blue-grey background.",
+	"Stylesmith Monolith":
+		"Blue-grey stone and a single deep blue accent: a calm, minimal dark theme, with syntax in quiet greys and sage.",
+	"Stylesmith Glass Lab":
+		"Warm concrete greys, soft off-white text and one coral accent. Errors lean magenta and deleted lines orange, so neither reads as the accent.",
+	"Stylesmith Vault":
+		"A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.",
+	"Stylesmith Digital Rain":
+		"Layered greens on green-black: bright keywords, mid-tone strings and dim comments, with blue for constants and a rare red for patterns.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
