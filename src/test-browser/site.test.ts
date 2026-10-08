@@ -15,6 +15,7 @@ import { after, before, describe, it } from "node:test";
 import type * as Axe from "axe-core";
 import { chromium, type Browser, type Page } from "playwright-core";
 import { contrast } from "../color";
+import { PRESETS } from "../presets";
 
 const SITE = path.join(__dirname, "..", "..", "site");
 const PAGES = readdirSync(SITE).filter(file => file.endsWith(".html"));
@@ -280,8 +281,13 @@ describe("website in the browser", () => {
 
 	it("shows every preset and theme on the Themes page, with nothing that moves", async () => {
 		const { page, problems } = await open({ page: "themes.html" });
-		assert.equal(await page.locator(".preset-card").count(), 6);
-		assert.equal(await page.locator(".theme-card").count(), 7);
+		const themes = (
+			JSON.parse(readFileSync(path.join(SITE, "..", "package.json"), "utf-8")) as {
+				contributes: { themes: unknown[] };
+			}
+		).contributes.themes;
+		assert.equal(await page.locator(".preset-card").count(), PRESETS.length);
+		assert.equal(await page.locator(".theme-card").count(), themes.length);
 		const highContrast = await page
 			.locator(".theme-card.high-contrast .theme-kind")
 			.allTextContents();
