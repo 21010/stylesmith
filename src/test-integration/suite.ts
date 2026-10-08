@@ -85,6 +85,17 @@ export async function run(): Promise<void> {
 		assert.ok(extension.isActive);
 	});
 
+	// The website says VS Code's own gutter marks tell modified lines apart from added ones by a
+	// striped pattern, not by color alone (issue #20). Check that default in every tested version.
+	await step("VS Code marks modified lines with a pattern by default", () => {
+		const pattern = vscode.workspace
+			.getConfiguration("scm")
+			.inspect<{ added?: boolean; modified?: boolean }>(
+				"diffDecorationsGutterPattern"
+			)?.defaultValue;
+		assert.deepEqual(pattern, { added: false, modified: true });
+	});
+
 	await step("no command modifies workbench.html or product.json", () => {
 		assert.deepEqual(readFileSync(workbench), workbenchBefore);
 		if (productBefore) assert.deepEqual(readFileSync(product), productBefore);
