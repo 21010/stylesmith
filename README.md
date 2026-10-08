@@ -4,7 +4,7 @@
 
 Pick a preset, such as a green-phosphor terminal, a neon city at night or a calm blue-grey studio, and Stylesmith applies it through VS Code's own settings. It can install the matching Nerd Font for you after you confirm, and the optional Oh My Posh prompt gives your terminal the same colors. **Stylesmith: Disable** puts your own theme, icons and settings back.
 
-Every theme is tested for readability: contrast for text, syntax and markers, and color-blindness checks for errors, warnings, git and terminal colors. Problem Lens shows problems on their line with shapes and words, not color alone.
+Every theme is checked for contrast and color blindness: contrast for text, syntax and markers, and simulated color blindness for errors, warnings, git and terminal colors (see the [ergonomics page](https://stylesmith.dev/ergonomics.html) for exactly what is and isn't tested). By default, Problem Lens shows problems on their line with shapes and words, not color alone.
 
 Stylesmith uses only VS Code's extension API. It does not modify VS Code installation files: it never injects CSS or JavaScript into the workbench or alters `product.json`. The one exception is a one-time cleanup that removes changes left by Stylesmith 1.x (see below). Glow, scanlines and other effects that need such changes aren't available.
 
