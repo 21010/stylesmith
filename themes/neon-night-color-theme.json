@@ -60,6 +60,7 @@
 		"editorGutter.addedBackground": "#5ee6c4",
 		"editorGutter.modifiedBackground": "#b69cff",
 		"editorGutter.deletedBackground": "#ff7a70",
+		"git.blame.editorDecorationForeground": "#a3a9d0",
 		"editorOverviewRuler.border": "#00000000",
 		"editorWidget.background": "#171a2e",
 		"editorWidget.foreground": "#e2e4f3",
