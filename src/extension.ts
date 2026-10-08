@@ -8,7 +8,8 @@ import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
-import { applyPreset, createStatusButton, showMenu, vscodeUi } from "./ui";
+import { FontInstaller } from "./fontUi";
+import { applyPreset, createStatusButton, installFontCommand, showMenu, vscodeUi } from "./ui";
 
 // A preset or the menu changes several settings in a row; re-apply once for all of them.
 const REAPPLY_DELAY = 100; // ms
@@ -33,6 +34,10 @@ export function activate(context: vscode.ExtensionContext): void {
 		managed: new ManagedSettings(vscodeSettings, store),
 		store
 	};
+	const fonts = new FontInstaller(
+		store,
+		path.join(context.globalStorageUri.fsPath, "font-licenses")
+	);
 
 	let queue = Promise.resolve();
 	const queued = (command: string, task: (...args: unknown[]) => Promise<void>) =>
@@ -56,7 +61,13 @@ export function activate(context: vscode.ExtensionContext): void {
 			reportErrors(() => applyPreset(services.config, id))
 		),
 		vscode.commands.registerCommand("stylesmith.menu", () =>
-			reportErrors(() => showMenu(services.config))
+			reportErrors(() => showMenu(services.config, fonts))
+		),
+		vscode.commands.registerCommand("stylesmith.installFont", () =>
+			reportErrors(() => installFontCommand(services.config, fonts))
+		),
+		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
+			reportErrors(() => fonts.remove())
 		),
 		new ProblemLens(context, () => services.config.problemLens()),
 		vscode.workspace.onDidChangeConfiguration(event => {

@@ -8,7 +8,7 @@ Stylesmith adds color themes, file icon themes, diagnostic decorations, presets,
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, and a block terminal cursor.
-- Optional font selection through VS Code's `editor.fontFamily` and `terminal.integrated.fontFamily` settings. The selected Nerd Font family must already be installed on your system; Stylesmith does not install or bundle fonts.
+- Optional font selection through VS Code's `editor.fontFamily` and `terminal.integrated.fontFamily` settings. The selected Nerd Font family must be installed on your system: install it yourself, or let Stylesmith install it for your user account after you confirm (see [Installing a font](#installing-a-font)).
 
 CSS effects on workbench UI chrome, canvas animations, and fonts loaded directly from the extension have been removed because VS Code has no supported API for them.
 
@@ -59,9 +59,19 @@ A preset sets a color theme, a file icon theme and native VS Code settings. Ever
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.
 
+## Installing a font
+
+Choosing a font that isn't installed in the Stylesmith menu, or running **Stylesmith: Install Font…**, offers to install it for your user account. Nothing is downloaded unless you choose **Install** in the confirmation dialog, which shows what is downloaded, from where, and where it goes.
+
+- The files come from this repository's [fonts-3.5.1 release](https://github.com/21010/stylesmith/releases/tag/fonts-3.5.1): the Nerd Fonts 3.5.1 Mono Regular and Bold files, unchanged. Each file's size and SHA-256 are built into Stylesmith, and a file that doesn't match is refused before anything is written.
+- They go to your own font folder, without administrator rights: `%LOCALAPPDATA%\Microsoft\Windows\Fonts` on Windows (registered under `HKCU`), `~/Library/Fonts` on macOS, and `~/.local/share/fonts/stylesmith` on Linux.
+- On macOS the font works right away. On Windows and Linux, quit and reopen VS Code: only then does VS Code see a new font.
+- The fonts are under the SIL Open Font License; each font's license is saved in Stylesmith's own storage.
+- **Stylesmith: Remove Installed Fonts…** removes the fonts Stylesmith installed, and nothing else.
+
 ## Settings
 
-All Stylesmith settings are global user settings. The font settings select a family name; that font must be installed by the user.
+All Stylesmith settings are global user settings. The font settings select a family name; that font must be installed on your system.
 
 ### All settings in settings.json
 

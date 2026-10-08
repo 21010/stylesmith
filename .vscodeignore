@@ -16,6 +16,7 @@ images/logo.svg
 scripts/
 .workbench-location.json
 out/test-integration/**
+out/test-os/**
 out/test-browser/**
 .vscode-test/
 site/
