@@ -2,15 +2,15 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
-## Unreleased
+## 2.2.0 (2026-10-08)
 
 ### Added
 
-- After about a week of use, Stylesmith asks once what you use it for, with a link to a public GitHub poll. It sends nothing itself, and doesn't ask again whatever you choose.
-- **Block editor cursor** (`stylesmith.effects.blockCursor`, off by default): a terminal-style block cursor in the editor, through VS Code's native `editor.cursorStyle`.
 - **Four new color themes, each with a preset:** Monolith (calm blue-grey with one deep blue), Glass Lab (warm concrete greys with a coral accent), Vault (navy and vault yellow, retro-futurist) and Digital Rain (layered greens). Monolith and Glass Lab dim unfocused editors; Vault and Digital Rain use a block terminal cursor. All four pass the same contrast and color-blindness checks as the other themes.
+- **Block editor cursor** (`stylesmith.effects.blockCursor`, off by default): a terminal-style block cursor in the editor, through VS Code's native `editor.cursorStyle`.
 - **Error signal** (`stylesmith.problems.errorSignal`, off by default): when the number of errors goes up, the status bar shows the new count for a moment, on the error background. It shows once, at most every two seconds, so it never flashes.
 - **Undo highlight** (`stylesmith.undoHighlight`, off by default): after an undo, the lines it changed are tinted for a moment. Themes can change the tint with the new `stylesmith.undoHighlightBackground` color.
+- After about a week of use, Stylesmith asks once what you use it for, with a link to a public GitHub poll. It sends nothing itself, and doesn't ask again whatever you choose.
 
 ### Changed
 
