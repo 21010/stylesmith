@@ -15,7 +15,7 @@ const { contrast } = out("color");
 const { PRESETS } = out("presets");
 const { EFFECTS } = out("effects");
 const { FONTS } = out("fonts");
-const { PRESET_STORIES, THEME_STORIES } = out("stories");
+const { PRESET_STORIES, PRESET_TALES, THEME_STORIES } = out("stories");
 const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf-8"));
 
 const ICONS = Object.fromEntries(pkg.contributes.iconThemes.map(t => [t.id, t.label]));
@@ -100,6 +100,12 @@ const presetCard = p => `<li class="preset-card">
 <div class="card-body">
 <h4>${p.label}</h4>
 <p>${PRESET_STORIES[p.label]}</p>
+<details class="tale">
+<summary>The story</summary>
+<p><strong>Where it comes from.</strong> ${PRESET_TALES[p.label].origin}</p>
+<p><strong>The colors.</strong> ${PRESET_TALES[p.label].colors}</p>
+<p><strong>The settings.</strong> ${PRESET_TALES[p.label].settings}</p>
+</details>
 <dl class="preset-parts">
 <dt>Color theme</dt>
 <dd>${p.theme}</dd>
@@ -169,6 +175,8 @@ ${GROUPS.flatMap(g => g[2])
 </table>
 </div>`;
 
+const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> by Ted Chiang; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
+
 const presetsHtml = [
 	howTo,
 	table,
@@ -178,7 +186,8 @@ const presetsHtml = [
 <ul class="preset-grid">
 ${ids.map(id => presetCard(PRESETS.find(p => p.id === id))).join("\n")}
 </ul>`
-	)
+	),
+	credits
 ].join("\n");
 
 const themesHtml = THEME_GROUPS.map(

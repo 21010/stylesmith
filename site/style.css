@@ -1606,6 +1606,29 @@ kbd {
 		margin-bottom: 0.5rem;
 	}
 }
+/* A preset's longer story, folded so the cards stay easy to scan. */
+.tale {
+	margin: 0 0 1rem;
+}
+.tale summary {
+	cursor: pointer;
+	color: var(--cyan);
+	font-weight: 600;
+}
+.tale p {
+	margin: 0.75rem 0 0;
+}
+.tale strong {
+	color: var(--text);
+}
+.credits {
+	max-width: 70ch;
+	margin: 2rem 0 0;
+	color: var(--muted);
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
 /* How presets work: three short blocks side by side, stacked on narrow screens. */
 .section-more {
 	margin: 1.5rem 0 0;
