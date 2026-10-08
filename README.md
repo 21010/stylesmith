@@ -4,7 +4,7 @@ Stylesmith adds color themes, file icon themes, diagnostic decorations, presets,
 
 ## Features
 
-- Seven color themes and four file icon themes contributed through the extension manifest.
+- Eleven color themes and four file icon themes contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, a block terminal cursor, and dimming unfocused editors.
@@ -48,6 +48,10 @@ A preset sets a color theme, a file icon theme and native VS Code settings. Ever
 - **Phosphor Terminal**: A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, and a dense, compact layout.
 - **Amber Monitor**: An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons and a compact layout.
 - **Black ICE**: A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.
+- **Monolith**: Blue-grey stone with one deep blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.
+- **Glass Lab**: Warm concrete greys, soft off-white text and one coral accent, with the quiet editor settings and dimmed unfocused editors.
+- **Vault**: Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.
+- **Digital Rain**: Layered greens on a green-black screen, a sleek late-1990s hacker mood, with a block cursor in the terminal.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
 - **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
 
@@ -57,6 +61,10 @@ A preset sets a color theme, a file icon theme and native VS Code settings. Ever
 - **Stylesmith Phosphor**: A late-1970s video terminal with green phosphor: one green range on near-black, with comments dimmed like a fading trace.
 - **Stylesmith Amber**: An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.
 - **Stylesmith ICE**: A cold white-phosphor screen at night: pale ice-blue text and accents on a dark blue-grey background.
+- **Stylesmith Monolith**: Blue-grey stone and a single deep blue accent: a calm, minimal dark theme, with syntax in quiet greys and sage.
+- **Stylesmith Glass Lab**: Warm concrete greys, soft off-white text and one coral accent. Errors lean magenta and deleted lines orange, so neither reads as the accent.
+- **Stylesmith Vault**: A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.
+- **Stylesmith Digital Rain**: Layered greens on green-black: bright keywords, mid-tone strings and dim comments, with blue for constants and a rare red for patterns.
 - **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.

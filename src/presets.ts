@@ -72,6 +72,59 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "monolith",
+		label: "Monolith",
+		description: "Calm blue-grey colors, quiet editor settings and dimmed unfocused editors",
+		theme: "Stylesmith Monolith",
+		iconTheme: ICON_THEME,
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true
+		}
+	},
+	{
+		id: "glass-lab",
+		label: "Glass Lab",
+		description:
+			"Warm concrete colors with a coral accent, quiet settings and dimmed unfocused editors",
+		theme: "Stylesmith Glass Lab",
+		iconTheme: ICON_THEME,
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true
+		}
+	},
+	{
+		id: "vault",
+		label: "Vault",
+		description: "Navy and vault-yellow colors with a block terminal cursor",
+		theme: "Stylesmith Vault",
+		iconTheme: ICON_THEME,
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false
+		}
+	},
+	{
+		id: "digital-rain",
+		label: "Digital Rain",
+		description: "Layered green colors with a block terminal cursor",
+		theme: "Stylesmith Digital Rain",
+		iconTheme: ICON_THEME,
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

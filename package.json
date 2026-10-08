@@ -397,6 +397,26 @@
 				"path": "./themes/ice-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Monolith",
+				"uiTheme": "vs-dark",
+				"path": "./themes/monolith-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Glass Lab",
+				"uiTheme": "vs-dark",
+				"path": "./themes/glass-lab-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Vault",
+				"uiTheme": "vs-dark",
+				"path": "./themes/vault-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Digital Rain",
+				"uiTheme": "vs-dark",
+				"path": "./themes/digital-rain-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"
