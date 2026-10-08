@@ -7,6 +7,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 ### Added
 
 - **Dim unfocused editors** (`stylesmith.effects.dimUnfocused`, off by default): turns on VS Code's native `accessibility.dimUnfocused.enabled`, so the editor or terminal you're working in stands out. Like the other effects, **Stylesmith: Disable** puts your own value back.
+- Every theme now colors VS Code's inline git blame, readable on the editor background and on the current line.
 
 ## 2.0.1 (2026-10-07)
 
