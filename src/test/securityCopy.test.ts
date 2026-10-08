@@ -54,4 +54,12 @@ describe("API-only security boundary", () => {
 		assert.equal(read("src/extension.ts").match(/appRoot/g)?.length, 1);
 		assert.match(read("SECURITY.md"), /src\/legacyCleanup\.ts/);
 	});
+
+	it("downloads and runs programs only to install fonts, in fontInstall.ts", () => {
+		const using = sources.filter(file =>
+			/from "(node:)?(https?|child_process|net)"/.test(read(`src/${file}`))
+		);
+		assert.deepEqual(using, ["fontInstall.ts"]);
+		assert.match(read("SECURITY.md"), /src\/fontInstall\.ts/);
+	});
 });

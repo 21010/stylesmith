@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Font installation, on request:** choosing a font that isn't installed, or running **Stylesmith: Install Font…**, offers to install it for your user account. After you confirm, Stylesmith downloads the Nerd Font files from this project's `fonts-3.5.1` release, checks each against a pinned SHA-256, and installs them without administrator rights. On Windows and Linux, quit and reopen VS Code to see the font. **Stylesmith: Remove Installed Fonts…** removes them again.
 - Three more font choices: GeistMono, SpaceMono and AtkynsonMono Nerd Font (based on Atkinson Hyperlegible Mono, designed for readers with low vision). As with the others, install the font first; the Fonts page links each download and explains how to install it.
 
 ## 2.0.1 (2026-10-07)

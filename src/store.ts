@@ -36,6 +36,8 @@ export interface StoredState {
 	enabled?: boolean;
 	/** Set once the user was told the old workbench patch can't be removed, to tell them once. */
 	legacyDeniedShown?: boolean;
+	/** Fonts Stylesmith installed for the user, by font id: what to remove again. */
+	installedFonts?: Record<string, { files: string[]; registry: string[] }>;
 }
 
 /** Reads and updates the state file. Every read is fresh; updates never overlap. */

@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { CONFIG_SECTION, type Config } from "./config";
 import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
+import type { FontInstaller } from "./fontUi";
 import { messages } from "./messages";
 import { PRESETS, presetEffects, type Preset } from "./presets";
 
@@ -47,7 +48,7 @@ export function createStatusButton(context: vscode.ExtensionContext, config: Con
 type MenuItem = vscode.QuickPickItem & { run?: () => Thenable<unknown> };
 
 /** The Stylesmith menu, opened from the status bar button. */
-export async function showMenu(config: Config): Promise<void> {
+export async function showMenu(config: Config, fonts: FontInstaller): Promise<void> {
 	const font = config.font();
 	const separator = (label: string): MenuItem => ({
 		label,
@@ -75,7 +76,7 @@ export async function showMenu(config: Config): Promise<void> {
 		{
 			label: `$(text-size) ${font ? font.label : "Your own font"}`,
 			description: "change…",
-			run: () => pickFont(config)
+			run: () => pickFont(config, fonts)
 		},
 		separator(""),
 		{
@@ -96,21 +97,50 @@ export async function showMenu(config: Config): Promise<void> {
 	await choice?.run?.();
 }
 
-async function pickFont(config: Config): Promise<void> {
+async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 	const current = config.font()?.id;
+	const states = await Promise.all(FONTS.map(font => fonts.installed(font)));
 	const items = [
-		...FONTS.map(font => ({
+		...FONTS.map((font, i) => ({
 			label: font.label,
-			description: font.id === current ? "current" : undefined,
+			description:
+				font.id === current
+					? "current"
+					: states[i]
+						? "installed"
+						: "not installed: Stylesmith can install it",
 			id: font.id
 		})),
 		{ label: "Use my own font", description: current ? undefined : "current", id: undefined }
 	];
 	const choice = await vscode.window.showQuickPick(items, { title: "Stylesmith: Font" });
 	if (!choice) return;
+	const font = FONTS.find(candidate => candidate.id === choice.id);
+	// A font that isn't installed: offer to install it. Declining still selects it, as before.
+	const justInstalled = font && !states[FONTS.indexOf(font)] && (await fonts.offer(font));
 	await config.set("fonts.enabled", choice.id !== undefined);
 	if (choice.id) await config.set("fonts.family", choice.id);
 	await vscode.commands.executeCommand("stylesmith.enable");
+	if (font && justInstalled) await fonts.announce(font);
+}
+
+/** Installs a font the user picks among those that aren't installed, after confirming. */
+export async function installFontCommand(config: Config, fonts: FontInstaller): Promise<void> {
+	const states = await Promise.all(FONTS.map(font => fonts.installed(font)));
+	const missing = FONTS.filter((_, i) => !states[i]);
+	if (missing.length === 0) {
+		void vscode.window.showInformationMessage("All of Stylesmith's fonts are installed.");
+		return;
+	}
+	const choice = await vscode.window.showQuickPick(
+		missing.map(font => ({ label: font.label, font })),
+		{ title: "Stylesmith: Install Font" }
+	);
+	if (!choice || !(await fonts.offer(choice.font))) return;
+	await config.set("fonts.enabled", true);
+	await config.set("fonts.family", choice.font.id);
+	await vscode.commands.executeCommand("stylesmith.enable");
+	await fonts.announce(choice.font);
 }
 
 /**
