@@ -40,6 +40,10 @@ async function run(
 			extensionTestsPath: path.join(__dirname, tests),
 			extensionTestsEnv: env,
 			launchArgs: [
+				// Under CI's virtual display the GPU process fails to start, and VS Code then
+				// sometimes freezes at startup ("CodeWindow: detected unresponsive"). The tests
+				// don't need the GPU.
+				"--disable-gpu",
 				"--disable-extensions",
 				"--skip-welcome",
 				"--skip-release-notes",
