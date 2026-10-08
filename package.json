@@ -2,7 +2,7 @@
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
 	"description": "Customize VS Code with native themes, icons, settings and editor decorations. Stylesmith does not modify VS Code installation files, apart from removing changes made by Stylesmith 1.x.",
-	"version": "2.0.1",
+	"version": "2.1.0",
 	"publisher": "21010",
 	"author": {
 		"name": "Grzegorz Ziolo",
