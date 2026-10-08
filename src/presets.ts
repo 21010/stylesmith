@@ -28,6 +28,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false
 		}
@@ -35,12 +36,14 @@ export const PRESETS: readonly Preset[] = [
 	{
 		id: "phosphor-terminal",
 		label: "Phosphor Terminal",
-		description: "Green phosphor colors, compact layout and a block terminal cursor",
+		description: "Green phosphor colors, compact layout and block cursors without animation",
 		theme: "Stylesmith Phosphor",
 		iconTheme: "stylesmith-pixel-phosphor",
 		effects: {
 			...BASE,
+			"effects.smoothCursor": false,
 			"effects.compactLayout": true,
+			"effects.blockCursor": true,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false
 		}
@@ -48,12 +51,14 @@ export const PRESETS: readonly Preset[] = [
 	{
 		id: "amber-monitor",
 		label: "Amber Monitor",
-		description: "Amber colors, compact layout and a block terminal cursor",
+		description: "Amber colors, compact layout and block cursors without animation",
 		theme: "Stylesmith Amber",
 		iconTheme: "stylesmith-pixel-amber",
 		effects: {
 			...BASE,
+			"effects.smoothCursor": false,
 			"effects.compactLayout": true,
+			"effects.blockCursor": true,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false
 		}
@@ -67,6 +72,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false
 		}
@@ -80,6 +86,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true
 		}
@@ -94,6 +101,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true
 		}
@@ -107,6 +115,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false
 		}
@@ -120,6 +129,7 @@ export const PRESETS: readonly Preset[] = [
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false
 		}
@@ -135,6 +145,7 @@ export const PRESETS: readonly Preset[] = [
 			"effects.currentLine": true,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false
 		}
@@ -150,6 +161,7 @@ export const PRESETS: readonly Preset[] = [
 			"effects.currentLine": true,
 			"effects.bracketGuides": true,
 			"effects.compactLayout": false,
+			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false
 		}

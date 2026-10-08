@@ -26,7 +26,7 @@ function cardStory(kind: string, title: string): string | undefined {
 	for (const [card] of themesPage.matchAll(
 		new RegExp(`<li class="${kind}[^"]*">[\\s\\S]*?</li>`, "g")
 	)) {
-		if (!card.includes(`<h3>${title}</h3>`)) continue;
+		if (!card.includes(`<h4>${title}</h4>`)) continue;
 		const story = /<p>([\s\S]*?)<\/p>/.exec(card)?.[1];
 		return story === undefined ? undefined : words(story);
 	}

@@ -28,7 +28,7 @@ function cards(kind: "preset-card" | "theme-card"): Map<string, string> {
 	for (const [card] of page.matchAll(
 		new RegExp(`<li class="${kind}[^"]*">[\\s\\S]*?</li>`, "g")
 	)) {
-		const title = /<h3>([^<]+)<\/h3>/.exec(card)?.[1];
+		const title = /<h4>([^<]+)<\/h4>/.exec(card)?.[1];
 		assert.ok(title, "every card has a title");
 		found.set(title, card);
 	}

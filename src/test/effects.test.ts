@@ -25,6 +25,7 @@ describe("API-backed effects", () => {
 			[
 				"accessibility.dimUnfocused.enabled",
 				"editor.cursorBlinking",
+				"editor.cursorStyle",
 				"editor.cursorSmoothCaretAnimation",
 				"editor.guides.bracketPairs",
 				"editor.renderLineHighlight",

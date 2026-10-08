@@ -14,9 +14,9 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	"Night City":
 		"Neon pinks and cyans on deep indigo, the look of a city at night, with pixel file icons and a block cursor in the terminal.",
 	"Phosphor Terminal":
-		"A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, and a dense, compact layout.",
+		"A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, a dense, compact layout, and block cursors that blink without animation.",
 	"Amber Monitor":
-		"An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons and a compact layout.",
+		"An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons, a compact layout, and block cursors that blink without animation.",
 	"Black ICE":
 		"A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.",
 	Monolith:
@@ -41,7 +41,7 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 	"Stylesmith Amber":
 		"An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.",
 	"Stylesmith ICE":
-		"A cold white-phosphor screen at night: pale ice-blue text and accents on a dark blue-grey background.",
+		"A cold white-phosphor screen at night: blue-white text, accents and syntax on a dark blue-grey background.",
 	"Stylesmith Monolith":
 		"Blue-grey stone and a single deep blue accent: a calm, minimal dark theme, with syntax in quiet greys and sage.",
 	"Stylesmith Glass Lab":

@@ -220,6 +220,12 @@
 					"scope": "application",
 					"description": "Use compact layout density where supported by this VS Code version."
 				},
+				"stylesmith.effects.blockCursor": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Use a block cursor in the editor, like a terminal of the 1970s and 80s, with VS Code’s native editor.cursorStyle setting."
+				},
 				"stylesmith.effects.blockTerminalCursor": {
 					"type": "boolean",
 					"default": false,
