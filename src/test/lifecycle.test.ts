@@ -60,8 +60,10 @@ beforeEach(async () => {
 			minimumSeverity: "warning",
 			inlineMessages: true,
 			gutterIcons: true,
-			statusBar: true
+			statusBar: true,
+			errorSignal: false
 		}),
+		undoHighlight: () => false,
 		setThemes: async () => {}
 	};
 	const store = new StateFile(path.join(root, "state.json"));

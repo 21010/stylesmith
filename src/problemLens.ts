@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
 import {
+	ERROR_SIGNAL_DURATION,
+	ErrorSignal,
 	LINE_TINT,
 	SEVERITIES,
 	documentProblems,
@@ -34,6 +36,11 @@ const UPDATE_DELAY = 150; // ms; problems change quickly while typing
 export class ProblemLens implements vscode.Disposable {
 	private types: Record<Severity, vscode.TextEditorDecorationType>;
 	private readonly status: vscode.StatusBarItem;
+	/** Shows briefly when the number of errors goes up (stylesmith.problems.errorSignal). */
+	private readonly signalItem: vscode.StatusBarItem;
+	private readonly errorSignal = new ErrorSignal();
+	private signalTimer: ReturnType<typeof setTimeout> | undefined;
+	private countTimer: ReturnType<typeof setTimeout> | undefined;
 	private readonly disposables: vscode.Disposable[] = [];
 	private timer: ReturnType<typeof setTimeout> | undefined;
 	private options: ProblemLensOptions;
@@ -52,9 +59,20 @@ export class ProblemLens implements vscode.Disposable {
 		this.status.name = "Stylesmith: problem on this line";
 		this.status.command = "workbench.actions.view.problems";
 
+		this.signalItem = vscode.window.createStatusBarItem(
+			"stylesmith.errorSignal",
+			vscode.StatusBarAlignment.Right,
+			100.6
+		);
+		this.signalItem.name = "Stylesmith: errors went up";
+		this.signalItem.command = "workbench.actions.view.problems";
+		this.signalItem.backgroundColor = new vscode.ThemeColor("statusBarItem.errorBackground");
+
 		this.types = this.createTypes();
 		this.disposables.push(
 			this.status,
+			this.signalItem,
+			vscode.languages.onDidChangeDiagnostics(() => this.scheduleCount()),
 			vscode.languages.onDidChangeDiagnostics(event => {
 				const visible = new Set(
 					vscode.window.visibleTextEditors.map(e => e.document.uri.toString())
@@ -82,8 +100,36 @@ export class ProblemLens implements vscode.Disposable {
 
 	dispose(): void {
 		clearTimeout(this.timer);
+		clearTimeout(this.signalTimer);
+		clearTimeout(this.countTimer);
 		this.disposeTypes();
 		for (const disposable of this.disposables) disposable.dispose();
+	}
+
+	/** Counts the errors in all files, once diagnostics settle, and signals an increase. */
+	private scheduleCount(): void {
+		clearTimeout(this.countTimer);
+		this.countTimer = setTimeout(() => {
+			const errors = vscode.languages
+				.getDiagnostics()
+				.reduce(
+					(sum, [, diagnostics]) =>
+						sum +
+						diagnostics.filter(d => d.severity === vscode.DiagnosticSeverity.Error)
+							.length,
+					0
+				);
+			// Counted even while the signal is off, so turning it on doesn't signal at once.
+			const signal = this.errorSignal.next(errors, Date.now());
+			if (!signal || !this.options.enabled || !this.options.errorSignal) return;
+			const label = `Errors went up to ${errors}`;
+			this.signalItem.text = `$(error) ${errors}`;
+			this.signalItem.tooltip = `${label}. Click to open the Problems panel.`;
+			this.signalItem.accessibilityInformation = { label };
+			this.signalItem.show();
+			clearTimeout(this.signalTimer);
+			this.signalTimer = setTimeout(() => this.signalItem.hide(), ERROR_SIGNAL_DURATION);
+		}, UPDATE_DELAY);
 	}
 
 	private schedule(): void {

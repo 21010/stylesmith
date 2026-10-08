@@ -25,6 +25,8 @@ export interface Config {
 	/** The selected system-installed Nerd Font, or undefined to keep the user's own font. */
 	font(): NerdFont | undefined;
 	problemLens(): ProblemLensOptions;
+	/** Whether to tint the lines an undo changed, briefly. */
+	undoHighlight(): boolean;
 	/** Sets VS Code's color theme and file icon theme, in the user's settings. */
 	setThemes(colorTheme: string, iconTheme: string): Promise<void>;
 }
@@ -61,12 +63,15 @@ export const vscodeConfig: Config = {
 	font: () =>
 		get("fonts.enabled", false) ? findFont(get("fonts.family", DEFAULT_FONT_ID)) : undefined,
 
+	undoHighlight: () => get("undoHighlight", false),
+
 	problemLens: () => ({
 		enabled: get("problems.enabled", true),
 		minimumSeverity: severity(),
 		inlineMessages: get("problems.inlineMessages", true),
 		gutterIcons: get("problems.gutterIcons", true),
-		statusBar: get("problems.statusBar", true)
+		statusBar: get("problems.statusBar", true),
+		errorSignal: get("problems.errorSignal", false)
 	}),
 
 	async setThemes(colorTheme, iconTheme) {

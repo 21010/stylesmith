@@ -2,6 +2,13 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Added
+
+- **Error signal** (`stylesmith.problems.errorSignal`, off by default): when the number of errors goes up, the status bar shows the new count for a moment, on the error background. It shows once, at most every two seconds, so it never flashes.
+- **Undo highlight** (`stylesmith.undoHighlight`, off by default): after an undo, the lines it changed are tinted for a moment. Themes can change the tint with the new `stylesmith.undoHighlightBackground` color.
+
 ## 2.1.0 (2026-10-08)
 
 ### Added

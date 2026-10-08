@@ -9,7 +9,10 @@ import {
 	statusText,
 	summarize,
 	type ProblemLensOptions,
-	type Problem
+	type Problem,
+	ErrorSignal,
+	ERROR_SIGNAL_COOLDOWN,
+	changedLines
 } from "../problems";
 
 const error = (line: number, message = "Cannot find name 'x'."): Problem => ({
@@ -89,7 +92,8 @@ const ALL_ON: ProblemLensOptions = {
 	minimumSeverity: "info",
 	inlineMessages: true,
 	gutterIcons: true,
-	statusBar: true
+	statusBar: true,
+	errorSignal: false
 };
 
 describe("documentProblems", () => {
@@ -224,5 +228,45 @@ describe("statusItem", () => {
 		const item = statusItem(documentProblems(onLine, 1500, "info"), 1400, ALL_ON);
 		assert.equal(item?.text, "ERR problem 1400");
 		assert.equal(documentProblems(many, 1500, "info").length, 1000, "decorations stay capped");
+	});
+});
+
+describe("error signal", () => {
+	it("signals only when errors go up, not at the start or when they go down", () => {
+		const signal = new ErrorSignal();
+		assert.equal(signal.next(3, 0), false, "the first count is where it starts");
+		assert.equal(signal.next(2, 10_000), false, "fewer errors");
+		assert.equal(signal.next(2, 20_000), false, "the same");
+		assert.equal(signal.next(4, 30_000), true, "more errors");
+	});
+
+	it("never signals twice within the cooldown, so it can't flash", () => {
+		const signal = new ErrorSignal();
+		signal.next(0, 0);
+		assert.equal(signal.next(1, 10_000), true);
+		assert.equal(signal.next(2, 10_000 + ERROR_SIGNAL_COOLDOWN - 1), false);
+		assert.equal(signal.next(3, 10_000 + ERROR_SIGNAL_COOLDOWN), true);
+		assert.ok(ERROR_SIGNAL_COOLDOWN >= 1000 / 3, "at most three a second (WCAG 2.3.1)");
+	});
+});
+
+describe("lines an undo changed", () => {
+	it("marks the start line and every line the new text spans", () => {
+		assert.deepEqual(changedLines([{ line: 4, text: "a\nb\nc" }]), [4, 5, 6]);
+	});
+
+	it("marks the line where deleted text was", () => {
+		assert.deepEqual(changedLines([{ line: 7, text: "" }]), [7]);
+	});
+
+	it("combines several changes, in order and without duplicates", () => {
+		assert.deepEqual(
+			changedLines([
+				{ line: 9, text: "x" },
+				{ line: 2, text: "y\nz" },
+				{ line: 3, text: "" }
+			]),
+			[2, 3, 9]
+		);
 	});
 });

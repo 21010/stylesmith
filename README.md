@@ -34,7 +34,9 @@ Settings from 1.x that no longer do anything are removed from your user settings
 
 Choose a Stylesmith color theme or file icon theme from the normal VS Code selectors, or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores settings Stylesmith previously managed. These operations do not require a window reload.
 
-Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`.
+Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up.
+
+With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a moment. Themes can change the tint with the `stylesmith.undoHighlightBackground` color.
 
 ## Presets and themes
 
@@ -90,7 +92,9 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.problems.inlineMessages": true,
 	"stylesmith.problems.gutterIcons": true,
 	"stylesmith.problems.statusBar": true,
-	"stylesmith.statusbar": true
+	"stylesmith.problems.errorSignal": false,
+	"stylesmith.statusbar": true,
+	"stylesmith.undoHighlight": false
 }
 ```
 
