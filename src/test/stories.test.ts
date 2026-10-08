@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { PRESETS } from "../presets";
-import { PRESET_STORIES, THEME_STORIES } from "../stories";
+import { PRESET_STORIES, PRESET_TALES, THEME_STORIES } from "../stories";
 import { manifest, ROOT } from "./files";
 
 /**
@@ -55,6 +55,25 @@ describe("stories", () => {
 		it(`shows the ${label} theme's story on the Themes page and in the README`, () => {
 			assert.equal(cardStory("theme-card", label), story);
 			assert.ok(readme.includes(`- **${label}**: ${story}`), "README");
+		});
+	}
+
+	it("has a longer story for every preset", () => {
+		assert.deepEqual(Object.keys(PRESET_TALES).sort(), PRESETS.map(p => p.label).sort());
+	});
+
+	for (const [label, tale] of Object.entries(PRESET_TALES)) {
+		it(`tells the ${label} preset's longer story on the Themes page`, () => {
+			const card = [...themesPage.matchAll(/<li class="preset-card">[\s\S]*?<\/li>/g)]
+				.map(([html]) => html)
+				.find(html => html.includes(`<h4>${label}</h4>`));
+			assert.ok(card, "a card");
+			const story = words(
+				/<details class="tale">([\s\S]*?)<\/details>/.exec(card)?.[1] ?? ""
+			);
+			for (const part of [tale.origin, tale.colors, tale.settings]) {
+				assert.ok(story.includes(part), part.slice(0, 40));
+			}
 		});
 	}
 });

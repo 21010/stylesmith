@@ -313,8 +313,18 @@ describe("website in the browser", () => {
 		// The elements that stick out on the right, so a failure says what to fix.
 		const wide = await page.evaluate(() => {
 			const width = document.documentElement.clientWidth;
+			// A data table may scroll inside its own box (WCAG 1.4.10 exempts data tables); the
+			// box itself must still fit.
+			const scrollsInside = (element: Element) => {
+				for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+					if (["auto", "scroll"].includes(getComputedStyle(parent).overflowX))
+						return true;
+				}
+				return false;
+			};
 			return [...document.querySelectorAll("body *")]
 				.filter(element => element.getBoundingClientRect().right > width + 0.5)
+				.filter(element => !scrollsInside(element))
 				.map(element => {
 					const name = element.tagName.toLowerCase();
 					const id = element.id ? `#${element.id}` : "";
