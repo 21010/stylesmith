@@ -98,6 +98,8 @@ export interface ProblemLensOptions {
 	inlineMessages: boolean;
 	gutterIcons: boolean;
 	statusBar: boolean;
+	/** Signal once in the status bar when the number of errors goes up. */
+	errorSignal: boolean;
 }
 
 export const SEVERITIES: readonly Severity[] = ["error", "warning", "info"];
@@ -166,4 +168,51 @@ export function statusItem(
 		text: statusText(problem),
 		label: accessibleLabel(problem)
 	};
+}
+
+/** At most one error signal this often (ms): one short signal, never a flashing one. */
+export const ERROR_SIGNAL_COOLDOWN = 2000;
+/** How long the error signal shows (ms). */
+export const ERROR_SIGNAL_DURATION = 1500;
+
+/**
+ * Decides when to signal that the number of errors went up: only on an increase (not when
+ * Stylesmith starts, or when errors go down), and at most once per ERROR_SIGNAL_COOLDOWN, so
+ * the signal can never flash (WCAG 2.3.1).
+ */
+export class ErrorSignal {
+	private last: number | undefined;
+	private shownAt = Number.NEGATIVE_INFINITY;
+
+	/** Records the current number of errors; true if the signal should show now. */
+	next(errors: number, now: number): boolean {
+		const wentUp = this.last !== undefined && errors > this.last;
+		this.last = errors;
+		if (!wentUp || now - this.shownAt < ERROR_SIGNAL_COOLDOWN) return false;
+		this.shownAt = now;
+		return true;
+	}
+}
+
+/** A text change as VS Code reports it, reduced to what changedLines needs. */
+export interface TextChange {
+	/** The zero-based line where the change starts. */
+	line: number;
+	/** The text that replaced the range. */
+	text: string;
+}
+
+/**
+ * The lines an undo changed, to tint them: each change's start line and the lines its new text
+ * spans. A change that only deletes text marks the line where the text was. With several changes
+ * at once (an undo of a multi-cursor edit) the lines are approximate: later changes can shift
+ * earlier ones by a line.
+ */
+export function changedLines(changes: readonly TextChange[]): number[] {
+	const lines = new Set<number>();
+	for (const { line, text } of changes) {
+		const spans = text.split("\n").length - 1;
+		for (let i = 0; i <= spans; i++) lines.add(line + i);
+	}
+	return [...lines].sort((a, b) => a - b);
 }

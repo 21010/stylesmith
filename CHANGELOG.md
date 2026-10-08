@@ -6,10 +6,22 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Error signal** (`stylesmith.problems.errorSignal`, off by default): when the number of errors goes up, the status bar shows the new count for a moment, on the error background. It shows once, at most every two seconds, so it never flashes.
+- **Undo highlight** (`stylesmith.undoHighlight`, off by default): after an undo, the lines it changed are tinted for a moment. Themes can change the tint with the new `stylesmith.undoHighlightBackground` color.
+
+## 2.1.0 (2026-10-08)
+
+### Added
+
 - **Dim unfocused editors** (`stylesmith.effects.dimUnfocused`, off by default): turns on VS Code's native `accessibility.dimUnfocused.enabled`, so the editor or terminal you're working in stands out. Like the other effects, **Stylesmith: Disable** puts your own value back.
 - **Font installation, on request:** choosing a font that isn't installed, or running **Stylesmith: Install Font…**, offers to install it for your user account. After you confirm, Stylesmith downloads the Nerd Font files from this project's `fonts-3.5.1` release, checks each against a pinned SHA-256, and installs them without administrator rights. On Windows and Linux, quit and reopen VS Code to see the font. **Stylesmith: Remove Installed Fonts…** removes them again.
 - Three more font choices: GeistMono, SpaceMono and AtkynsonMono Nerd Font (based on Atkinson Hyperlegible Mono, designed for readers with low vision). Stylesmith can install them for you, or the Fonts page links each download and explains how to install it yourself.
 - Every theme now colors VS Code's inline git blame, readable on the editor background and on the current line.
+
+### Changed
+
+- The font menu shows whether each font is installed, instead of labeling every font "install separately".
+- The Black ICE preset's description no longer calls its theme high-contrast: ICE is a regular dark theme. The two high-contrast themes are Neon High Contrast and Daylight High Contrast.
 
 ## 2.0.1 (2026-10-07)
 

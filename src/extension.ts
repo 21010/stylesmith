@@ -8,6 +8,7 @@ import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
+import { UndoHighlight } from "./undoHighlight";
 import { FontInstaller } from "./fontUi";
 import { applyPreset, createStatusButton, installFontCommand, showMenu, vscodeUi } from "./ui";
 
@@ -70,6 +71,7 @@ export function activate(context: vscode.ExtensionContext): void {
 			reportErrors(() => fonts.remove())
 		),
 		new ProblemLens(context, () => services.config.problemLens()),
+		new UndoHighlight(() => services.config.undoHighlight()),
 		vscode.workspace.onDidChangeConfiguration(event => {
 			if (
 				!event.affectsConfiguration("stylesmith.effects") &&
