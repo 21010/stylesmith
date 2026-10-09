@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's sixteen color themes, including two high-contrast themes, and the fifteen presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's seventeen color themes, including two high-contrast themes, and the sixteen presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,7 +95,7 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has sixteen color themes you can use on their own, and fifteen
+					Stylesmith has seventeen color themes you can use on their own, and sixteen
 					presets that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
@@ -343,6 +343,20 @@
 									<a href="fonts.html#font-ShureTechMono"
 										>ShureTechMono Nerd Font</a
 									>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">Overlay</th>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td>
+									<a href="fonts.html#font-MartianMono">MartianMono Nerd Font</a>
 								</td>
 							</tr>
 							<tr>
@@ -1085,6 +1099,59 @@
 							</dl>
 						</div>
 					</li>
+					<li class="preset-card">
+						<img
+							src="img/overlay.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Overlay preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Overlay</h4>
+							<p>
+								A security unit's view of the world: cyan interface overlays and
+								amber alerts on dark slate, with a block cursor in the terminal.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> Martha Wells' The
+									Murderbot Diaries (2017–) are told by a security unit that would
+									rather watch its media than talk to humans, and that sees the
+									world through camera feeds and system overlays.
+								</p>
+								<p>
+									<strong>The colors.</strong> Dark slate, like a display behind
+									glass. Keywords in the cyan of an interface overlay, and strings
+									and numbers in amber, like alerts that need attention but not
+									panic.
+								</p>
+								<p>
+									<strong>The settings.</strong> Smooth cursor, current-line
+									highlight and bracket guides, and a block cursor in the
+									terminal, where the feeds come in.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Overlay</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Interface icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Bracket pair guides,
+									Block terminal cursor
+								</dd>
+								<dt>Recommended font</dt>
+								<dd>
+									<a href="fonts.html#font-MartianMono">MartianMono Nerd Font</a>
+								</dd>
+							</dl>
+						</div>
+					</li>
 				</ul>
 				<h3 class="group-title">Everyday</h3>
 				<p class="group-intro">Bright rooms and maximum contrast.</p>
@@ -1197,10 +1264,10 @@
 					<em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang;
 					<em>A Psalm for the Wild-Built</em> by Becky Chambers;
 					<em>Klara and the Sun</em> by Kazuo Ishiguro; <em>The Three-Body Problem</em> by
-					Liu Cixin; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor
-					(Digital Equipment Corporation). Names belong to their owners. Stylesmith is an
-					independent project, not affiliated with or endorsed by any of them, and its
-					themes are original work.
+					Liu Cixin; <em>The Murderbot Diaries</em> by Martha Wells; the IBM 5151 display
+					(IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation).
+					Names belong to their owners. Stylesmith is an independent project, not
+					affiliated with or endorsed by any of them, and its themes are original work.
 				</p>
 			</section>
 
@@ -1636,6 +1703,38 @@
 								<dd>11.6:1</dd>
 								<dt>Used by preset</dt>
 								<dd>Countdown</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Overlay"
+							style="
+								--sample-bg: #161d22;
+								--sample-fg: #d2dce3;
+								--sample-kw: #5fd4e8;
+								--sample-fn: #e3ebf0;
+								--sample-str: #f0b860;
+								--sample-num: #ffc978;
+								--sample-cm: #8e9ca9;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Overlay</h4>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Dark slate with cyan keywords like interface overlays, and amber
+								strings and numbers like alerts. Utilitarian, not neon.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>12.2:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Overlay</dd>
 							</dl>
 						</div>
 					</li>

@@ -257,6 +257,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "overlay",
+		label: "Overlay",
+		description: "Cyan overlays and amber alerts on dark slate, with a block terminal cursor",
+		theme: "Stylesmith Overlay",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "MartianMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

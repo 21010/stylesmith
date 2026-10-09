@@ -494,6 +494,11 @@
 				"path": "./themes/countdown-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Overlay",
+				"uiTheme": "vs-dark",
+				"path": "./themes/overlay-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"
