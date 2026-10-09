@@ -75,5 +75,19 @@ export const EFFECTS: readonly Effect[] = [
 		editorSettings: [
 			{ key: "accessibility.dimUnfocused.enabled", value: true, isOn: equals(true) }
 		]
+	},
+	{
+		setting: "effects.readableTerminal",
+		label: "Readable terminal",
+		enabledByDefault: false,
+		// VS Code adjusts terminal colors below this contrast ratio, also colors that programs
+		// choose. Its default is 4.5 (WCAG AA); 7 is WCAG AAA.
+		editorSettings: [
+			{
+				key: "terminal.integrated.minimumContrastRatio",
+				value: 7,
+				isOn: value => typeof value === "number" && value >= 7
+			}
+		]
 	}
 ];

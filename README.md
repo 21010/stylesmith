@@ -108,6 +108,7 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.effects.blockCursor": false,
 	"stylesmith.effects.blockTerminalCursor": false,
 	"stylesmith.effects.dimUnfocused": false,
+	"stylesmith.effects.readableTerminal": false,
 	"stylesmith.problems.enabled": true,
 	"stylesmith.problems.minimumSeverity": "warning",
 	"stylesmith.problems.inlineMessages": true,
@@ -135,6 +136,7 @@ Stylesmith manages the following VS Code settings while enabled. Disable restore
 | `editor.cursorStyle`                                                    | `stylesmith.effects.blockCursor`                      |
 | `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
 | `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
+| `terminal.integrated.minimumContrastRatio`                              | `stylesmith.effects.readableTerminal`                 |
 
 Settings that are not available in the installed VS Code version are skipped. Stylesmith writes user (global) settings only, so a workspace or folder value for the same setting takes precedence in that workspace.
 
