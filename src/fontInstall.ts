@@ -27,10 +27,10 @@ export interface System {
 	home: string;
 	/** %LOCALAPPDATA% on Windows. */
 	localAppData?: string;
-	/** %WINDIR% on Windows. */
+	/** %SystemRoot% on Windows. */
 	windowsDir?: string;
-	/** Downloads `url`, refusing more than `maxBytes`. */
-	download(url: string, maxBytes: number): Promise<Buffer>;
+	/** Downloads `url`, refusing more than `maxBytes`; `signal` cancels it. */
+	download(url: string, maxBytes: number, signal?: AbortSignal): Promise<Buffer>;
 	/** Runs a program (reg.exe, fc-cache) without a shell. */
 	run(command: string, args: readonly string[]): Promise<void>;
 }
@@ -82,28 +82,41 @@ function fontDirs(system: System): string[] {
 }
 
 /**
- * Whether the font looks installed: its Regular file is in one of the font folders. VS Code has
+ * Which of `fonts` look installed: their Regular file is in one of the font folders. VS Code has
  * no API to ask which fonts the system has; this finds the Nerd Fonts files whoever installed
- * them, by their file names.
+ * them, by their file names. The folders are read once for all the fonts (Linux keeps fonts in
+ * nested folders, which can hold thousands of files).
  */
-export async function isInstalled(font: NerdFont, system: System): Promise<boolean> {
-	const regular = font.files[0]?.name;
-	if (!regular) return false;
+export async function installedFontIds(
+	fonts: readonly NerdFont[],
+	system: System
+): Promise<Set<string>> {
+	const present = new Set<string>();
 	for (const dir of fontDirs(system)) {
 		if (!existsSync(dir)) continue;
-		// Linux keeps fonts in nested folders; the other systems' folders are flat.
 		const names =
 			system.platform === "linux"
 				? await readdir(dir, { recursive: true }).catch(() => [])
 				: await readdir(dir).catch(() => []);
-		if (names.some(name => path.basename(name) === regular)) return true;
+		for (const name of names) present.add(path.basename(name));
 	}
-	return false;
+	return new Set(
+		fonts.filter(font => font.files[0] && present.has(font.files[0].name)).map(font => font.id)
+	);
+}
+
+/** Whether one font looks installed (see installedFontIds). */
+export async function isInstalled(font: NerdFont, system: System): Promise<boolean> {
+	return (await installedFontIds([font], system)).has(font.id);
 }
 
 /** Downloads a pinned file and checks it; throws unless it matches exactly. */
-async function fetchPinned(file: PinnedFile, system: System): Promise<Buffer> {
-	const data = await system.download(FONT_RELEASE + file.name, file.size);
+async function fetchPinned(
+	file: PinnedFile,
+	system: System,
+	signal?: AbortSignal
+): Promise<Buffer> {
+	const data = await system.download(FONT_RELEASE + file.name, file.size, signal);
 	const hash = createHash("sha256").update(data).digest("hex");
 	if (data.length !== file.size || hash !== file.sha256) {
 		throw new Error(`${file.name} doesn't match its pinned SHA-256; nothing was installed`);
@@ -123,6 +136,14 @@ async function writeAtomic(file: string, data: Buffer): Promise<void> {
 	}
 }
 
+/**
+ * reg.exe by its full path. Run by bare name, Windows would search for it, possibly in the
+ * current folder before System32, where a planted reg.exe or reg.com could run instead.
+ */
+export function regExe(system: System): string {
+	return path.win32.join(system.windowsDir ?? "C:\\Windows", "System32", "reg.exe");
+}
+
 const style = (name: string) => (name.includes("-Bold.") ? "Bold" : "Regular");
 const kind = (name: string) => (name.endsWith(".otf") ? "OpenType" : "TrueType");
 
@@ -133,14 +154,18 @@ const kind = (name: string) => (name.endsWith(".otf") ? "OpenType" : "TrueType")
 export async function installFont(
 	font: NerdFont,
 	system: System,
-	licenseDir: string
+	licenseDir: string,
+	signal?: AbortSignal
 ): Promise<InstalledFont> {
 	const dir = userFontDir(system);
-	const fonts = await Promise.all(font.files.map(file => fetchPinned(file, system)));
+	const fonts = await Promise.all(font.files.map(file => fetchPinned(file, system, signal)));
 	const licenses = await Promise.all(
-		[font.license, NERD_FONTS_LICENSE].map(file => fetchPinned(file, system))
+		[font.license, NERD_FONTS_LICENSE].map(file => fetchPinned(file, system, signal))
 	);
 
+	// Cancelled while downloading: nothing has been written yet, so stop here.
+	if (signal?.aborted)
+		throw new Error("the font installation was cancelled; nothing was installed");
 	await mkdir(dir, { recursive: true });
 	await mkdir(licenseDir, { recursive: true });
 	const installed: InstalledFont = { files: [], registry: [] };
@@ -152,7 +177,7 @@ export async function installFont(
 			if (system.platform === "win32") {
 				// Per-user fonts (Windows 10 1809 and later) are registered under HKCU.
 				const name = `${font.family} ${style(file.name)} (${kind(file.name)})`;
-				await system.run("reg", [
+				await system.run(regExe(system), [
 					"add",
 					REGISTRY_KEY,
 					"/v",
@@ -200,7 +225,9 @@ export async function removeFont(installed: InstalledFont, system: System): Prom
 		)
 	);
 	for (const name of registry) {
-		await system.run("reg", ["delete", REGISTRY_KEY, "/v", name, "/f"]).catch(() => undefined); // already gone
+		await system
+			.run(regExe(system), ["delete", REGISTRY_KEY, "/v", name, "/f"])
+			.catch(() => undefined); // already gone
 	}
 	for (const file of files) {
 		await rm(file, { force: true }).catch(() => locked.push(file));
@@ -218,34 +245,53 @@ async function refreshFontCache(system: System, dir?: string): Promise<void> {
 
 /** Follows at most this many redirects (GitHub sends release downloads to its file host). */
 const MAX_REDIRECTS = 5;
+/** No data for this long ends a download. */
 const TIMEOUT_MS = 60_000;
+/** A download, redirects included, must finish within this, however slowly data trickles in. */
+const DEADLINE_MS = 120_000;
 
 /**
  * Downloads over HTTPS only, following redirects, and stops as soon as the response is larger
  * than `maxBytes`. Uses node:https, which VS Code routes through its proxy settings.
  */
-export function download(url: string, maxBytes: number, redirects = 0): Promise<Buffer> {
+export function download(
+	url: string,
+	maxBytes: number,
+	signal?: AbortSignal,
+	deadline = Date.now() + DEADLINE_MS,
+	redirects = 0
+): Promise<Buffer> {
 	return new Promise((resolve, reject) => {
+		if (signal?.aborted) {
+			reject(new Error("the download was cancelled"));
+			return;
+		}
 		if (new URL(url).protocol !== "https:") {
 			reject(new Error(`refusing to download over ${new URL(url).protocol}`));
 			return;
 		}
-		const request = https.get(url, { timeout: TIMEOUT_MS }, response => {
+		const request = https.get(url, { timeout: TIMEOUT_MS, signal }, response => {
 			const { statusCode = 0, headers } = response;
 			if (statusCode >= 300 && statusCode < 400 && headers.location) {
 				response.resume();
 				if (redirects >= MAX_REDIRECTS) {
+					clearTimeout(overall);
 					reject(new Error("too many redirects"));
 					return;
 				}
-				download(new URL(headers.location, url).toString(), maxBytes, redirects + 1).then(
-					resolve,
-					reject
-				);
+				clearTimeout(overall);
+				download(
+					new URL(headers.location, url).toString(),
+					maxBytes,
+					signal,
+					deadline,
+					redirects + 1
+				).then(resolve, reject);
 				return;
 			}
 			if (statusCode !== 200) {
 				response.resume();
+				clearTimeout(overall);
 				reject(new Error(`download failed: HTTP ${statusCode}`));
 				return;
 			}
@@ -259,11 +305,21 @@ export function download(url: string, maxBytes: number, redirects = 0): Promise<
 				}
 				chunks.push(chunk);
 			});
-			response.on("end", () => resolve(Buffer.concat(chunks)));
+			response.on("end", () => {
+				clearTimeout(overall);
+				resolve(Buffer.concat(chunks));
+			});
 			response.on("error", reject);
 		});
+		const overall = setTimeout(
+			() => request.destroy(new Error("the download took too long")),
+			Math.max(0, deadline - Date.now())
+		);
 		request.on("timeout", () => request.destroy(new Error("the download timed out")));
-		request.on("error", reject);
+		request.on("error", error => {
+			clearTimeout(overall);
+			reject(signal?.aborted ? new Error("the download was cancelled") : error);
+		});
 	});
 }
 
@@ -272,7 +328,7 @@ export const nodeSystem = (): System => ({
 	platform: process.platform,
 	home: process.env.HOME ?? process.env.USERPROFILE ?? "",
 	localAppData: process.env.LOCALAPPDATA,
-	windowsDir: process.env.WINDIR,
+	windowsDir: process.env.SystemRoot ?? process.env.WINDIR,
 	download,
 	run: (command, args) =>
 		new Promise((resolve, reject) => {

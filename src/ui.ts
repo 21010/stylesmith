@@ -99,7 +99,8 @@ export async function showMenu(config: Config, fonts: FontInstaller): Promise<vo
 
 async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 	const current = config.font()?.id;
-	const states = await Promise.all(FONTS.map(font => fonts.installed(font)));
+	const ids = await fonts.installedIds();
+	const states = FONTS.map(font => ids.has(font.id));
 	const items = [
 		...FONTS.map((font, i) => ({
 			label: font.label,
@@ -126,7 +127,8 @@ async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 
 /** Installs a font the user picks among those that aren't installed, after confirming. */
 export async function installFontCommand(config: Config, fonts: FontInstaller): Promise<void> {
-	const states = await Promise.all(FONTS.map(font => fonts.installed(font)));
+	const ids = await fonts.installedIds();
+	const states = FONTS.map(font => ids.has(font.id));
 	const missing = FONTS.filter((_, i) => !states[i]);
 	if (missing.length === 0) {
 		void vscode.window.showInformationMessage("All of Stylesmith's fonts are installed.");

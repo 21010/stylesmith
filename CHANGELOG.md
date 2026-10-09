@@ -2,6 +2,19 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Security
+
+- On Windows, the font installer runs `reg.exe` by its full path (`%SystemRoot%\System32\reg.exe`), so Windows can't run a different `reg` found in another folder first.
+
+### Changed
+
+- Problem Lens only counts errors across files while the error signal is on. Before, it counted on every diagnostics change for every user, although the signal is off by default.
+- Installing a font can be cancelled from its progress notification, and a download that stalls ends after two minutes.
+- The font menu looks through the font folders once, instead of once per font.
+- Once nothing of Stylesmith 1.x is left in VS Code's installation, Stylesmith stops checking it at startup.
+
 ## 2.2.0 (2026-10-08)
 
 ### Added

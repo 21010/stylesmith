@@ -7,9 +7,11 @@ import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { FONT_RELEASE, FONTS, NERD_FONTS_LICENSE, type NerdFont, type PinnedFile } from "../fonts";
 import {
+	installedFontIds,
 	installFont,
 	isInstalled,
 	REGISTRY_KEY,
+	regExe,
 	removeFont,
 	userFontDir,
 	type System
@@ -96,7 +98,7 @@ describe("installing a font", () => {
 			if (platform === "win32") {
 				assert.equal(installed.registry.length, FONT.files.length);
 				assert.deepEqual(commands[0], [
-					"reg",
+					regExe(sys),
 					"add",
 					REGISTRY_KEY,
 					"/v",
@@ -182,5 +184,40 @@ describe("installing a font", () => {
 			commands.map(command => command[4]),
 			[`${FONT.family} Regular (TrueType)`]
 		);
+	});
+
+	it("runs reg.exe by its full path on Windows, never by a name Windows would search for", () => {
+		const sys = system("win32");
+		assert.equal(
+			regExe(sys),
+			path.win32.join(path.join(root, "windows"), "System32", "reg.exe")
+		);
+		assert.equal(regExe({ ...sys, windowsDir: undefined }), "C:\\Windows\\System32\\reg.exe");
+	});
+
+	it("writes nothing when the installation is cancelled", async () => {
+		const sys = system("linux");
+		const cancel = new AbortController();
+		cancel.abort();
+		await assert.rejects(
+			installFont(FONT, sys, path.join(root, "licenses"), cancel.signal),
+			/cancelled/
+		);
+		assert.equal(existsSync(userFontDir(sys)), false);
+		assert.deepEqual(commands, []);
+	});
+
+	it("finds every installed font with one look at the font folders", async () => {
+		const sys = system("linux");
+		const nested = path.join(sys.home, ".local", "share", "fonts", "a", "b");
+		await mkdir(nested, { recursive: true });
+		const [first, second, third] = FONTS;
+		await writeFile(path.join(nested, first.files[0]!.name), "x");
+		await writeFile(path.join(nested, third!.files[0]!.name), "x");
+		assert.deepEqual(
+			[...(await installedFontIds(FONTS, sys))].sort(),
+			[first.id, third!.id].sort()
+		);
+		assert.equal((await installedFontIds([second!], sys)).size, 0);
 	});
 });
