@@ -77,19 +77,19 @@ export interface Tale {
 export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 	"Phosphor Terminal": {
 		origin: "IBM's 5151 monochrome display (1981) drew its text in green P39 phosphor that kept glowing after the beam had moved on. It cut flicker, and left a faint trace whenever text scrolled.",
-		colors: "Everything stays within that green. Keywords are the brightest strokes, strings and functions sit in softer greens, and comments are dimmed like a fading trace on the glass.",
+		colors: "Everything stays within that green. Keywords are the brightest strokes, strings and functions sit in softer greens, and comments are dimmed like a fading trace on the glass. There are no italics or bold: on the terminal, emphasis came from brightness alone.",
 		settings:
 			"Block cursors in the editor and the terminal blink on and off without animation, and the compact layout packs the screen the way terminals of the time did."
 	},
 	"Amber Monitor": {
 		origin: "By the early 1980s, a monitor could glow amber as well as green or white: DEC's VR201, for one, was sold with white, green or amber (P134) phosphor.",
-		colors: "Warm amber and orange on a dark brown-black. Keywords burn brightest, numbers lean toward orange, and comments fade toward brown.",
+		colors: "Warm amber and orange on a dark brown-black. Keywords burn brightest, numbers lean toward orange, and comments fade toward brown. One weight and no italics, as on the monitor itself.",
 		settings:
 			"The same mechanical feel as Phosphor Terminal: block cursors that blink without animation, and a compact layout."
 	},
 	"Black ICE": {
 		origin: "DEC's VT100 terminal (1978) glowed in white P4 phosphor. A few years later, William Gibson's stories, from Burning Chrome to Neuromancer, gave cyberspace its ICE: intrusion countermeasures electronics, the cold walls around guarded data, a term Gibson credited to Tom Maddox.",
-		colors: "Cold white phosphor on a blue-black screen: blue-white text and syntax and frost-cyan keywords. Only errors and deleted lines break the ice, in warm colors.",
+		colors: "Cold white phosphor on a blue-black screen: blue-white text and syntax and frost-cyan keywords. Only errors and deleted lines break the ice, in warm colors. No italics or bold, like the character terminals of its time.",
 		settings:
 			"Only the calm settings: smooth cursor, current-line highlight and bracket guides. Nothing moves that doesn't have to."
 	},

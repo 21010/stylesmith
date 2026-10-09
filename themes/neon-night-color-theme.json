@@ -208,7 +208,8 @@
 				"keyword.control"
 			],
 			"settings": {
-				"foreground": "#ff72d8"
+				"foreground": "#ff72d8",
+				"fontStyle": "bold"
 			}
 		},
 		{
@@ -397,7 +398,10 @@
 			"italic": true
 		},
 		"variable.readonly": "#ffae5c",
-		"keyword": "#ff72d8",
+		"keyword": {
+			"foreground": "#ff72d8",
+			"bold": true
+		},
 		"string": "#f4e27c",
 		"number": "#ffae5c",
 		"regexp": "#7df2b8"
