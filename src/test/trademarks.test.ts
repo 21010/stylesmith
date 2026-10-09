@@ -3,6 +3,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { PRESETS } from "../presets";
+import { BOOT_LOGS, DEFAULT_BOOT_LOG } from "../stories";
 import { manifest, ROOT } from "./files";
 
 /**
@@ -45,9 +46,21 @@ const checked = [
 	"SECURITY.md",
 	"package.json",
 	path.join("src", "presets.ts"),
+	path.join("src", "stories.ts"),
 	...files("site"),
 	...files("themes"),
 	...files("extras")
+];
+
+/** Hardware makers, models and authors: may be named as inspiration, never in a name or a log. */
+const NAMED: RegExp[] = [
+	/\bVT-?\d+/i,
+	/\bIBM\b/i,
+	/\bDEC\b/,
+	/\bNeuromancer\b/i,
+	/\bGibson\b/i,
+	/\bChiang\b/i,
+	...DENYLIST
 ];
 
 describe("trademarks", () => {
@@ -62,21 +75,20 @@ describe("trademarks", () => {
 	}
 
 	it("keeps theme and preset names Stylesmith's own", () => {
-		const named = [
-			/\bVT-?\d+/i,
-			/\bIBM\b/i,
-			/\bDEC\b/,
-			/\bNeuromancer\b/i,
-			/\bGibson\b/i,
-			/\bChiang\b/i,
-			...DENYLIST
-		];
 		const names = [
 			...manifest().contributes.themes.map(theme => theme.label),
 			...PRESETS.map(preset => preset.label)
 		];
 		for (const name of names) {
-			for (const pattern of named) assert.equal(pattern.exec(name), null, name);
+			for (const pattern of NAMED) assert.equal(pattern.exec(name), null, name);
+		}
+	});
+
+	it("keeps the boot logs free of product and maker names", () => {
+		for (const log of [...Object.values(BOOT_LOGS), DEFAULT_BOOT_LOG]) {
+			for (const { text } of log.lines) {
+				for (const pattern of NAMED) assert.equal(pattern.exec(text), null, text);
+			}
 		}
 	});
 });

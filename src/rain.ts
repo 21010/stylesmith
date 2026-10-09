@@ -137,8 +137,3 @@ export function stillFrame(columns: number, rows: number, seed: number, frames =
 	}
 	return [...last.values()].filter(cell => cell.shade !== "blank");
 }
-
-/** Whether VS Code asks for reduced motion: workbench.reduceMotion "on". */
-export function reducesMotion(setting: unknown): boolean {
-	return setting === "on";
-}

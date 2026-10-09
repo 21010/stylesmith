@@ -141,6 +141,19 @@ export async function run(): Promise<void> {
 		}
 	);
 
+	await step("Boot Sequence opens a terminal tab that closes cleanly", async () => {
+		const before = vscode.window.terminals.length;
+		await vscode.commands.executeCommand("stylesmith.bootSequence");
+		await until(
+			() => vscode.window.terminals.some(terminal => terminal.name === "Boot Sequence"),
+			"the Boot Sequence terminal opens"
+		);
+		await sleep(500);
+		vscode.window.terminals.find(terminal => terminal.name === "Boot Sequence")!.dispose();
+		await until(() => vscode.window.terminals.length === before, "the terminal closes");
+		assert.ok(extension.isActive);
+	});
+
 	await step("no command modifies workbench.html or product.json", () => {
 		assert.deepEqual(readFileSync(workbench), workbenchBefore);
 		if (productBefore) assert.deepEqual(readFileSync(product), productBefore);

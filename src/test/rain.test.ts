@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { CELLS_PER_COLUMN, GLYPHS, Rain, reducesMotion, render, seeded, stillFrame } from "../rain";
+import { CELLS_PER_COLUMN, GLYPHS, Rain, render, seeded, stillFrame } from "../rain";
+import { reducesMotion } from "../motion";
 
 describe("digital rain", () => {
 	it("is the same rain for the same seed", () => {
