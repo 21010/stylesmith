@@ -2,7 +2,7 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
-## Unreleased
+## 2.4.0 (2026-10-09)
 
 ### Added
 
