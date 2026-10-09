@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Haze** (#77), a new color theme and preset: orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.
 - **Deep Desert** (#76), a new color theme and preset: sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.
 - **Overlay** (#75), a new color theme and preset: a security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.
 - **Countdown** (#74), a new color theme and preset: cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.

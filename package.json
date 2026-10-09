@@ -504,6 +504,11 @@
 				"path": "./themes/deep-desert-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Haze",
+				"uiTheme": "vs-dark",
+				"path": "./themes/haze-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

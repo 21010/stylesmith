@@ -44,7 +44,8 @@ const GROUPS = [
 			"vault",
 			"simulation",
 			"steel-and-rust",
-			"deep-desert"
+			"deep-desert",
+			"haze"
 		]
 	],
 	[
@@ -65,7 +66,8 @@ const THEME_GROUPS = [
 			"Stylesmith Vault",
 			"Stylesmith Simulation",
 			"Stylesmith Steel and Rust",
-			"Stylesmith Deep Desert"
+			"Stylesmith Deep Desert",
+			"Stylesmith Haze"
 		]
 	],
 	[

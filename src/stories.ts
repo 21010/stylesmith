@@ -39,6 +39,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.",
 	"Deep Desert":
 		"Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.",
+	Haze: "Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -77,6 +78,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.",
 	"Stylesmith Deep Desert":
 		"Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.",
+	"Stylesmith Haze":
+		"Cold grey concrete with haze-orange keywords and teal strings; everything else muted.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -185,6 +188,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Near-black brown, like the shade of a rock hall, with sand-colored text. Keywords glow spice orange and strings are ochre. A single deep blue marks return, break and throw, used as sparingly as water.",
 		settings:
 			"Only the calm settings: smooth cursor, current-line highlight and bracket guides."
+	},
+	Haze: {
+		origin: "A late-2010s sequel to a classic of cyberpunk cinema replaced the neon of the 1980s with orange dust hanging over a dead city, cold brutalist concrete and teal rain.",
+		colors: "Cold grey concrete, with two colors breaking through: the orange of the haze for keywords, and the teal of the rain for strings. The rest stays muted, like a city seen through dust.",
+		settings:
+			"The calm settings, with unfocused editors dimmed, like everything beyond the haze."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

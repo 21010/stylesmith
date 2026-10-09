@@ -291,6 +291,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "haze",
+		label: "Haze",
+		description: "Orange haze and teal rain over cold concrete, with unfocused editors dimmed",
+		theme: "Stylesmith Haze",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "GeistMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

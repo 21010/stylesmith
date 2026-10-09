@@ -336,6 +336,7 @@ describe("typography (#68)", () => {
 		"countdown-color-theme.json": "film",
 		"overlay-color-theme.json": "film",
 		"deep-desert-color-theme.json": "film",
+		"haze-color-theme.json": "film",
 		"daylight-color-theme.json": "everyday",
 		"neon-high-contrast-color-theme.json": "high-contrast",
 		"daylight-high-contrast-color-theme.json": "high-contrast"
