@@ -9,6 +9,7 @@ import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
+import { SaveReceipt } from "./saveReceipt";
 import { UndoHighlight } from "./undoHighlight";
 import { FontInstaller } from "./fontUi";
 import { applyPreset, createStatusButton, installFontCommand, showMenu, vscodeUi } from "./ui";
@@ -48,6 +49,7 @@ export function activate(context: vscode.ExtensionContext): void {
 			return queue;
 		});
 	const status = createStatusButton(context, services.config);
+	const lens = new ProblemLens(context, () => services.config.problemLens());
 	let reapply: ReturnType<typeof setTimeout> | undefined;
 
 	context.subscriptions.push(
@@ -77,8 +79,12 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
 			reportErrors(() => fonts.remove())
 		),
-		new ProblemLens(context, () => services.config.problemLens()),
+		lens,
 		new UndoHighlight(() => services.config.undoHighlight()),
+		new SaveReceipt(
+			() => services.config.saveReceipt(),
+			(document, line) => lens.showsMessageOn(document, line)
+		),
 		vscode.workspace.onDidChangeConfiguration(event => {
 			if (
 				!event.affectsConfiguration("stylesmith.effects") &&

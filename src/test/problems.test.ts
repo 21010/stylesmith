@@ -12,7 +12,10 @@ import {
 	type Problem,
 	ErrorSignal,
 	ERROR_SIGNAL_COOLDOWN,
-	changedLines
+	changedLines,
+	SAVE_RECEIPT_DURATION,
+	saveReceiptText,
+	showsSaveReceipt
 } from "../problems";
 
 const error = (line: number, message = "Cannot find name 'x'."): Problem => ({
@@ -276,5 +279,33 @@ describe("lines an undo changed", () => {
 			]),
 			[2, 3, 9]
 		);
+	});
+});
+
+describe("save receipt", () => {
+	it("shows only for a manual save", () => {
+		assert.equal(showsSaveReceipt("manual", false), true);
+		assert.equal(showsSaveReceipt("afterDelay", false), false);
+		assert.equal(showsSaveReceipt("focusOut", false), false);
+	});
+
+	it("lets a Problem Lens message on the line win", () => {
+		assert.equal(showsSaveReceipt("manual", true), false);
+	});
+
+	it("reads like a terminal log line, in the user's locale", () => {
+		const time = new Date(2026, 9, 9, 14, 2, 11);
+		assert.equal(saveReceiptText(time, "de"), "▸ saved 14:02:11");
+		// Newer ICU versions put a narrow no-break space before "PM".
+		assert.equal(saveReceiptText(time, "en-US").replace(/\u202f/g, " "), "▸ saved 2:02:11 PM");
+	});
+
+	it("falls back to the default locale for a tag it doesn't know", () => {
+		const time = new Date(2026, 9, 9, 14, 2, 11);
+		assert.equal(saveReceiptText(time, "not a locale!"), saveReceiptText(time));
+	});
+
+	it("shows for two seconds", () => {
+		assert.equal(SAVE_RECEIPT_DURATION, 2000);
 	});
 });

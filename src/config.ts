@@ -27,6 +27,8 @@ export interface Config {
 	problemLens(): ProblemLensOptions;
 	/** Whether to tint the lines an undo changed, briefly. */
 	undoHighlight(): boolean;
+	/** Whether to note a manual save briefly at the end of the cursor's line. */
+	saveReceipt(): boolean;
 }
 
 function userValue<T>(section: string, key: string, fallback: T): T {
@@ -62,6 +64,8 @@ export const vscodeConfig: Config = {
 		get("fonts.enabled", false) ? findFont(get("fonts.family", DEFAULT_FONT_ID)) : undefined,
 
 	undoHighlight: () => get("undoHighlight", false),
+
+	saveReceipt: () => get("saveReceipt", false),
 
 	problemLens: () => ({
 		enabled: get("problems.enabled", true),

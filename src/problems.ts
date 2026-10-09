@@ -216,3 +216,34 @@ export function changedLines(changes: readonly TextChange[]): number[] {
 	}
 	return [...lines].sort((a, b) => a - b);
 }
+
+/** Why a document was saved, from VS Code's TextDocumentSaveReason. */
+export type SaveReason = "manual" | "afterDelay" | "focusOut";
+
+/** How long a save receipt shows (ms). */
+export const SAVE_RECEIPT_DURATION = 2000;
+
+/**
+ * Whether a save gets a receipt (stylesmith.saveReceipt): only a manual save, since with
+ * auto-save a note on every pause would be noise, and never over a Problem Lens message.
+ */
+export function showsSaveReceipt(reason: SaveReason, problemMessageOnLine: boolean): boolean {
+	return reason === "manual" && !problemMessageOnLine;
+}
+
+/** The receipt, like a terminal log line: "▸ saved 14:02:11", in the user's locale. */
+export function saveReceiptText(time: Date, locale?: string): string {
+	const options: Intl.DateTimeFormatOptions = {
+		hour: "numeric",
+		minute: "2-digit",
+		second: "2-digit"
+	};
+	let clock: string;
+	try {
+		clock = time.toLocaleTimeString(locale, options);
+	} catch {
+		// An unknown locale tag: use the default one.
+		clock = time.toLocaleTimeString(undefined, options);
+	}
+	return `▸ saved ${clock}`;
+}
