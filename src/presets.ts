@@ -308,6 +308,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "grid",
+		label: "Grid",
+		description: "Cyan lines on black, with orange for the adversary",
+		theme: "Stylesmith Grid",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "GeistMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

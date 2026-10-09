@@ -45,7 +45,8 @@ const GROUPS = [
 			"simulation",
 			"steel-and-rust",
 			"deep-desert",
-			"haze"
+			"haze",
+			"grid"
 		]
 	],
 	[
@@ -67,7 +68,8 @@ const THEME_GROUPS = [
 			"Stylesmith Simulation",
 			"Stylesmith Steel and Rust",
 			"Stylesmith Deep Desert",
-			"Stylesmith Haze"
+			"Stylesmith Haze",
+			"Stylesmith Grid"
 		]
 	],
 	[

@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's nineteen color themes, including two high-contrast themes, and the eighteen presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's twenty color themes, including two high-contrast themes, and the nineteen presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,7 +95,7 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has nineteen color themes you can use on their own, and eighteen
+					Stylesmith has twenty color themes you can use on their own, and nineteen
 					presets that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
@@ -304,6 +304,18 @@
 								<td class="off">off</td>
 								<td class="off">off</td>
 								<td class="on">on</td>
+								<td class="off">off</td>
+								<td><a href="fonts.html#font-GeistMono">GeistMono Nerd Font</a></td>
+							</tr>
+							<tr>
+								<th scope="row">Grid</th>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
 								<td class="off">off</td>
 								<td><a href="fonts.html#font-GeistMono">GeistMono Nerd Font</a></td>
 							</tr>
@@ -999,6 +1011,52 @@
 									Smooth cursor, Highlight current line, Bracket pair guides, Dim
 									unfocused editors
 								</dd>
+								<dt>Recommended font</dt>
+								<dd><a href="fonts.html#font-GeistMono">GeistMono Nerd Font</a></dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/grid.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Grid preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Grid</h4>
+							<p>
+								Light lines on black: cyan for the code you trust, and orange for
+								the adversary, only where the flow changes.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> A 2010 film set inside a
+									computer drew its world as pure black crossed by glowing lines:
+									cyan for the programs, orange for their adversary.
+								</p>
+								<p>
+									<strong>The colors.</strong> Near-black, with cyan keywords and
+									pale cyan text and strings. Orange appears only for return,
+									break and throw, the adversary's color. The extension API can't
+									draw a glow, so the lines stay clean.
+								</p>
+								<p>
+									<strong>The settings.</strong> Smooth cursor, current-line
+									highlight and bracket guides: the guides draw the grid.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Grid</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Interface icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>Smooth cursor, Highlight current line, Bracket pair guides</dd>
 								<dt>Recommended font</dt>
 								<dd><a href="fonts.html#font-GeistMono">GeistMono Nerd Font</a></dd>
 							</dl>
@@ -1757,6 +1815,38 @@
 								<dd>11.2:1</dd>
 								<dt>Used by preset</dt>
 								<dd>Haze</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Grid"
+							style="
+								--sample-bg: #07090b;
+								--sample-fg: #c8dde3;
+								--sample-kw: #3ee0f0;
+								--sample-fn: #e2f1f5;
+								--sample-str: #8fd6e0;
+								--sample-num: #b8eef4;
+								--sample-cm: #768d96;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Grid</h4>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Near-black with cyan keywords and pale cyan text, and orange for
+								return, break and throw. Clean and geometric.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>14.2:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Grid</dd>
 							</dl>
 						</div>
 					</li>
