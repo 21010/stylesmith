@@ -22,6 +22,7 @@ export interface Manifest {
 		configuration: { properties: Record<string, SettingSchema> };
 		themes: { id?: string; label: string; uiTheme: string; path: string }[];
 		iconThemes: { id: string; label: string; path: string }[];
+		productIconThemes: { id: string; label: string; path: string }[];
 	};
 }
 

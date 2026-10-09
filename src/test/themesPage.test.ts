@@ -143,6 +143,10 @@ describe("Themes page", () => {
 			);
 			assert.equal(detail(card, "Color theme"), theme?.label);
 			assert.equal(detail(card, "File icons"), icons?.label);
+			const productIcons = manifest().contributes.productIconThemes.find(
+				icon => icon.id === preset.productIconTheme
+			);
+			assert.equal(detail(card, "Interface icons"), productIcons?.label ?? "VS Code’s own");
 			const font = FONTS.find(candidate => candidate.id === preset.font);
 			assert.equal(detail(card, "Recommended font"), font?.label);
 			assert.match(card, new RegExp(`href="fonts\\.html#font-${preset.font}"`));

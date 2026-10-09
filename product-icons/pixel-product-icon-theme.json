@@ -1,0 +1,89 @@
+{
+	"fonts": [
+		{
+			"id": "stylesmith-pixel",
+			"src": [
+				{
+					"path": "./stylesmith-pixel-product-icons.otf",
+					"format": "opentype"
+				}
+			],
+			"weight": "normal",
+			"style": "normal"
+		}
+	],
+	"iconDefinitions": {
+		"files": {
+			"fontCharacter": "\\e000"
+		},
+		"search": {
+			"fontCharacter": "\\e001"
+		},
+		"source-control": {
+			"fontCharacter": "\\e002"
+		},
+		"debug-alt": {
+			"fontCharacter": "\\e003"
+		},
+		"extensions": {
+			"fontCharacter": "\\e004"
+		},
+		"account": {
+			"fontCharacter": "\\e005"
+		},
+		"settings-gear": {
+			"fontCharacter": "\\e006"
+		},
+		"new-file": {
+			"fontCharacter": "\\e007"
+		},
+		"new-folder": {
+			"fontCharacter": "\\e008"
+		},
+		"refresh": {
+			"fontCharacter": "\\e009"
+		},
+		"collapse-all": {
+			"fontCharacter": "\\e00a"
+		},
+		"error": {
+			"fontCharacter": "\\e00b"
+		},
+		"warning": {
+			"fontCharacter": "\\e00c"
+		},
+		"info": {
+			"fontCharacter": "\\e00d"
+		},
+		"bell": {
+			"fontCharacter": "\\e00e"
+		},
+		"git-branch": {
+			"fontCharacter": "\\e00f"
+		},
+		"sync": {
+			"fontCharacter": "\\e010"
+		},
+		"remote": {
+			"fontCharacter": "\\e011"
+		},
+		"check": {
+			"fontCharacter": "\\e012"
+		},
+		"close": {
+			"fontCharacter": "\\e013"
+		},
+		"ellipsis": {
+			"fontCharacter": "\\e014"
+		},
+		"split-horizontal": {
+			"fontCharacter": "\\e015"
+		},
+		"chevron-right": {
+			"fontCharacter": "\\e016"
+		},
+		"chevron-down": {
+			"fontCharacter": "\\e017"
+		}
+	}
+}

@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Stylesmith Pixel product icon theme** (#67): VS Code's own interface icons in the pixel style of the file icons: the activity bar, the explorer's actions, the status bar, tabs and tree chevrons, 24 icons in all. Icons it doesn't draw stay VS Code's own. Choose it with **Preferences: Product Icon Theme**; every preset except High Contrast sets it, and **Disable** puts your own back.
 - **Stylesmith: Boot Sequence** (#82): a short boot log typed out in a terminal tab over about two seconds, with original text for each retro preset (a memory check, a self-test, a shelter console and more) and Stylesmith's own for the other themes. Any key closes it; with `workbench.reduceMotion` set to `on`, the whole log appears at once.
 - **Stylesmith: Digital Rain** (#83): characters falling down a terminal tab, in the theme's terminal greens, until any key is pressed. It runs only on request, draws only while its tab is the active terminal in a focused window, and shows one still frame when `workbench.reduceMotion` is `on`.
 - **Save receipt** (`stylesmith.saveReceipt`, off by default, #85): after a manual save, a note at the end of the cursor's line for two seconds, like a terminal log: `▸ saved 14:02:11`. Auto-saves get none, and a Problem Lens message on the line takes precedence. Themes can change its color with the new `stylesmith.saveReceiptForeground`.
