@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's fourteen color themes, including two high-contrast themes, and the thirteen presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's fifteen color themes, including two high-contrast themes, and the fourteen presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,7 +95,7 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has fourteen color themes you can use on their own, and thirteen
+					Stylesmith has fifteen color themes you can use on their own, and fourteen
 					presets that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
@@ -306,6 +306,22 @@
 								<td class="off">off</td>
 								<td class="off">off</td>
 								<td class="off">off</td>
+								<td class="off">off</td>
+								<td>
+									<a href="fonts.html#font-RecMonoCasual"
+										>RecMonoCasual Nerd Font</a
+									>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">Sunroom</th>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="on">on</td>
 								<td class="off">off</td>
 								<td>
 									<a href="fonts.html#font-RecMonoCasual"
@@ -945,6 +961,60 @@
 							</dl>
 						</div>
 					</li>
+					<li class="preset-card">
+						<img
+							src="img/sunroom.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Sunroom preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Sunroom</h4>
+							<p>
+								Soft sunlight on pale walls: warm cream, muted grey-blue structure
+								and peach accents, with unfocused editors dimmed.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> Kazuo Ishiguro's Klara and
+									the Sun (2021) is told by an artificial friend who watches the
+									world through a shop window, and trusts in the kindness of the
+									Sun.
+								</p>
+								<p>
+									<strong>The colors.</strong> Pale warm cream, like a wall in
+									afternoon light. Muted grey-blue for keywords and types, peach
+									for strings, and the soft yellow of sunlight for numbers.
+									Nothing is saturated.
+								</p>
+								<p>
+									<strong>The settings.</strong> A smooth cursor, the current-line
+									highlight, and unfocused editors dimmed, so attention rests on
+									one window at a time, as Klara's does.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Sunroom</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Interface icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Dim unfocused editors
+								</dd>
+								<dt>Recommended font</dt>
+								<dd>
+									<a href="fonts.html#font-RecMonoCasual"
+										>RecMonoCasual Nerd Font</a
+									>
+								</dd>
+							</dl>
+						</div>
+					</li>
 				</ul>
 				<h3 class="group-title">Everyday</h3>
 				<p class="group-intro">Bright rooms and maximum contrast.</p>
@@ -1055,10 +1125,11 @@
 					The stories name the books and machines that inspired these looks:
 					<em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson;
 					<em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang;
-					<em>A Psalm for the Wild-Built</em> by Becky Chambers; the IBM 5151 display
-					(IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation).
-					Names belong to their owners. Stylesmith is an independent project, not
-					affiliated with or endorsed by any of them, and its themes are original work.
+					<em>A Psalm for the Wild-Built</em> by Becky Chambers;
+					<em>Klara and the Sun</em> by Kazuo Ishiguro; the IBM 5151 display (IBM); the
+					VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong
+					to their owners. Stylesmith is an independent project, not affiliated with or
+					endorsed by any of them, and its themes are original work.
 				</p>
 			</section>
 
@@ -1430,6 +1501,38 @@
 								<dd>12.2:1</dd>
 								<dt>Used by preset</dt>
 								<dd>Tea Garden</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Sunroom"
+							style="
+								--sample-bg: #faf4ea;
+								--sample-fg: #363a46;
+								--sample-kw: #3d5a82;
+								--sample-fn: #7a4a28;
+								--sample-str: #8f5236;
+								--sample-num: #7a5c0c;
+								--sample-cm: #6a6560;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Sunroom</h4>
+							<p class="theme-kind">Light</p>
+							<p>
+								Light: pale warm cream, grey-blue keywords and types, peach strings
+								and soft sunlit numbers, low in saturation.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>10.4:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Sunroom</dd>
 							</dl>
 						</div>
 					</li>

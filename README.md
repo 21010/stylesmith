@@ -10,7 +10,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 
 ## Features
 
-- Fourteen color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
+- Fifteen color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
@@ -65,6 +65,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Steel and Rust**: Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.
 - **Brass**: Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
 - **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
+- **Sunroom**: Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
 - **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
 
@@ -81,6 +82,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Steel and Rust**: Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.
 - **Stylesmith Brass**: Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.
 - **Stylesmith Tea Garden**: Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.
+- **Stylesmith Sunroom**: Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.
 - **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.

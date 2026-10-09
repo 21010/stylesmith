@@ -31,6 +31,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	Brass: "Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.",
 	"Tea Garden":
 		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.",
+	Sunroom:
+		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -61,6 +63,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.",
 	"Stylesmith Tea Garden":
 		"Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.",
+	"Stylesmith Sunroom":
+		"Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -146,6 +150,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "A warm off-white with a hint of green, like light through a greenhouse. Text in dark moss, keywords in leaf green, strings in terracotta and numbers in sunflower.",
 		settings:
 			"Only a smooth cursor and the current-line highlight: nothing mechanical, nothing that ticks."
+	},
+	Sunroom: {
+		origin: "Kazuo Ishiguro's Klara and the Sun (2021) is told by an artificial friend who watches the world through a shop window, and trusts in the kindness of the Sun.",
+		colors: "Pale warm cream, like a wall in afternoon light. Muted grey-blue for keywords and types, peach for strings, and the soft yellow of sunlight for numbers. Nothing is saturated.",
+		settings:
+			"A smooth cursor, the current-line highlight, and unfocused editors dimmed, so attention rests on one window at a time, as Klara's does."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

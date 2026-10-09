@@ -484,6 +484,11 @@
 				"path": "./themes/tea-garden-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Sunroom",
+				"uiTheme": "vs",
+				"path": "./themes/sunroom-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

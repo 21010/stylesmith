@@ -221,6 +221,25 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "sunroom",
+		label: "Sunroom",
+		description: "Soft sunlight on pale walls, with unfocused editors dimmed",
+		theme: "Stylesmith Sunroom",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "RecMonoCasual",
+		effects: {
+			"effects.smoothCursor": true,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",
