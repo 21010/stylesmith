@@ -36,6 +36,8 @@ export interface StoredState {
 	/** The color and icon theme a preset chose, so Disable can put the user's own back. */
 	themeSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
+	/** Set once nothing of Stylesmith 1.x is left in VS Code's installation: no more checks. */
+	legacyCleanupDone?: boolean;
 	/** Set once the user was told the old workbench patch can't be removed, to tell them once. */
 	legacyDeniedShown?: boolean;
 	/** When Stylesmith first ran on this computer, for the one-time feedback question. */

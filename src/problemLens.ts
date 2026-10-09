@@ -38,7 +38,7 @@ export class ProblemLens implements vscode.Disposable {
 	private readonly status: vscode.StatusBarItem;
 	/** Shows briefly when the number of errors goes up (stylesmith.problems.errorSignal). */
 	private readonly signalItem: vscode.StatusBarItem;
-	private readonly errorSignal = new ErrorSignal();
+	private errorSignal = new ErrorSignal();
 	private signalTimer: ReturnType<typeof setTimeout> | undefined;
 	private countTimer: ReturnType<typeof setTimeout> | undefined;
 	private readonly disposables: vscode.Disposable[] = [];
@@ -90,12 +90,23 @@ export class ProblemLens implements vscode.Disposable {
 			}),
 			vscode.workspace.onDidChangeConfiguration(event => {
 				if (!event.affectsConfiguration("stylesmith.problems")) return;
+				const wasOn = this.signalOn;
 				this.options = this.readOptions();
+				if (this.signalOn && !wasOn) {
+					// Start from the current count, so turning the signal on doesn't signal.
+					this.errorSignal = new ErrorSignal();
+					this.scheduleCount();
+				}
+				if (!this.signalOn) {
+					clearTimeout(this.signalTimer);
+					this.signalItem.hide();
+				}
 				this.replaceTypes();
 				this.update();
 			})
 		);
 		this.update();
+		this.scheduleCount(); // the starting count, when the signal is on
 	}
 
 	dispose(): void {
@@ -106,9 +117,18 @@ export class ProblemLens implements vscode.Disposable {
 		for (const disposable of this.disposables) disposable.dispose();
 	}
 
-	/** Counts the errors in all files, once diagnostics settle, and signals an increase. */
+	private get signalOn(): boolean {
+		return this.options.enabled && this.options.errorSignal;
+	}
+
+	/**
+	 * Counts the errors in all files, once diagnostics settle, and signals an increase. Only
+	 * while the error signal is on: counting every file's diagnostics on every change would
+	 * otherwise cost every user, while they type, for a feature that's off by default.
+	 */
 	private scheduleCount(): void {
 		clearTimeout(this.countTimer);
+		if (!this.signalOn) return;
 		this.countTimer = setTimeout(() => {
 			const errors = vscode.languages
 				.getDiagnostics()
@@ -119,9 +139,7 @@ export class ProblemLens implements vscode.Disposable {
 							.length,
 					0
 				);
-			// Counted even while the signal is off, so turning it on doesn't signal at once.
-			const signal = this.errorSignal.next(errors, Date.now());
-			if (!signal || !this.options.enabled || !this.options.errorSignal) return;
+			if (!this.errorSignal.next(errors, Date.now())) return;
 			const label = `Errors went up to ${errors}`;
 			this.signalItem.text = `$(error) ${errors}`;
 			this.signalItem.tooltip = `${label}. Click to open the Problems panel.`;

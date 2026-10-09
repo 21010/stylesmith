@@ -2,7 +2,7 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import { vscodeConfig, vscodeSettings } from "./config";
 import { FEEDBACK_URL, feedbackStep } from "./feedback";
-import { removeLegacyPatch } from "./legacyCleanup";
+import { cleanupFinished, removeLegacyPatch } from "./legacyCleanup";
 import { applyThemes, checkAfterStartup, disable, enable, type Services } from "./lifecycle";
 import { ManagedSettings } from "./managed";
 import { migrateOldSettings } from "./oldSettings";
@@ -125,7 +125,10 @@ async function askForFeedback(store: StateFile): Promise<void> {
 
 /** Removes a workbench patch Stylesmith 1.x left behind, and tells the user what happened. */
 async function cleanUpAfterVersion1(store: StateFile): Promise<void> {
+	// Checked until nothing of 1.x is left; after that, the installation is never read again.
+	if ((await store.read()).legacyCleanupDone) return;
 	const result = await removeLegacyPatch(vscode.env.appRoot);
+	if (cleanupFinished(result)) await store.update({ legacyCleanupDone: true });
 	if (result === "removed") {
 		const choice = await vscode.window.showInformationMessage(
 			messages.legacyRemoved,

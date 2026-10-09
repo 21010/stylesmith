@@ -3,7 +3,7 @@ import { chmod, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs
 import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import { computeChecksum, removeLegacyPatch, unpatch } from "../legacyCleanup";
+import { cleanupFinished, computeChecksum, removeLegacyPatch, unpatch } from "../legacyCleanup";
 
 // VS Code's workbench HTML, as it ships (shortened).
 const PRISTINE = `<!DOCTYPE html>
@@ -137,4 +137,11 @@ describe("removing Stylesmith 1.x's workbench patch", () => {
 			assert.equal(await readFile(html, "utf-8"), PATCHED);
 		}
 	);
+
+	it("stops checking once nothing is left, but retries a denied cleanup", () => {
+		assert.equal(cleanupFinished("clean"), true);
+		assert.equal(cleanupFinished("removed"), true);
+		assert.equal(cleanupFinished("fontsRemoved"), true);
+		assert.equal(cleanupFinished("denied"), false);
+	});
 });

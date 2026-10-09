@@ -240,6 +240,14 @@ describe("error signal", () => {
 		assert.equal(signal.next(4, 30_000), true, "more errors");
 	});
 
+	it("starts from the current count when it's turned on", () => {
+		// ProblemLens makes a fresh ErrorSignal when the signal is turned on: its first count
+		// is the baseline, so turning it on with existing errors doesn't signal.
+		const fresh = new ErrorSignal();
+		assert.equal(fresh.next(12, 0), false);
+		assert.equal(fresh.next(13, 10_000), true);
+	});
+
 	it("never signals twice within the cooldown, so it can't flash", () => {
 		const signal = new ErrorSignal();
 		signal.next(0, 0);

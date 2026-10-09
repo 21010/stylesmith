@@ -61,6 +61,15 @@ const FONT_LEFTOVER_RE = new RegExp(
 	`^${FONT_FOLDER}\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.(?:tmp|old)$`
 );
 
+/**
+ * Whether a cleanup result means there's nothing left of Stylesmith 1.x: then Stylesmith records
+ * it and never looks at VS Code's installation again. A denied cleanup keeps being retried,
+ * so it finishes once VS Code is repaired or its folder becomes writable.
+ */
+export function cleanupFinished(result: CleanupResult): boolean {
+	return result !== "denied";
+}
+
 /** Finds the workbench HTML file in VS Code's application folder (`vscode.env.appRoot`). */
 export function locateWorkbench(appRoot: string): Workbench | undefined {
 	for (const segments of WORKBENCH_DIRS) {

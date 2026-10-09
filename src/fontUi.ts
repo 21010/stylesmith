@@ -9,7 +9,7 @@ import * as vscode from "vscode";
 import { FONT_RELEASE, FONTS, NERD_FONTS_LICENSE, type NerdFont } from "./fonts";
 import {
 	installFont,
-	isInstalled,
+	installedFontIds,
 	nodeSystem,
 	removeFont,
 	userFontDir,
@@ -44,10 +44,12 @@ export class FontInstaller {
 		private readonly system: System = nodeSystem()
 	) {}
 
-	/** Whether the font is installed, by Stylesmith or anyone else. */
-	async installed(font: NerdFont): Promise<boolean> {
-		const ours = recorded((await this.store.read()).installedFonts)[font.id];
-		return Boolean(ours?.files.length) || (await isInstalled(font, this.system));
+	/** The ids of the fonts that are installed, by Stylesmith or anyone else: one scan for all. */
+	async installedIds(): Promise<Set<string>> {
+		const ours = recorded((await this.store.read()).installedFonts);
+		const found = await installedFontIds(FONTS, this.system);
+		for (const [id, entry] of Object.entries(ours)) if (entry.files.length) found.add(id);
+		return found;
 	}
 
 	/**
@@ -86,9 +88,19 @@ export class FontInstaller {
 			const installed = await vscode.window.withProgress(
 				{
 					location: vscode.ProgressLocation.Notification,
-					title: `Installing ${font.label}…`
+					title: `Installing ${font.label}…`,
+					cancellable: true
 				},
-				() => installFont(font, this.system, path.join(this.licenseDir, font.id))
+				(_progress, token) => {
+					const cancel = new AbortController();
+					token.onCancellationRequested(() => cancel.abort());
+					return installFont(
+						font,
+						this.system,
+						path.join(this.licenseDir, font.id),
+						cancel.signal
+					);
+				}
 			);
 			await this.store.transact(state => ({
 				change: {

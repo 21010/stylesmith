@@ -22,7 +22,7 @@ Stylesmith can install a Nerd Font for the current user (`src/fontInstall.ts`). 
 
 ## Upgrade recovery
 
-Stylesmith 1.x could modify the installed workbench. VS Code updates extensions automatically, so most users can't run **Stylesmith: Disable** in the old version before upgrading. On startup this build therefore checks for, and removes, changes left by Stylesmith 1.x. This is the only code that reads or writes the installation (`src/legacyCleanup.ts`), and it is limited to undoing Stylesmith's own changes:
+Stylesmith 1.x could modify the installed workbench. VS Code updates extensions automatically, so most users can't run **Stylesmith: Disable** in the old version before upgrading. On startup this build therefore checks for, and removes, changes left by Stylesmith 1.x. Once a check finds nothing left, or has removed it, Stylesmith records that and never reads the installation again; only a cleanup denied for lack of permission is retried at the next start. This is the only code that reads or writes the installation (`src/legacyCleanup.ts`), and it is limited to undoing Stylesmith's own changes:
 
 - In the workbench HTML file, it removes only blocks between Stylesmith's own markers, and restores the original Content-Security-Policy that Stylesmith kept in a comment. Blocks from other tools are left in place.
 - It removes the `stylesmith-fonts` folder (and leftovers of an interrupted font copy) next to that file.
