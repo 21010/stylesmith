@@ -28,6 +28,25 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.",
 	"Steel and Rust":
 		"Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.",
+	Brass: "Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.",
+	"Tea Garden":
+		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.",
+	Sunroom:
+		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.",
+	Countdown:
+		"Cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.",
+	Overlay:
+		"A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.",
+	"Deep Desert":
+		"Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.",
+	Haze: "Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.",
+	Grid: "Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.",
+	Corridor:
+		"A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.",
+	Horizon:
+		"Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.",
+	"Command Deck":
+		"The grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -54,6 +73,30 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"A charcoal city with a faint green cast: greyed text and syntax, keywords in glowing code green, a warm red for return, break and throw, and blue for constants.",
 	"Stylesmith Steel and Rust":
 		"Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.",
+	"Stylesmith Brass":
+		"Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.",
+	"Stylesmith Tea Garden":
+		"Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.",
+	"Stylesmith Sunroom":
+		"Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.",
+	"Stylesmith Countdown":
+		"Neutral grey-black, pale steel text, faint cyan keywords and types, and one red: every number.",
+	"Stylesmith Overlay":
+		"Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.",
+	"Stylesmith Deep Desert":
+		"Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.",
+	"Stylesmith Haze":
+		"Cold grey concrete with haze-orange keywords and teal strings; everything else muted.",
+	"Stylesmith Grid":
+		"Near-black with cyan keywords and pale cyan text, and orange for return, break and throw. Clean and geometric.",
+	"Stylesmith Corridor":
+		"Light: pale institutional green with dark teal text, teal keywords, blue functions and rust numbers. No italics or bold.",
+	"Stylesmith Teal Terminal":
+		"Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.",
+	"Stylesmith Horizon":
+		"Black with warm orange keywords, peach functions, lilac strings and blue types.",
+	"Stylesmith Command Deck":
+		"Grey-black metal with cold grey text, muted blue keywords, and one red alarm: return, break and throw.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -127,6 +170,71 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Cold blue-grey steel and dim light. Keywords are steel blue, strings a muted brass, and rust marks numbers and the keywords that change control flow.",
 		settings:
 			"Only the quiet settings, with unfocused editors dimmed, like the low light of a ship's corridor."
+	},
+	Brass: {
+		origin: "Ted Chiang's story collection Exhalation (2019) opens in a world of mechanical beings whose thoughts run on air: brass lungs, copper gears, and an anatomist who opens his own head to see how memory works.",
+		colors: "Dark bronze-brown, like the inside of a polished machine. Brass keywords, copper functions and numbers, and the green of verdigris, the patina old metal gathers, for strings and types.",
+		settings:
+			"Only the calm settings: smooth cursor, current-line highlight and bracket guides. Slow, careful work, like the anatomist's."
+	},
+	"Tea Garden": {
+		origin: "Becky Chambers' A Psalm for the Wild-Built (2021) follows a tea monk through a gentle world where people learned to live within their means, long after the robots walked away into the wilderness.",
+		colors: "A warm off-white with a hint of green, like light through a greenhouse. Text in dark moss, keywords in leaf green, strings in terracotta and numbers in sunflower.",
+		settings:
+			"Only a smooth cursor and the current-line highlight: nothing mechanical, nothing that ticks."
+	},
+	Sunroom: {
+		origin: "Kazuo Ishiguro's Klara and the Sun (2021) is told by an artificial friend who watches the world through a shop window, and trusts in the kindness of the Sun.",
+		colors: "Pale warm cream, like a wall in afternoon light. Muted grey-blue for keywords and types, peach for strings, and the soft yellow of sunlight for numbers. Nothing is saturated.",
+		settings:
+			"A smooth cursor, the current-line highlight, and unfocused editors dimmed, so attention rests on one window at a time, as Klara's does."
+	},
+	Countdown: {
+		origin: "Liu Cixin's The Three-Body Problem (2008; in English, 2014) begins with physics breaking down, and a countdown that only one scientist can see, ticking in his vision.",
+		colors: "Neutral grey-black and pale steel text, with faint cyan for keywords and types. One red is reserved for numbers: every number in the code is part of the countdown.",
+		settings: "The calm settings, with unfocused editors dimmed: cold, quiet and focused."
+	},
+	Overlay: {
+		origin: "Martha Wells' The Murderbot Diaries (2017–) are told by a security unit that would rather watch its media than talk to humans, and that sees the world through camera feeds and system overlays.",
+		colors: "Dark slate, like a display behind glass. Keywords in the cyan of an interface overlay, and strings and numbers in amber, like alerts that need attention but not panic.",
+		settings:
+			"Smooth cursor, current-line highlight and bracket guides, and a block cursor in the terminal, where the feeds come in."
+	},
+	"Deep Desert": {
+		origin: "Recent films about a desert planet showed endless dunes in ochre and sand, black suits against the heat, carved rock interiors, and a sun that bleaches everything.",
+		colors: "Near-black brown, like the shade of a rock hall, with sand-colored text. Keywords glow spice orange and strings are ochre. A single deep blue marks return, break and throw, used as sparingly as water.",
+		settings:
+			"Only the calm settings: smooth cursor, current-line highlight and bracket guides."
+	},
+	Haze: {
+		origin: "A late-2010s sequel to a classic of cyberpunk cinema replaced the neon of the 1980s with orange dust hanging over a dead city, cold brutalist concrete and teal rain.",
+		colors: "Cold grey concrete, with two colors breaking through: the orange of the haze for keywords, and the teal of the rain for strings. The rest stays muted, like a city seen through dust.",
+		settings:
+			"The calm settings, with unfocused editors dimmed, like everything beyond the haze."
+	},
+	Grid: {
+		origin: "A 2010 film set inside a computer drew its world as pure black crossed by glowing lines: cyan for the programs, orange for their adversary.",
+		colors: "Near-black, with cyan keywords and pale cyan text and strings. Orange appears only for return, break and throw, the adversary's color. The extension API can't draw a glow, so the lines stay clean.",
+		settings:
+			"Smooth cursor, current-line highlight and bracket guides: the guides draw the grid."
+	},
+	Corridor: {
+		origin: "A 2020s thriller series set its story on a sterile mid-century office floor: long white corridors, boxy teal-green terminals, and numbers on screen that somehow feel frightening.",
+		colors: "Pale institutional green with dark teal text, teal keywords and a blue for functions. Numbers are rust, and quietly unsettling. No italics or bold, like the terminals on the desks. Teal Terminal is the dark theme of the same floor.",
+		settings:
+			"A compact layout, the current-line highlight and a block cursor in the terminal: efficient, orderly, and slightly eerie."
+	},
+	Horizon: {
+		origin: "Television's starship sagas of the 1980s and 90s imagined computer screens as calm, rounded panels in warm orange, peach and lilac on black: the future as a friendly place.",
+		colors: "Black, with keywords in warm orange, functions in peach, strings in lilac and types in blue. Only the colors are borrowed, never the shapes of the panels.",
+		settings:
+			"Only the calm settings: smooth cursor, current-line highlight and bracket guides."
+	},
+	"Command Deck": {
+		origin: "A space-opera film saga gave its empire clean grey-and-black consoles, lit only by red indicators and the hum of the ship.",
+		colors: "Grey-black, like brushed metal, with cold grey text and muted blue keywords. Red is the one alarm: it marks return, break and throw.",
+		settings:
+			"The calm settings and a block cursor in the terminal, like a console waiting for orders."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

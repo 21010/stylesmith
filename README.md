@@ -10,7 +10,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 
 ## Features
 
-- Twelve color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
+- Twenty-four color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
@@ -63,6 +63,17 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Vault**: Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.
 - **Simulation**: A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.
 - **Steel and Rust**: Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.
+- **Brass**: Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
+- **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
+- **Sunroom**: Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.
+- **Countdown**: Cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.
+- **Overlay**: A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.
+- **Deep Desert**: Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.
+- **Haze**: Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.
+- **Grid**: Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.
+- **Corridor**: A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.
+- **Horizon**: Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.
+- **Command Deck**: The grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
 - **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
 
@@ -77,6 +88,18 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Vault**: A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.
 - **Stylesmith Simulation**: A charcoal city with a faint green cast: greyed text and syntax, keywords in glowing code green, a warm red for return, break and throw, and blue for constants.
 - **Stylesmith Steel and Rust**: Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.
+- **Stylesmith Brass**: Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.
+- **Stylesmith Tea Garden**: Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.
+- **Stylesmith Sunroom**: Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.
+- **Stylesmith Countdown**: Neutral grey-black, pale steel text, faint cyan keywords and types, and one red: every number.
+- **Stylesmith Overlay**: Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.
+- **Stylesmith Deep Desert**: Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.
+- **Stylesmith Haze**: Cold grey concrete with haze-orange keywords and teal strings; everything else muted.
+- **Stylesmith Grid**: Near-black with cyan keywords and pale cyan text, and orange for return, break and throw. Clean and geometric.
+- **Stylesmith Corridor**: Light: pale institutional green with dark teal text, teal keywords, blue functions and rust numbers. No italics or bold.
+- **Stylesmith Teal Terminal**: Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.
+- **Stylesmith Horizon**: Black with warm orange keywords, peach functions, lilac strings and blue types.
+- **Stylesmith Command Deck**: Grey-black metal with cold grey text, muted blue keywords, and one red alarm: return, break and throw.
 - **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.
@@ -85,7 +108,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 
 Choosing a font that isn't installed in the Stylesmith menu, or running **Stylesmith: Install Font…**, offers to install it for your user account. Nothing is downloaded unless you choose **Install** in the confirmation dialog, which shows what is downloaded, from where, and where it goes.
 
-- The files come from this repository's [fonts-3.5.1 release](https://github.com/21010/stylesmith/releases/tag/fonts-3.5.1): the Nerd Fonts 3.5.1 Mono Regular and Bold files, unchanged. Each file's size and SHA-256 are built into Stylesmith, and a file that doesn't match is refused before anything is written.
+- The files come from this repository's [fonts-3.5.1-r2 release](https://github.com/21010/stylesmith/releases/tag/fonts-3.5.1-r2): the Nerd Fonts 3.5.1 Mono Regular and Bold files, unchanged. Each file's size and SHA-256 are built into Stylesmith, and a file that doesn't match is refused before anything is written.
 - They go to your own font folder, without administrator rights: `%LOCALAPPDATA%\Microsoft\Windows\Fonts` on Windows (registered under `HKCU`), `~/Library/Fonts` on macOS, and `~/.local/share/fonts/stylesmith` on Linux.
 - On macOS the font works right away. On Windows and Linux, quit and reopen VS Code: only then does VS Code see a new font.
 - The fonts are under the SIL Open Font License; each font's license is saved in Stylesmith's own storage.
@@ -125,18 +148,18 @@ All Stylesmith settings are global user settings. The font settings select a fam
 
 Stylesmith manages the following VS Code settings while enabled. Disable restores the saved value, unless the user changed that setting while Stylesmith was active; in that case, the newer user value is preserved. Stylesmith also keeps such a change when it re-applies its settings at startup or after a Stylesmith setting changes; running **Stylesmith: Enable** applies its values again.
 
-| VS Code setting                                                         | Stylesmith option                                     |
-| ----------------------------------------------------------------------- | ----------------------------------------------------- |
-| `workbench.colorTheme`, `workbench.iconTheme`                           | the preset you apply                                  |
-| `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
-| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`            | `stylesmith.effects.smoothCursor`                     |
-| `editor.renderLineHighlight`                                            | `stylesmith.effects.currentLine`                      |
-| `editor.guides.bracketPairs`                                            | `stylesmith.effects.bracketGuides`                    |
-| `window.density.layout`                                                 | `stylesmith.effects.compactLayout`                    |
-| `editor.cursorStyle`                                                    | `stylesmith.effects.blockCursor`                      |
-| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
-| `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
-| `terminal.integrated.minimumContrastRatio`                              | `stylesmith.effects.readableTerminal`                 |
+| VS Code setting                                                             | Stylesmith option                                     |
+| --------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `workbench.colorTheme`, `workbench.iconTheme`, `workbench.productIconTheme` | the preset you apply                                  |
+| `editor.fontFamily`, `terminal.integrated.fontFamily`                       | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
+| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`                | `stylesmith.effects.smoothCursor`                     |
+| `editor.renderLineHighlight`                                                | `stylesmith.effects.currentLine`                      |
+| `editor.guides.bracketPairs`                                                | `stylesmith.effects.bracketGuides`                    |
+| `window.density.layout`                                                     | `stylesmith.effects.compactLayout`                    |
+| `editor.cursorStyle`                                                        | `stylesmith.effects.blockCursor`                      |
+| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking`     | `stylesmith.effects.blockTerminalCursor`              |
+| `accessibility.dimUnfocused.enabled`                                        | `stylesmith.effects.dimUnfocused`                     |
+| `terminal.integrated.minimumContrastRatio`                                  | `stylesmith.effects.readableTerminal`                 |
 
 Settings that are not available in the installed VS Code version are skipped. Stylesmith writes user (global) settings only, so a workspace or folder value for the same setting takes precedence in that workspace.
 

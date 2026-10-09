@@ -1,6 +1,6 @@
 /**
  * Installs and removes a real font on the machine it runs on, as the extension does: downloaded
- * from the fonts-3.5.1 release, checked against its pins, installed for the current user. CI runs
+ * from the fonts-3.5.1-r2 release, checked against its pins, installed for the current user. CI runs
  * it on Windows, macOS and Linux (the font-install job); `npm test` doesn't, because it downloads
  * and changes the machine.
  */

@@ -37,7 +37,25 @@ const GROUPS = [
 	[
 		"Inspired by film",
 		"Moods from screen worlds, described in our own words.",
-		["night-city", "monolith", "glass-lab", "vault", "simulation", "steel-and-rust"]
+		[
+			"night-city",
+			"monolith",
+			"glass-lab",
+			"vault",
+			"simulation",
+			"steel-and-rust",
+			"deep-desert",
+			"haze",
+			"grid",
+			"corridor",
+			"horizon",
+			"command-deck"
+		]
+	],
+	[
+		"Inspired by books",
+		"Moods from novels and stories, named with credit to their authors.",
+		["brass", "tea-garden", "sunroom", "countdown", "overlay"]
 	],
 	["Everyday", "Bright rooms and maximum contrast.", ["daylight", "high-contrast"]]
 ];
@@ -51,7 +69,24 @@ const THEME_GROUPS = [
 			"Stylesmith Glass Lab",
 			"Stylesmith Vault",
 			"Stylesmith Simulation",
-			"Stylesmith Steel and Rust"
+			"Stylesmith Steel and Rust",
+			"Stylesmith Deep Desert",
+			"Stylesmith Haze",
+			"Stylesmith Grid",
+			"Stylesmith Corridor",
+			"Stylesmith Teal Terminal",
+			"Stylesmith Horizon",
+			"Stylesmith Command Deck"
+		]
+	],
+	[
+		"Inspired by books",
+		[
+			"Stylesmith Brass",
+			"Stylesmith Tea Garden",
+			"Stylesmith Sunroom",
+			"Stylesmith Countdown",
+			"Stylesmith Overlay"
 		]
 	],
 	[
@@ -184,7 +219,7 @@ ${GROUPS.flatMap(g => g[2])
 </table>
 </div>`;
 
-const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> by Ted Chiang; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
+const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang; <em>A Psalm for the Wild-Built</em> by Becky Chambers; <em>Klara and the Sun</em> by Kazuo Ishiguro; <em>The Three-Body Problem</em> by Liu Cixin; <em>The Murderbot Diaries</em> by Martha Wells; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
 
 const presetsHtml = [
 	howTo,

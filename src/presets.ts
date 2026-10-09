@@ -184,6 +184,201 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "brass",
+		label: "Brass",
+		description: "Brass, copper and verdigris on dark bronze, with calm settings",
+		theme: "Stylesmith Brass",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "MonaspiceXe",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "tea-garden",
+		label: "Tea Garden",
+		description:
+			"A sunlit greenhouse in leaf, sunflower and terracotta, with nothing mechanical",
+		theme: "Stylesmith Tea Garden",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "RecMonoCasual",
+		effects: {
+			"effects.smoothCursor": true,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "sunroom",
+		label: "Sunroom",
+		description: "Soft sunlight on pale walls, with unfocused editors dimmed",
+		theme: "Stylesmith Sunroom",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "RecMonoCasual",
+		effects: {
+			"effects.smoothCursor": true,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "countdown",
+		label: "Countdown",
+		description: "Cold grey-black with every number in red, and unfocused editors dimmed",
+		theme: "Stylesmith Countdown",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "ShureTechMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "overlay",
+		label: "Overlay",
+		description: "Cyan overlays and amber alerts on dark slate, with a block terminal cursor",
+		theme: "Stylesmith Overlay",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "MartianMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "deep-desert",
+		label: "Deep Desert",
+		description: "Sand, ochre and spice orange on rock-black, with one deep blue",
+		theme: "Stylesmith Deep Desert",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "SpaceMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "haze",
+		label: "Haze",
+		description: "Orange haze and teal rain over cold concrete, with unfocused editors dimmed",
+		theme: "Stylesmith Haze",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "GeistMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "grid",
+		label: "Grid",
+		description: "Cyan lines on black, with orange for the adversary",
+		theme: "Stylesmith Grid",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "GeistMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "corridor",
+		label: "Corridor",
+		description:
+			"A sterile office floor in pale green and teal, compact, with a block terminal cursor",
+		theme: "Stylesmith Corridor",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "3270",
+		effects: {
+			"effects.smoothCursor": false,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": true,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "horizon",
+		label: "Horizon",
+		description: "Warm orange, peach and lilac on black, calm and optimistic",
+		theme: "Stylesmith Horizon",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "GeistMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
+		id: "command-deck",
+		label: "Command Deck",
+		description: "Grey-black consoles with one red alarm, and a block terminal cursor",
+		theme: "Stylesmith Command Deck",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "ShureTechMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

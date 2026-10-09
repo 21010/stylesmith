@@ -6,6 +6,18 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Command Deck** (#81), a new color theme and preset: the grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.
+- **Horizon** (#80), a new color theme and preset: warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.
+- **Corridor** (#79), a new color theme and preset: a sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal. With Teal Terminal, its dark companion theme.
+- **Grid** (#78), a new color theme and preset: light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.
+- **Haze** (#77), a new color theme and preset: orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.
+- **Deep Desert** (#76), a new color theme and preset: sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.
+- **Overlay** (#75), a new color theme and preset: a security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.
+- **Countdown** (#74), a new color theme and preset: cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.
+- **Sunroom** (#73), a new color theme and preset: soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.
+- **Tea Garden** (#72), a new color theme and preset: a sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
+- **Brass** (#71), a new color theme and preset: brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
+- **Four more fonts** in the font menu, which Stylesmith can install for you: MonaspiceXe (Monaspace Xenon, slab-serif), RecMonoCasual (Recursive's casual style), MartianMono and 3270 (the IBM 3270 terminal font, Regular only). They come from a new font release, `fonts-3.5.1-r2`, which holds the earlier seven fonts unchanged and the four new ones, each pinned by SHA-256.
 - **Stylesmith Pixel product icon theme** (#67): VS Code's own interface icons in the pixel style of the file icons: the activity bar, the explorer's actions, the status bar, tabs and tree chevrons, 24 icons in all. Icons it doesn't draw stay VS Code's own. Choose it with **Preferences: Product Icon Theme**; every preset except High Contrast sets it, and **Disable** puts your own back.
 - **Typography per theme** (#68): the retro terminal themes (Phosphor, Amber, ICE) use no italics or bold, as on the terminals of their era; markdown italics are underlined and bold is brighter. The film-inspired themes keep italic comments and parameters, and Neon Night, Vault and Steel and Rust set keywords in bold. Daylight keeps italic comments only, and the high-contrast themes use no italics. Colors and contrast are unchanged.
 - **Readable terminal** (`stylesmith.effects.readableTerminal`, off by default, #69): raises VS Code's minimum terminal text contrast from 4.5:1 to 7:1 through `terminal.integrated.minimumContrastRatio`, so VS Code adjusts any terminal color below it, including colors programs choose. The High Contrast preset turns it on.
