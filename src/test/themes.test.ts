@@ -267,3 +267,49 @@ describe("color themes", () => {
 		});
 	}
 });
+
+describe("theme distinctness", () => {
+	// The key colors that make a theme recognizable at a glance.
+	const key = (file: string) => {
+		const theme = readJson<Theme>("themes", file);
+		const token = (scope: string) =>
+			theme.tokenColors.find(rule => [rule.scope].flat()[0] === scope)?.settings.foreground ??
+			"";
+		return {
+			background: theme.colors["editor.background"]!,
+			text: theme.colors["editor.foreground"]!,
+			comment: token("comment"),
+			string: token("string"),
+			keyword: token("keyword")
+		};
+	};
+	const difference = (a: string, b: string) =>
+		colorDifference(a.slice(0, 7), b.slice(0, 7), VISION["normal vision"]);
+
+	it("keeps every two dark themes clearly apart in at least one key color", () => {
+		// Phosphor and the earlier Digital Rain differed by no more than 13.9 in any of these (#87).
+		const dark = files.filter(file => readJson<Theme>("themes", file).type === "dark");
+		for (let i = 0; i < dark.length; i++) {
+			for (let j = i + 1; j < dark.length; j++) {
+				const a = key(dark[i]!);
+				const b = key(dark[j]!);
+				const widest = Math.max(
+					...(Object.keys(a) as (keyof typeof a)[]).map(k => difference(a[k], b[k]))
+				);
+				assert.ok(
+					widest >= MIN_COLOR_DIFFERENCE,
+					`${dark[i]} and ${dark[j]}: ${widest.toFixed(1)}`
+				);
+			}
+		}
+	});
+
+	it("keeps Simulation apart from Phosphor, as #87 asks", () => {
+		const simulation = key("simulation-color-theme.json");
+		const phosphor = key("phosphor-color-theme.json");
+		for (const part of ["text", "comment", "string"] as const) {
+			assert.ok(difference(simulation[part], phosphor[part]) >= 15, part);
+		}
+		assert.ok(difference(simulation.background, phosphor.background) >= 10, "background");
+	});
+});

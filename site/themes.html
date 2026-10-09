@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's eleven color themes, including two high-contrast themes, and the ten presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's twelve color themes, including two high-contrast themes, and the eleven presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,7 +95,7 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has eleven color themes you can use on their own, and ten presets
+					Stylesmith has twelve color themes you can use on their own, and eleven presets
 					that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
@@ -244,7 +244,7 @@
 								<td><a href="fonts.html#font-SpaceMono">SpaceMono Nerd Font</a></td>
 							</tr>
 							<tr>
-								<th scope="row">Digital Rain</th>
+								<th scope="row">Simulation</th>
 								<td class="on">on</td>
 								<td class="on">on</td>
 								<td class="on">on</td>
@@ -255,6 +255,21 @@
 								<td>
 									<a href="fonts.html#font-JetBrainsMono"
 										>JetBrainsMono Nerd Font</a
+									>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">Steel and Rust</th>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="on">on</td>
+								<td>
+									<a href="fonts.html#font-ShureTechMono"
+										>ShureTechMono Nerd Font</a
 									>
 								</td>
 							</tr>
@@ -656,40 +671,41 @@
 					</li>
 					<li class="preset-card">
 						<img
-							src="img/digital-rain.png"
+							src="img/simulation.png"
 							width="1280"
 							height="760"
-							alt="VS Code with the Digital Rain preset"
+							alt="VS Code with the Simulation preset"
 							loading="lazy"
 						/>
 						<div class="card-body">
-							<h4>Digital Rain</h4>
+							<h4>Simulation</h4>
 							<p>
-								Layered greens on a green-black screen, a sleek late-1990s hacker
-								mood, with a block cursor in the terminal.
+								A greyed, green-cast city where only the code glows: a late-1990s
+								film world, with a block cursor in the terminal.
 							</p>
 							<details class="tale">
 								<summary>The story</summary>
 								<p>
 									<strong>Where it comes from.</strong> Cyberpunk cinema of the
-									late 1990s turned code into weather: green characters falling
-									down a black screen, a world made of data, and the few who learn
-									to read it.
+									late 1990s graded its simulated world green: grey office towers,
+									rain and black coats under a sickly cast, while the code itself
+									fell bright down black screens.
 								</p>
 								<p>
-									<strong>The colors.</strong> Layered greens instead of a single
-									one: bright keywords, mid-tone strings and dim comments.
-									Constants are blue, and a rare red marks patterns, the way those
-									films saved red for what matters.
+									<strong>The colors.</strong> A charcoal background with a faint
+									green cast, and greyed text and syntax, like the color grade.
+									Only keywords glow in code green. A warm red marks return, break
+									and throw, the moments that change what happens, and blue marks
+									constants.
 								</p>
 								<p>
 									<strong>The settings.</strong> The calm settings, and a block
-									cursor in the terminal.
+									cursor in the terminal, where the code lives.
 								</p>
 							</details>
 							<dl class="preset-parts">
 								<dt>Color theme</dt>
-								<dd>Stylesmith Digital Rain</dd>
+								<dd>Stylesmith Simulation</dd>
 								<dt>File icons</dt>
 								<dd>Stylesmith Pixel</dd>
 								<dt>Settings on</dt>
@@ -701,6 +717,58 @@
 								<dd>
 									<a href="fonts.html#font-JetBrainsMono"
 										>JetBrainsMono Nerd Font</a
+									>
+								</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/steel-and-rust.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Steel and Rust preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Steel and Rust</h4>
+							<p>
+								Cold blue-grey steel and dim light, with rust for what matters: the
+								real world outside the simulation, with dimmed unfocused editors.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> The same films showed the
+									world outside the simulation as cold, dim and worn: steel
+									corridors, blue-grey light and rust, where people lived after
+									waking up.
+								</p>
+								<p>
+									<strong>The colors.</strong> Cold blue-grey steel and dim light.
+									Keywords are steel blue, strings a muted brass, and rust marks
+									numbers and the keywords that change control flow.
+								</p>
+								<p>
+									<strong>The settings.</strong> Only the quiet settings, with
+									unfocused editors dimmed, like the low light of a ship's
+									corridor.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Steel and Rust</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Bracket pair guides, Dim
+									unfocused editors
+								</dd>
+								<dt>Recommended font</dt>
+								<dd>
+									<a href="fonts.html#font-ShureTechMono"
+										>ShureTechMono Nerd Font</a
 									>
 								</dd>
 							</dl>
@@ -1058,32 +1126,65 @@
 					<li class="theme-card">
 						<pre
 							class="theme-sample"
-							data-theme="Stylesmith Digital Rain"
+							data-theme="Stylesmith Simulation"
 							style="
-								--sample-bg: #0a110c;
-								--sample-fg: #b5f2c0;
-								--sample-kw: #5dff8f;
-								--sample-fn: #c8ffd3;
-								--sample-str: #7ed99a;
-								--sample-num: #7dd3ff;
-								--sample-cm: #66a372;
+								--sample-bg: #272924;
+								--sample-fg: #d2d5ca;
+								--sample-kw: #4dff86;
+								--sample-fn: #e2e5d8;
+								--sample-str: #b4bd92;
+								--sample-num: #8ccbff;
+								--sample-cm: #a6aa97;
 							"
 						><code><span class="cm">// tally the night shift</span>
 <span class="kw">function</span> <span class="fn">total</span>(hours) {
   <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
 }</code></pre>
 						<div class="card-body">
-							<h4>Stylesmith Digital Rain</h4>
+							<h4>Stylesmith Simulation</h4>
 							<p class="theme-kind">Dark</p>
 							<p>
-								Layered greens on green-black: bright keywords, mid-tone strings and
-								dim comments, with blue for constants and a rare red for patterns.
+								A charcoal city with a faint green cast: greyed text and syntax,
+								keywords in glowing code green, a warm red for return, break and
+								throw, and blue for constants.
 							</p>
 							<dl class="preset-parts">
 								<dt>Editor text contrast</dt>
-								<dd>15.0:1</dd>
+								<dd>9.9:1</dd>
 								<dt>Used by preset</dt>
-								<dd>Digital Rain</dd>
+								<dd>Simulation</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Steel and Rust"
+							style="
+								--sample-bg: #1b2026;
+								--sample-fg: #cfd6de;
+								--sample-kw: #8fb8de;
+								--sample-fn: #e4e9ee;
+								--sample-str: #c9ad8c;
+								--sample-num: #e8a46e;
+								--sample-cm: #9aa4b0;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Steel and Rust</h4>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Cold blue-grey steel and dim light: steel-blue keywords, rust for
+								numbers and control flow, and muted brass strings.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>11.2:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Steel and Rust</dd>
 							</dl>
 						</div>
 					</li>

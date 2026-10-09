@@ -4,7 +4,7 @@ import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
 import type { FontInstaller } from "./fontUi";
 import { messages } from "./messages";
-import { PRESETS, presetEffects, type Preset } from "./presets";
+import { PRESET_ALIASES, PRESETS, presetEffects, type Preset } from "./presets";
 
 /** Stylesmith's UI uses VS Code commands, settings, themes, decorations and status bar APIs. */
 
@@ -156,7 +156,8 @@ export async function applyPreset(
 ): Promise<void> {
 	let preset: Preset | undefined;
 	if (typeof id === "string") {
-		preset = PRESETS.find(candidate => candidate.id === id);
+		const wanted = PRESET_ALIASES[id] ?? id;
+		preset = PRESETS.find(candidate => candidate.id === wanted);
 		if (!preset) throw new Error(`there's no preset "${id}"`);
 	} else {
 		const choice = await vscode.window.showQuickPick(

@@ -6,7 +6,7 @@ import { contrast } from "../color";
 import { EFFECTS } from "../effects";
 import { FONTS } from "../fonts";
 import { PRESETS } from "../presets";
-import { manifest, readJson, ROOT, type ColorTheme } from "./files";
+import { manifest, readJson, ROOT, themeSettingsId, type ColorTheme } from "./files";
 
 /**
  * The Themes page and the ergonomics page describe the themes with real values: their colors,
@@ -121,7 +121,7 @@ describe("Themes page", () => {
 			});
 
 			it("names the preset that uses it", () => {
-				const users = PRESETS.filter(preset => preset.theme === entry.label);
+				const users = PRESETS.filter(preset => preset.theme === themeSettingsId(entry));
 				assert.equal(
 					detail(card, "Used by preset"),
 					users.length
@@ -138,7 +138,10 @@ describe("Themes page", () => {
 			const icons = manifest().contributes.iconThemes.find(
 				icon => icon.id === preset.iconTheme
 			);
-			assert.equal(detail(card, "Color theme"), preset.theme);
+			const theme = manifest().contributes.themes.find(
+				t => themeSettingsId(t) === preset.theme
+			);
+			assert.equal(detail(card, "Color theme"), theme?.label);
 			assert.equal(detail(card, "File icons"), icons?.label);
 			const font = FONTS.find(candidate => candidate.id === preset.font);
 			assert.equal(detail(card, "Recommended font"), font?.label);

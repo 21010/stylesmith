@@ -220,9 +220,25 @@ function theme(p) {
 				settings: { foreground: t.comment, fontStyle: "italic" }
 			},
 			{
-				scope: ["keyword", "storage", "storage.type", "keyword.control"],
+				scope: [
+					"keyword",
+					"storage",
+					"storage.type",
+					...(t.control ? [] : ["keyword.control"])
+				],
 				settings: { foreground: t.keyword }
 			},
+			// An optional color for the keywords that change control flow (return, break, throw):
+			// a palette that sets it uses it sparingly, for the moments that matter.
+			...(t.control
+				? [
+						{
+							scope: ["keyword.control.flow", "keyword.control.trycatch"],
+							settings: { foreground: t.control }
+						},
+						{ scope: ["keyword.control"], settings: { foreground: t.keyword } }
+					]
+				: []),
 			{
 				scope: ["keyword.operator", "punctuation.accessor"],
 				settings: { foreground: t.operator }

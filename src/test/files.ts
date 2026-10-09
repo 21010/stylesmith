@@ -20,7 +20,7 @@ export interface SettingSchema {
 export interface Manifest {
 	contributes: {
 		configuration: { properties: Record<string, SettingSchema> };
-		themes: { label: string; uiTheme: string; path: string }[];
+		themes: { id?: string; label: string; uiTheme: string; path: string }[];
 		iconThemes: { id: string; label: string; path: string }[];
 	};
 }
@@ -49,3 +49,10 @@ export function readJson<T>(...segments: string[]): T {
 }
 
 export const manifest = (): Manifest => readJson<Manifest>("package.json");
+
+/**
+ * The id VS Code stores in settings for a contributed theme: its `id` if it has one, else its
+ * label. Presets name their theme by this id; a renamed theme keeps its earlier name as id.
+ */
+export const themeSettingsId = (theme: { id?: string; label: string }): string =>
+	theme.id ?? theme.label;

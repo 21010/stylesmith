@@ -130,9 +130,11 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
-		id: "digital-rain",
-		label: "Digital Rain",
-		description: "Layered green colors with a block terminal cursor",
+		id: "simulation",
+		label: "Simulation",
+		description:
+			"A greyed, green-cast city where only the code glows, with a block terminal cursor",
+		// The theme's id in VS Code's settings: its earlier name, so existing choices still work.
 		theme: "Stylesmith Digital Rain",
 		iconTheme: ICON_THEME,
 		font: "JetBrainsMono",
@@ -142,6 +144,22 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false
+		}
+	},
+	{
+		id: "steel-and-rust",
+		label: "Steel and Rust",
+		description:
+			"Cold blue-grey steel with rust accents, quiet settings and dimmed unfocused editors",
+		theme: "Stylesmith Steel and Rust",
+		iconTheme: ICON_THEME,
+		font: "ShureTechMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true
 		}
 	},
 	{
@@ -179,6 +197,9 @@ export const PRESETS: readonly Preset[] = [
 		}
 	}
 ];
+
+/** Earlier preset ids, still accepted (keyboard shortcuts may use them). */
+export const PRESET_ALIASES: Readonly<Record<string, string>> = { "digital-rain": "simulation" };
 
 export function presetEffects(preset: Preset): [string, boolean][] {
 	return EFFECTS.map(effect => [effect.setting, preset.effects[effect.setting] ?? false]);
