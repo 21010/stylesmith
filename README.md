@@ -44,6 +44,8 @@ With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a m
 
 With `stylesmith.saveReceipt` on, a manual save is noted at the end of the cursor's line for two seconds, like a terminal log: `▸ saved 14:02:11`. Auto-saves get no note, and a Problem Lens message on the line takes precedence. Themes can change its color with `stylesmith.saveReceiptForeground`.
 
+Run **Stylesmith: Preset Gallery**, or choose it in the Stylesmith menu, to see every preset inside VS Code before you apply one: a code sample in its theme's colors, its story, its settings and its recommended font, with an **Apply** button and a **Disable** button. The gallery page loads nothing from outside and can only ask Stylesmith to apply a preset or to disable.
+
 Run **Stylesmith: Boot Sequence** to see a short boot log typed out in a terminal tab, in the style of the active theme's preset (a memory check for Phosphor Terminal, a self-test for Amber Monitor, a shelter console for Vault); any key closes it. With `workbench.reduceMotion` set to `on`, the whole log appears at once.
 
 Run **Stylesmith: Digital Rain** to watch characters fall down a terminal tab, in your theme's terminal greens; any key closes it. It draws only while its tab is the active terminal in a focused window. With `workbench.reduceMotion` set to `on`, it shows one still frame. Stylesmith can't read the system's reduced-motion preference, so set that setting if you want no animation.

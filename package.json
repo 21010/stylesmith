@@ -82,6 +82,11 @@
 				"category": "Stylesmith"
 			},
 			{
+				"command": "stylesmith.presetGallery",
+				"title": "Preset Gallery",
+				"category": "Stylesmith"
+			},
+			{
 				"command": "stylesmith.menu",
 				"title": "Show Menu",
 				"category": "Stylesmith"

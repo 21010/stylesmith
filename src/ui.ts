@@ -60,6 +60,11 @@ export async function showMenu(config: Config, fonts: FontInstaller): Promise<vo
 			detail: "A complete look: theme, icons and VS Code API settings",
 			run: () => vscode.commands.executeCommand("stylesmith.applyPreset")
 		},
+		{
+			label: "$(preview) Preset gallery",
+			detail: "See each preset's colors, story and settings before you apply it",
+			run: () => vscode.commands.executeCommand("stylesmith.presetGallery")
+		},
 		separator("Effects"),
 		...EFFECTS.map((effect): MenuItem => {
 			const on = config.isOn(effect);

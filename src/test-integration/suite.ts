@@ -151,6 +151,19 @@ export async function run(): Promise<void> {
 		}
 	);
 
+	await step("the preset gallery opens in a webview tab", async () => {
+		await vscode.commands.executeCommand("stylesmith.presetGallery");
+		const isGallery = (tab: vscode.Tab) =>
+			tab.input instanceof vscode.TabInputWebview && tab.label === "Stylesmith Presets";
+		await until(
+			() => vscode.window.tabGroups.all.some(group => group.tabs.some(isGallery)),
+			"the gallery opens"
+		);
+		const tab = vscode.window.tabGroups.all.flatMap(group => group.tabs).find(isGallery)!;
+		await vscode.window.tabGroups.close(tab);
+		assert.ok(extension.isActive);
+	});
+
 	await step("Boot Sequence opens a terminal tab that closes cleanly", async () => {
 		const before = vscode.window.terminals.length;
 		await vscode.commands.executeCommand("stylesmith.bootSequence");

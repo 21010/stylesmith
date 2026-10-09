@@ -189,7 +189,7 @@ const howTo = `<h3 class="group-title">How presets work</h3>
 <div class="preset-howto">
 <div>
 <h4>Apply</h4>
-<p>Choose a preset from the Stylesmith button in the status bar, or run <strong>Stylesmith: Apply Preset&hellip;</strong>. In one step it sets the color theme, the file icon theme and the settings listed on its card.</p>
+<p>Choose a preset from the Stylesmith button in the status bar, or run <strong>Stylesmith: Apply Preset&hellip;</strong>. In one step it sets the color theme, the file icon theme and the settings listed on its card. To compare them first, run <strong>Stylesmith: Preset Gallery</strong>: it shows every preset with a code sample in its colors, its story and its settings, and an Apply button.</p>
 </div>
 <div>
 <h4>Undo</h4>

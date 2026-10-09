@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Added
+
+- **Stylesmith: Preset Gallery** (#84), also in the Stylesmith menu: every preset inside VS Code, with a code sample in its theme's colors, its story, its settings and recommended font, and **Apply** and **Disable** buttons. The page loads nothing from outside (its content security policy is `default-src 'none'`) and can only ask to apply a known preset or to disable.
+
 ## 2.3.0 (2026-10-09)
 
 ### Added
