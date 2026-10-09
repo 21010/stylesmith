@@ -37,7 +37,15 @@ const GROUPS = [
 	[
 		"Inspired by film",
 		"Moods from screen worlds, described in our own words.",
-		["night-city", "monolith", "glass-lab", "vault", "simulation", "steel-and-rust"]
+		[
+			"night-city",
+			"monolith",
+			"glass-lab",
+			"vault",
+			"simulation",
+			"steel-and-rust",
+			"deep-desert"
+		]
 	],
 	[
 		"Inspired by books",
@@ -56,7 +64,8 @@ const THEME_GROUPS = [
 			"Stylesmith Glass Lab",
 			"Stylesmith Vault",
 			"Stylesmith Simulation",
-			"Stylesmith Steel and Rust"
+			"Stylesmith Steel and Rust",
+			"Stylesmith Deep Desert"
 		]
 	],
 	[

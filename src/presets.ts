@@ -274,6 +274,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "deep-desert",
+		label: "Deep Desert",
+		description: "Sand, ochre and spice orange on rock-black, with one deep blue",
+		theme: "Stylesmith Deep Desert",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "SpaceMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

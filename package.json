@@ -499,6 +499,11 @@
 				"path": "./themes/overlay-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Deep Desert",
+				"uiTheme": "vs-dark",
+				"path": "./themes/deep-desert-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

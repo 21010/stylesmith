@@ -37,6 +37,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"Cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.",
 	Overlay:
 		"A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.",
+	"Deep Desert":
+		"Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -73,6 +75,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Neutral grey-black, pale steel text, faint cyan keywords and types, and one red: every number.",
 	"Stylesmith Overlay":
 		"Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.",
+	"Stylesmith Deep Desert":
+		"Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -175,6 +179,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Dark slate, like a display behind glass. Keywords in the cyan of an interface overlay, and strings and numbers in amber, like alerts that need attention but not panic.",
 		settings:
 			"Smooth cursor, current-line highlight and bracket guides, and a block cursor in the terminal, where the feeds come in."
+	},
+	"Deep Desert": {
+		origin: "Recent films about a desert planet showed endless dunes in ochre and sand, black suits against the heat, carved rock interiors, and a sun that bleaches everything.",
+		colors: "Near-black brown, like the shade of a rock hall, with sand-colored text. Keywords glow spice orange and strings are ochre. A single deep blue marks return, break and throw, used as sparingly as water.",
+		settings:
+			"Only the calm settings: smooth cursor, current-line highlight and bracket guides."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",
