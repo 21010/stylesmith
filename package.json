@@ -479,6 +479,11 @@
 				"path": "./themes/brass-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Tea Garden",
+				"uiTheme": "vs",
+				"path": "./themes/tea-garden-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

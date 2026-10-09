@@ -331,6 +331,7 @@ describe("typography (#68)", () => {
 		"simulation-color-theme.json": "film",
 		"steel-and-rust-color-theme.json": "film",
 		"brass-color-theme.json": "film",
+		"tea-garden-color-theme.json": "film",
 		"daylight-color-theme.json": "everyday",
 		"neon-high-contrast-color-theme.json": "high-contrast",
 		"daylight-high-contrast-color-theme.json": "high-contrast"

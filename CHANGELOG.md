@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Tea Garden** (#72), a new color theme and preset: a sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
 - **Brass** (#71), a new color theme and preset: brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
 - **Four more fonts** in the font menu, which Stylesmith can install for you: MonaspiceXe (Monaspace Xenon, slab-serif), RecMonoCasual (Recursive's casual style), MartianMono and 3270 (the IBM 3270 terminal font, Regular only). They come from a new font release, `fonts-3.5.1-r2`, which holds the earlier seven fonts unchanged and the four new ones, each pinned by SHA-256.
 - **Stylesmith Pixel product icon theme** (#67): VS Code's own interface icons in the pixel style of the file icons: the activity bar, the explorer's actions, the status bar, tabs and tree chevrons, 24 icons in all. Icons it doesn't draw stay VS Code's own. Choose it with **Preferences: Product Icon Theme**; every preset except High Contrast sets it, and **Disable** puts your own back.

@@ -29,6 +29,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	"Steel and Rust":
 		"Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.",
 	Brass: "Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.",
+	"Tea Garden":
+		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -57,6 +59,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.",
 	"Stylesmith Brass":
 		"Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.",
+	"Stylesmith Tea Garden":
+		"Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -136,6 +140,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Dark bronze-brown, like the inside of a polished machine. Brass keywords, copper functions and numbers, and the green of verdigris, the patina old metal gathers, for strings and types.",
 		settings:
 			"Only the calm settings: smooth cursor, current-line highlight and bracket guides. Slow, careful work, like the anatomist's."
+	},
+	"Tea Garden": {
+		origin: "Becky Chambers' A Psalm for the Wild-Built (2021) follows a tea monk through a gentle world where people learned to live within their means, long after the robots walked away into the wilderness.",
+		colors: "A warm off-white with a hint of green, like light through a greenhouse. Text in dark moss, keywords in leaf green, strings in terracotta and numbers in sunflower.",
+		settings:
+			"Only a smooth cursor and the current-line highlight: nothing mechanical, nothing that ticks."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",
