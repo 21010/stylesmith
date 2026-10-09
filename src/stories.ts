@@ -43,6 +43,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	Grid: "Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.",
 	Corridor:
 		"A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.",
+	Horizon:
+		"Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -89,6 +91,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Light: pale institutional green with dark teal text, teal keywords, blue functions and rust numbers. No italics or bold.",
 	"Stylesmith Teal Terminal":
 		"Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.",
+	"Stylesmith Horizon":
+		"Black with warm orange keywords, peach functions, lilac strings and blue types.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -215,6 +219,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Pale institutional green with dark teal text, teal keywords and a blue for functions. Numbers are rust, and quietly unsettling. No italics or bold, like the terminals on the desks. Teal Terminal is the dark theme of the same floor.",
 		settings:
 			"A compact layout, the current-line highlight and a block cursor in the terminal: efficient, orderly, and slightly eerie."
+	},
+	Horizon: {
+		origin: "Television's starship sagas of the 1980s and 90s imagined computer screens as calm, rounded panels in warm orange, peach and lilac on black: the future as a friendly place.",
+		colors: "Black, with keywords in warm orange, functions in peach, strings in lilac and types in blue. Only the colors are borrowed, never the shapes of the panels.",
+		settings:
+			"Only the calm settings: smooth cursor, current-line highlight and bracket guides."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

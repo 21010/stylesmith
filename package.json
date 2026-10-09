@@ -524,6 +524,11 @@
 				"path": "./themes/teal-terminal-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Horizon",
+				"uiTheme": "vs-dark",
+				"path": "./themes/horizon-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

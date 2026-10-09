@@ -345,6 +345,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "horizon",
+		label: "Horizon",
+		description: "Warm orange, peach and lilac on black, calm and optimistic",
+		theme: "Stylesmith Horizon",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "GeistMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

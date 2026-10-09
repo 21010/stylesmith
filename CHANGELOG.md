@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Horizon** (#80), a new color theme and preset: warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.
 - **Corridor** (#79), a new color theme and preset: a sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal. With Teal Terminal, its dark companion theme.
 - **Grid** (#78), a new color theme and preset: light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.
 - **Haze** (#77), a new color theme and preset: orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.

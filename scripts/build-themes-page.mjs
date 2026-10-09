@@ -47,7 +47,8 @@ const GROUPS = [
 			"deep-desert",
 			"haze",
 			"grid",
-			"corridor"
+			"corridor",
+			"horizon"
 		]
 	],
 	[
@@ -72,7 +73,8 @@ const THEME_GROUPS = [
 			"Stylesmith Haze",
 			"Stylesmith Grid",
 			"Stylesmith Corridor",
-			"Stylesmith Teal Terminal"
+			"Stylesmith Teal Terminal",
+			"Stylesmith Horizon"
 		]
 	],
 	[
