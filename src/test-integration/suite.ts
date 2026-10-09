@@ -7,7 +7,7 @@ import * as vscode from "vscode";
 import { EFFECTS } from "../effects";
 import { locateWorkbench } from "../legacyCleanup";
 import { PRESETS } from "../presets";
-import { sleep, step, userValue, withTimeout } from "./helpers";
+import { sleep, step, until, userValue, withTimeout } from "./helpers";
 
 export async function run(): Promise<void> {
 	const extension = vscode.extensions.getExtension("21010.stylesmith");
@@ -113,6 +113,33 @@ export async function run(): Promise<void> {
 			)?.defaultValue;
 		assert.deepEqual(pattern, { added: false, modified: true });
 	});
+
+	// Digital Rain follows this setting; it must exist in every supported version (#83).
+	await step("VS Code has the reduced-motion setting Digital Rain follows", () => {
+		const reduceMotion = vscode.workspace
+			.getConfiguration("workbench")
+			.inspect<string>("reduceMotion")?.defaultValue;
+		assert.equal(reduceMotion, "auto");
+	});
+
+	await step(
+		"Digital Rain opens a terminal tab, and nothing stays open once it's closed",
+		async () => {
+			const before = vscode.window.terminals.length;
+			await vscode.commands.executeCommand("stylesmith.digitalRain");
+			await until(
+				() => vscode.window.terminals.some(terminal => terminal.name === "Digital Rain"),
+				"the Digital Rain terminal opens"
+			);
+			await sleep(500);
+			const rain = vscode.window.terminals.find(
+				terminal => terminal.name === "Digital Rain"
+			)!;
+			rain.dispose();
+			await until(() => vscode.window.terminals.length === before, "the terminal closes");
+			assert.ok(extension.isActive);
+		}
+	);
 
 	await step("no command modifies workbench.html or product.json", () => {
 		assert.deepEqual(readFileSync(workbench), workbenchBefore);

@@ -95,6 +95,11 @@
 				"command": "stylesmith.removeFonts",
 				"title": "Remove Installed Fonts…",
 				"category": "Stylesmith"
+			},
+			{
+				"command": "stylesmith.digitalRain",
+				"title": "Digital Rain",
+				"category": "Stylesmith"
 			}
 		],
 		"configuration": {
