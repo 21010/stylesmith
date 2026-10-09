@@ -489,6 +489,11 @@
 				"path": "./themes/sunroom-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Countdown",
+				"uiTheme": "vs-dark",
+				"path": "./themes/countdown-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

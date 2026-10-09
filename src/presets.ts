@@ -240,6 +240,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "countdown",
+		label: "Countdown",
+		description: "Cold grey-black with every number in red, and unfocused editors dimmed",
+		theme: "Stylesmith Countdown",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "ShureTechMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

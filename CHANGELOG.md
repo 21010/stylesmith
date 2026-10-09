@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Countdown** (#74), a new color theme and preset: cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.
 - **Sunroom** (#73), a new color theme and preset: soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.
 - **Tea Garden** (#72), a new color theme and preset: a sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
 - **Brass** (#71), a new color theme and preset: brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.

@@ -33,6 +33,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.",
 	Sunroom:
 		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.",
+	Countdown:
+		"Cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -65,6 +67,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.",
 	"Stylesmith Sunroom":
 		"Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.",
+	"Stylesmith Countdown":
+		"Neutral grey-black, pale steel text, faint cyan keywords and types, and one red: every number.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -156,6 +160,11 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Pale warm cream, like a wall in afternoon light. Muted grey-blue for keywords and types, peach for strings, and the soft yellow of sunlight for numbers. Nothing is saturated.",
 		settings:
 			"A smooth cursor, the current-line highlight, and unfocused editors dimmed, so attention rests on one window at a time, as Klara's does."
+	},
+	Countdown: {
+		origin: "Liu Cixin's The Three-Body Problem (2008; in English, 2014) begins with physics breaking down, and a countdown that only one scientist can see, ticking in his vision.",
+		colors: "Neutral grey-black and pale steel text, with faint cyan for keywords and types. One red is reserved for numbers: every number in the code is part of the countdown.",
+		settings: "The calm settings, with unfocused editors dimmed: cold, quiet and focused."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

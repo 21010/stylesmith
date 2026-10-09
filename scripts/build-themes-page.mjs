@@ -42,7 +42,7 @@ const GROUPS = [
 	[
 		"Inspired by books",
 		"Moods from novels and stories, named with credit to their authors.",
-		["brass", "tea-garden", "sunroom"]
+		["brass", "tea-garden", "sunroom", "countdown"]
 	],
 	["Everyday", "Bright rooms and maximum contrast.", ["daylight", "high-contrast"]]
 ];
@@ -59,7 +59,10 @@ const THEME_GROUPS = [
 			"Stylesmith Steel and Rust"
 		]
 	],
-	["Inspired by books", ["Stylesmith Brass", "Stylesmith Tea Garden", "Stylesmith Sunroom"]],
+	[
+		"Inspired by books",
+		["Stylesmith Brass", "Stylesmith Tea Garden", "Stylesmith Sunroom", "Stylesmith Countdown"]
+	],
 	[
 		"Everyday",
 		[
@@ -190,7 +193,7 @@ ${GROUPS.flatMap(g => g[2])
 </table>
 </div>`;
 
-const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang; <em>A Psalm for the Wild-Built</em> by Becky Chambers; <em>Klara and the Sun</em> by Kazuo Ishiguro; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
+const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang; <em>A Psalm for the Wild-Built</em> by Becky Chambers; <em>Klara and the Sun</em> by Kazuo Ishiguro; <em>The Three-Body Problem</em> by Liu Cixin; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
 
 const presetsHtml = [
 	howTo,

@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's fifteen color themes, including two high-contrast themes, and the fourteen presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's sixteen color themes, including two high-contrast themes, and the fifteen presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,7 +95,7 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has fifteen color themes you can use on their own, and fourteen
+					Stylesmith has sixteen color themes you can use on their own, and fifteen
 					presets that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
@@ -326,6 +326,22 @@
 								<td>
 									<a href="fonts.html#font-RecMonoCasual"
 										>RecMonoCasual Nerd Font</a
+									>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">Countdown</th>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td>
+									<a href="fonts.html#font-ShureTechMono"
+										>ShureTechMono Nerd Font</a
 									>
 								</td>
 							</tr>
@@ -1015,6 +1031,60 @@
 							</dl>
 						</div>
 					</li>
+					<li class="preset-card">
+						<img
+							src="img/countdown.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Countdown preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Countdown</h4>
+							<p>
+								Cold grey-black with faint cyan structure and every number in red,
+								like a countdown, with unfocused editors dimmed.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> Liu Cixin's The Three-Body
+									Problem (2008; in English, 2014) begins with physics breaking
+									down, and a countdown that only one scientist can see, ticking
+									in his vision.
+								</p>
+								<p>
+									<strong>The colors.</strong> Neutral grey-black and pale steel
+									text, with faint cyan for keywords and types. One red is
+									reserved for numbers: every number in the code is part of the
+									countdown.
+								</p>
+								<p>
+									<strong>The settings.</strong> The calm settings, with unfocused
+									editors dimmed: cold, quiet and focused.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Countdown</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Interface icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Smooth cursor, Highlight current line, Bracket pair guides, Dim
+									unfocused editors
+								</dd>
+								<dt>Recommended font</dt>
+								<dd>
+									<a href="fonts.html#font-ShureTechMono"
+										>ShureTechMono Nerd Font</a
+									>
+								</dd>
+							</dl>
+						</div>
+					</li>
 				</ul>
 				<h3 class="group-title">Everyday</h3>
 				<p class="group-intro">Bright rooms and maximum contrast.</p>
@@ -1126,10 +1196,11 @@
 					<em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson;
 					<em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang;
 					<em>A Psalm for the Wild-Built</em> by Becky Chambers;
-					<em>Klara and the Sun</em> by Kazuo Ishiguro; the IBM 5151 display (IBM); the
-					VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong
-					to their owners. Stylesmith is an independent project, not affiliated with or
-					endorsed by any of them, and its themes are original work.
+					<em>Klara and the Sun</em> by Kazuo Ishiguro; <em>The Three-Body Problem</em> by
+					Liu Cixin; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor
+					(Digital Equipment Corporation). Names belong to their owners. Stylesmith is an
+					independent project, not affiliated with or endorsed by any of them, and its
+					themes are original work.
 				</p>
 			</section>
 
@@ -1533,6 +1604,38 @@
 								<dd>10.4:1</dd>
 								<dt>Used by preset</dt>
 								<dd>Sunroom</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Countdown"
+							style="
+								--sample-bg: #111315;
+								--sample-fg: #c9cdd0;
+								--sample-kw: #86c2cc;
+								--sample-fn: #e0e3e5;
+								--sample-str: #c4bfb7;
+								--sample-num: #ff6a5c;
+								--sample-cm: #8d9297;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Countdown</h4>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Neutral grey-black, pale steel text, faint cyan keywords and types,
+								and one red: every number.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>11.6:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Countdown</dd>
 							</dl>
 						</div>
 					</li>
