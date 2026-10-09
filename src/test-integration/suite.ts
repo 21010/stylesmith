@@ -125,6 +125,11 @@ export async function run(): Promise<void> {
 	});
 
 	// Digital Rain follows this setting; it must exist in every supported version (#83).
+	// The failed-command signal listens to this event (#70); it must exist in every supported version.
+	await step("VS Code reports how terminal commands end", () => {
+		assert.equal(typeof vscode.window.onDidEndTerminalShellExecution, "function");
+	});
+
 	await step("VS Code has the reduced-motion setting Digital Rain follows", () => {
 		const reduceMotion = vscode.workspace
 			.getConfiguration("workbench")

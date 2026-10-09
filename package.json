@@ -212,6 +212,12 @@
 					"scope": "application",
 					"description": "When the number of errors in your files goes up, show the new count in the status bar for a moment, on the error background. It shows once, at most every two seconds."
 				},
+				"stylesmith.terminal.failSignal": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "When a command in the integrated terminal fails, show its exit code in the status bar for a moment, on the error background. It shows once, at most every two seconds; a command stopped with Ctrl+C doesn't count. Needs VS Code's shell integration (`terminal.integrated.shellIntegration.enabled`, on by default for bash, zsh, fish and PowerShell)."
+				},
 				"stylesmith.statusbar": {
 					"type": "boolean",
 					"default": true,

@@ -70,7 +70,8 @@ beforeEach(async () => {
 			errorSignal: false
 		}),
 		undoHighlight: () => false,
-		saveReceipt: () => false
+		saveReceipt: () => false,
+		failSignal: () => false
 	};
 	const store = new StateFile(path.join(root, "state.json"));
 	services = { config, managed: new ManagedSettings(settings, store), store };
