@@ -28,7 +28,16 @@ const DENYLIST: RegExp[] = [
 	/\bBlade Runner\b/i,
 	/\bBethesda\b/i,
 	/\bWarner Bros\b/i,
-	/\bCD PROJEKT\b/i
+	/\bCD PROJEKT\b/i,
+	// The films and series behind the themes of #76-#81 (evoked, never named).
+	/\bDune\b/,
+	/\bArrakis\b/i,
+	/\bTron\b/,
+	/\bSeverance\b/,
+	/\bLumon\b/i,
+	/\bStar Trek\b/i,
+	/\bLCARS\b/i,
+	/\bStar Wars\b/i
 ];
 
 const TEXT = /\.(md|json|html|js|mjs|ts|css|toml|ya?ml|txt)$/;
