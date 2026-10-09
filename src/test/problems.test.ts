@@ -15,7 +15,11 @@ import {
 	changedLines,
 	SAVE_RECEIPT_DURATION,
 	saveReceiptText,
-	showsSaveReceipt
+	showsSaveReceipt,
+	commandFailed,
+	commandFailedLabel,
+	INTERRUPTED,
+	SignalCooldown
 } from "../problems";
 
 const error = (line: number, message = "Cannot find name 'x'."): Problem => ({
@@ -307,5 +311,35 @@ describe("save receipt", () => {
 
 	it("shows for two seconds", () => {
 		assert.equal(SAVE_RECEIPT_DURATION, 2000);
+	});
+});
+
+describe("failed-command signal", () => {
+	it("counts a non-zero exit code as a failure", () => {
+		assert.equal(commandFailed(1), true);
+		assert.equal(commandFailed(2), true);
+		assert.equal(commandFailed(127), true);
+		assert.equal(commandFailed(-1), true);
+	});
+
+	it("doesn't count success, Ctrl+C, or an unknown exit code", () => {
+		assert.equal(commandFailed(0), false);
+		assert.equal(commandFailed(INTERRUPTED), false);
+		assert.equal(INTERRUPTED, 130);
+		// Without shell integration, VS Code doesn't know the code.
+		assert.equal(commandFailed(undefined), false);
+	});
+
+	it("shows at most once every two seconds, so it never flashes", () => {
+		const cooldown = new SignalCooldown();
+		assert.equal(cooldown.ready(0), true);
+		assert.equal(cooldown.ready(500), false);
+		assert.equal(cooldown.ready(ERROR_SIGNAL_COOLDOWN - 1), false);
+		assert.equal(cooldown.ready(ERROR_SIGNAL_COOLDOWN), true);
+		assert.ok(ERROR_SIGNAL_COOLDOWN >= 1000 / 3, "fewer than three a second (WCAG 2.3.1)");
+	});
+
+	it("has an accessible label", () => {
+		assert.equal(commandFailedLabel(1), "Command failed with exit code 1");
 	});
 });

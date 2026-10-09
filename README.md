@@ -38,7 +38,7 @@ Settings from 1.x that no longer do anything are removed from your user settings
 
 Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and icon themes a preset chose. These operations do not require a window reload.
 
-Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up.
+Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up. With `stylesmith.terminal.failSignal` on, it does the same when a command in the integrated terminal fails, showing its exit code; this needs VS Code's shell integration (on by default for bash, zsh, fish and PowerShell), and a command stopped with Ctrl+C doesn't count.
 
 With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a moment. Themes can change the tint with the `stylesmith.undoHighlightBackground` color.
 
@@ -138,6 +138,7 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.problems.gutterIcons": true,
 	"stylesmith.problems.statusBar": true,
 	"stylesmith.problems.errorSignal": false,
+	"stylesmith.terminal.failSignal": false,
 	"stylesmith.statusbar": true,
 	"stylesmith.undoHighlight": false,
 	"stylesmith.saveReceipt": false
