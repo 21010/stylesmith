@@ -77,13 +77,13 @@ describe("preset gallery page", () => {
 			policy,
 			`default-src 'none'; style-src 'nonce-${NONCE}'; script-src 'nonce-${NONCE}';`
 		);
-		assert.doesNotMatch(html, /https?:\/\//, "no URLs");
-		assert.doesNotMatch(html, /\s(src|href)=/, "loads nothing");
-		for (const [tag] of html.matchAll(/<(script|style)\b[^>]*>/g)) {
+		assert.doesNotMatch(html, /https?:\/\//i, "no URLs");
+		assert.doesNotMatch(html, /\s(src|href)=/i, "loads nothing");
+		for (const [tag] of html.matchAll(/<(script|style)\b[^>]*>/gi)) {
 			assert.ok(tag.includes(`nonce="${NONCE}"`), tag);
 		}
-		assert.equal([...html.matchAll(/<script\b/g)].length, 1);
-		assert.doesNotMatch(html, /\sstyle=/, "no style attributes, which the policy blocks");
+		assert.equal([...html.matchAll(/<script\b/gi)].length, 1);
+		assert.doesNotMatch(html, /\sstyle=/i, "no style attributes, which the policy blocks");
 		assert.doesNotMatch(html, /\son[a-z]+=/i, "no inline event handlers");
 	});
 
