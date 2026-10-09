@@ -207,7 +207,8 @@
 				"storage.type"
 			],
 			"settings": {
-				"foreground": "#8fb8de"
+				"foreground": "#8fb8de",
+				"fontStyle": "bold"
 			}
 		},
 		{
@@ -216,7 +217,8 @@
 				"keyword.control.trycatch"
 			],
 			"settings": {
-				"foreground": "#f08c5a"
+				"foreground": "#f08c5a",
+				"fontStyle": "bold"
 			}
 		},
 		{
@@ -224,7 +226,8 @@
 				"keyword.control"
 			],
 			"settings": {
-				"foreground": "#8fb8de"
+				"foreground": "#8fb8de",
+				"fontStyle": "bold"
 			}
 		},
 		{
@@ -413,7 +416,10 @@
 			"italic": true
 		},
 		"variable.readonly": "#e8a46e",
-		"keyword": "#8fb8de",
+		"keyword": {
+			"foreground": "#8fb8de",
+			"bold": true
+		},
 		"string": "#c9ad8c",
 		"number": "#e8a46e",
 		"regexp": "#e8a46e"

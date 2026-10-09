@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Typography per theme** (#68): the retro terminal themes (Phosphor, Amber, ICE) use no italics or bold, as on the terminals of their era; markdown italics are underlined and bold is brighter. The film-inspired themes keep italic comments and parameters, and Neon Night, Vault and Steel and Rust set keywords in bold. Daylight keeps italic comments only, and the high-contrast themes use no italics. Colors and contrast are unchanged.
 - **Readable terminal** (`stylesmith.effects.readableTerminal`, off by default, #69): raises VS Code's minimum terminal text contrast from 4.5:1 to 7:1 through `terminal.integrated.minimumContrastRatio`, so VS Code adjusts any terminal color below it, including colors programs choose. The High Contrast preset turns it on.
 - **Stylesmith: Boot Sequence** (#82): a short boot log typed out in a terminal tab over about two seconds, with original text for each retro preset (a memory check, a self-test, a shelter console and more) and Stylesmith's own for the other themes. Any key closes it; with `workbench.reduceMotion` set to `on`, the whole log appears at once.
 - **Stylesmith: Digital Rain** (#83): characters falling down a terminal tab, in the theme's terminal greens, until any key is pressed. It runs only on request, draws only while its tab is the active terminal in a focused window, and shows one still frame when `workbench.reduceMotion` is `on`.
