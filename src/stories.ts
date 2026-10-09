@@ -139,3 +139,119 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		settings: "No smooth cursor animation, a current-line highlight and clear bracket guides."
 	}
 };
+
+/** One line of a boot log, with an optional status at its end. */
+export interface BootLine {
+	text: string;
+	status?: "ok" | "warn";
+}
+
+/** A boot log for Stylesmith: Boot Sequence (#82), with the ANSI color of its first line. */
+export interface BootLog {
+	color: "green" | "yellow" | "cyan" | "magenta" | "blue";
+	lines: readonly BootLine[];
+}
+
+/**
+ * The boot logs of the retro presets, by preset label: original text in the spirit of each
+ * story, with no product names (src/test/trademarks.test.ts checks this file).
+ */
+export const BOOT_LOGS: Readonly<Record<string, BootLog>> = {
+	"Night City": {
+		color: "magenta",
+		lines: [
+			{ text: "NEON/OS  DISTRICT NETWORK NODE 7" },
+			{ text: "STREET GRID", status: "ok" },
+			{ text: "RAIN SENSORS: HEAVY", status: "ok" },
+			{ text: "BILLBOARDS LIT: 4096", status: "ok" },
+			{ text: "IMPLANT FIRMWARE: UPDATE PENDING", status: "warn" },
+			{ text: "ENCRYPTED UPLINK", status: "ok" },
+			{ text: "THE CITY NEVER SLEEPS. NEITHER DO YOU." }
+		]
+	},
+	"Phosphor Terminal": {
+		color: "green",
+		lines: [
+			{ text: "STYLESMITH TERMINAL MONITOR  REV 2.3" },
+			{ text: "MEMORY CHECK  65536 BYTES", status: "ok" },
+			{ text: "CHARACTER GENERATOR", status: "ok" },
+			{ text: "PHOSPHOR WARM-UP", status: "ok" },
+			{ text: "SERIAL LINE  9600 BAUD", status: "ok" },
+			{ text: "KEYBOARD", status: "ok" },
+			{ text: "READY." }
+		]
+	},
+	"Amber Monitor": {
+		color: "yellow",
+		lines: [
+			{ text: "POWER-ON SELF-TEST" },
+			{ text: "PROCESSOR", status: "ok" },
+			{ text: "SYSTEM MEMORY  640 KB", status: "ok" },
+			{ text: "DISPLAY ADAPTER  MONOCHROME", status: "ok" },
+			{ text: "DISK DRIVE A:", status: "ok" },
+			{ text: "REAL-TIME CLOCK NOT SET", status: "warn" },
+			{ text: "LOADING EDITOR..." }
+		]
+	},
+	"Black ICE": {
+		color: "cyan",
+		lines: [
+			{ text: "ICE CONSOLE  COUNTERMEASURES ONLINE" },
+			{ text: "PERIMETER SCAN", status: "ok" },
+			{ text: "HANDSHAKE ENCRYPTED", status: "ok" },
+			{ text: "TRACE ROUTINES ARMED", status: "ok" },
+			{ text: "INTRUSION ATTEMPTS: 0", status: "ok" },
+			{ text: "UPLINK LATENCY HIGH", status: "warn" },
+			{ text: "WELCOME BACK, OPERATOR." }
+		]
+	},
+	Vault: {
+		color: "yellow",
+		lines: [
+			{ text: "SHELTER CONSOLE 7  UNDERGROUND RESIDENCE SYSTEMS" },
+			{ text: "AIR FILTRATION", status: "ok" },
+			{ text: "WATER RECYCLING", status: "ok" },
+			{ text: "REACTOR OUTPUT 98%", status: "ok" },
+			{ text: "BLAST DOOR SEAL", status: "ok" },
+			{ text: "SURFACE CONDITIONS: UNKNOWN", status: "warn" },
+			{ text: "GOOD MORNING, RESIDENT. HAVE A PRODUCTIVE SHIFT." }
+		]
+	},
+	Simulation: {
+		color: "green",
+		lines: [
+			{ text: "SIMULATION KERNEL  BUILD 1999" },
+			{ text: "CITY GRID RENDERED", status: "ok" },
+			{ text: "WEATHER: RAIN", status: "ok" },
+			{ text: "OFFICE LIGHTING: GREEN CAST", status: "ok" },
+			{ text: "RESIDENTS DREAMING", status: "ok" },
+			{ text: "ANOMALY DETECTED AT YOUR DESK", status: "warn" },
+			{ text: "THE CODE IS FALLING. WAKE UP WHEN YOU ARE READY." }
+		]
+	},
+	"Steel and Rust": {
+		color: "blue",
+		lines: [
+			{ text: "HULL SYSTEMS  DEEP TUNNEL CRAFT" },
+			{ text: "HULL PRESSURE", status: "ok" },
+			{ text: "POWER CELLS 41%", status: "warn" },
+			{ text: "BROADCAST ANTENNA", status: "ok" },
+			{ text: "CABIN HEATING LOW", status: "warn" },
+			{ text: "CREW AWAKE: 9", status: "ok" },
+			{ text: "DINNER: THE SAME AS YESTERDAY." }
+		]
+	}
+};
+
+/** The boot log for every other theme. */
+export const DEFAULT_BOOT_LOG: BootLog = {
+	color: "cyan",
+	lines: [
+		{ text: "STYLESMITH WORKSHOP" },
+		{ text: "COLOR THEMES", status: "ok" },
+		{ text: "FILE ICONS", status: "ok" },
+		{ text: "FONTS", status: "ok" },
+		{ text: "PROBLEM LENS", status: "ok" },
+		{ text: "READY." }
+	]
+};

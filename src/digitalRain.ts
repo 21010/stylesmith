@@ -7,7 +7,8 @@
  */
 
 import * as vscode from "vscode";
-import { FRAME_MS, Rain, reducesMotion, render, stillFrame } from "./rain";
+import { reducesMotion } from "./motion";
+import { FRAME_MS, Rain, render, stillFrame } from "./rain";
 
 const HIDE_CURSOR = "\x1b[?25l";
 const SHOW_CURSOR = "\x1b[?25h";

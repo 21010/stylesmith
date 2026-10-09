@@ -97,6 +97,11 @@
 				"category": "Stylesmith"
 			},
 			{
+				"command": "stylesmith.bootSequence",
+				"title": "Boot Sequence",
+				"category": "Stylesmith"
+			},
+			{
 				"command": "stylesmith.digitalRain",
 				"title": "Digital Rain",
 				"category": "Stylesmith"

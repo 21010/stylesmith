@@ -7,6 +7,7 @@ import { applyThemes, checkAfterStartup, disable, enable, type Services } from "
 import { ManagedSettings } from "./managed";
 import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
+import { showBootSequence } from "./bootSequence";
 import { showDigitalRain } from "./digitalRain";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
@@ -80,6 +81,9 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
 			reportErrors(() => fonts.remove())
 		),
+		vscode.commands.registerCommand("stylesmith.bootSequence", () => {
+			showBootSequence();
+		}),
 		vscode.commands.registerCommand("stylesmith.digitalRain", () => {
 			showDigitalRain();
 		}),
