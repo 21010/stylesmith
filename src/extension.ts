@@ -67,7 +67,8 @@ export function activate(context: vscode.ExtensionContext): void {
 			reportErrors(() =>
 				applyPreset(
 					services.config,
-					(colorTheme, iconTheme) => applyThemes(services, colorTheme, iconTheme),
+					(colorTheme, iconTheme, productIconTheme) =>
+						applyThemes(services, colorTheme, iconTheme, productIconTheme),
 					id
 				)
 			)

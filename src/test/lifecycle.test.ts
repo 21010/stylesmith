@@ -21,6 +21,7 @@ beforeEach(async () => {
 		["terminal.integrated.fontFamily", ""],
 		["editor.cursorBlinking", "blink"],
 		["workbench.iconTheme", "vs-seti"],
+		["workbench.productIconTheme", "Default"],
 		["workbench.colorTheme", "Default Dark Modern"],
 		["editor.cursorSmoothCaretAnimation", "off"],
 		["editor.renderLineHighlight", "line"],
@@ -34,6 +35,7 @@ beforeEach(async () => {
 		["terminal.integrated.fontFamily", ""],
 		["editor.cursorBlinking", "blink"],
 		["workbench.iconTheme", "vs-seti"],
+		["workbench.productIconTheme", "Default"],
 		["workbench.colorTheme", "Default Dark Modern"],
 		["editor.cursorSmoothCaretAnimation", "off"],
 		["editor.renderLineHighlight", "line"],
@@ -147,6 +149,21 @@ describe("API-only lifecycle", () => {
 		await disable(services);
 		assert.equal(values.get("workbench.colorTheme"), "Their Own Theme");
 		assert.equal(values.get("workbench.iconTheme"), "vs-seti", "the icons go back");
+	});
+
+	it("sets the pixel product icons with a preset, and Disable puts the user's back", async () => {
+		values.set("workbench.productIconTheme", "their-icons");
+		await applyThemes(services, "Stylesmith Vault", "stylesmith-pixel", "stylesmith-pixel");
+		assert.equal(values.get("workbench.productIconTheme"), "stylesmith-pixel");
+		await disable(services);
+		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
+	});
+
+	it("gives the user's product icons back when the next preset sets none", async () => {
+		values.set("workbench.productIconTheme", "their-icons");
+		await applyThemes(services, "Stylesmith Vault", "stylesmith-pixel", "stylesmith-pixel");
+		await applyThemes(services, "Stylesmith Neon High Contrast", "stylesmith-pixel");
+		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
 	});
 
 	it("doesn't take over a theme the user already had", async () => {

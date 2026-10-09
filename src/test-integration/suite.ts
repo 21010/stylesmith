@@ -55,6 +55,7 @@ export async function run(): Promise<void> {
 			);
 			assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Phosphor");
 			assert.equal(userValue("workbench", "iconTheme"), "stylesmith-pixel-phosphor");
+			assert.equal(userValue("workbench", "productIconTheme"), "stylesmith-pixel");
 			const hasDensity =
 				vscode.workspace.getConfiguration("window").inspect("density.layout")
 					?.defaultValue !== undefined;
@@ -78,6 +79,7 @@ export async function run(): Promise<void> {
 		// The preset's themes are managed too: the test profile had none of its own.
 		assert.equal(userValue("workbench", "colorTheme"), undefined);
 		assert.equal(userValue("workbench", "iconTheme"), undefined);
+		assert.equal(userValue("workbench", "productIconTheme"), undefined);
 	});
 
 	await step("Problem Lens follows diagnostics and its settings", async () => {

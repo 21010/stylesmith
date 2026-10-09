@@ -93,6 +93,7 @@ export async function openVSCode({ executable, extensions }, preset, options = {
 	const settings = {
 		"workbench.colorTheme": preset.theme,
 		"workbench.iconTheme": preset.iconTheme,
+		...(preset.productIconTheme && { "workbench.productIconTheme": preset.productIconTheme }),
 		...Object.fromEntries(Object.entries(chosen).map(([key, on]) => [`stylesmith.${key}`, on])),
 		"editor.fontSize": 14,
 		"editor.minimap.enabled": false,

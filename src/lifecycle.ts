@@ -44,22 +44,28 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 }
 
 /**
- * Sets the color theme and file icon theme a preset chose, as managed settings: Disable puts
- * the user's own themes back. Enable never touches them; only presets set themes.
+ * Sets the color theme, file icon theme and product icon theme a preset chose, as managed
+ * settings: Disable puts the user's own themes back. Without a product icon theme, the user's
+ * own comes back. Enable never touches them; only presets set themes.
  */
 export async function applyThemes(
 	services: Services,
 	colorTheme: string,
-	iconTheme: string
+	iconTheme: string,
+	productIconTheme?: string
 ): Promise<void> {
 	const same = (expected: string) => (value: unknown) => value === expected;
-	await services.managed.update(
-		THEME_GROUP,
-		new Map([
-			["workbench.colorTheme", toggleWanted(colorTheme, same(colorTheme))],
-			["workbench.iconTheme", toggleWanted(iconTheme, same(iconTheme))]
-		])
-	);
+	const wanted = new Map([
+		["workbench.colorTheme", toggleWanted(colorTheme, same(colorTheme))],
+		["workbench.iconTheme", toggleWanted(iconTheme, same(iconTheme))]
+	]);
+	if (productIconTheme) {
+		wanted.set(
+			"workbench.productIconTheme",
+			toggleWanted(productIconTheme, same(productIconTheme))
+		);
+	}
+	await services.managed.update(THEME_GROUP, wanted);
 }
 
 /** Restores the user's prior settings through the VS Code configuration API. */

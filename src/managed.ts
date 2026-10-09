@@ -42,7 +42,7 @@ export const EFFECT_GROUP: Group = {
 };
 
 /**
- * The color theme and file icon theme a preset chose: a value the user changed is entirely
+ * The color theme, file icon theme and product icon theme a preset chose: a value the user changed is entirely
  * theirs, so Disable keeps a theme they picked after the preset.
  */
 export const THEME_GROUP: Group = {

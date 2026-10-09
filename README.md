@@ -10,7 +10,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 
 ## Features
 
-- Twelve color themes and four file icon themes contributed through the extension manifest.
+- Twelve color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
@@ -36,7 +36,7 @@ Settings from 1.x that no longer do anything are removed from your user settings
 
 ## Use
 
-Choose a Stylesmith color theme or file icon theme from the normal VS Code selectors, or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and icon theme a preset chose. These operations do not require a window reload.
+Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and icon themes a preset chose. These operations do not require a window reload.
 
 Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up.
 
@@ -50,7 +50,7 @@ Run **Stylesmith: Digital Rain** to watch characters fall down a terminal tab, i
 
 ## Presets and themes
 
-A preset sets a color theme, a file icon theme and native VS Code settings. Every color theme also works on its own. The [Themes page](https://stylesmith.dev/themes.html) shows each one.
+A preset sets a color theme, a file icon theme, a product icon theme for VS Code's own interface icons, and native VS Code settings. Every color theme also works on its own. The [Themes page](https://stylesmith.dev/themes.html) shows each one.
 
 ### Presets
 

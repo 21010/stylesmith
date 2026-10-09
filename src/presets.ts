@@ -7,12 +7,15 @@ export interface Preset {
 	description: string;
 	theme: string;
 	iconTheme: string;
+	/** The product icon theme for VS Code's own interface icons; none keeps the user's. */
+	productIconTheme?: string;
 	/** The font that suits it (a FONTS id). Presets don't set fonts; the website recommends this. */
 	font: string;
 	effects: Record<string, boolean>;
 }
 
 export const ICON_THEME = "stylesmith-pixel";
+export const PRODUCT_ICON_THEME = "stylesmith-pixel";
 
 const BASE = {
 	"effects.smoothCursor": true,
@@ -27,6 +30,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Cyberpunk colors, pixel icons and smooth editor settings",
 		theme: "Stylesmith Neon Night",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
 			...BASE,
@@ -43,6 +47,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Green phosphor colors, compact layout and block cursors without animation",
 		theme: "Stylesmith Phosphor",
 		iconTheme: "stylesmith-pixel-phosphor",
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "DepartureMono",
 		effects: {
 			...BASE,
@@ -60,6 +65,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Amber colors, compact layout and block cursors without animation",
 		theme: "Stylesmith Amber",
 		iconTheme: "stylesmith-pixel-amber",
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "BlexMono",
 		effects: {
 			...BASE,
@@ -77,6 +83,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Cold white-phosphor colors and smooth editor settings",
 		theme: "Stylesmith ICE",
 		iconTheme: "stylesmith-pixel-ice",
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "ShureTechMono",
 		effects: {
 			...BASE,
@@ -93,6 +100,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Calm blue-grey colors, quiet editor settings and dimmed unfocused editors",
 		theme: "Stylesmith Monolith",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
 			...BASE,
@@ -110,6 +118,7 @@ export const PRESETS: readonly Preset[] = [
 			"Warm concrete colors with a coral accent, quiet settings and dimmed unfocused editors",
 		theme: "Stylesmith Glass Lab",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
 			...BASE,
@@ -126,6 +135,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Navy and vault-yellow colors with a block terminal cursor",
 		theme: "Stylesmith Vault",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "SpaceMono",
 		effects: {
 			...BASE,
@@ -144,6 +154,7 @@ export const PRESETS: readonly Preset[] = [
 		// The theme's id in VS Code's settings: its earlier name, so existing choices still work.
 		theme: "Stylesmith Digital Rain",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
 			...BASE,
@@ -161,6 +172,7 @@ export const PRESETS: readonly Preset[] = [
 			"Cold blue-grey steel with rust accents, quiet settings and dimmed unfocused editors",
 		theme: "Stylesmith Steel and Rust",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "ShureTechMono",
 		effects: {
 			...BASE,
@@ -177,6 +189,7 @@ export const PRESETS: readonly Preset[] = [
 		description: "Bright colors with a smooth cursor and current-line highlight",
 		theme: "Stylesmith Daylight",
 		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
 			"effects.smoothCursor": true,

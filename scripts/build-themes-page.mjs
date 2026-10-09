@@ -19,6 +19,9 @@ const { PRESET_STORIES, PRESET_TALES, THEME_STORIES } = out("stories");
 const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf-8"));
 
 const ICONS = Object.fromEntries(pkg.contributes.iconThemes.map(t => [t.id, t.label]));
+const PRODUCT_ICONS = Object.fromEntries(
+	pkg.contributes.productIconThemes.map(t => [t.id, t.label])
+);
 const KINDS = {
 	"vs-dark": "Dark",
 	vs: "Light",
@@ -115,6 +118,8 @@ const presetCard = p => `<li class="preset-card">
 <dd>${pkg.contributes.themes.find(t => settingsId(t) === p.theme).label}</dd>
 <dt>File icons</dt>
 <dd>${ICONS[p.iconTheme]}</dd>
+<dt>Interface icons</dt>
+<dd>${p.productIconTheme ? PRODUCT_ICONS[p.productIconTheme] : "VS Code&rsquo;s own"}</dd>
 <dt>Settings on</dt>
 <dd>${EFFECTS.filter(e => p.effects[e.setting])
 	.map(e => e.label)
