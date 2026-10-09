@@ -196,8 +196,7 @@
 				"punctuation.definition.comment"
 			],
 			"settings": {
-				"foreground": "#8196ab",
-				"fontStyle": "italic"
+				"foreground": "#8196ab"
 			}
 		},
 		{
@@ -287,8 +286,7 @@
 				"variable.parameter"
 			],
 			"settings": {
-				"foreground": "#dce9f5",
-				"fontStyle": "italic"
+				"foreground": "#dce9f5"
 			}
 		},
 		{
@@ -322,8 +320,7 @@
 				"entity.name.section"
 			],
 			"settings": {
-				"foreground": "#9fe6ff",
-				"fontStyle": "bold"
+				"foreground": "#9fe6ff"
 			}
 		},
 		{
@@ -331,7 +328,7 @@
 				"markup.bold"
 			],
 			"settings": {
-				"fontStyle": "bold"
+				"foreground": "#e6f0f9"
 			}
 		},
 		{
@@ -339,7 +336,7 @@
 				"markup.italic"
 			],
 			"settings": {
-				"fontStyle": "italic"
+				"fontStyle": "underline"
 			}
 		},
 		{
@@ -392,10 +389,7 @@
 		"type": "#a8dcf5",
 		"enumMember": "#c2d4ff",
 		"property": "#cfe0f0",
-		"parameter": {
-			"foreground": "#dce9f5",
-			"italic": true
-		},
+		"parameter": "#dce9f5",
 		"variable.readonly": "#c2d4ff",
 		"keyword": "#9fe6ff",
 		"string": "#b4d6f0",

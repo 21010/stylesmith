@@ -107,6 +107,14 @@ export async function run(): Promise<void> {
 
 	// The website says VS Code's own gutter marks tell modified lines apart from added ones by a
 	// striped pattern, not by color alone (issue #20). Check that default in every tested version.
+	// The readable terminal effect raises this from VS Code's default (#69).
+	await step("VS Code's default minimum terminal contrast is 4.5", () => {
+		const ratio = vscode.workspace
+			.getConfiguration("terminal.integrated")
+			.inspect<number>("minimumContrastRatio")?.defaultValue;
+		assert.equal(ratio, 4.5);
+	});
+
 	await step("VS Code marks modified lines with a pattern by default", () => {
 		const pattern = vscode.workspace
 			.getConfiguration("scm")

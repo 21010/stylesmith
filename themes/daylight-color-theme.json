@@ -287,8 +287,7 @@
 				"variable.parameter"
 			],
 			"settings": {
-				"foreground": "#1e2230",
-				"fontStyle": "italic"
+				"foreground": "#1e2230"
 			}
 		},
 		{
@@ -392,10 +391,7 @@
 		"type": "#6b3fa0",
 		"enumMember": "#a63c16",
 		"property": "#1f5a94",
-		"parameter": {
-			"foreground": "#1e2230",
-			"italic": true
-		},
+		"parameter": "#1e2230",
 		"variable.readonly": "#a63c16",
 		"keyword": "#a0127a",
 		"string": "#6e5200",

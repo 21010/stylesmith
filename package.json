@@ -255,6 +255,12 @@
 					"scope": "application",
 					"description": "Dim editors and terminals that don't have focus, with VS Code’s native accessibility.dimUnfocused setting, so the one you're working in stands out."
 				},
+				"stylesmith.effects.readableTerminal": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Raise the minimum contrast of terminal text to 7:1 (WCAG AAA), with VS Code’s native terminal.integrated.minimumContrastRatio. VS Code then adjusts any terminal color below that ratio, including colors that programs choose."
+				},
 				"stylesmith.effects.neonBlocks": {
 					"type": "boolean",
 					"default": true,

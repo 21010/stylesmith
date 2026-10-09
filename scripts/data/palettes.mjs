@@ -4,6 +4,8 @@
 export const palettes = [
 	{
 		id: "neon-night",
+		typography: "film",
+		boldKeywords: true,
 		name: "Stylesmith Neon Night",
 		// Cyberpunk: deep indigo night, cyan and magenta neon, yellow strings.
 		bg: "#0f1120",
@@ -62,6 +64,7 @@ export const palettes = [
 	},
 	{
 		id: "phosphor",
+		typography: "terminal",
 		name: "Stylesmith Phosphor",
 		// A late-1970s green (P1) phosphor terminal: every syntax color stays within its green and
 		// is told apart by brightness. Only errors, warnings, git and terminal colors leave it.
@@ -132,6 +135,7 @@ export const palettes = [
 	},
 	{
 		id: "amber",
+		typography: "terminal",
 		name: "Stylesmith Amber",
 		// Retro amber monochrome monitor.
 		bg: "#140f07",
@@ -201,6 +205,7 @@ export const palettes = [
 	},
 	{
 		id: "ice",
+		typography: "terminal",
 		name: "Stylesmith ICE",
 		// White phosphor (P4) on a cold night screen, and the glowing ICE of cyberpunk:
 		// iced white text, frost cyan and pale blue, told apart mostly by brightness.
@@ -273,6 +278,7 @@ export const palettes = [
 		// Blue-grey stone and a single deep blue (#21): calm and minimal. Syntax stays in quiet greys
 		// and sage, so the one accent carries the structure.
 		id: "monolith",
+		typography: "film",
 		name: "Stylesmith Monolith",
 		bg: "#191c21",
 		bgDark: "#131519",
@@ -332,6 +338,7 @@ export const palettes = [
 		// Warm concrete greys and one coral accent (#23). Errors lean magenta and deleted lines
 		// orange, so neither reads as the accent.
 		id: "glass-lab",
+		typography: "film",
 		name: "Stylesmith Glass Lab",
 		bg: "#23211f",
 		bgDark: "#1b1a18",
@@ -391,6 +398,8 @@ export const palettes = [
 		// A deep navy shelter, warm off-white text and vault yellow (#22): an optimistic 1950s
 		// vision of the future. Blue and yellow stay apart with every kind of color blindness.
 		id: "vault",
+		typography: "film",
+		boldKeywords: true,
 		name: "Stylesmith Vault",
 		bg: "#0f1a33",
 		bgDark: "#0b1428",
@@ -451,6 +460,7 @@ export const palettes = [
 		// syntax, and only the keywords glowing code-green. A warm red marks return, break and throw;
 		// blue marks constants. Kept clearly apart from Phosphor, a monitor where everything glows.
 		id: "simulation",
+		typography: "film",
 		name: "Stylesmith Simulation",
 		bg: "#272924",
 		bgDark: "#1d1f1b",
@@ -511,6 +521,8 @@ export const palettes = [
 		// The real world outside the simulation (#87): cold blue-grey steel and dim light, with rust
 		// for what matters, the same warm red for control flow.
 		id: "steel-and-rust",
+		typography: "film",
+		boldKeywords: true,
 		name: "Stylesmith Steel and Rust",
 		bg: "#1b2026",
 		bgDark: "#15191e",
@@ -569,6 +581,7 @@ export const palettes = [
 	},
 	{
 		id: "daylight",
+		typography: "everyday",
 		name: "Stylesmith Daylight",
 		kind: "light",
 		// Retro paper and ink for bright rooms, with teal and magenta accents.
@@ -628,6 +641,7 @@ export const palettes = [
 	},
 	{
 		id: "neon-high-contrast",
+		typography: "high-contrast",
 		name: "Stylesmith Neon High Contrast",
 		kind: "hc-dark",
 		// Maximum contrast for low vision, keeping the neon accents.
@@ -689,6 +703,7 @@ export const palettes = [
 	},
 	{
 		id: "daylight-high-contrast",
+		typography: "high-contrast",
 		name: "Stylesmith Daylight High Contrast",
 		kind: "hc-light",
 		// Maximum contrast on white for low vision, with deep teal and magenta accents.

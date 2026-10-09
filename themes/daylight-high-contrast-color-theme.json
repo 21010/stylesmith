@@ -198,8 +198,7 @@
 				"punctuation.definition.comment"
 			],
 			"settings": {
-				"foreground": "#35392a",
-				"fontStyle": "italic"
+				"foreground": "#35392a"
 			}
 		},
 		{
@@ -289,8 +288,7 @@
 				"variable.parameter"
 			],
 			"settings": {
-				"foreground": "#000000",
-				"fontStyle": "italic"
+				"foreground": "#000000"
 			}
 		},
 		{
@@ -341,7 +339,7 @@
 				"markup.italic"
 			],
 			"settings": {
-				"fontStyle": "italic"
+				"fontStyle": "underline"
 			}
 		},
 		{
@@ -394,10 +392,7 @@
 		"type": "#44207a",
 		"enumMember": "#7f2800",
 		"property": "#123a66",
-		"parameter": {
-			"foreground": "#000000",
-			"italic": true
-		},
+		"parameter": "#000000",
 		"variable.readonly": "#7f2800",
 		"keyword": "#7a005c",
 		"string": "#4f3700",

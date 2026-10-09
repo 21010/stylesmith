@@ -9,11 +9,46 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { palettes } from "./data/palettes.mjs";
 
+/**
+ * Typography per group of themes (#68), on top of the colors:
+ * - terminal: character terminals of the era had no italics; emphasis came from brightness
+ *   alone. Markdown emphasis stays visible: italic becomes underline, bold brighter text.
+ * - film: modern editor typography, italic comments and parameters.
+ * - everyday: italic comments only.
+ * - high-contrast: no italics at all, since some readers with low vision find them harder to
+ *   read; markdown italic becomes underline.
+ * Palettes with boldKeywords also set keywords in bold. src/test/themes.test.ts enforces this.
+ */
+const TYPOGRAPHY = {
+	terminal: { comment: "", parameter: "", heading: "", italic: "underline", bold: "" },
+	film: {
+		comment: "italic",
+		parameter: "italic",
+		heading: "bold",
+		italic: "italic",
+		bold: "bold"
+	},
+	everyday: { comment: "italic", parameter: "", heading: "bold", italic: "italic", bold: "bold" },
+	"high-contrast": {
+		comment: "",
+		parameter: "",
+		heading: "bold",
+		italic: "underline",
+		bold: "bold"
+	}
+};
+
+/** A fontStyle setting, or nothing for plain text. */
+const style = fontStyle => (fontStyle ? { fontStyle } : {});
+
 // VS Code's theme "type" for each kind of palette.
 const TYPES = { dark: "dark", light: "light", "hc-dark": "hc", "hc-light": "hcLight" };
 
 function theme(p) {
 	const t = p.tokens;
+	const type = TYPOGRAPHY[p.typography];
+	if (!type) throw new Error(`${p.id}: unknown typography "${p.typography}"`);
+	const keywordStyle = p.boldKeywords ? "bold" : "";
 	const kind = p.kind ?? "dark";
 	const highContrast = kind.startsWith("hc-");
 	// Bracket pairs cycle through six colors from the theme's own syntax colors.
@@ -217,7 +252,7 @@ function theme(p) {
 		tokenColors: [
 			{
 				scope: ["comment", "punctuation.definition.comment"],
-				settings: { foreground: t.comment, fontStyle: "italic" }
+				settings: { foreground: t.comment, ...style(type.comment) }
 			},
 			{
 				scope: [
@@ -226,7 +261,7 @@ function theme(p) {
 					"storage.type",
 					...(t.control ? [] : ["keyword.control"])
 				],
-				settings: { foreground: t.keyword }
+				settings: { foreground: t.keyword, ...style(keywordStyle) }
 			},
 			// An optional color for the keywords that change control flow (return, break, throw):
 			// a palette that sets it uses it sparingly, for the moments that matter.
@@ -234,9 +269,12 @@ function theme(p) {
 				? [
 						{
 							scope: ["keyword.control.flow", "keyword.control.trycatch"],
-							settings: { foreground: t.control }
+							settings: { foreground: t.control, ...style(keywordStyle) }
 						},
-						{ scope: ["keyword.control"], settings: { foreground: t.keyword } }
+						{
+							scope: ["keyword.control"],
+							settings: { foreground: t.keyword, ...style(keywordStyle) }
+						}
 					]
 				: []),
 			{
@@ -279,7 +317,10 @@ function theme(p) {
 				],
 				settings: { foreground: t.property }
 			},
-			{ scope: ["variable.parameter"], settings: { foreground: p.fg, fontStyle: "italic" } },
+			{
+				scope: ["variable.parameter"],
+				settings: { foreground: p.fg, ...style(type.parameter) }
+			},
 			{
 				scope: ["string.regexp", "constant.character.escape"],
 				settings: { foreground: t.regexp }
@@ -288,10 +329,13 @@ function theme(p) {
 			{ scope: ["entity.other.attribute-name"], settings: { foreground: t.attribute } },
 			{
 				scope: ["markup.heading", "entity.name.section"],
-				settings: { foreground: t.keyword, fontStyle: "bold" }
+				settings: { foreground: t.keyword, ...style(type.heading) }
 			},
-			{ scope: ["markup.bold"], settings: { fontStyle: "bold" } },
-			{ scope: ["markup.italic"], settings: { fontStyle: "italic" } },
+			{
+				scope: ["markup.bold"],
+				settings: type.bold ? { fontStyle: type.bold } : { foreground: p.fgStrong }
+			},
+			{ scope: ["markup.italic"], settings: { fontStyle: type.italic } },
 			{
 				scope: ["markup.inline.raw", "markup.fenced_code"],
 				settings: { foreground: t.string }
@@ -309,9 +353,9 @@ function theme(p) {
 			type: t.type,
 			enumMember: t.number,
 			property: t.property,
-			parameter: { foreground: p.fg, italic: true },
+			parameter: type.parameter ? { foreground: p.fg, italic: true } : p.fg,
 			"variable.readonly": t.number,
-			keyword: t.keyword,
+			keyword: keywordStyle ? { foreground: t.keyword, bold: true } : t.keyword,
 			string: t.string,
 			number: t.number,
 			regexp: t.regexp

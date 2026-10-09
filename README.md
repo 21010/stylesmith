@@ -108,6 +108,7 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.effects.blockCursor": false,
 	"stylesmith.effects.blockTerminalCursor": false,
 	"stylesmith.effects.dimUnfocused": false,
+	"stylesmith.effects.readableTerminal": false,
 	"stylesmith.problems.enabled": true,
 	"stylesmith.problems.minimumSeverity": "warning",
 	"stylesmith.problems.inlineMessages": true,
@@ -124,17 +125,18 @@ All Stylesmith settings are global user settings. The font settings select a fam
 
 Stylesmith manages the following VS Code settings while enabled. Disable restores the saved value, unless the user changed that setting while Stylesmith was active; in that case, the newer user value is preserved. Stylesmith also keeps such a change when it re-applies its settings at startup or after a Stylesmith setting changes; running **Stylesmith: Enable** applies its values again.
 
-| VS Code setting                                                             | Stylesmith option                                     |
-| --------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `workbench.colorTheme`, `workbench.iconTheme`, `workbench.productIconTheme` | the preset you apply                                  |
-| `editor.fontFamily`, `terminal.integrated.fontFamily`                       | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
-| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`                | `stylesmith.effects.smoothCursor`                     |
-| `editor.renderLineHighlight`                                                | `stylesmith.effects.currentLine`                      |
-| `editor.guides.bracketPairs`                                                | `stylesmith.effects.bracketGuides`                    |
-| `window.density.layout`                                                     | `stylesmith.effects.compactLayout`                    |
-| `editor.cursorStyle`                                                        | `stylesmith.effects.blockCursor`                      |
-| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking`     | `stylesmith.effects.blockTerminalCursor`              |
-| `accessibility.dimUnfocused.enabled`                                        | `stylesmith.effects.dimUnfocused`                     |
+| VS Code setting                                                         | Stylesmith option                                     |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `workbench.colorTheme`, `workbench.iconTheme`                           | the preset you apply                                  |
+| `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
+| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`            | `stylesmith.effects.smoothCursor`                     |
+| `editor.renderLineHighlight`                                            | `stylesmith.effects.currentLine`                      |
+| `editor.guides.bracketPairs`                                            | `stylesmith.effects.bracketGuides`                    |
+| `window.density.layout`                                                 | `stylesmith.effects.compactLayout`                    |
+| `editor.cursorStyle`                                                    | `stylesmith.effects.blockCursor`                      |
+| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
+| `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
+| `terminal.integrated.minimumContrastRatio`                              | `stylesmith.effects.readableTerminal`                 |
 
 Settings that are not available in the installed VS Code version are skipped. Stylesmith writes user (global) settings only, so a workspace or folder value for the same setting takes precedence in that workspace.
 

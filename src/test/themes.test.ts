@@ -313,3 +313,93 @@ describe("theme distinctness", () => {
 		assert.ok(difference(simulation.background, phosphor.background) >= 10, "background");
 	});
 });
+
+describe("typography (#68)", () => {
+	interface Styled {
+		tokenColors: { scope: string | string[]; settings: { fontStyle?: string } }[];
+		semanticTokenColors: Record<string, string | { italic?: boolean; bold?: boolean }>;
+	}
+	// Every theme belongs to one group: a new theme must be added here to pass.
+	const GROUPS: Record<string, "terminal" | "film" | "everyday" | "high-contrast"> = {
+		"phosphor-color-theme.json": "terminal",
+		"amber-color-theme.json": "terminal",
+		"ice-color-theme.json": "terminal",
+		"neon-night-color-theme.json": "film",
+		"monolith-color-theme.json": "film",
+		"glass-lab-color-theme.json": "film",
+		"vault-color-theme.json": "film",
+		"simulation-color-theme.json": "film",
+		"steel-and-rust-color-theme.json": "film",
+		"daylight-color-theme.json": "everyday",
+		"neon-high-contrast-color-theme.json": "high-contrast",
+		"daylight-high-contrast-color-theme.json": "high-contrast"
+	};
+	const styles = (file: string) => {
+		const theme = readJson<Styled>("themes", file);
+		const byScope = new Map<string, string>();
+		for (const rule of theme.tokenColors) {
+			for (const scope of [rule.scope].flat())
+				byScope.set(scope, rule.settings.fontStyle ?? "");
+		}
+		const semantic = Object.values(theme.semanticTokenColors).filter(
+			value => typeof value === "object"
+		) as { italic?: boolean; bold?: boolean }[];
+		return {
+			of: (scope: string) => byScope.get(scope) ?? "",
+			all: [...byScope.entries()],
+			semanticItalic: semantic.some(value => value.italic),
+			semanticBold: semantic.some(value => value.bold)
+		};
+	};
+
+	it("puts every theme in a group", () => {
+		assert.deepEqual(Object.keys(GROUPS).sort(), [...files].sort());
+	});
+
+	for (const [file, group] of Object.entries(GROUPS)) {
+		it(`${file}: follows the ${group} rule`, () => {
+			const s = styles(file);
+			const italic = s.all
+				.filter(([, style]) => style.includes("italic"))
+				.map(([scope]) => scope);
+			const bold = s.all
+				.filter(([, style]) => style.includes("bold"))
+				.map(([scope]) => scope);
+			switch (group) {
+				case "terminal":
+					// One weight and no italics, as on the terminals of the era.
+					assert.deepEqual(italic, [], "no italics");
+					assert.deepEqual(bold, [], "no bold");
+					assert.ok(
+						!s.semanticItalic && !s.semanticBold,
+						"none in semantic colors either"
+					);
+					assert.equal(
+						s.of("markup.italic"),
+						"underline",
+						"markdown emphasis stays visible"
+					);
+					break;
+				case "film":
+					assert.equal(s.of("comment"), "italic");
+					assert.equal(s.of("variable.parameter"), "italic");
+					break;
+				case "everyday":
+					// Italic comments, and markdown italics as written.
+					assert.deepEqual(italic, [
+						"comment",
+						"punctuation.definition.comment",
+						"markup.italic"
+					]);
+					assert.ok(!s.semanticItalic);
+					break;
+				case "high-contrast":
+					// Some readers with low vision find italics harder to read.
+					assert.deepEqual(italic, [], "no italics");
+					assert.ok(!s.semanticItalic);
+					assert.equal(s.of("markup.italic"), "underline");
+					break;
+			}
+		});
+	}
+});

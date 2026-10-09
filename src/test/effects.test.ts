@@ -31,8 +31,26 @@ describe("API-backed effects", () => {
 				"editor.renderLineHighlight",
 				"terminal.integrated.cursorBlinking",
 				"terminal.integrated.cursorStyle",
+				"terminal.integrated.minimumContrastRatio",
 				"window.density.layout"
 			].sort()
 		);
+	});
+});
+
+describe("readable terminal", () => {
+	const effect = EFFECTS.find(candidate => candidate.setting === "effects.readableTerminal")!;
+	const [setting] = effect.editorSettings!;
+
+	it("raises the minimum terminal contrast to 7:1 (WCAG AAA)", () => {
+		assert.equal(setting!.key, "terminal.integrated.minimumContrastRatio");
+		assert.equal(setting!.value, 7);
+	});
+
+	it("counts a user's own value of 7 or more as on, and VS Code's 4.5 as off", () => {
+		assert.equal(setting!.isOn(7), true);
+		assert.equal(setting!.isOn(21), true);
+		assert.equal(setting!.isOn(4.5), false);
+		assert.equal(setting!.isOn(undefined), false);
 	});
 });
