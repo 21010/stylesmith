@@ -34,7 +34,7 @@ const GROUPS = [
 	[
 		"Inspired by film",
 		"Moods from screen worlds, described in our own words.",
-		["night-city", "monolith", "glass-lab", "vault", "digital-rain"]
+		["night-city", "monolith", "glass-lab", "vault", "simulation", "steel-and-rust"]
 	],
 	["Everyday", "Bright rooms and maximum contrast.", ["daylight", "high-contrast"]]
 ];
@@ -47,7 +47,8 @@ const THEME_GROUPS = [
 			"Stylesmith Monolith",
 			"Stylesmith Glass Lab",
 			"Stylesmith Vault",
-			"Stylesmith Digital Rain"
+			"Stylesmith Simulation",
+			"Stylesmith Steel and Rust"
 		]
 	],
 	[
@@ -75,6 +76,9 @@ if (
 	)
 )
 	throw new Error("every theme must be in exactly one group");
+
+// The id VS Code stores in settings: a renamed theme keeps its earlier name as `id`.
+const settingsId = t => t.id ?? t.label;
 
 const theme = label => {
 	const entry = pkg.contributes.themes.find(t => t.label === label);
@@ -108,7 +112,7 @@ const presetCard = p => `<li class="preset-card">
 </details>
 <dl class="preset-parts">
 <dt>Color theme</dt>
-<dd>${p.theme}</dd>
+<dd>${pkg.contributes.themes.find(t => settingsId(t) === p.theme).label}</dd>
 <dt>File icons</dt>
 <dd>${ICONS[p.iconTheme]}</dd>
 <dt>Settings on</dt>
@@ -124,7 +128,7 @@ const presetCard = p => `<li class="preset-card">
 function themeCard(label) {
 	const { entry, file } = theme(label);
 	const c = file.colors;
-	const users = PRESETS.filter(p => p.theme === label).map(p => p.label);
+	const users = PRESETS.filter(p => p.theme === settingsId(entry)).map(p => p.label);
 	return `<li class="theme-card${entry.uiTheme.startsWith("hc") ? " high-contrast" : ""}">
 ${sample(label)}
 <div class="card-body">

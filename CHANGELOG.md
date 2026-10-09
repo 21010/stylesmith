@@ -4,6 +4,14 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ## Unreleased
 
+### Added
+
+- **Steel and Rust**, a new color theme and preset: cold blue-grey steel with rust accents, and unfocused editors dimmed. It's the real-world companion to Simulation.
+
+### Changed
+
+- **Digital Rain is now Simulation (#87):** a charcoal city with a faint green cast, greyed syntax, and only the keywords glowing code green. A warm red marks `return`, `break` and `throw`, and blue marks constants. Before, it looked almost the same as Phosphor. If you use it, your choice is kept: the theme keeps its earlier name as its id in your settings, and the preset id `digital-rain` still works in keyboard shortcuts.
+
 ### Security
 
 - On Windows, the font installer runs `reg.exe` by its full path (`%SystemRoot%\System32\reg.exe`), so Windows can't run a different `reg` found in another folder first.

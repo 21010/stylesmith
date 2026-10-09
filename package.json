@@ -419,9 +419,15 @@
 				"path": "./themes/vault-color-theme.json"
 			},
 			{
-				"label": "Stylesmith Digital Rain",
+				"id": "Stylesmith Digital Rain",
+				"label": "Stylesmith Simulation",
 				"uiTheme": "vs-dark",
-				"path": "./themes/digital-rain-color-theme.json"
+				"path": "./themes/simulation-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Steel and Rust",
+				"uiTheme": "vs-dark",
+				"path": "./themes/steel-and-rust-color-theme.json"
 			},
 			{
 				"label": "Stylesmith Daylight",

@@ -24,8 +24,10 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	"Glass Lab":
 		"Warm concrete greys, soft off-white text and one coral accent, with the quiet editor settings and dimmed unfocused editors.",
 	Vault: "Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.",
-	"Digital Rain":
-		"Layered greens on a green-black screen, a sleek late-1990s hacker mood, with a block cursor in the terminal.",
+	Simulation:
+		"A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.",
+	"Steel and Rust":
+		"Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -48,8 +50,10 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Warm concrete greys, soft off-white text and one coral accent. Errors lean magenta and deleted lines orange, so neither reads as the accent.",
 	"Stylesmith Vault":
 		"A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.",
-	"Stylesmith Digital Rain":
-		"Layered greens on green-black: bright keywords, mid-tone strings and dim comments, with blue for constants and a rare red for patterns.",
+	"Stylesmith Simulation":
+		"A charcoal city with a faint green cast: greyed text and syntax, keywords in glowing code green, a warm red for return, break and throw, and blue for constants.",
+	"Stylesmith Steel and Rust":
+		"Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -113,10 +117,16 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		settings:
 			"The calm settings, and a block cursor in the terminal, like the consoles of a shelter built to last."
 	},
-	"Digital Rain": {
-		origin: "Cyberpunk cinema of the late 1990s turned code into weather: green characters falling down a black screen, a world made of data, and the few who learn to read it.",
-		colors: "Layered greens instead of a single one: bright keywords, mid-tone strings and dim comments. Constants are blue, and a rare red marks patterns, the way those films saved red for what matters.",
-		settings: "The calm settings, and a block cursor in the terminal."
+	Simulation: {
+		origin: "Cyberpunk cinema of the late 1990s graded its simulated world green: grey office towers, rain and black coats under a sickly cast, while the code itself fell bright down black screens.",
+		colors: "A charcoal background with a faint green cast, and greyed text and syntax, like the color grade. Only keywords glow in code green. A warm red marks return, break and throw, the moments that change what happens, and blue marks constants.",
+		settings: "The calm settings, and a block cursor in the terminal, where the code lives."
+	},
+	"Steel and Rust": {
+		origin: "The same films showed the world outside the simulation as cold, dim and worn: steel corridors, blue-grey light and rust, where people lived after waking up.",
+		colors: "Cold blue-grey steel and dim light. Keywords are steel blue, strings a muted brass, and rust marks numbers and the keywords that change control flow.",
+		settings:
+			"Only the quiet settings, with unfocused editors dimmed, like the low light of a ship's corridor."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",
