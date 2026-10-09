@@ -40,6 +40,7 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"grid",
 	"corridor",
 	"horizon",
+	"command-deck",
 	"daylight",
 	"high-contrast",
 	"problem-lens",

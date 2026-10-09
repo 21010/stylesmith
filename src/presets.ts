@@ -362,6 +362,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "command-deck",
+		label: "Command Deck",
+		description: "Grey-black consoles with one red alarm, and a block terminal cursor",
+		theme: "Stylesmith Command Deck",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "ShureTechMono",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

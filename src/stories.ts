@@ -45,6 +45,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.",
 	Horizon:
 		"Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.",
+	"Command Deck":
+		"The grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -93,6 +95,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.",
 	"Stylesmith Horizon":
 		"Black with warm orange keywords, peach functions, lilac strings and blue types.",
+	"Stylesmith Command Deck":
+		"Grey-black metal with cold grey text, muted blue keywords, and one red alarm: return, break and throw.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -225,6 +229,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Black, with keywords in warm orange, functions in peach, strings in lilac and types in blue. Only the colors are borrowed, never the shapes of the panels.",
 		settings:
 			"Only the calm settings: smooth cursor, current-line highlight and bracket guides."
+	},
+	"Command Deck": {
+		origin: "A space-opera film saga gave its empire clean grey-and-black consoles, lit only by red indicators and the hum of the ship.",
+		colors: "Grey-black, like brushed metal, with cold grey text and muted blue keywords. Red is the one alarm: it marks return, break and throw.",
+		settings:
+			"The calm settings and a block cursor in the terminal, like a console waiting for orders."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

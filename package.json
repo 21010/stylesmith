@@ -529,6 +529,11 @@
 				"path": "./themes/horizon-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Command Deck",
+				"uiTheme": "vs-dark",
+				"path": "./themes/command-deck-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

@@ -48,7 +48,8 @@ const GROUPS = [
 			"haze",
 			"grid",
 			"corridor",
-			"horizon"
+			"horizon",
+			"command-deck"
 		]
 	],
 	[
@@ -74,7 +75,8 @@ const THEME_GROUPS = [
 			"Stylesmith Grid",
 			"Stylesmith Corridor",
 			"Stylesmith Teal Terminal",
-			"Stylesmith Horizon"
+			"Stylesmith Horizon",
+			"Stylesmith Command Deck"
 		]
 	],
 	[

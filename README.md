@@ -10,7 +10,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 
 ## Features
 
-- Twenty-three color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
+- Twenty-four color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
@@ -73,6 +73,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Grid**: Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.
 - **Corridor**: A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.
 - **Horizon**: Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.
+- **Command Deck**: The grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
 - **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
 
@@ -98,6 +99,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Corridor**: Light: pale institutional green with dark teal text, teal keywords, blue functions and rust numbers. No italics or bold.
 - **Stylesmith Teal Terminal**: Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.
 - **Stylesmith Horizon**: Black with warm orange keywords, peach functions, lilac strings and blue types.
+- **Stylesmith Command Deck**: Grey-black metal with cold grey text, muted blue keywords, and one red alarm: return, break and throw.
 - **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.
