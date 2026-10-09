@@ -247,3 +247,33 @@ export function saveReceiptText(time: Date, locale?: string): string {
 	}
 	return `▸ saved ${clock}`;
 }
+
+/** The exit code of a command stopped with Ctrl+C: the user interrupted it; it didn't fail. */
+export const INTERRUPTED = 130;
+
+/**
+ * Whether a terminal command failed (stylesmith.terminal.failSignal): a non-zero exit code,
+ * except an interrupted command. Without shell integration the code is unknown, and nothing
+ * counts as failed.
+ */
+export function commandFailed(exitCode: number | undefined): boolean {
+	return exitCode !== undefined && exitCode !== 0 && exitCode !== INTERRUPTED;
+}
+
+/** What a screen reader says for a failed command. */
+export const commandFailedLabel = (exitCode: number) => `Command failed with exit code ${exitCode}`;
+
+/**
+ * Lets a signal show at most once per ERROR_SIGNAL_COOLDOWN, like the error signal, so it can
+ * never flash (WCAG 2.3.1).
+ */
+export class SignalCooldown {
+	private shownAt = Number.NEGATIVE_INFINITY;
+
+	/** True if the signal may show now; it then counts as shown. */
+	ready(now: number): boolean {
+		if (now - this.shownAt < ERROR_SIGNAL_COOLDOWN) return false;
+		this.shownAt = now;
+		return true;
+	}
+}

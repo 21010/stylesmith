@@ -11,6 +11,7 @@ import { showBootSequence } from "./bootSequence";
 import { showDigitalRain } from "./digitalRain";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
+import { FailSignal } from "./failSignal";
 import { SaveReceipt } from "./saveReceipt";
 import { UndoHighlight } from "./undoHighlight";
 import { FontInstaller } from "./fontUi";
@@ -90,6 +91,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		}),
 		lens,
 		new UndoHighlight(() => services.config.undoHighlight()),
+		new FailSignal(() => services.config.failSignal()),
 		new SaveReceipt(
 			() => services.config.saveReceipt(),
 			(document, line) => lens.showsMessageOn(document, line)

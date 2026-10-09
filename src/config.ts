@@ -29,6 +29,8 @@ export interface Config {
 	undoHighlight(): boolean;
 	/** Whether to note a manual save briefly at the end of the cursor's line. */
 	saveReceipt(): boolean;
+	/** Whether to show a failed terminal command in the status bar for a moment. */
+	failSignal(): boolean;
 }
 
 function userValue<T>(section: string, key: string, fallback: T): T {
@@ -66,6 +68,8 @@ export const vscodeConfig: Config = {
 	undoHighlight: () => get("undoHighlight", false),
 
 	saveReceipt: () => get("saveReceipt", false),
+
+	failSignal: () => get("terminal.failSignal", false),
 
 	problemLens: () => ({
 		enabled: get("problems.enabled", true),

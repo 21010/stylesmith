@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Added
+
+- **Failed-command signal** (`stylesmith.terminal.failSignal`, off by default, #70): when a command in the integrated terminal fails, the status bar shows its exit code for a moment, on the error background, at most every two seconds. A command stopped with Ctrl+C doesn't count. It needs VS Code's shell integration.
+
 ## 2.3.0 (2026-10-09)
 
 ### Added

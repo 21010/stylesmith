@@ -207,6 +207,18 @@
 					flashes; click it to open the Problems panel. Off by default.
 				</p>
 			</section>
+			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
+				<h2>Failed-command signal</h2>
+				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
+					Turn on <code>stylesmith.terminal.failSignal</code>, and when a command in the
+					integrated terminal fails, the status bar shows its exit code for a moment, such
+					as <code>exit 1</code>, on the error background, with the same two-second limit
+					as the error signal. A command you stop with Ctrl+C doesn&rsquo;t count; click
+					it to open the terminal. It relies on VS Code&rsquo;s shell integration, which
+					is on by default for bash, zsh, fish and PowerShell; without it, the signal
+					stays silent. Off by default.
+				</p>
+			</section>
 		</main>
 
 		<footer class="site-footer">
