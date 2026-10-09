@@ -2,7 +2,7 @@
  * Installs a Nerd Font for the current user, after they confirm (issue #56): no administrator
  * rights, nothing outside the user's own font folder.
  *
- * Every file comes from the fonts-3.5.1 release of this repository and must match the size and
+ * Every file comes from the fonts-3.5.1-r2 release of this repository and must match the size and
  * SHA-256 pinned in fonts.ts; anything else is refused before a byte is written. What Stylesmith
  * installed is recorded, so it can be removed again.
  *

@@ -4,7 +4,7 @@
  * here.
  */
 
-/** A file of the fonts-3.5.1 release, pinned: anything else is refused. */
+/** A file of the fonts-3.5.1-r2 release, pinned: anything else is refused. */
 export interface PinnedFile {
 	name: string;
 	size: number;
@@ -17,7 +17,7 @@ export interface NerdFont {
 	family: string;
 	/** The Mono font files to install: Regular, and Bold where the family has it. */
 	files: readonly PinnedFile[];
-	/** The family's license (SIL Open Font License 1.1), saved with the installed font. */
+	/** The family's license (SIL Open Font License 1.1, or BSD 3-Clause for 3270), saved with the installed font. */
 	license: PinnedFile;
 }
 
@@ -25,7 +25,7 @@ export interface NerdFont {
  * Where the pinned files are: a release of this repository with the files unchanged from
  * Nerd Fonts 3.5.1, and their licenses.
  */
-export const FONT_RELEASE = "https://github.com/21010/stylesmith/releases/download/fonts-3.5.1/";
+export const FONT_RELEASE = "https://github.com/21010/stylesmith/releases/download/fonts-3.5.1-r2/";
 
 /** The Nerd Fonts license, saved along with any font's own license. */
 export const NERD_FONTS_LICENSE: PinnedFile = {
@@ -177,6 +177,89 @@ export const FONTS: readonly [NerdFont, ...NerdFont[]] = [
 			name: "AtkynsonMono-LICENSE.txt",
 			size: 4456,
 			sha256: "5b9f9cc1d6fb9d3562aaf77bfd526d048ca7b7bb4b9887c91d325723a4e8d6b9"
+		}
+	},
+	{
+		id: "MonaspiceXe",
+		label: "MonaspiceXe Nerd Font",
+		family: "MonaspiceXe Nerd Font Mono",
+		files: [
+			{
+				name: "MonaspiceXeNerdFontMono-Regular.otf",
+				size: 2794728,
+				sha256: "78673cad0b96d113da99b4639c6823cf82bae41035ca8061b4421f6d993e271d"
+			},
+			{
+				name: "MonaspiceXeNerdFontMono-Bold.otf",
+				size: 2802664,
+				sha256: "d4bf124ef91e21b9ccfee23fcc1d2665900f6f284e4f3c8b163be1f594e45142"
+			}
+		],
+		license: {
+			name: "MonaspiceXe-LICENSE.txt",
+			size: 4479,
+			sha256: "0e84e5f7dd6f05e74a00f2fb828ca43e489d954f5509ff0fa439ea18c0d35fe9"
+		}
+	},
+	{
+		id: "RecMonoCasual",
+		label: "RecMonoCasual Nerd Font",
+		family: "RecMonoCasual Nerd Font Mono",
+		files: [
+			{
+				name: "RecMonoCasualNerdFontMono-Regular.ttf",
+				size: 2721584,
+				sha256: "acfc16f69487dd72c2828b0ef00125741ae7c16844d4e3e42e3c23d00c7a8e48"
+			},
+			{
+				name: "RecMonoCasualNerdFontMono-Bold.ttf",
+				size: 2710288,
+				sha256: "cea4a0555649b94c758b6b35d1dfb26cab83994729968645d13ec775988c1740"
+			}
+		],
+		license: {
+			name: "RecMonoCasual-LICENSE.txt",
+			size: 4389,
+			sha256: "f9f539cf7549bd417159dbdb9c400943a5b60a7366c2c6fbde9f095173d82479"
+		}
+	},
+	{
+		id: "MartianMono",
+		label: "MartianMono Nerd Font",
+		family: "MartianMono Nerd Font Mono",
+		files: [
+			{
+				name: "MartianMonoNerdFontMono-Regular.ttf",
+				size: 2455132,
+				sha256: "fb32a3a5565e83ebacad994a90e8179cbe5731886949435e7f8484567441e0b9"
+			},
+			{
+				name: "MartianMonoNerdFontMono-Bold.ttf",
+				size: 2460760,
+				sha256: "7e99c4e7f7424e4ed06a63a63129be2c8cb8a64864f86ba6e2fc31de45cf2281"
+			}
+		],
+		license: {
+			name: "MartianMono-LICENSE.txt",
+			size: 4390,
+			sha256: "ddafd2c3f37ef1d83ef284ca63e159befd3820850c5e9eded14ca52eee92c256"
+		}
+	},
+	{
+		id: "3270",
+		label: "3270 Nerd Font",
+		family: "3270 Nerd Font Mono",
+		files: [
+			{
+				name: "3270NerdFontMono-Regular.ttf",
+				size: 2742224,
+				sha256: "c14de7dc63d3af5a9556a5210c5567366707e3938da39daa9bbe3f20e35beeef"
+			}
+		],
+		license: {
+			name: "3270-LICENSE.txt",
+			size: 2675,
+			sha256: "ef855fadca28e91a4123f7299bd79dcd78a7e19dfc364039790bb75bdedd515a"
 		}
 	}
 ];

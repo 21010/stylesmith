@@ -127,7 +127,11 @@
 						"DepartureMono",
 						"GeistMono",
 						"SpaceMono",
-						"AtkynsonMono"
+						"AtkynsonMono",
+						"MonaspiceXe",
+						"RecMonoCasual",
+						"MartianMono",
+						"3270"
 					],
 					"enumItemLabels": [
 						"JetBrainsMono Nerd Font",
@@ -136,7 +140,11 @@
 						"DepartureMono Nerd Font",
 						"GeistMono Nerd Font",
 						"SpaceMono Nerd Font",
-						"AtkynsonMono Nerd Font"
+						"AtkynsonMono Nerd Font",
+						"MonaspiceXe Nerd Font",
+						"RecMonoCasual Nerd Font",
+						"MartianMono Nerd Font",
+						"3270 Nerd Font"
 					],
 					"markdownEnumDescriptions": [
 						"Needs the JetBrainsMono Nerd Font family installed; Stylesmith can install it for you.",
@@ -145,7 +153,11 @@
 						"Needs the DepartureMono Nerd Font family installed; Stylesmith can install it for you.",
 						"Needs the GeistMono Nerd Font family installed; Stylesmith can install it for you. Based on Geist Mono.",
 						"Needs the SpaceMono Nerd Font family installed; Stylesmith can install it for you. Based on Space Mono.",
-						"Needs the AtkynsonMono Nerd Font family installed; Stylesmith can install it for you. Based on Atkinson Hyperlegible Mono, designed by the Braille Institute for readers with low vision."
+						"Needs the AtkynsonMono Nerd Font family installed; Stylesmith can install it for you. Based on Atkinson Hyperlegible Mono, designed by the Braille Institute for readers with low vision.",
+						"Needs the MonaspiceXe Nerd Font family installed; Stylesmith can install it for you. Based on Monaspace Xenon, a slab-serif monospace.",
+						"Needs the RecMonoCasual Nerd Font family installed; Stylesmith can install it for you. Based on Recursive Mono, in its casual style.",
+						"Needs the MartianMono Nerd Font family installed; Stylesmith can install it for you. Based on Martian Mono.",
+						"Needs the 3270 Nerd Font family installed; Stylesmith can install it for you. A recreation of the IBM 3270 terminal font, in Regular only."
 					],
 					"markdownDescription": "Which font family to use. It must be installed on your system: install it yourself, or let Stylesmith install it for your user account from the Stylesmith menu, after you confirm. The setting takes effect immediately."
 				},
