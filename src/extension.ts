@@ -9,6 +9,7 @@ import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
 import { showBootSequence } from "./bootSequence";
 import { showDigitalRain } from "./digitalRain";
+import { PresetGallery } from "./presetGallery";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
 import { FailSignal } from "./failSignal";
@@ -52,6 +53,7 @@ export function activate(context: vscode.ExtensionContext): void {
 			return queue;
 		});
 	const status = createStatusButton(context, services.config);
+	const gallery = new PresetGallery(context.extension);
 	const lens = new ProblemLens(context, () => services.config.problemLens());
 	let reapply: ReturnType<typeof setTimeout> | undefined;
 
@@ -83,6 +85,8 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
 			reportErrors(() => fonts.remove())
 		),
+		gallery,
+		vscode.commands.registerCommand("stylesmith.presetGallery", () => gallery.show()),
 		vscode.commands.registerCommand("stylesmith.bootSequence", () => {
 			showBootSequence();
 		}),

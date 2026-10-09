@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Stylesmith: Preset Gallery** (#84), also in the Stylesmith menu: every preset inside VS Code, with a code sample in its theme's colors, its story, its settings and recommended font, and **Apply** and **Disable** buttons. The page loads nothing from outside (its content security policy is `default-src 'none'`) and can only ask to apply a known preset or to disable.
 - **Failed-command signal** (`stylesmith.terminal.failSignal`, off by default, #70): when a command in the integrated terminal fails, the status bar shows its exit code for a moment, on the error background, at most every two seconds. A command stopped with Ctrl+C doesn't count. It needs VS Code's shell integration.
 
 ## 2.3.0 (2026-10-09)

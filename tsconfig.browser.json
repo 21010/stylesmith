@@ -3,6 +3,6 @@
 	"compilerOptions": {
 		"lib": ["ES2022", "DOM", "DOM.Iterable"]
 	},
-	"include": ["src/test-browser/site.test.ts"],
+	"include": ["src/test-browser/*.test.ts"],
 	"exclude": []
 }
