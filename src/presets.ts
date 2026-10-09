@@ -184,6 +184,23 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "brass",
+		label: "Brass",
+		description: "Brass, copper and verdigris on dark bronze, with calm settings",
+		theme: "Stylesmith Brass",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "MonaspiceXe",
+		effects: {
+			...BASE,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

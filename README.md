@@ -10,7 +10,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 
 ## Features
 
-- Twelve color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
+- Thirteen color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
@@ -63,6 +63,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Vault**: Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.
 - **Simulation**: A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.
 - **Steel and Rust**: Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.
+- **Brass**: Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
 - **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
 
@@ -77,6 +78,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Vault**: A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.
 - **Stylesmith Simulation**: A charcoal city with a faint green cast: greyed text and syntax, keywords in glowing code green, a warm red for return, break and throw, and blue for constants.
 - **Stylesmith Steel and Rust**: Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.
+- **Stylesmith Brass**: Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.
 - **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.

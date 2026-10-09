@@ -39,6 +39,11 @@ const GROUPS = [
 		"Moods from screen worlds, described in our own words.",
 		["night-city", "monolith", "glass-lab", "vault", "simulation", "steel-and-rust"]
 	],
+	[
+		"Inspired by books",
+		"Moods from novels and stories, named with credit to their authors.",
+		["brass"]
+	],
 	["Everyday", "Bright rooms and maximum contrast.", ["daylight", "high-contrast"]]
 ];
 const THEME_GROUPS = [
@@ -54,6 +59,7 @@ const THEME_GROUPS = [
 			"Stylesmith Steel and Rust"
 		]
 	],
+	["Inspired by books", ["Stylesmith Brass"]],
 	[
 		"Everyday",
 		[
@@ -184,7 +190,7 @@ ${GROUPS.flatMap(g => g[2])
 </table>
 </div>`;
 
-const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> by Ted Chiang; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
+const credits = `<p class="credits">The stories name the books and machines that inspired these looks: <em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson; <em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang; the IBM 5151 display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment Corporation). Names belong to their owners. Stylesmith is an independent project, not affiliated with or endorsed by any of them, and its themes are original work.</p>`;
 
 const presetsHtml = [
 	howTo,

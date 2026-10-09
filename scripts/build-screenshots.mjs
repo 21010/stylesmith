@@ -30,6 +30,7 @@ const SHOTS = process.env.SHOTS?.split(",") ?? [
 	"vault",
 	"simulation",
 	"steel-and-rust",
+	"brass",
 	"daylight",
 	"high-contrast",
 	"problem-lens",

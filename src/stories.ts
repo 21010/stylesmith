@@ -28,6 +28,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.",
 	"Steel and Rust":
 		"Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.",
+	Brass: "Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -54,6 +55,8 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"A charcoal city with a faint green cast: greyed text and syntax, keywords in glowing code green, a warm red for return, break and throw, and blue for constants.",
 	"Stylesmith Steel and Rust":
 		"Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.",
+	"Stylesmith Brass":
+		"Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -127,6 +130,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Cold blue-grey steel and dim light. Keywords are steel blue, strings a muted brass, and rust marks numbers and the keywords that change control flow.",
 		settings:
 			"Only the quiet settings, with unfocused editors dimmed, like the low light of a ship's corridor."
+	},
+	Brass: {
+		origin: "Ted Chiang's story collection Exhalation (2019) opens in a world of mechanical beings whose thoughts run on air: brass lungs, copper gears, and an anatomist who opens his own head to see how memory works.",
+		colors: "Dark bronze-brown, like the inside of a polished machine. Brass keywords, copper functions and numbers, and the green of verdigris, the patina old metal gathers, for strings and types.",
+		settings:
+			"Only the calm settings: smooth cursor, current-line highlight and bracket guides. Slow, careful work, like the anatomist's."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",

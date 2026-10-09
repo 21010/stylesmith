@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's twelve color themes, including two high-contrast themes, and the eleven presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's thirteen color themes, including two high-contrast themes, and the twelve presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,8 +95,8 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has twelve color themes you can use on their own, and eleven presets
-					that combine a theme with a file icon theme and native VS Code settings.
+					Stylesmith has thirteen color themes you can use on their own, and twelve
+					presets that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
 
@@ -281,6 +281,20 @@
 									<a href="fonts.html#font-ShureTechMono"
 										>ShureTechMono Nerd Font</a
 									>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">Brass</th>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td>
+									<a href="fonts.html#font-MonaspiceXe">MonaspiceXe Nerd Font</a>
 								</td>
 							</tr>
 							<tr>
@@ -808,6 +822,62 @@
 						</div>
 					</li>
 				</ul>
+				<h3 class="group-title">Inspired by books</h3>
+				<p class="group-intro">
+					Moods from novels and stories, named with credit to their authors.
+				</p>
+				<ul class="preset-grid">
+					<li class="preset-card">
+						<img
+							src="img/brass.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Brass preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Brass</h4>
+							<p>
+								Brass and copper on dark bronze, with verdigris in the strings, and
+								only the calm settings, for slow and careful thinking.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> Ted Chiang's story
+									collection Exhalation (2019) opens in a world of mechanical
+									beings whose thoughts run on air: brass lungs, copper gears, and
+									an anatomist who opens his own head to see how memory works.
+								</p>
+								<p>
+									<strong>The colors.</strong> Dark bronze-brown, like the inside
+									of a polished machine. Brass keywords, copper functions and
+									numbers, and the green of verdigris, the patina old metal
+									gathers, for strings and types.
+								</p>
+								<p>
+									<strong>The settings.</strong> Only the calm settings: smooth
+									cursor, current-line highlight and bracket guides. Slow, careful
+									work, like the anatomist's.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Brass</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Interface icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>Smooth cursor, Highlight current line, Bracket pair guides</dd>
+								<dt>Recommended font</dt>
+								<dd>
+									<a href="fonts.html#font-MonaspiceXe">MonaspiceXe Nerd Font</a>
+								</dd>
+							</dl>
+						</div>
+					</li>
+				</ul>
 				<h3 class="group-title">Everyday</h3>
 				<p class="group-intro">Bright rooms and maximum contrast.</p>
 				<ul class="preset-grid">
@@ -916,10 +986,11 @@
 				<p class="credits">
 					The stories name the books and machines that inspired these looks:
 					<em>Neuromancer</em> and <em>Burning Chrome</em> by William Gibson;
-					<em>Story of Your Life</em> by Ted Chiang; the IBM 5151 display (IBM); the VT100
-					terminal and VR201 monitor (Digital Equipment Corporation). Names belong to
-					their owners. Stylesmith is an independent project, not affiliated with or
-					endorsed by any of them, and its themes are original work.
+					<em>Story of Your Life</em> and <em>Exhalation</em> by Ted Chiang; the IBM 5151
+					display (IBM); the VT100 terminal and VR201 monitor (Digital Equipment
+					Corporation). Names belong to their owners. Stylesmith is an independent
+					project, not affiliated with or endorsed by any of them, and its themes are
+					original work.
 				</p>
 			</section>
 
@@ -1224,6 +1295,41 @@
 								<dd>11.2:1</dd>
 								<dt>Used by preset</dt>
 								<dd>Steel and Rust</dd>
+							</dl>
+						</div>
+					</li>
+				</ul>
+				<h3 class="group-title">Inspired by books</h3>
+				<ul class="theme-grid">
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Brass"
+							style="
+								--sample-bg: #211b15;
+								--sample-fg: #e8dcc4;
+								--sample-kw: #e0aa48;
+								--sample-fn: #ec9a6a;
+								--sample-str: #86c9aa;
+								--sample-num: #f2a878;
+								--sample-cm: #ad9d82;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Brass</h4>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Dark bronze-brown with warm cream text: brass keywords, copper
+								functions and numbers, and verdigris strings and types.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>12.6:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Brass</dd>
 							</dl>
 						</div>
 					</li>
