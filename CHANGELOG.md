@@ -6,6 +6,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Added
 
+- **Save receipt** (`stylesmith.saveReceipt`, off by default, #85): after a manual save, a note at the end of the cursor's line for two seconds, like a terminal log: `▸ saved 14:02:11`. Auto-saves get none, and a Problem Lens message on the line takes precedence. Themes can change its color with the new `stylesmith.saveReceiptForeground`.
 - **Steel and Rust**, a new color theme and preset: cold blue-grey steel with rust accents, and unfocused editors dimmed. It's the real-world companion to Simulation.
 
 ### Changed

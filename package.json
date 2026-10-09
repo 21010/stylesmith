@@ -197,6 +197,12 @@
 					"scope": "application",
 					"description": "After an undo, tint the lines it changed for a moment, so you can see what came back. Uses the stylesmith.undoHighlightBackground theme color."
 				},
+				"stylesmith.saveReceipt": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "After a manual save (not an auto-save), note it at the end of the cursor’s line for two seconds, like a terminal log: “▸ saved 14:02:11”. Uses the stylesmith.saveReceiptForeground theme color."
+				},
 				"stylesmith.effects.smoothCursor": {
 					"type": "boolean",
 					"default": true,
@@ -379,6 +385,16 @@
 					"light": "editor.findMatchHighlightBackground",
 					"highContrast": "editor.findMatchHighlightBackground",
 					"highContrastLight": "editor.findMatchHighlightBackground"
+				}
+			},
+			{
+				"id": "stylesmith.saveReceiptForeground",
+				"description": "Text of the note shown briefly after a manual save, when stylesmith.saveReceipt is on.",
+				"defaults": {
+					"dark": "descriptionForeground",
+					"light": "descriptionForeground",
+					"highContrast": "descriptionForeground",
+					"highContrastLight": "descriptionForeground"
 				}
 			}
 		],

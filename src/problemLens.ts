@@ -243,6 +243,12 @@ Click to open the Problems panel.`;
 	}
 
 	/** The document's problems; only those on `onLine` if given. */
+	/** Whether a message is shown at the end of this line, so other notes stay off it. */
+	showsMessageOn(document: vscode.TextDocument, line: number): boolean {
+		const lines = lineDecorations(this.problems(document, line), this.options);
+		return SEVERITIES.some(severity => lines[severity].some(item => item.text !== undefined));
+	}
+
 	private problems(document: vscode.TextDocument, onLine?: number): LineProblem[] {
 		const diagnostics = vscode.languages
 			.getDiagnostics(document.uri)
