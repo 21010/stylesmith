@@ -44,6 +44,8 @@ With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a m
 
 With `stylesmith.saveReceipt` on, a manual save is noted at the end of the cursor's line for two seconds, like a terminal log: `▸ saved 14:02:11`. Auto-saves get no note, and a Problem Lens message on the line takes precedence. Themes can change its color with `stylesmith.saveReceiptForeground`.
 
+Run **Stylesmith: Digital Rain** to watch characters fall down a terminal tab, in your theme's terminal greens; any key closes it. It draws only while its tab is the active terminal in a focused window. With `workbench.reduceMotion` set to `on`, it shows one still frame. Stylesmith can't read the system's reduced-motion preference, so set that setting if you want no animation.
+
 ## Presets and themes
 
 A preset sets a color theme, a file icon theme and native VS Code settings. Every color theme also works on its own. The [Themes page](https://stylesmith.dev/themes.html) shows each one.

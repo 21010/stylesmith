@@ -7,6 +7,7 @@ import { applyThemes, checkAfterStartup, disable, enable, type Services } from "
 import { ManagedSettings } from "./managed";
 import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
+import { showDigitalRain } from "./digitalRain";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
 import { SaveReceipt } from "./saveReceipt";
@@ -79,6 +80,9 @@ export function activate(context: vscode.ExtensionContext): void {
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
 			reportErrors(() => fonts.remove())
 		),
+		vscode.commands.registerCommand("stylesmith.digitalRain", () => {
+			showDigitalRain();
+		}),
 		lens,
 		new UndoHighlight(() => services.config.undoHighlight()),
 		new SaveReceipt(
