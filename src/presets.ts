@@ -325,6 +325,26 @@ export const PRESETS: readonly Preset[] = [
 		}
 	},
 	{
+		id: "corridor",
+		label: "Corridor",
+		description:
+			"A sterile office floor in pale green and teal, compact, with a block terminal cursor",
+		theme: "Stylesmith Corridor",
+		iconTheme: ICON_THEME,
+		productIconTheme: PRODUCT_ICON_THEME,
+		font: "3270",
+		effects: {
+			"effects.smoothCursor": false,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": true,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
+		}
+	},
+	{
 		id: "daylight",
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",

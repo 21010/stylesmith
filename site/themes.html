@@ -11,7 +11,7 @@
 		<title>Themes - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith's twenty color themes, including two high-contrast themes, and the nineteen presets that combine them with icons and native VS Code settings."
+			content="Stylesmith's twenty-two color themes, including two high-contrast themes, and the twenty presets that combine them with icons and native VS Code settings."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -95,7 +95,7 @@
 			<section class="hero">
 				<h1>Presets & <span>Themes</span></h1>
 				<p class="lead">
-					Stylesmith has twenty color themes you can use on their own, and nineteen
+					Stylesmith has twenty-two color themes you can use on their own, and twenty
 					presets that combine a theme with a file icon theme and native VS Code settings.
 				</p>
 			</section>
@@ -318,6 +318,18 @@
 								<td class="off">off</td>
 								<td class="off">off</td>
 								<td><a href="fonts.html#font-GeistMono">GeistMono Nerd Font</a></td>
+							</tr>
+							<tr>
+								<th scope="row">Corridor</th>
+								<td class="off">off</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="on">on</td>
+								<td class="off">off</td>
+								<td class="off">off</td>
+								<td><a href="fonts.html#font-3270">3270 Nerd Font</a></td>
 							</tr>
 							<tr>
 								<th scope="row">Brass</th>
@@ -1059,6 +1071,57 @@
 								<dd>Smooth cursor, Highlight current line, Bracket pair guides</dd>
 								<dt>Recommended font</dt>
 								<dd><a href="fonts.html#font-GeistMono">GeistMono Nerd Font</a></dd>
+							</dl>
+						</div>
+					</li>
+					<li class="preset-card">
+						<img
+							src="img/corridor.png"
+							width="1280"
+							height="760"
+							alt="VS Code with the Corridor preset"
+							loading="lazy"
+						/>
+						<div class="card-body">
+							<h4>Corridor</h4>
+							<p>
+								A sterile office floor: pale institutional green, dark teal text, a
+								compact layout and a block cursor in the terminal.
+							</p>
+							<details class="tale">
+								<summary>The story</summary>
+								<p>
+									<strong>Where it comes from.</strong> A 2020s thriller series
+									set its story on a sterile mid-century office floor: long white
+									corridors, boxy teal-green terminals, and numbers on screen that
+									somehow feel frightening.
+								</p>
+								<p>
+									<strong>The colors.</strong> Pale institutional green with dark
+									teal text, teal keywords and a blue for functions. Numbers are
+									rust, and quietly unsettling. No italics or bold, like the
+									terminals on the desks. Teal Terminal is the dark theme of the
+									same floor.
+								</p>
+								<p>
+									<strong>The settings.</strong> A compact layout, the
+									current-line highlight and a block cursor in the terminal:
+									efficient, orderly, and slightly eerie.
+								</p>
+							</details>
+							<dl class="preset-parts">
+								<dt>Color theme</dt>
+								<dd>Stylesmith Corridor</dd>
+								<dt>File icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Interface icons</dt>
+								<dd>Stylesmith Pixel</dd>
+								<dt>Settings on</dt>
+								<dd>
+									Highlight current line, Compact layout, Block terminal cursor
+								</dd>
+								<dt>Recommended font</dt>
+								<dd><a href="fonts.html#font-3270">3270 Nerd Font</a></dd>
 							</dl>
 						</div>
 					</li>
@@ -1847,6 +1910,70 @@
 								<dd>14.2:1</dd>
 								<dt>Used by preset</dt>
 								<dd>Grid</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Corridor"
+							style="
+								--sample-bg: #eef1ea;
+								--sample-fg: #123e3d;
+								--sample-kw: #0a6656;
+								--sample-fn: #17496a;
+								--sample-str: #5c5818;
+								--sample-num: #8a3426;
+								--sample-cm: #50645f;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Corridor</h4>
+							<p class="theme-kind">Light</p>
+							<p>
+								Light: pale institutional green with dark teal text, teal keywords,
+								blue functions and rust numbers. No italics or bold.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>10.3:1</dd>
+								<dt>Used by preset</dt>
+								<dd>Corridor</dd>
+							</dl>
+						</div>
+					</li>
+					<li class="theme-card">
+						<pre
+							class="theme-sample"
+							data-theme="Stylesmith Teal Terminal"
+							style="
+								--sample-bg: #0f1f1e;
+								--sample-fg: #bfe8dd;
+								--sample-kw: #5fe0c0;
+								--sample-fn: #d6f2ea;
+								--sample-str: #a8d8c8;
+								--sample-num: #e8d27a;
+								--sample-cm: #7fa89e;
+							"
+						><code><span class="cm">// tally the night shift</span>
+<span class="kw">function</span> <span class="fn">total</span>(hours) {
+  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
+}</code></pre>
+						<div class="card-body">
+							<h4>Stylesmith Teal Terminal</h4>
+							<p class="theme-kind">Dark</p>
+							<p>
+								Dark: the office floor's boxy teal-green terminals, with mint
+								keywords and pale yellow numbers. No italics or bold.
+							</p>
+							<dl class="preset-parts">
+								<dt>Editor text contrast</dt>
+								<dd>12.8:1</dd>
+								<dt>Used by preset</dt>
+								<dd>None; use it on its own</dd>
 							</dl>
 						</div>
 					</li>

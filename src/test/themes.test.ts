@@ -338,6 +338,8 @@ describe("typography (#68)", () => {
 		"deep-desert-color-theme.json": "film",
 		"haze-color-theme.json": "film",
 		"grid-color-theme.json": "film",
+		"corridor-color-theme.json": "terminal",
+		"teal-terminal-color-theme.json": "terminal",
 		"daylight-color-theme.json": "everyday",
 		"neon-high-contrast-color-theme.json": "high-contrast",
 		"daylight-high-contrast-color-theme.json": "high-contrast"

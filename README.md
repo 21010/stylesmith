@@ -10,7 +10,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 
 ## Features
 
-- Twenty color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
+- Twenty-two color themes, four file icon themes and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar), contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
 - Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
@@ -71,6 +71,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Deep Desert**: Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.
 - **Haze**: Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.
 - **Grid**: Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.
+- **Corridor**: A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
 - **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
 
@@ -93,6 +94,8 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Deep Desert**: Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.
 - **Stylesmith Haze**: Cold grey concrete with haze-orange keywords and teal strings; everything else muted.
 - **Stylesmith Grid**: Near-black with cyan keywords and pale cyan text, and orange for return, break and throw. Clean and geometric.
+- **Stylesmith Corridor**: Light: pale institutional green with dark teal text, teal keywords, blue functions and rust numbers. No italics or bold.
+- **Stylesmith Teal Terminal**: Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.
 - **Stylesmith Daylight**: Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.
 - **Stylesmith Neon High Contrast**: Neon Night's accents at full strength: white text on black, every text color at least 7:1, and borders around every area.
 - **Stylesmith Daylight High Contrast**: Black text on white with dark, saturated accents, every text color at least 7:1, and borders around every area.

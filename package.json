@@ -514,6 +514,16 @@
 				"path": "./themes/grid-color-theme.json"
 			},
 			{
+				"label": "Stylesmith Corridor",
+				"uiTheme": "vs",
+				"path": "./themes/corridor-color-theme.json"
+			},
+			{
+				"label": "Stylesmith Teal Terminal",
+				"uiTheme": "vs-dark",
+				"path": "./themes/teal-terminal-color-theme.json"
+			},
+			{
 				"label": "Stylesmith Daylight",
 				"uiTheme": "vs",
 				"path": "./themes/daylight-color-theme.json"

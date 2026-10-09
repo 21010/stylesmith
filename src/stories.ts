@@ -41,6 +41,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.",
 	Haze: "Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.",
 	Grid: "Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.",
+	Corridor:
+		"A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.",
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
@@ -83,6 +85,10 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 		"Cold grey concrete with haze-orange keywords and teal strings; everything else muted.",
 	"Stylesmith Grid":
 		"Near-black with cyan keywords and pale cyan text, and orange for return, break and throw. Clean and geometric.",
+	"Stylesmith Corridor":
+		"Light: pale institutional green with dark teal text, teal keywords, blue functions and rust numbers. No italics or bold.",
+	"Stylesmith Teal Terminal":
+		"Dark: the office floor's boxy teal-green terminals, with mint keywords and pale yellow numbers. No italics or bold.",
 	"Stylesmith Daylight":
 		"Dark ink on a warm, paper-like background, with deep magenta, blue and brown accents. Made for well-lit rooms.",
 	"Stylesmith Neon High Contrast":
@@ -203,6 +209,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Near-black, with cyan keywords and pale cyan text and strings. Orange appears only for return, break and throw, the adversary's color. The extension API can't draw a glow, so the lines stay clean.",
 		settings:
 			"Smooth cursor, current-line highlight and bracket guides: the guides draw the grid."
+	},
+	Corridor: {
+		origin: "A 2020s thriller series set its story on a sterile mid-century office floor: long white corridors, boxy teal-green terminals, and numbers on screen that somehow feel frightening.",
+		colors: "Pale institutional green with dark teal text, teal keywords and a blue for functions. Numbers are rust, and quietly unsettling. No italics or bold, like the terminals on the desks. Teal Terminal is the dark theme of the same floor.",
+		settings:
+			"A compact layout, the current-line highlight and a block cursor in the terminal: efficient, orderly, and slightly eerie."
 	},
 	Daylight: {
 		origin: "Not every session happens at night. Daylight starts from the printed page: dark ink on warm paper, the oldest readable display there is.",
