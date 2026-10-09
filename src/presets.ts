@@ -33,7 +33,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -49,7 +50,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": true,
 			"effects.blockCursor": true,
 			"effects.blockTerminalCursor": true,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -65,7 +67,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": true,
 			"effects.blockCursor": true,
 			"effects.blockTerminalCursor": true,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -80,7 +83,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -95,7 +99,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
-			"effects.dimUnfocused": true
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -111,7 +116,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
-			"effects.dimUnfocused": true
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -126,7 +132,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -143,7 +150,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -159,7 +167,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
-			"effects.dimUnfocused": true
+			"effects.dimUnfocused": true,
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -176,13 +185,15 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false
 		}
 	},
 	{
 		id: "high-contrast",
 		label: "High Contrast",
-		description: "High-contrast colors with minimal motion and clear bracket guides",
+		description:
+			"High-contrast colors, minimal motion, clear bracket guides and readable terminal colors",
 		theme: "Stylesmith Neon High Contrast",
 		iconTheme: ICON_THEME,
 		font: "AtkynsonMono",
@@ -193,7 +204,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
-			"effects.dimUnfocused": false
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": true
 		}
 	}
 ];
