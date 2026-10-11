@@ -32,15 +32,22 @@ export interface ColorTheme {
 	tokenColors: { scope?: string | string[]; settings: { foreground?: string } }[];
 }
 
-/** Which icon each file extension, file name and language uses. */
+/** Which icon each file extension, file name, language and folder name uses. */
 export interface IconMappings {
+	file: string;
+	folder: string;
+	folderExpanded: string;
 	fileExtensions: Record<string, string>;
 	fileNames: Record<string, string>;
 	languageIds: Record<string, string>;
+	folderNames: Record<string, string>;
+	folderNamesExpanded: Record<string, string>;
 }
 
+/** A Stylesmith file icon theme: glyphs of one icon font, each with its color. */
 export interface IconTheme extends IconMappings {
-	iconDefinitions: Record<string, { iconPath: string }>;
+	fonts: { id: string; src: { path: string; format: string }[]; size?: string }[];
+	iconDefinitions: Record<string, { fontCharacter: string; fontColor: string }>;
 	light: IconMappings;
 }
 

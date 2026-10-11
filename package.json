@@ -567,6 +567,11 @@
 				"path": "./icons/pixel-icon-theme.json"
 			},
 			{
+				"id": "stylesmith-pixel-neon-night",
+				"label": "Stylesmith Pixel Neon Night",
+				"path": "./icons/pixel-neon-night-icon-theme.json"
+			},
+			{
 				"id": "stylesmith-pixel-phosphor",
 				"label": "Stylesmith Pixel Phosphor",
 				"path": "./icons/pixel-phosphor-icon-theme.json"
@@ -580,6 +585,106 @@
 				"id": "stylesmith-pixel-ice",
 				"label": "Stylesmith Pixel ICE",
 				"path": "./icons/pixel-ice-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-monolith",
+				"label": "Stylesmith Pixel Monolith",
+				"path": "./icons/pixel-monolith-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-glass-lab",
+				"label": "Stylesmith Pixel Glass Lab",
+				"path": "./icons/pixel-glass-lab-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-vault",
+				"label": "Stylesmith Pixel Vault",
+				"path": "./icons/pixel-vault-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-simulation",
+				"label": "Stylesmith Pixel Simulation",
+				"path": "./icons/pixel-simulation-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-steel-and-rust",
+				"label": "Stylesmith Pixel Steel and Rust",
+				"path": "./icons/pixel-steel-and-rust-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-brass",
+				"label": "Stylesmith Pixel Brass",
+				"path": "./icons/pixel-brass-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-tea-garden",
+				"label": "Stylesmith Pixel Tea Garden",
+				"path": "./icons/pixel-tea-garden-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-sunroom",
+				"label": "Stylesmith Pixel Sunroom",
+				"path": "./icons/pixel-sunroom-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-countdown",
+				"label": "Stylesmith Pixel Countdown",
+				"path": "./icons/pixel-countdown-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-overlay",
+				"label": "Stylesmith Pixel Overlay",
+				"path": "./icons/pixel-overlay-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-deep-desert",
+				"label": "Stylesmith Pixel Deep Desert",
+				"path": "./icons/pixel-deep-desert-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-haze",
+				"label": "Stylesmith Pixel Haze",
+				"path": "./icons/pixel-haze-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-grid",
+				"label": "Stylesmith Pixel Grid",
+				"path": "./icons/pixel-grid-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-corridor",
+				"label": "Stylesmith Pixel Corridor",
+				"path": "./icons/pixel-corridor-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-teal-terminal",
+				"label": "Stylesmith Pixel Teal Terminal",
+				"path": "./icons/pixel-teal-terminal-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-horizon",
+				"label": "Stylesmith Pixel Horizon",
+				"path": "./icons/pixel-horizon-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-command-deck",
+				"label": "Stylesmith Pixel Command Deck",
+				"path": "./icons/pixel-command-deck-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-daylight",
+				"label": "Stylesmith Pixel Daylight",
+				"path": "./icons/pixel-daylight-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-neon-high-contrast",
+				"label": "Stylesmith Pixel Neon High Contrast",
+				"path": "./icons/pixel-neon-high-contrast-icon-theme.json"
+			},
+			{
+				"id": "stylesmith-pixel-daylight-high-contrast",
+				"label": "Stylesmith Pixel Daylight High Contrast",
+				"path": "./icons/pixel-daylight-high-contrast-icon-theme.json"
 			}
 		],
 		"productIconThemes": [

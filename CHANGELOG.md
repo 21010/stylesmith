@@ -6,6 +6,14 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **File icons for every theme (#101).** Every color theme now has its own Stylesmith Pixel set, colored by kind of file in the theme's own colors, and every preset uses its theme's set. Before, 19 of 22 presets used one generic set whose cyan folders and language brand colors didn't match their theme.
+- **One icon font for all sets.** The file icons are now glyphs of one pixel font, colored per set, the way VS Code's own Seti icons work. Every icon is one color, with its label cut out of the band. Stylesmith Pixel keeps each language's color, and existing settings keep working.
+- **Icons for common project files and folders:**
+    - manifests and lock files, tool configs, build, CI and container files, docs
+    - AI agent instructions and skills (`AGENTS.md`, `CLAUDE.md`, `SKILL.md`, `.agents`, `.claude`…), MCP and `llms.txt`
+    - BPMN, DMN and CMMN models, and Robocorp robots
+    - folders for source, docs, CI, editors, assets, config, data, build output, dependencies and caches
+    - test folders by category (unit, integration, e2e, smoke, regression and more), matched inside a test folder
 - **Every theme has its own terminal palette (#100).** 12 of the 13 themes added in 2.3.0 shared one of two generic ANSI palettes, so the Oh My Posh prompt and other terminal colors didn't match them: a bright green `❯` and git branch on Countdown or Command Deck, themes with no green at all. 18 themes now have terminal colors fitted to them: each keeps its meaning (red for errors, green for success) but takes the theme's tint and saturation. Neon Night, Phosphor, Amber, Daylight and the two high-contrast themes keep theirs.
 - The Oh My Posh page shows the prompt in every theme, in its real terminal colors.
 
