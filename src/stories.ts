@@ -134,7 +134,7 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 	},
 	"Black ICE": {
 		origin: "DEC's VT100 terminal (1978) glowed in white P4 phosphor. A few years later, William Gibson's stories, from Burning Chrome to Neuromancer, gave cyberspace its ICE: intrusion countermeasures electronics, the cold walls around guarded data, a term Gibson credited to Tom Maddox.",
-		colors: "Cold white phosphor on a blue-black screen: blue-white text and syntax and frost-cyan keywords. Only errors and deleted lines break the ice, in warm colors. No italics or bold, like the character terminals of its time.",
+		colors: "Cold white phosphor on a blue-black screen: blue-white text and syntax and ice-blue keywords. Only errors and deleted lines break the ice, in warm colors. No italics or bold, like the character terminals of its time.",
 		settings:
 			"Only the calm settings: smooth cursor, current-line highlight and bracket guides. Nothing moves that doesn't have to."
 	},
