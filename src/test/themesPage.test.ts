@@ -1,12 +1,10 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import * as path from "node:path";
 import { describe, it } from "node:test";
 import { contrast } from "../color";
 import { EFFECTS } from "../effects";
 import { FONTS } from "../fonts";
 import { PRESETS } from "../presets";
-import { manifest, readJson, ROOT, themeSettingsId, type ColorTheme } from "./files";
+import { manifest, pageText, readJson, readText, themeSettingsId, type ColorTheme } from "./files";
 
 /**
  * The Themes page and the ergonomics page describe the themes with real values: their colors,
@@ -14,14 +12,9 @@ import { manifest, readJson, ROOT, themeSettingsId, type ColorTheme } from "./fi
  * theme files and src/presets.ts, so the website can't drift from what ships.
  */
 
-const read = (file: string) => readFileSync(path.join(ROOT, "site", file), "utf-8");
+const read = (file: string) => readText("site", file);
 const page = read("themes.html");
-const words = (html: string) =>
-	html
-		.replace(/<[^>]+>/g, " ")
-		.replace(/&rsquo;/g, "’")
-		.replace(/\s+/g, " ")
-		.trim();
+const words = pageText;
 
 /** The page's cards of one kind, each as its HTML, by the title in its <h3>. */
 function cards(kind: "preset-card" | "theme-card"): Map<string, string> {
@@ -242,7 +235,7 @@ describe("Compare presets table", () => {
 });
 
 describe("Fonts page", () => {
-	const fontsPage = readFileSync(path.join(ROOT, "site", "fonts.html"), "utf-8");
+	const fontsPage = read("fonts.html");
 	for (const font of FONTS) {
 		it(`has a link target for ${font.id}`, () => {
 			assert.match(fontsPage, new RegExp(`id="font-${font.id}"`));

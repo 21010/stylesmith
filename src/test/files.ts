@@ -72,3 +72,40 @@ export function loadFont(file: string): opentype.Font {
 		bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
 	);
 }
+
+/** A text file of the project, by its path from the project root. */
+export function readText(...segments: string[]): string {
+	return readFileSync(path.join(ROOT, ...segments), "utf-8");
+}
+
+/** The words of an HTML fragment, as a reader sees them: tags and extra spaces removed. */
+export function pageText(html: string): string {
+	return html
+		.replace(/<[^>]+>/g, " ")
+		.replace(/&rsquo;/g, "’")
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
+interface SemanticColors {
+	colors: Record<string, string>;
+	semanticTokenColors: Record<string, string | { foreground?: string }>;
+}
+
+/** A theme's semantic color for a role ("keyword", "string"…), as #rrggbb; "" if it has none. */
+export function semanticColor(theme: SemanticColors, role: string): string {
+	const value = theme.semanticTokenColors[role];
+	return ((typeof value === "string" ? value : value?.foreground) ?? "").slice(0, 7);
+}
+
+/**
+ * The colors that make a theme recognizable at a glance, for the look-alike tests (#117, #132,
+ * #137): background, accent, keyword, string, function and type.
+ */
+export function themeLook(theme: SemanticColors): string[] {
+	return [
+		theme.colors["editor.background"]!.slice(0, 7),
+		theme.colors["focusBorder"]!.slice(0, 7),
+		...["keyword", "string", "function", "type"].map(role => semanticColor(theme, role))
+	];
+}

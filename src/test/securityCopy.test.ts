@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { ROOT } from "./files";
+import { readText, ROOT } from "./files";
 
-const read = (file: string) => readFileSync(path.join(ROOT, file), "utf-8");
+const read = (file: string) => readText(file);
 const manifest = JSON.parse(read("package.json")) as {
 	description: string;
 	capabilities?: { untrustedWorkspaces?: { supported?: boolean } };

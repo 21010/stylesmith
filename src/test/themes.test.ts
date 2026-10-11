@@ -10,7 +10,7 @@ import {
 	MIN_SYNTAX_DIFFERENCE
 } from "../readability";
 import { LINE_TINT } from "../problems";
-import { manifest, readJson } from "./files";
+import { manifest, readJson, semanticColor, themeLook } from "./files";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
@@ -607,10 +607,9 @@ describe("syntax colors within a theme (#116)", () => {
 		const theme = readJson<Theme>("themes", file);
 		it(`${theme.name}: keeps ${ROLES.join(", ")} apart (ΔE ${MIN_SYNTAX_DIFFERENCE})`, () => {
 			const color = (role: string) => {
-				const value = theme.semanticTokenColors[role];
-				const color = typeof value === "string" ? value : value?.foreground;
-				assert.ok(color, `${file} colors ${role}`);
-				return color.slice(0, 7);
+				const value = semanticColor(theme, role);
+				assert.ok(value, `${file} colors ${role}`);
+				return value;
 			};
 			for (let i = 0; i < ROLES.length; i++) {
 				for (let j = i + 1; j < ROLES.length; j++) {
@@ -673,21 +672,7 @@ describe("theme distinctness", () => {
 			deuteranopia: 8,
 			tritanopia: 8
 		};
-		const look = (file: string) => {
-			const theme = readJson<Theme>("themes", file);
-			const semantic = (role: string) => {
-				const value = theme.semanticTokenColors[role];
-				return (typeof value === "string" ? value : value?.foreground) ?? "";
-			};
-			return [
-				theme.colors["editor.background"]!,
-				theme.colors["focusBorder"]!,
-				semantic("keyword"),
-				semantic("string"),
-				semantic("function"),
-				semantic("type")
-			].map(color => color.slice(0, 7));
-		};
+		const look = (file: string) => themeLook(readJson<Theme>("themes", file));
 		assert.deepEqual(Object.keys(MIN_MEAN_DIFFERENCE).sort(), Object.keys(VISION).sort());
 		for (let i = 0; i < files.length; i++) {
 			for (let j = i + 1; j < files.length; j++) {

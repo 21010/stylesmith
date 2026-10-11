@@ -1,23 +1,17 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { PRESETS } from "../presets";
 import { PRESET_STORIES, PRESET_TALES, THEME_STORIES } from "../stories";
-import { manifest, ROOT } from "./files";
+import { manifest, pageText, readText } from "./files";
 
 /**
  * src/stories.ts is the one place where the stories are written; the Themes page and the README
  * (also the Marketplace listing) must show them word for word.
  */
 
-const read = (file: string) => readFileSync(path.join(ROOT, file), "utf-8");
-const words = (html: string) =>
-	html
-		.replace(/<[^>]+>/g, " ")
-		.replace(/&rsquo;/g, "’")
-		.replace(/\s+/g, " ")
-		.trim();
+const read = (file: string) => readText(file);
+const words = pageText;
 const themesPage = read(path.join("site", "themes.html"));
 const readme = read("README.md");
 
