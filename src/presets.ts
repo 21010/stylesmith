@@ -311,14 +311,14 @@ export const PRESETS: readonly Preset[] = [
 	{
 		id: "grid",
 		label: "Grid",
-		description: "Cyan lines on black, with orange for the adversary",
+		description: "Cyan lines on black, orange for the adversary, and a compact layout",
 		theme: "Stylesmith Grid",
 		iconTheme: "stylesmith-pixel-grid",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "MartianMono",
 		effects: {
 			...BASE,
-			"effects.compactLayout": false,
+			"effects.compactLayout": true,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
