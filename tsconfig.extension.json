@@ -1,7 +1,9 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"sourceMap": false
+		"sourceMap": false,
+		// Declarations are only for the build scripts' type check; the package doesn't need them.
+		"declaration": false
 	},
 	"include": ["src/extension.ts"]
 }

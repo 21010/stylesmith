@@ -1,0 +1,17 @@
+{
+	// Type-checks the build scripts (#121): plain JavaScript, checked with JSDoc types, never
+	// emitted. Run with: npm run check:scripts
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"lib": ["ES2022"],
+		"types": ["node"],
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true,
+		"strict": false,
+		"skipLibCheck": true
+	},
+	"include": ["**/*.mjs"]
+}

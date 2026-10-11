@@ -567,6 +567,7 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"lint": "eslint .",
+		"check:scripts": "npm run compile && tsc -p scripts",
 		"format": "prettier --write src scripts site extras eslint.config.mjs tsconfig*.json package.json \"*.md\"",
 		"format:check": "prettier --check src scripts site extras eslint.config.mjs tsconfig*.json package.json \"*.md\"",
 		"pretest": "npm run compile",

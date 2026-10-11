@@ -57,6 +57,7 @@ const contrast = (a, b) => {
 	return (hi + 0.05) / (lo + 0.05);
 };
 
+/** @param {import("./data/palette.js").Palette} p */
 function theme(p) {
 	const t = p.tokens;
 	const type = TYPOGRAPHY[p.typography];

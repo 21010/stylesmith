@@ -28,6 +28,7 @@ const KINDS = {
 	"hc-black": "High contrast, dark",
 	"hc-light": "High contrast, light"
 };
+/** @type {[title: string, intro: string, presetIds: string[]][]} */
 const GROUPS = [
 	[
 		"Retro terminals",
@@ -59,6 +60,7 @@ const GROUPS = [
 	],
 	["Everyday", "Bright rooms and maximum contrast.", ["daylight", "high-contrast"]]
 ];
+/** @type {[title: string, labels: string[]][]} */
 const THEME_GROUPS = [
 	["Retro terminals", ["Stylesmith Phosphor", "Stylesmith Amber", "Stylesmith ICE"]],
 	[
