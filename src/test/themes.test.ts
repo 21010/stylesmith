@@ -35,6 +35,57 @@ const PROBLEM_TINT: Record<string, number> = {
 	hcLight: LINE_TINT["hc-light"]
 };
 
+// Everyday parts of the interface that VS Code would otherwise draw in its own stock colors
+// (#105): every theme sets them, from its own colors.
+const EVERYDAY = [
+	"editorLightBulb.foreground",
+	"editorLightBulbAutoFix.foreground",
+	"editorInlayHint.foreground",
+	"editor.foldPlaceholderForeground",
+	"editor.hoverHighlightBackground",
+	"editor.findRangeHighlightBackground",
+	"editor.inlineValuesBackground",
+	"editor.snippetFinalTabstopHighlightBorder",
+	"editorCodeLens.foreground",
+	"editorOverviewRuler.findMatchForeground",
+	"editorOverviewRuler.selectionHighlightForeground",
+	"editorOverviewRuler.wordHighlightForeground",
+	"editorOverviewRuler.wordHighlightStrongForeground",
+	"editorOverviewRuler.bracketMatchForeground",
+	"peekViewResult.selectionBackground",
+	"peekViewResult.matchHighlightBackground",
+	"peekViewEditor.matchHighlightBackground",
+	...[
+		"class",
+		"interface",
+		"enumerator",
+		"enumeratorMember",
+		"event",
+		"field",
+		"function",
+		"method",
+		"constructor",
+		"variable"
+	].map(kind => `symbolIcon.${kind}Foreground`),
+	"statusBarItem.offlineBackground",
+	"list.invalidItemForeground",
+	"list.deemphasizedForeground",
+	"list.dropBackground",
+	"listFilterWidget.noMatchesOutline",
+	"pickerGroup.foreground",
+	...["error", "warning", "info"].flatMap(kind => [
+		`inputValidation.${kind}Border`,
+		`inputValidation.${kind}Background`
+	]),
+	"activityWarningBadge.background",
+	"activityErrorBadge.background",
+	"tab.activeModifiedBorder",
+	"gitDecoration.renamedResourceForeground",
+	"gitDecoration.submoduleResourceForeground",
+	"terminalCommandDecoration.successBackground",
+	"terminalCommandDecoration.errorBackground"
+];
+
 const files = readdirSync(THEMES_DIR).filter(file => file.endsWith("-color-theme.json"));
 const contributed = manifest().contributes.themes;
 
@@ -155,7 +206,82 @@ describe("color themes", () => {
 			["terminal cursor", c("terminalCursor.foreground"), c("terminal.background"), nonText],
 			["gutter: added", c("editorGutter.addedBackground"), background, nonText],
 			["gutter: modified", c("editorGutter.modifiedBackground"), background, nonText],
-			["gutter: deleted", c("editorGutter.deletedBackground"), background, nonText]
+			["gutter: deleted", c("editorGutter.deletedBackground"), background, nonText],
+			// Everyday colors (#105).
+			["light bulb", c("editorLightBulb.foreground"), background, nonText],
+			["auto-fix light bulb", c("editorLightBulbAutoFix.foreground"), background, nonText],
+			["inlay hints", c("editorInlayHint.foreground"), background, text],
+			["CodeLens", c("editorCodeLens.foreground"), background, text],
+			["folded code", c("editor.foldPlaceholderForeground"), background, text],
+			[
+				"Command Palette group labels",
+				c("pickerGroup.foreground"),
+				c("quickInput.background"),
+				text
+			],
+			["invalid list item", c("list.invalidItemForeground"), c("sideBar.background"), text],
+			[
+				"git: renamed",
+				c("gitDecoration.renamedResourceForeground"),
+				c("sideBar.background"),
+				text
+			],
+			[
+				"git: submodule",
+				c("gitDecoration.submoduleResourceForeground"),
+				c("sideBar.background"),
+				text
+			],
+			[
+				"offline status item",
+				c("statusBarItem.offlineForeground"),
+				c("statusBarItem.offlineBackground"),
+				text
+			],
+			[
+				"warning badge",
+				c("activityWarningBadge.foreground"),
+				c("activityWarningBadge.background"),
+				text
+			],
+			[
+				"error badge",
+				c("activityErrorBadge.foreground"),
+				c("activityErrorBadge.background"),
+				text
+			],
+			[
+				"unsaved tab marker",
+				c("tab.activeModifiedBorder"),
+				c("tab.activeBackground"),
+				nonText
+			],
+			[
+				"terminal command: success",
+				c("terminalCommandDecoration.successBackground"),
+				c("terminal.background"),
+				nonText
+			],
+			[
+				"terminal command: error",
+				c("terminalCommandDecoration.errorBackground"),
+				c("terminal.background"),
+				nonText
+			],
+			...["error", "warning", "info"].map((kind): [string, string, string, number] => [
+				`input ${kind} border`,
+				c(`inputValidation.${kind}Border`),
+				c(`inputValidation.${kind}Background`),
+				nonText
+			]),
+			...EVERYDAY.filter(key => key.startsWith("symbolIcon.")).map(
+				(key): [string, string, string, number] => [
+					key,
+					c(key),
+					c("editorSuggestWidget.background"),
+					nonText
+				]
+			)
 		];
 		if (highContrast) {
 			checks.push(["contrast border", c("contrastBorder"), background, nonText]);
@@ -214,7 +340,12 @@ describe("color themes", () => {
 			["editorGutter.addedBackground", "editorGutter.modifiedBackground"],
 			["editorGutter.modifiedBackground", "editorGutter.deletedBackground"],
 			["editorError.foreground", "editorWarning.foreground"],
-			["terminal.ansiRed", "terminal.ansiGreen"]
+			["terminal.ansiRed", "terminal.ansiGreen"],
+			[
+				"terminalCommandDecoration.successBackground",
+				"terminalCommandDecoration.errorBackground"
+			],
+			["activityWarningBadge.background", "activityErrorBadge.background"]
 		];
 
 		describe(theme.name, () => {
@@ -240,6 +371,26 @@ describe("color themes", () => {
 					assert.ok(body <= MAX_BODY_CONTRAST, `editor text contrast ${body.toFixed(2)}`);
 				});
 			}
+
+			it("sets the everyday colors from its own colors, not VS Code's stock ones (#105)", () => {
+				const everyday = new Set(EVERYDAY);
+				const own = [
+					...Object.entries(theme.colors)
+						.filter(([key]) => !everyday.has(key))
+						.map(([, color]) => color),
+					...syntax.values()
+				].map(color => color.slice(0, 7));
+				for (const key of EVERYDAY) {
+					const color = c(key).slice(0, 7);
+					const gap = Math.min(
+						...own.map(o => colorDifference(color, o, VISION["normal vision"]))
+					);
+					assert.ok(
+						gap <= 8,
+						`${key} ${color} is ${gap.toFixed(1)} from the theme's colors`
+					);
+				}
+			});
 
 			for (const [label, foreground, back, minimum] of checks) {
 				it(`has readable ${label} (at least ${minimum}:1)`, () => {

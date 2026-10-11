@@ -6,6 +6,12 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **Everyday parts of the interface follow the theme (#105).** An audit against VS Code 1.141's 994 interface colors found everyday areas still in VS Code's stock blue, orange, yellow and red, even in themes without them. Every theme now draws these in its own colors:
+    - symbol icons in Outline, breadcrumbs and suggestions, from the syntax colors
+    - the light bulb, input error, warning and info messages, and the activity bar's warning and error badges, from the status colors
+    - Command Palette group labels, the unsaved tab marker, Peek and find highlights, and the scroll bar's find, word and bracket marks, from the accents
+    - inlay hints, CodeLens, folded code and Git renamed and submodule files
+    - the terminal's command dots: success in the info color, apart from the red error dot with red-green color blindness
 - **Problem Lens gutter icons in the theme's own colors (#106).** With a Stylesmith theme, the error, warning and info icons in the gutter now use that theme's own colors for them, the same as its squiggles and messages. Before, every dark theme shared one set of icons and every light theme another, so they clashed in some themes (Amber's info icon was cyan). Other themes keep the generic icons, and so does an automatic switch to a theme of another kind.
 
 ## 2.5.0 (2026-10-11)

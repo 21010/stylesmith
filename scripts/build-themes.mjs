@@ -44,6 +44,19 @@ const style = fontStyle => (fontStyle ? { fontStyle } : {});
 // VS Code's theme "type" for each kind of palette.
 const TYPES = { dark: "dark", light: "light", "hc-dark": "hc", "hc-light": "hcLight" };
 
+/** WCAG relative luminance and contrast, to pick text that stays readable on a status color. */
+const luminance = hex => {
+	const [r, g, b] = [1, 3, 5].map(i => {
+		const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+		return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+	});
+	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => {
+	const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+	return (hi + 0.05) / (lo + 0.05);
+};
+
 function theme(p) {
 	const t = p.tokens;
 	const type = TYPOGRAPHY[p.typography];
@@ -53,6 +66,9 @@ function theme(p) {
 	const highContrast = kind.startsWith("hc-");
 	// Bracket pairs cycle through six colors from the theme's own syntax colors.
 	const brackets = [p.accent, t.keyword, t.string, t.type, t.number, t.regexp];
+	// Text on a status color (badges, the offline item): the theme's darkest or brightest.
+	const on = color =>
+		contrast(color, p.bgDark) >= contrast(color, p.fgStrong) ? p.bgDark : p.fgStrong;
 	return {
 		$schema: "vscode://schemas/color-theme",
 		name: p.name,
@@ -121,6 +137,52 @@ function theme(p) {
 			// VS Code's inline git blame, at the end of the cursor's line: muted, like other
 			// text that isn't code, and readable on the current-line highlight (themes.test.ts).
 			"git.blame.editorDecorationForeground": p.muted,
+			"editorLightBulb.foreground": p.status.warning,
+			"editorLightBulbAutoFix.foreground": p.status.info,
+			"editorInlayHint.foreground": p.muted,
+			"editorInlayHint.background": `${p.border}80`,
+			"editor.foldPlaceholderForeground": p.muted,
+			"editor.hoverHighlightBackground": `${p.accent}20`,
+			"editor.findRangeHighlightBackground": `${p.accent}14`,
+			"editor.inlineValuesForeground": p.muted,
+			"editor.inlineValuesBackground": `${p.accentAlt}20`,
+			"editor.snippetFinalTabstopHighlightBorder": p.accent,
+			"editorCodeLens.foreground": p.muted,
+			"simpleFindWidget.sashBorder": p.border,
+			"toolbar.hoverBackground": `${p.accent}1f`,
+			// The scroll bar's marks for find, selection and word matches, and the matching bracket.
+			"editorOverviewRuler.findMatchForeground": `${p.accentAlt}cc`,
+			"editorOverviewRuler.selectionHighlightForeground": `${p.accent}99`,
+			"editorOverviewRuler.wordHighlightForeground": `${p.accent}99`,
+			"editorOverviewRuler.wordHighlightStrongForeground": `${p.accentAlt}99`,
+			"editorOverviewRuler.bracketMatchForeground": p.accent,
+			// Peek (Go to References): the selected result and the matches.
+			"peekViewResult.selectionBackground": `${p.accent}33`,
+			"peekViewResult.matchHighlightBackground": p.findMatch,
+			"peekViewEditor.matchHighlightBackground": p.findMatch,
+			// Symbol icons in Outline, breadcrumbs and suggestions follow the syntax colors.
+			...Object.fromEntries(
+				Object.entries({
+					class: t.type,
+					interface: t.type,
+					struct: t.type,
+					enumerator: t.type,
+					typeParameter: t.type,
+					function: t.function,
+					method: t.function,
+					constructor: t.function,
+					field: t.property,
+					property: t.property,
+					variable: t.property,
+					enumeratorMember: t.number,
+					constant: t.number,
+					number: t.number,
+					boolean: t.number,
+					event: t.keyword,
+					keyword: t.keyword,
+					string: t.string
+				}).map(([kind, color]) => [`symbolIcon.${kind}Foreground`, color])
+			),
 			"editorOverviewRuler.border": "#00000000",
 			"editorWidget.background": p.bgRaised,
 			"editorWidget.foreground": p.fg,
@@ -151,6 +213,8 @@ function theme(p) {
 			"tab.activeBackground": p.bg,
 			"tab.activeForeground": p.fgStrong,
 			"tab.activeBorder": p.accent,
+			// Unsaved tabs: a top border in the second accent, apart from the active tab's marker.
+			"tab.activeModifiedBorder": p.accentAlt,
 			"tab.inactiveBackground": p.bgDark,
 			"tab.inactiveForeground": p.muted,
 			"tab.border": p.bgDark,
@@ -189,6 +253,8 @@ function theme(p) {
 			"statusBar.noFolderBackground": p.bgDark,
 			"statusBarItem.remoteBackground": p.accent,
 			"statusBarItem.remoteForeground": p.onAccent,
+			"statusBarItem.offlineBackground": p.status.warning,
+			"statusBarItem.offlineForeground": on(p.status.warning),
 			"breadcrumb.foreground": p.muted,
 			"breadcrumb.focusForeground": p.fgStrong,
 			"breadcrumb.activeSelectionForeground": p.accent,
@@ -203,11 +269,31 @@ function theme(p) {
 			"list.highlightForeground": p.accent,
 			"list.errorForeground": p.status.error,
 			"list.warningForeground": p.status.warning,
+			"list.invalidItemForeground": p.status.error,
+			"list.deemphasizedForeground": p.muted,
+			"list.dropBackground": `${p.accent}26`,
+			"tree.indentGuidesStroke": `${p.lineNumber}80`,
+			"listFilterWidget.noMatchesOutline": p.status.error,
+			"pickerGroup.foreground": p.accent,
+			"pickerGroup.border": p.border,
 			"input.background": p.bgRaised,
 			"input.foreground": p.fg,
 			"input.border": p.border,
 			"input.placeholderForeground": p.lineNumber,
 			"inputOption.activeBorder": p.accent,
+			"inputOption.hoverBackground": `${p.accent}1f`,
+			// Input messages keep the input's own background, with a border in the status color.
+			...Object.fromEntries(
+				[
+					["error", p.status.error],
+					["warning", p.status.warning],
+					["info", p.status.info]
+				].flatMap(([kind, color]) => [
+					[`inputValidation.${kind}Border`, color],
+					[`inputValidation.${kind}Background`, p.bgRaised],
+					[`inputValidation.${kind}Foreground`, p.fg]
+				])
+			),
 			"dropdown.background": p.bgRaised,
 			"dropdown.foreground": p.fg,
 			"dropdown.border": p.border,
@@ -218,6 +304,10 @@ function theme(p) {
 			"button.secondaryForeground": p.fg,
 			"badge.background": p.accentAlt,
 			"badge.foreground": p.onAccent,
+			"activityWarningBadge.background": p.status.warning,
+			"activityWarningBadge.foreground": on(p.status.warning),
+			"activityErrorBadge.background": p.status.error,
+			"activityErrorBadge.foreground": on(p.status.error),
 			"progressBar.background": p.accent,
 			"quickInput.background": p.bgRaised,
 			"quickInput.foreground": p.fg,
@@ -236,12 +326,21 @@ function theme(p) {
 			"gitDecoration.untrackedResourceForeground": p.status.added,
 			"gitDecoration.ignoredResourceForeground": p.lineNumber,
 			"gitDecoration.conflictingResourceForeground": p.status.warning,
+			"gitDecoration.renamedResourceForeground": p.status.added,
+			"gitDecoration.stageModifiedResourceForeground": p.status.modified,
+			"gitDecoration.stageDeletedResourceForeground": p.status.deleted,
+			"gitDecoration.submoduleResourceForeground": t.type,
 
 			// Terminal
 			"terminal.background": p.bgDark,
 			"terminal.foreground": p.fg,
 			"terminalCursor.foreground": p.accent,
 			"terminal.selectionBackground": p.selection,
+			// The dots beside each command: how the last run ended. Success takes the info color, not
+			// green, so it stays apart from the red error dot with red-green color blindness.
+			"terminalCommandDecoration.successBackground": p.status.info,
+			"terminalCommandDecoration.errorBackground": p.status.error,
+			"terminalOverviewRuler.cursorForeground": p.accent,
 			...Object.fromEntries(
 				Object.entries(p.ansi).map(([name, color]) => [
 					`terminal.ansi${name[0].toUpperCase()}${name.slice(1)}`,
