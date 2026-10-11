@@ -2,6 +2,19 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Changed
+
+- **Feature areas follow the theme too (#107).** Debugging, the merge editor, the Source Control graph, Chat, Testing, Extensions and charts no longer show VS Code's stock colors. Every theme now draws them in its own colors:
+    - breakpoints in the error color, the paused frame in the warning color, the debug toolbar's steps in the accent, and variables in the syntax colors
+    - merge editor changes in the added and deleted colors, unhandled conflicts in the warning color
+    - the Source Control graph's lanes in the theme's terminal colors, which stay apart by hue even in one-hue themes
+    - Chat's added and removed lines, slash commands and progress icons, from the status colors and accents
+    - test results, extension ratings and sponsor marks, and charts
+
+    An audit against all 994 colors of VS Code 1.141 now finds none clearly off in any Stylesmith theme.
+
 ## 2.6.0 (2026-10-11)
 
 ### Changed
