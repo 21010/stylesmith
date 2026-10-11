@@ -10,6 +10,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **ICE sets itself apart from Grid (#136).** Both were pale cyan on blue-black, and with red-green color blindness they looked almost the same. ICE's keywords and accent are now ice blue instead of frost cyan, leaving cyan to Grid, and its terminal colors follow.
 - **Theme stories name the colors the themes have (#138).** Sunroom's strings and numbers are terracotta and ochre (not peach and pale yellow, which can't be read on cream), Tea Garden's numbers mustard, Monolith's accent a soft blue with tan numbers, and ICE's background blue-black in both its stories.
 - **Grid uses the compact layout (#131),** so the grid fills the screen, and its settings no longer match Black ICE's exactly.
 - **Command Deck sets itself apart from Steel and Rust (#130).** Its file icon folders are now brushed metal instead of the blue-grey both shared, and it recommends 3270, IBM's terminal font, instead of Shure Tech Mono.
