@@ -44,18 +44,6 @@ describe("state file", () => {
 		assert.deepEqual(await store.read(), {});
 	});
 
-	it("starts from the state of older versions until the file exists", async () => {
-		const store = new StateFile(file, () => ({ enabled: true }));
-		assert.deepEqual(await store.read(), { enabled: true });
-		await store.update({
-			effectSettings: { "editor.guides.bracketPairs": { previous: false, applied: "active" } }
-		});
-		assert.deepEqual(await store.read(), {
-			enabled: true,
-			effectSettings: { "editor.guides.bracketPairs": { previous: false, applied: "active" } }
-		});
-	});
-
 	it("treats a damaged file as empty", async () => {
 		const store = new StateFile(file);
 		await store.update({ enabled: true });

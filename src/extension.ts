@@ -2,10 +2,8 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import { vscodeConfig, vscodeSettings } from "./config";
 import { FEEDBACK_URL, feedbackStep } from "./feedback";
-import { cleanupFinished, removeLegacyPatch } from "./legacyCleanup";
 import { applyThemes, checkAfterStartup, disable, enable, type Services } from "./lifecycle";
 import { ManagedSettings } from "./managed";
-import { migrateOldSettings } from "./oldSettings";
 import { messages } from "./messages";
 import { showBootSequence } from "./bootSequence";
 import { showDigitalRain } from "./digitalRain";
@@ -21,21 +19,8 @@ import { applyPreset, createStatusButton, installFontCommand, showMenu, vscodeUi
 // A preset or the menu changes several settings in a row; re-apply once for all of them.
 const REAPPLY_DELAY = 100; // ms
 
-const LEGACY_STATE_KEYS = {
-	fontSettings: "stylesmith.fontSettings",
-	effectSettings: "stylesmith.effectSettings",
-	enabled: "stylesmith.enabled"
-} as const;
-
 export function activate(context: vscode.ExtensionContext): void {
-	const store = new StateFile(path.join(context.globalStorageUri.fsPath, "state.json"), () =>
-		Object.fromEntries(
-			Object.entries(LEGACY_STATE_KEYS).map(([name, key]) => [
-				name,
-				context.globalState.get(key)
-			])
-		)
-	);
+	const store = new StateFile(path.join(context.globalStorageUri.fsPath, "state.json"));
 	const services: Services = {
 		config: vscodeConfig,
 		managed: new ManagedSettings(vscodeSettings, store),
@@ -119,12 +104,7 @@ export function activate(context: vscode.ExtensionContext): void {
 		{ dispose: () => clearTimeout(reapply) }
 	);
 
-	void reportErrors(async () => {
-		// First, so a moved setting (such as compact layout) is in place when settings are applied.
-		await migrateOldSettings(vscodeSettings);
-		status.show(await checkAfterStartup(services));
-	});
-	void reportErrors(() => cleanUpAfterVersion1(store));
+	void reportErrors(async () => status.show(await checkAfterStartup(services)));
 	void reportErrors(() => askForFeedback(store));
 }
 
@@ -142,28 +122,6 @@ async function askForFeedback(store: StateFile): Promise<void> {
 		"No, thanks"
 	);
 	if (choice === answer) await vscode.env.openExternal(vscode.Uri.parse(FEEDBACK_URL));
-}
-
-/** Removes a workbench patch Stylesmith 1.x left behind, and tells the user what happened. */
-async function cleanUpAfterVersion1(store: StateFile): Promise<void> {
-	// Checked until nothing of 1.x is left; after that, the installation is never read again.
-	if ((await store.read()).legacyCleanupDone) return;
-	const result = await removeLegacyPatch(vscode.env.appRoot);
-	if (cleanupFinished(result)) await store.update({ legacyCleanupDone: true });
-	if (result === "removed") {
-		const choice = await vscode.window.showInformationMessage(
-			messages.legacyRemoved,
-			messages.reloadWindow
-		);
-		if (choice === messages.reloadWindow)
-			await vscode.commands.executeCommand("workbench.action.reloadWindow");
-	} else if (result === "denied") {
-		const tell = await store.transact(state => ({
-			change: { legacyDeniedShown: true },
-			result: !state.legacyDeniedShown
-		}));
-		if (tell) void vscode.window.showWarningMessage(messages.legacyDenied);
-	}
 }
 
 export function deactivate(): void {}

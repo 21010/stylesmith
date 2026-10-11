@@ -6,7 +6,7 @@ Pick a preset, such as a green-phosphor terminal, a neon city at night or a calm
 
 Every theme is checked for contrast and color blindness: contrast for text, syntax and markers, and simulated color blindness for errors, warnings, git and terminal colors (see the [ergonomics page](https://stylesmith.dev/ergonomics.html) for exactly what is and isn't tested). By default, Problem Lens shows problems on their line with shapes and words, not color alone.
 
-Stylesmith uses only VS Code's extension API. It does not modify VS Code installation files: it never injects CSS or JavaScript into the workbench or alters `product.json`. The one exception is a one-time cleanup that removes changes left by Stylesmith 1.x (see below). Glow, scanlines and other effects that need such changes aren't available.
+Stylesmith uses only VS Code's extension API. It does not modify VS Code installation files: it never injects CSS or JavaScript into the workbench or alters `product.json`. Glow, scanlines and other effects that need such changes aren't available.
 
 ## Features
 
@@ -21,18 +21,6 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 Stylesmith does not load workspace-provided or remote CSS/JavaScript. It does not inspect project files or settings to decide what code to run. The extension only changes global user settings through VS Code's configuration API and stores reversible setting state in its extension storage. Its color themes, icon themes, and decorations use documented extension contributions and APIs.
 
 As with any extension, installing Stylesmith means trusting its published extension code. The reduced scope does not make all extension code risk-free; review [SECURITY.md](SECURITY.md) and the source before enterprise deployment.
-
-### Upgrading from Stylesmith 1.x
-
-Stylesmith 1.x patched VS Code's workbench file, copied fonts next to it, and could update the workbench checksum in `product.json`. Because VS Code updates extensions automatically, this version removes those changes when it first starts, and asks you to reload the window:
-
-- It removes only the blocks marked as Stylesmith's from the workbench file, restoring it byte for byte. Changes made by other tools are left alone.
-- It removes the `stylesmith-fonts` folder next to the workbench file.
-- It puts back the original checksum in `product.json` only if Stylesmith had changed it to match its patched file.
-
-It never asks for administrator rights. If VS Code is installed where your user can't write, Stylesmith tells you once; repair or reinstall VS Code to restore its files.
-
-Settings from 1.x that no longer do anything are removed from your user settings. Three carry over to the current option that changes the same VS Code setting: `effects.neonBlocks` becomes `effects.bracketGuides`, `effects.classicLayout` becomes `effects.compactLayout`, and `effects.retroTerminalCursor` becomes `effects.blockTerminalCursor`. Your list of custom files in `stylesmith.imports` is kept, marked as deprecated, so you can move it to another tool; delete it when you no longer need it.
 
 ## Use
 

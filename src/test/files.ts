@@ -14,7 +14,6 @@ export interface SettingSchema {
 	scope?: string;
 	enum?: unknown[];
 	markdownDescription?: string;
-	markdownDeprecationMessage?: string;
 }
 
 export interface Manifest {

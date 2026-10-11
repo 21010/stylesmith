@@ -36,10 +36,6 @@ export interface StoredState {
 	/** The color and icon theme a preset chose, so Disable can put the user's own back. */
 	themeSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
-	/** Set once nothing of Stylesmith 1.x is left in VS Code's installation: no more checks. */
-	legacyCleanupDone?: boolean;
-	/** Set once the user was told the old workbench patch can't be removed, to tell them once. */
-	legacyDeniedShown?: boolean;
 	/** When Stylesmith first ran on this computer, for the one-time feedback question. */
 	firstRunAt?: number;
 	/** Set once the feedback question was shown, whatever the answer. */
@@ -50,21 +46,15 @@ export interface StoredState {
 
 /** Reads and updates the state file. Every read is fresh; updates never overlap. */
 export class StateFile {
-	/**
-	 * @param file Where the state is kept.
-	 * @param legacy State from older Stylesmith versions, used until the file exists.
-	 */
-	constructor(
-		private readonly file: string,
-		private readonly legacy: () => StoredState = () => ({})
-	) {}
+	/** @param file Where the state is kept. */
+	constructor(private readonly file: string) {}
 
 	async read(): Promise<StoredState> {
 		let text: string;
 		try {
 			text = await readFile(this.file, "utf-8");
 		} catch {
-			return this.legacy(); // first run after an update, or nothing stored yet
+			return {}; // nothing stored yet
 		}
 		try {
 			const state: unknown = JSON.parse(text);
