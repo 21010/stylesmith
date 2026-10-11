@@ -1,5 +1,5 @@
 // Audits Stylesmith's color themes against the newest VS Code's theme colors (#108).
-// Run with: npm run audit:colors [-- --vscode 1.141.0] [-- --report report.md] [-- --update-baseline]
+// Run with: npm run audit:colors [-- --vscode 1.141.0|baseline] [-- --report report.md] [-- --update-baseline]
 //
 // Downloads VS Code (stable by default) into .vscode-test/, reads every color it registers (in
 // the workbench and in built-in extensions) and reports, for each theme:
@@ -49,7 +49,20 @@ function appFolder(executable) {
 	throw new Error(`VS Code's workbench was not found near ${executable}`);
 }
 
-const app = appFolder(await downloadAndUnzipVSCode(args.vscode));
+/** The baseline, read once; none yet before the first --update-baseline. */
+function readBaseline() {
+	try {
+		return JSON.parse(readFileSync(baselineFile, "utf-8"));
+	} catch (error) {
+		if (error.code === "ENOENT") return { vscode: "none", colors: [] };
+		throw error;
+	}
+}
+const baseline = readBaseline();
+// "baseline" checks against the VS Code version the baseline was taken from, which never
+// changes: CI runs it on every pull request, so only Stylesmith's own changes can fail it.
+const vscodeVersion = args.vscode === "baseline" ? baseline.vscode : args.vscode;
+const app = appFolder(await downloadAndUnzipVSCode(vscodeVersion));
 const version = JSON.parse(readFileSync(join(app, "package.json"), "utf-8")).version;
 const extensions = join(app, "extensions");
 const manifests = readdirSync(extensions)
@@ -66,16 +79,6 @@ const colors = registry([
 if (colors.length < 500)
 	throw new Error(`only ${colors.length} colors found in VS Code ${version}`);
 
-/** The baseline, read once; none yet before the first --update-baseline. */
-function readBaseline() {
-	try {
-		return JSON.parse(readFileSync(baselineFile, "utf-8"));
-	} catch (error) {
-		if (error.code === "ENOENT") return { vscode: "none", colors: [] };
-		throw error;
-	}
-}
-const baseline = readBaseline();
 const ids = new Set(colors.map(c => c.id));
 const added = colors.map(c => c.id).filter(id => !baseline.colors.includes(id));
 const removed = baseline.colors.filter(id => !ids.has(id));
