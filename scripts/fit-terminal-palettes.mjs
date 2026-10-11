@@ -6,7 +6,7 @@
 // - stays apart from the other colors, and red from green with every kind of color blindness
 // Red and green are chosen together. src/test/themes.test.ts checks the result.
 //
-// Run with: npm run compile && node scripts/fit-terminal-palettes.mjs <theme id>...
+// Run with: npm run fit:terminal -- <theme id>...
 // It rewrites those themes' ansi colors in scripts/data/palettes.mjs; then run npm run themes.
 
 import { readFileSync, writeFileSync } from "node:fs";

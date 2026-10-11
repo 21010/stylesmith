@@ -7,6 +7,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import opentype from "opentype.js";
 import { LARGE, SMALL } from "./data/product-icons.mjs";
+import { atFixedTime } from "./fixed-time.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "product-icons");
@@ -64,29 +65,6 @@ function outline(rows) {
 	return path;
 }
 
-/**
- * Runs `write` with the clock stopped at a fixed date. opentype.js stamps the current time into
- * the font's head table; a fixed one makes the same icons always build the same font file.
- */
-function atFixedTime(write) {
-	const RealDate = Date;
-	const fixed = RealDate.UTC(2026, 9, 9);
-	const FixedDate = class extends RealDate {
-		constructor(...args) {
-			super(.../** @type {[number]} */ (args.length ? args : [fixed]));
-		}
-		static now() {
-			return fixed;
-		}
-	};
-	globalThis.Date = /** @type {DateConstructor} */ (/** @type {unknown} */ (FixedDate));
-	try {
-		return write();
-	} finally {
-		globalThis.Date = RealDate;
-	}
-}
-
 function build() {
 	const list = icons();
 	for (const { id, rows } of list) {
@@ -122,7 +100,10 @@ function build() {
 		glyphs
 	});
 	mkdirSync(OUT, { recursive: true });
-	writeFileSync(join(OUT, FONT), Buffer.from(atFixedTime(() => font.toArrayBuffer())));
+	writeFileSync(
+		join(OUT, FONT),
+		Buffer.from(atFixedTime(new Date(Date.UTC(2026, 9, 9)), () => font.toArrayBuffer()))
+	);
 
 	const theme = {
 		fonts: [
