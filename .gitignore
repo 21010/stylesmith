@@ -1,9 +1,6 @@
 node_modules
 out
-/test
 .vscode
-.vsixmanifest
-.staging-custom-css
 *.vsix
 .playwright-mcp
 .vscode-test
