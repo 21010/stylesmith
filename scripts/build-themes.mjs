@@ -505,11 +505,25 @@ function theme(p) {
 				settings: { foreground: t.type }
 			},
 			{ scope: ["variable", "meta.definition.variable"], settings: { foreground: p.fg } },
+			// this, self and super: language words, so in the keyword color (#118).
+			{ scope: ["variable.language"], settings: { foreground: t.keyword } },
+			// Namespaces and modules name a kind of thing, like types.
+			{
+				scope: ["entity.name.namespace", "entity.name.module", "entity.name.package"],
+				settings: { foreground: t.type }
+			},
+			// Decorators and annotations (@Component, @dataclass), like the functions they call.
+			{
+				scope: ["meta.decorator", "punctuation.decorator", "storage.type.annotation"],
+				settings: { foreground: t.function }
+			},
 			{
 				scope: [
 					"variable.other.property",
 					"support.variable.property",
-					"meta.object-literal.key"
+					"meta.object-literal.key",
+					// Keys in JSON and properties in CSS, which would otherwise take the type color.
+					"support.type.property-name"
 				],
 				settings: { foreground: t.property }
 			},
@@ -522,6 +536,8 @@ function theme(p) {
 				settings: { foreground: t.regexp }
 			},
 			{ scope: ["entity.name.tag"], settings: { foreground: t.tag } },
+			// The < > around HTML and XML tags, quieter than the tag name.
+			{ scope: ["punctuation.definition.tag"], settings: { foreground: t.operator } },
 			{ scope: ["entity.other.attribute-name"], settings: { foreground: t.attribute } },
 			{
 				scope: ["markup.heading", "entity.name.section"],
@@ -532,6 +548,15 @@ function theme(p) {
 				settings: type.bold ? { fontStyle: type.bold } : { foreground: p.fgStrong }
 			},
 			{ scope: ["markup.italic"], settings: { fontStyle: type.italic } },
+			// Markdown quotes read like comments; list markers stand out like keywords.
+			{
+				scope: ["markup.quote"],
+				settings: { foreground: t.comment, ...style(type.comment) }
+			},
+			{
+				scope: ["punctuation.definition.list.begin", "markup.list.numbered.bullet"],
+				settings: { foreground: t.keyword }
+			},
 			{
 				scope: ["markup.inline.raw", "markup.fenced_code"],
 				settings: { foreground: t.string }
@@ -554,7 +579,16 @@ function theme(p) {
 			keyword: keywordStyle ? { foreground: t.keyword, bold: true } : t.keyword,
 			string: t.string,
 			number: t.number,
-			regexp: t.regexp
+			regexp: t.regexp,
+			namespace: t.type,
+			enum: t.type,
+			struct: t.type,
+			typeParameter: t.type,
+			decorator: t.function,
+			macro: t.function,
+			selfKeyword: t.keyword,
+			// Deprecated symbols are struck through, in every theme.
+			"*.deprecated": { strikethrough: true }
 		}
 	};
 }
