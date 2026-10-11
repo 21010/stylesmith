@@ -12,7 +12,6 @@ eslint.config.mjs
 tsconfig*.json
 .prettierrc.yaml
 .gitignore
-images/logo.svg
 scripts/
 out/test-integration/**
 out/test-os/**

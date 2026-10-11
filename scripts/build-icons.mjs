@@ -34,6 +34,7 @@ import {
 	kindOf
 } from "./data/icons.mjs";
 import { palettes } from "./data/palettes.mjs";
+import { atFixedTime } from "./fixed-time.mjs";
 
 const MIN_CONTRAST = 3;
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "icons");
@@ -217,26 +218,6 @@ function outline(g) {
 	return path;
 }
 
-/** Runs `write` with the clock stopped, so the same glyphs always build the same font file. */
-function atFixedTime(write) {
-	const RealDate = Date;
-	const fixed = RealDate.UTC(2026, 9, 11);
-	const FixedDate = class extends RealDate {
-		constructor(...args) {
-			super(.../** @type {[number]} */ (args.length ? args : [fixed]));
-		}
-		static now() {
-			return fixed;
-		}
-	};
-	globalThis.Date = /** @type {DateConstructor} */ (/** @type {unknown} */ (FixedDate));
-	try {
-		return write();
-	} finally {
-		globalThis.Date = RealDate;
-	}
-}
-
 function writeFont(list) {
 	const codes = new Map();
 	const font = new opentype.Font({
@@ -265,7 +246,10 @@ function writeFont(list) {
 			})
 		]
 	});
-	writeFileSync(join(root, FONT), Buffer.from(atFixedTime(() => font.toArrayBuffer())));
+	writeFileSync(
+		join(root, FONT),
+		Buffer.from(atFixedTime(new Date(Date.UTC(2026, 9, 11)), () => font.toArrayBuffer()))
+	);
 	return codes;
 }
 
@@ -285,7 +269,7 @@ function brandColors(kind) {
 	};
 }
 /** A theme's colors by kind, fitted to its own side bar as well as VS Code's. */
-export function themeKindColors(palette, kind, sideBar) {
+function themeKindColors(palette, kind, sideBar) {
 	const backgrounds = [...SIDEBAR[kind], ...(sideBar ? [sideBar] : [])];
 	// A palette may take a kind's color from elsewhere, to set its icons apart (#130).
 	const paths = { ...KIND_COLORS, ...palette.iconKinds };
@@ -376,7 +360,7 @@ function iconSet(set, colorsFor, codes) {
 }
 
 // The sets: Stylesmith Pixel, and one for every color theme.
-export const SETS = [
+const SETS = [
 	{ set: "pixel", id: "stylesmith-pixel", label: "Stylesmith Pixel", colors: brandColors },
 	...palettes.map(palette => ({
 		set: `pixel-${palette.id}`,

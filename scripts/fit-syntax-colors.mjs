@@ -6,7 +6,7 @@
 // ask of syntax: on the editor, on the current line and on a Problem Lens line.
 // src/test/themes.test.ts checks the result.
 //
-// Run with: npm run compile && node scripts/fit-syntax-colors.mjs <theme id>...
+// Run with: npm run fit:syntax -- <theme id>...
 // It rewrites those themes' token colors in scripts/data/palettes.mjs; then run npm run themes.
 
 import { readFileSync, writeFileSync } from "node:fs";

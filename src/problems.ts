@@ -24,7 +24,7 @@ export type ThemeKind = "dark" | "light" | "hc-dark" | "hc-light";
 
 const RANK: Record<Severity, number> = { error: 0, warning: 1, info: 2 };
 
-export const TAGS: Record<Severity, string> = { error: "ERR", warning: "WARN", info: "INFO" };
+const TAGS: Record<Severity, string> = { error: "ERR", warning: "WARN", info: "INFO" };
 
 const WORDS: Record<Severity, string> = { error: "Error", warning: "Warning", info: "Info" };
 
