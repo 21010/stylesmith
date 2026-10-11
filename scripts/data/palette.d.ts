@@ -27,6 +27,24 @@ export interface Palette {
 	/** High-contrast themes only. */
 	contrastBorder?: Color;
 	contrastActiveBorder?: Color;
+	/**
+	 * File icon kinds that take their color from another palette field than KIND_COLORS says,
+	 * as a path such as ["fgStrong"], to set a theme's icons apart from a similar theme's.
+	 */
+	iconKinds?: Partial<
+		Record<
+			| "folder"
+			| "code"
+			| "config"
+			| "tooling"
+			| "docs"
+			| "media"
+			| "agents"
+			| "model"
+			| "muted",
+			string[]
+		>
+	>;
 	tokens: {
 		comment: Color;
 		keyword: Color;

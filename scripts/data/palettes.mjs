@@ -1230,6 +1230,8 @@ export const palettes = [
 		onAccent: "#0f1012",
 		selection: "#3a404a99",
 		findMatch: "#ff5c5c40",
+		// Folders in brushed metal, apart from Steel and Rust's blue ones (#130).
+		iconKinds: { folder: ["fgStrong"] },
 		tokens: {
 			comment: "#8e9299",
 			keyword: "#8ba6cb",

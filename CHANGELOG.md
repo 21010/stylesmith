@@ -10,6 +10,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **Command Deck sets itself apart from Steel and Rust (#130).** Its file icon folders are now brushed metal instead of the blue-grey both shared, and it recommends 3270, IBM's terminal font, instead of Shure Tech Mono.
 - **Countdown has a look of its own (#117).** It looked almost like Command Deck: the same near-black grey and a red accent. Countdown is now a night sky over a world of three suns: deep blue-black, pale starlight text, sun-gold keywords, pale cyan types and faint lilac strings. Every number stays red. Its file icons, terminal colors and screenshot follow, and a test keeps every two themes clearly apart overall.
 - **More variety in the recommended fonts (#122).** No font is recommended by more than three presets now: Countdown takes Blex Mono, Grid Martian Mono and Horizon Recursive Casual.
 - **More of your code is colored (#118).** Every theme now colors `this`, `self` and `super` like keywords; namespaces, modules, enums and type parameters like types; decorators and annotations like functions; JSON keys and CSS properties as properties (before, in the type color); the `<` `>` around HTML tags more quietly than the tag; and Markdown quotes and list markers. Deprecated symbols are struck through.
