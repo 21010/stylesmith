@@ -8,11 +8,7 @@ const read = (file: string) => readFileSync(path.join(ROOT, file), "utf-8");
 const manifest = JSON.parse(read("package.json")) as {
 	description: string;
 	capabilities?: { untrustedWorkspaces?: { supported?: boolean } };
-	contributes: {
-		configuration: {
-			properties: Record<string, { markdownDeprecationMessage?: string } | undefined>;
-		};
-	};
+	contributes: { configuration: { properties: Record<string, unknown> } };
 };
 const sources = readdirSync(path.join(ROOT, "src")).filter(file => file.endsWith(".ts"));
 
@@ -30,11 +26,9 @@ describe("API-only security boundary", () => {
 			"stylesmith.allowRemoteImports",
 			"stylesmith.silenceCorruptWarning"
 		]) {
-			// An old setting may only be declared as deprecated, so Stylesmith can remove it.
-			const schema = settings[key];
-			if (schema) assert.ok(schema.markdownDeprecationMessage, key);
+			assert.equal(settings[key], undefined, key);
 			const name = `"${key.replace("stylesmith.", "")}"`;
-			for (const file of sources.filter(file => file !== "oldSettings.ts"))
+			for (const file of sources)
 				assert.ok(!read(`src/${file}`).includes(name), `${file} uses ${key}`);
 		}
 	});
@@ -44,15 +38,11 @@ describe("API-only security boundary", () => {
 		assert.match(read("SECURITY.md"), /does not read or write VS Code installation files/);
 	});
 
-	it("touches the installation only in the documented 1.x cleanup", () => {
-		const touching = readdirSync(path.join(ROOT, "src"))
-			.filter(file => file.endsWith(".ts"))
-			.filter(file => /appRoot|product\.json|workbench\.html/.test(read(`src/${file}`)));
-		// extension.ts only passes vscode.env.appRoot to the cleanup.
-		assert.deepEqual(touching.sort(), ["extension.ts", "legacyCleanup.ts"]);
-		assert.match(read("src/extension.ts"), /removeLegacyPatch\(vscode\.env\.appRoot\)/);
-		assert.equal(read("src/extension.ts").match(/appRoot/g)?.length, 1);
-		assert.match(read("SECURITY.md"), /src\/legacyCleanup\.ts/);
+	it("never looks at VS Code's installation", () => {
+		const touching = sources.filter(file =>
+			/appRoot|product\.json|workbench\.html/.test(read(`src/${file}`))
+		);
+		assert.deepEqual(touching, []);
 	});
 
 	it("downloads and runs programs only to install fonts, in fontInstall.ts", () => {

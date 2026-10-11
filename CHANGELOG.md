@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Removed
+
+- **The Stylesmith 1.x cleanup and settings migration.** Stylesmith no longer checks VS Code's installation on startup for changes left by 1.x, and no longer moves or removes 1.x settings, which are no longer declared. It now never reads or writes VS Code's installation. If 1.x changes are somehow still in place, reinstalling VS Code removes them.
+
 ## 2.7.0 (2026-10-11)
 
 ### Changed

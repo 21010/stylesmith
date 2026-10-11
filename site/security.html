@@ -11,7 +11,7 @@
 		<title>Security - Stylesmith</title>
 		<meta
 			name="description"
-			content="Stylesmith uses VS Code extension APIs and only touches the installation once, to remove changes made by Stylesmith 1.x."
+			content="Stylesmith uses only VS Code extension APIs and never touches the VS Code installation."
 		/>
 		<meta name="color-scheme" content="dark" />
 		<meta name="theme-color" content="#0f1120" />
@@ -55,9 +55,8 @@
 			<section class="hero">
 				<h1>Security <span>Boundary</span></h1>
 				<p class="lead">
-					This build uses VS Code's extension API and contribution points. Stylesmith does
-					not patch the VS Code installation, and only writes to it once, to remove
-					changes made by Stylesmith 1.x.
+					Stylesmith uses only VS Code's extension API and contribution points. It never
+					reads or writes the VS Code installation.
 				</p>
 			</section>
 			<section class="content-section" aria-labelledby="api-title">
@@ -92,17 +91,6 @@
 					granted to extensions. API-only means it does not bypass VS Code's extension
 					model to alter the workbench DOM or installed application files. It is not a
 					guarantee that extension code or its supply chain is risk-free.
-				</p>
-			</section>
-			<section class="content-section" aria-labelledby="upgrade-title">
-				<h2 id="upgrade-title">Upgrading from an older release</h2>
-				<p>
-					Stylesmith 1.x could patch the workbench and install font files beside it. On
-					first start, this build removes exactly those changes: Stylesmith's marked
-					blocks in the workbench file, its font folder, and a <code>product.json</code>
-					checksum it had changed. It leaves other tools' changes alone and never asks for
-					administrator rights. If VS Code is installed where your user can't write, it
-					tells you once; repair or reinstall VS Code to restore its files.
 				</p>
 			</section>
 			<section class="cta-section" style="text-align: center; margin: 4rem 0">

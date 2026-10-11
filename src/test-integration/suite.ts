@@ -5,17 +5,16 @@ import { existsSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
 import { EFFECTS } from "../effects";
-import { locateWorkbench } from "../legacyCleanup";
 import { PRESETS } from "../presets";
 import { sleep, step, until, userValue, withTimeout } from "./helpers";
+import { locateWorkbench } from "./workbench";
 
 export async function run(): Promise<void> {
 	const extension = vscode.extensions.getExtension("21010.stylesmith");
 	assert.ok(extension, "Stylesmith is installed");
 	await extension.activate();
 
-	// The same lookup the 1.x cleanup uses, so this also checks it finds the file in this version.
-	const workbench = locateWorkbench(vscode.env.appRoot)?.htmlPath;
+	const workbench = locateWorkbench(vscode.env.appRoot);
 	assert.ok(workbench, "test can find the workbench to verify it remains unchanged");
 	const workbenchBefore = readFileSync(workbench);
 	const product = path.join(vscode.env.appRoot, "product.json");

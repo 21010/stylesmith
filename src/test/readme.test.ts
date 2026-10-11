@@ -49,12 +49,7 @@ describe("README", () => {
 
 	it("lists every Stylesmith setting with its default value", () => {
 		const settings = JSON.parse(stripComments(code ?? "{}")) as Record<string, unknown>;
-		// Settings left from Stylesmith 1.x are declared only so they can be removed.
-		const properties = Object.fromEntries(
-			Object.entries(manifest().contributes.configuration.properties).filter(
-				([, schema]) => schema.markdownDeprecationMessage === undefined
-			)
-		);
+		const properties = manifest().contributes.configuration.properties;
 		const documented = Object.keys(settings).filter(key => key.startsWith("stylesmith."));
 		assert.deepEqual(documented.sort(), Object.keys(properties).sort());
 		for (const [key, schema] of Object.entries(properties)) {

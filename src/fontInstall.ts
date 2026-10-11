@@ -6,7 +6,7 @@
  * SHA-256 pinned in fonts.ts; anything else is refused before a byte is written. What Stylesmith
  * installed is recorded, so it can be removed again.
  *
- * This and legacyCleanup.ts are the only files that touch anything outside VS Code's settings;
+ * This is the only file that touches anything outside VS Code's settings;
  * securityCopy.test.ts checks that no other source downloads or runs programs.
  *
  * Where VS Code sees a newly installed font (checked on all three systems by the prototype in
