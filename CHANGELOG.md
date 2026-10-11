@@ -2,6 +2,13 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Changed
+
+- **Every theme has its own terminal palette (#100).** 12 of the 13 themes added in 2.3.0 shared one of two generic ANSI palettes, so the Oh My Posh prompt and other terminal colors didn't match them: a bright green `❯` and git branch on Countdown or Command Deck, themes with no green at all. 18 themes now have terminal colors fitted to them: each keeps its meaning (red for errors, green for success) but takes the theme's tint and saturation. Neon Night, Phosphor, Amber, Daylight and the two high-contrast themes keep theirs.
+- The Oh My Posh page shows the prompt in every theme, in its real terminal colors.
+
 ## 2.4.0 (2026-10-09)
 
 ### Added
