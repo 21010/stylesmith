@@ -706,6 +706,7 @@
 		"pretest": "npm run compile",
 		"test": "node --test \"out/test/**/*.test.js\"",
 		"themes": "npm run compile && node scripts/build-themes.mjs",
+		"audit:colors": "npm run compile && node scripts/audit-colors.mjs",
 		"product-icons": "node scripts/build-product-icons.mjs",
 		"themes-page": "npm run compile && node scripts/build-themes-page.mjs",
 		"prompt-previews": "node scripts/build-prompt-previews.mjs",
