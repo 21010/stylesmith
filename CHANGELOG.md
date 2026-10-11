@@ -10,6 +10,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **Theme stories name the colors the themes have (#138).** Sunroom's strings and numbers are terracotta and ochre (not peach and pale yellow, which can't be read on cream), Tea Garden's numbers mustard, Monolith's accent a soft blue with tan numbers, and ICE's background blue-black in both its stories.
 - **Grid uses the compact layout (#131),** so the grid fills the screen, and its settings no longer match Black ICE's exactly.
 - **Command Deck sets itself apart from Steel and Rust (#130).** Its file icon folders are now brushed metal instead of the blue-grey both shared, and it recommends 3270, IBM's terminal font, instead of Shure Tech Mono.
 - **Countdown has a look of its own (#117).** It looked almost like Command Deck: the same near-black grey and a red accent. Countdown is now a night sky over a world of three suns: deep blue-black, pale starlight text, sun-gold keywords, pale cyan types and faint lilac strings. Every number stays red. Its file icons, terminal colors and screenshot follow, and a test keeps every two themes clearly apart overall.
