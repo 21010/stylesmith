@@ -22,7 +22,7 @@ class Emitter<T> {
 	}
 }
 
-export class Position {
+class Position {
 	constructor(
 		readonly line: number,
 		readonly character: number
@@ -83,7 +83,7 @@ export class FakeEditor {
 	}
 }
 
-export interface StatusItem {
+interface StatusItem {
 	id: string;
 	text: string;
 	tooltip?: string;

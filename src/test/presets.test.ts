@@ -5,7 +5,7 @@ import { FONTS } from "../fonts";
 import { colorDifference, VISION } from "../color";
 import { ICON_THEME, PRESET_ALIASES, PRESETS, presetEffects } from "../presets";
 import { PRESET_STORIES, PRESET_TALES } from "../stories";
-import { manifest, readJson, themeSettingsId, type IconTheme } from "./files";
+import { manifest, readJson, themeLook, themeSettingsId, type IconTheme } from "./files";
 
 interface SemanticTheme {
 	type: string;
@@ -107,10 +107,6 @@ describe("preset distinctness (#132)", () => {
 	const profiles = PRESETS.map(preset => {
 		const entry = contributes.themes.find(theme => themeSettingsId(theme) === preset.theme)!;
 		const theme = readJson<SemanticTheme>(entry.path);
-		const semantic = (role: string) => {
-			const value = theme.semanticTokenColors[role];
-			return (typeof value === "string" ? value : value?.foreground) ?? "";
-		};
 		const iconEntry = contributes.iconThemes.find(icons => icons.id === preset.iconTheme)!;
 		const icons = readJson<IconTheme>(iconEntry.path);
 		const iconColor = (id: string | undefined) =>
@@ -118,11 +114,7 @@ describe("preset distinctness (#132)", () => {
 		return {
 			preset,
 			kind: theme.type,
-			look: [
-				theme.colors["editor.background"]!,
-				theme.colors["focusBorder"]!,
-				...["keyword", "string", "function", "type"].map(semantic)
-			],
+			look: themeLook(theme),
 			icons: [
 				iconColor(icons.folder),
 				iconColor(icons.fileExtensions["ts"]),
