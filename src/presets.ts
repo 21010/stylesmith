@@ -369,7 +369,7 @@ export const PRESETS: readonly Preset[] = [
 		theme: "Stylesmith Command Deck",
 		iconTheme: "stylesmith-pixel-command-deck",
 		productIconTheme: PRODUCT_ICON_THEME,
-		font: "ShureTechMono",
+		font: "3270",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,

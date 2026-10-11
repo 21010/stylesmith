@@ -287,8 +287,10 @@ function brandColors(kind) {
 /** A theme's colors by kind, fitted to its own side bar as well as VS Code's. */
 export function themeKindColors(palette, kind, sideBar) {
 	const backgrounds = [...SIDEBAR[kind], ...(sideBar ? [sideBar] : [])];
+	// A palette may take a kind's color from elsewhere, to set its icons apart (#130).
+	const paths = { ...KIND_COLORS, ...palette.iconKinds };
 	return Object.fromEntries(
-		Object.entries(KIND_COLORS).map(([name, path]) => [
+		Object.entries(paths).map(([name, path]) => [
 			name,
 			fit(
 				path.reduce((value, key) => value[key], palette),
