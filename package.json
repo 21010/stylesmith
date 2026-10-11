@@ -603,6 +603,7 @@
 		"themes": "npm run compile && node scripts/build-themes.mjs",
 		"product-icons": "node scripts/build-product-icons.mjs",
 		"themes-page": "npm run compile && node scripts/build-themes-page.mjs",
+		"prompt-previews": "node scripts/build-prompt-previews.mjs",
 		"icons": "npm run compile && node scripts/build-icons.mjs",
 		"screenshots": "npm run compile && node scripts/build-screenshots.mjs",
 		"test:integration": "npm run compile && node out/test-integration/runTest.js",

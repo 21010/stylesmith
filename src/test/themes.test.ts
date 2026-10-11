@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readdirSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { colorDifference, contrast, mix, VISION } from "../color";
+import { colorDifference, contrast, mix, oklch, VISION } from "../color";
 import { LEVELS, MAX_BODY_CONTRAST, MIN_COLOR_DIFFERENCE } from "../readability";
 import { LINE_TINT } from "../problems";
 import { manifest, readJson } from "./files";
@@ -411,6 +411,83 @@ describe("typography (#68)", () => {
 					assert.ok(!s.semanticItalic);
 					assert.equal(s.of("markup.italic"), "underline");
 					break;
+			}
+		});
+	}
+});
+
+describe("terminal colors (#100)", () => {
+	// Programs rely on what the ANSI colors mean (red for errors, green for success), so each
+	// keeps its hue family, in OKLCH hue degrees. Within it, a theme tints it to fit.
+	const FAMILIES: Record<string, [number, number][]> = {
+		red: [
+			[0, 50],
+			[340, 360]
+		],
+		yellow: [[55, 118]],
+		green: [[115, 178]],
+		cyan: [[176, 245]],
+		blue: [[230, 292]],
+		magenta: [[285, 352]]
+	};
+	// Amber is a monochrome monitor: every color is a shade of amber, by design.
+	const MONOCHROME = ["amber-color-theme.json"];
+	const ansi = (theme: Theme, name: string) => theme.colors[`terminal.ansi${name}`]!.slice(0, 7);
+	const slots = Object.keys(FAMILIES).flatMap(f => {
+		const name = f[0]!.toUpperCase() + f.slice(1);
+		return [
+			[f, name],
+			[f, `Bright${name}`]
+		] as const;
+	});
+
+	it("gives every theme its own terminal palette", () => {
+		const seen = new Map<string, string>();
+		for (const file of files) {
+			const theme = readJson<Theme>("themes", file);
+			const key = slots.map(([, name]) => ansi(theme, name)).join();
+			assert.equal(
+				seen.get(key),
+				undefined,
+				`${file} has the same terminal colors as ${seen.get(key)}`
+			);
+			seen.set(key, file);
+		}
+	});
+
+	for (const file of files) {
+		const theme = readJson<Theme>("themes", file);
+		// The theme's own syntax colors; status colors (errors, git changes) are bright everywhere.
+		const STATUS = ["invalid", "markup.inserted", "markup.deleted"];
+		const syntax = theme.tokenColors
+			.filter(rule => !STATUS.includes([rule.scope].flat()[0]!))
+			.flatMap(rule => rule.settings.foreground ?? []);
+		const themeChroma = Math.max(...syntax.map(color => oklch(color.slice(0, 7)).c));
+
+		if (!MONOCHROME.includes(file)) {
+			it(`${file}: keeps every terminal color in its hue family`, () => {
+				for (const [family, name] of slots) {
+					const { h } = oklch(ansi(theme, name));
+					assert.ok(
+						FAMILIES[family]!.some(([from, to]) => h >= from && h <= to),
+						`${name} ${ansi(theme, name)} has hue ${h.toFixed(0)}`
+					);
+				}
+			});
+		}
+
+		it(`${file}: no terminal color is more saturated than the theme`, () => {
+			for (const [family, name] of slots) {
+				// Red and green must read as colors even in a muted theme.
+				const limit = Math.max(
+					themeChroma + 0.03,
+					family === "red" || family === "green" ? 0.12 : 0
+				);
+				const { c } = oklch(ansi(theme, name));
+				assert.ok(
+					c <= limit,
+					`${name} ${ansi(theme, name)}: chroma ${c.toFixed(3)} > ${limit.toFixed(3)}`
+				);
 			}
 		});
 	}
