@@ -117,3 +117,28 @@ export function oklch(hex: string): { l: number; c: number; h: number } {
 	const h = (Math.atan2(B, A) * 180) / Math.PI;
 	return { l: L, c: Math.hypot(A, B), h: h < 0 ? h + 360 : h };
 }
+
+/** The sRGB hex color for an OKLCH color, or undefined when it's outside the sRGB gamut. */
+export function fromOklch(l: number, c: number, h: number): string | undefined {
+	const a = c * Math.cos((h * Math.PI) / 180);
+	const b = c * Math.sin((h * Math.PI) / 180);
+	const lms = [
+		(l + 0.3963377774 * a + 0.2158037573 * b) ** 3,
+		(l - 0.1055613458 * a - 0.0638541728 * b) ** 3,
+		(l - 0.0894841775 * a - 1.291485548 * b) ** 3
+	] as const;
+	const rgb = [
+		4.0767416621 * lms[0] - 3.3077115913 * lms[1] + 0.2309699292 * lms[2],
+		-1.2684380046 * lms[0] + 2.6097574011 * lms[1] - 0.3413193965 * lms[2],
+		-0.0041960863 * lms[0] - 0.7034186147 * lms[1] + 1.707614701 * lms[2]
+	];
+	if (rgb.some(v => v < -0.0005 || v > 1.0005)) return undefined;
+	const encode = (v: number) => {
+		const linear = Math.min(1, Math.max(0, v));
+		const gamma = linear <= 0.0031308 ? 12.92 * linear : 1.055 * linear ** (1 / 2.4) - 0.055;
+		return Math.round(gamma * 255)
+			.toString(16)
+			.padStart(2, "0");
+	};
+	return `#${rgb.map(encode).join("")}`;
+}

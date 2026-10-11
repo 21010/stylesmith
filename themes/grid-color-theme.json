@@ -46,8 +46,8 @@
 		"editorBracketPairGuide.activeBackground2": "#3ee0f099",
 		"editorBracketHighlight.foreground3": "#8fd6e0",
 		"editorBracketPairGuide.activeBackground3": "#8fd6e099",
-		"editorBracketHighlight.foreground4": "#7fc8d4",
-		"editorBracketPairGuide.activeBackground4": "#7fc8d499",
+		"editorBracketHighlight.foreground4": "#5acce2",
+		"editorBracketPairGuide.activeBackground4": "#5acce299",
 		"editorBracketHighlight.foreground5": "#b8eef4",
 		"editorBracketPairGuide.activeBackground5": "#b8eef499",
 		"editorBracketHighlight.foreground6": "#a0e8f0",
@@ -82,11 +82,11 @@
 		"peekViewResult.selectionBackground": "#2fd8ea33",
 		"peekViewResult.matchHighlightBackground": "#2fd8ea40",
 		"peekViewEditor.matchHighlightBackground": "#2fd8ea40",
-		"symbolIcon.classForeground": "#7fc8d4",
-		"symbolIcon.interfaceForeground": "#7fc8d4",
-		"symbolIcon.structForeground": "#7fc8d4",
-		"symbolIcon.enumeratorForeground": "#7fc8d4",
-		"symbolIcon.typeParameterForeground": "#7fc8d4",
+		"symbolIcon.classForeground": "#5acce2",
+		"symbolIcon.interfaceForeground": "#5acce2",
+		"symbolIcon.structForeground": "#5acce2",
+		"symbolIcon.enumeratorForeground": "#5acce2",
+		"symbolIcon.typeParameterForeground": "#5acce2",
 		"symbolIcon.functionForeground": "#e2f1f5",
 		"symbolIcon.methodForeground": "#e2f1f5",
 		"symbolIcon.constructorForeground": "#e2f1f5",
@@ -237,7 +237,7 @@
 		"gitDecoration.renamedResourceForeground": "#7fd6a3",
 		"gitDecoration.stageModifiedResourceForeground": "#a9a6f2",
 		"gitDecoration.stageDeletedResourceForeground": "#ff8a5c",
-		"gitDecoration.submoduleResourceForeground": "#7fc8d4",
+		"gitDecoration.submoduleResourceForeground": "#5acce2",
 		"debugIcon.breakpointForeground": "#ff6b6b",
 		"debugIcon.breakpointDisabledForeground": "#6f8a93",
 		"debugIcon.breakpointUnverifiedForeground": "#6f8a93",
@@ -263,7 +263,7 @@
 		"debugIcon.stepOutForeground": "#2fd8ea",
 		"debugIcon.stepBackForeground": "#2fd8ea",
 		"debugTokenExpression.name": "#b6cdd3",
-		"debugTokenExpression.type": "#7fc8d4",
+		"debugTokenExpression.type": "#5acce2",
 		"debugTokenExpression.value": "#8aa3ab",
 		"debugTokenExpression.string": "#8fd6e0",
 		"debugTokenExpression.number": "#b8eef4",
@@ -314,7 +314,7 @@
 		"profileBadge.foreground": "#c8dde3",
 		"chart.line": "#2fd8ea",
 		"charts.green": "#7fd6a3",
-		"charts.purple": "#7fc8d4",
+		"charts.purple": "#5acce2",
 		"terminal.background": "#040506",
 		"terminal.foreground": "#c8dde3",
 		"terminalCursor.foreground": "#2fd8ea",
@@ -426,7 +426,7 @@
 				"entity.other.inherited-class"
 			],
 			"settings": {
-				"foreground": "#7fc8d4"
+				"foreground": "#5acce2"
 			}
 		},
 		{
@@ -553,9 +553,9 @@
 	"semanticTokenColors": {
 		"function": "#e2f1f5",
 		"method": "#e2f1f5",
-		"class": "#7fc8d4",
-		"interface": "#7fc8d4",
-		"type": "#7fc8d4",
+		"class": "#5acce2",
+		"interface": "#5acce2",
+		"type": "#5acce2",
 		"enumMember": "#b8eef4",
 		"property": "#b6cdd3",
 		"parameter": {

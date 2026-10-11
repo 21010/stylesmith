@@ -22,3 +22,9 @@ export const MAX_BODY_CONTRAST = 16;
  * blindness. About 2 is barely noticeable; 15 and more is clearly different at a glance.
  */
 export const MIN_COLOR_DIFFERENCE = 15;
+
+/**
+ * Syntax roles (keyword, string, function, type, number, property) must differ at least this
+ * much (CIE76 ΔE) within a theme, so a JSON key never looks like its value (#116).
+ */
+export const MIN_SYNTAX_DIFFERENCE = 10;

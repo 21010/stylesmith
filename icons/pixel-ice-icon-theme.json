@@ -42,13 +42,13 @@
 			"fontCharacter": "\\e004",
 			"fontColor": "#eef6ff"
 		},
-		"_e005_a8dcf5": {
+		"_e005_afdde4": {
 			"fontCharacter": "\\e005",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e006_b4d6f0": {
+		"_e006_b1d6f6": {
 			"fontCharacter": "\\e006",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
 		"_e007_eef6ff": {
 			"fontCharacter": "\\e007",
@@ -70,9 +70,9 @@
 			"fontCharacter": "\\e00b",
 			"fontColor": "#eef6ff"
 		},
-		"_e00c_b4d6f0": {
+		"_e00c_b1d6f6": {
 			"fontCharacter": "\\e00c",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
 		"_e00d_eef6ff": {
 			"fontCharacter": "\\e00d",
@@ -122,29 +122,29 @@
 			"fontCharacter": "\\e018",
 			"fontColor": "#eef6ff"
 		},
-		"_e019_a8dcf5": {
+		"_e019_afdde4": {
 			"fontCharacter": "\\e019",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e01a_a8dcf5": {
+		"_e01a_afdde4": {
 			"fontCharacter": "\\e01a",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e01b_a8dcf5": {
+		"_e01b_afdde4": {
 			"fontCharacter": "\\e01b",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e01c_c2d4ff": {
+		"_e01c_c6d2ff": {
 			"fontCharacter": "\\e01c",
-			"fontColor": "#c2d4ff"
+			"fontColor": "#c6d2ff"
 		},
-		"_e01d_c2d4ff": {
+		"_e01d_c6d2ff": {
 			"fontCharacter": "\\e01d",
-			"fontColor": "#c2d4ff"
+			"fontColor": "#c6d2ff"
 		},
-		"_e01e_c2d4ff": {
+		"_e01e_c6d2ff": {
 			"fontCharacter": "\\e01e",
-			"fontColor": "#c2d4ff"
+			"fontColor": "#c6d2ff"
 		},
 		"_e01f_eef6ff": {
 			"fontCharacter": "\\e01f",
@@ -170,213 +170,213 @@
 			"fontCharacter": "\\e024",
 			"fontColor": "#eef6ff"
 		},
-		"_e025_c2d4ff": {
+		"_e025_c6d2ff": {
 			"fontCharacter": "\\e025",
-			"fontColor": "#c2d4ff"
+			"fontColor": "#c6d2ff"
 		},
-		"_e026_b4d6f0": {
+		"_e026_b1d6f6": {
 			"fontCharacter": "\\e026",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e027_a8dcf5": {
+		"_e027_afdde4": {
 			"fontCharacter": "\\e027",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e028_b4d6f0": {
+		"_e028_b1d6f6": {
 			"fontCharacter": "\\e028",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
 		"_e029_8196ab": {
 			"fontCharacter": "\\e029",
 			"fontColor": "#8196ab"
 		},
-		"_e02a_cfe0f0": {
+		"_e02a_cbdcec": {
 			"fontCharacter": "\\e02a",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e02b_cfe0f0": {
+		"_e02b_cbdcec": {
 			"fontCharacter": "\\e02b",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e02c_cfe0f0": {
+		"_e02c_cbdcec": {
 			"fontCharacter": "\\e02c",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e02d_a8dcf5": {
+		"_e02d_afdde4": {
 			"fontCharacter": "\\e02d",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e02e_b4d6f0": {
+		"_e02e_b1d6f6": {
 			"fontCharacter": "\\e02e",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e02f_b4d6f0": {
+		"_e02f_b1d6f6": {
 			"fontCharacter": "\\e02f",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e030_b4d6f0": {
+		"_e030_b1d6f6": {
 			"fontCharacter": "\\e030",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e031_b4d6f0": {
+		"_e031_b1d6f6": {
 			"fontCharacter": "\\e031",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e032_b4d6f0": {
+		"_e032_b1d6f6": {
 			"fontCharacter": "\\e032",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e033_b4d6f0": {
+		"_e033_b1d6f6": {
 			"fontCharacter": "\\e033",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e034_b4d6f0": {
+		"_e034_b1d6f6": {
 			"fontCharacter": "\\e034",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e035_b4d6f0": {
+		"_e035_b1d6f6": {
 			"fontCharacter": "\\e035",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e036_b4d6f0": {
+		"_e036_b1d6f6": {
 			"fontCharacter": "\\e036",
-			"fontColor": "#b4d6f0"
+			"fontColor": "#b1d6f6"
 		},
-		"_e037_a8dcf5": {
+		"_e037_afdde4": {
 			"fontCharacter": "\\e037",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e038_a8dcf5": {
+		"_e038_afdde4": {
 			"fontCharacter": "\\e038",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e039_a8dcf5": {
+		"_e039_afdde4": {
 			"fontCharacter": "\\e039",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e03a_a8dcf5": {
+		"_e03a_afdde4": {
 			"fontCharacter": "\\e03a",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e03b_a8dcf5": {
+		"_e03b_afdde4": {
 			"fontCharacter": "\\e03b",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e03c_a8dcf5": {
+		"_e03c_afdde4": {
 			"fontCharacter": "\\e03c",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e03d_a8dcf5": {
+		"_e03d_afdde4": {
 			"fontCharacter": "\\e03d",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e03e_a8dcf5": {
+		"_e03e_afdde4": {
 			"fontCharacter": "\\e03e",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e03f_a8dcf5": {
+		"_e03f_afdde4": {
 			"fontCharacter": "\\e03f",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e040_a8dcf5": {
+		"_e040_afdde4": {
 			"fontCharacter": "\\e040",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e041_a8dcf5": {
+		"_e041_afdde4": {
 			"fontCharacter": "\\e041",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e042_a8dcf5": {
+		"_e042_afdde4": {
 			"fontCharacter": "\\e042",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e043_a8dcf5": {
+		"_e043_afdde4": {
 			"fontCharacter": "\\e043",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e044_a8dcf5": {
+		"_e044_afdde4": {
 			"fontCharacter": "\\e044",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e045_a8dcf5": {
+		"_e045_afdde4": {
 			"fontCharacter": "\\e045",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e046_a8dcf5": {
+		"_e046_afdde4": {
 			"fontCharacter": "\\e046",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e047_a8dcf5": {
+		"_e047_afdde4": {
 			"fontCharacter": "\\e047",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e048_a8dcf5": {
+		"_e048_afdde4": {
 			"fontCharacter": "\\e048",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e049_a8dcf5": {
+		"_e049_afdde4": {
 			"fontCharacter": "\\e049",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e04a_a8dcf5": {
+		"_e04a_afdde4": {
 			"fontCharacter": "\\e04a",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e04b_a8dcf5": {
+		"_e04b_afdde4": {
 			"fontCharacter": "\\e04b",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e04c_a8dcf5": {
+		"_e04c_afdde4": {
 			"fontCharacter": "\\e04c",
-			"fontColor": "#a8dcf5"
+			"fontColor": "#afdde4"
 		},
-		"_e04d_cfe0f0": {
+		"_e04d_cbdcec": {
 			"fontCharacter": "\\e04d",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e04e_cfe0f0": {
+		"_e04e_cbdcec": {
 			"fontCharacter": "\\e04e",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e04f_cfe0f0": {
+		"_e04f_cbdcec": {
 			"fontCharacter": "\\e04f",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e050_cfe0f0": {
+		"_e050_cbdcec": {
 			"fontCharacter": "\\e050",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e051_cfe0f0": {
+		"_e051_cbdcec": {
 			"fontCharacter": "\\e051",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e052_cfe0f0": {
+		"_e052_cbdcec": {
 			"fontCharacter": "\\e052",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e053_cfe0f0": {
+		"_e053_cbdcec": {
 			"fontCharacter": "\\e053",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e054_cfe0f0": {
+		"_e054_cbdcec": {
 			"fontCharacter": "\\e054",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e055_cfe0f0": {
+		"_e055_cbdcec": {
 			"fontCharacter": "\\e055",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e056_cfe0f0": {
+		"_e056_cbdcec": {
 			"fontCharacter": "\\e056",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e057_cfe0f0": {
+		"_e057_cbdcec": {
 			"fontCharacter": "\\e057",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
-		"_e058_cfe0f0": {
+		"_e058_cbdcec": {
 			"fontCharacter": "\\e058",
-			"fontColor": "#cfe0f0"
+			"fontColor": "#cbdcec"
 		},
 		"_e059_eef6ff": {
 			"fontCharacter": "\\e059",
@@ -674,13 +674,13 @@
 			"fontCharacter": "\\e004",
 			"fontColor": "#81858a"
 		},
-		"_e005_688898_light": {
+		"_e005_6d898d_light": {
 			"fontCharacter": "\\e005",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e006_718797_light": {
+		"_e006_70879b_light": {
 			"fontCharacter": "\\e006",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
 		"_e007_81858a_light": {
 			"fontCharacter": "\\e007",
@@ -702,9 +702,9 @@
 			"fontCharacter": "\\e00b",
 			"fontColor": "#81858a"
 		},
-		"_e00c_718797_light": {
+		"_e00c_70879b_light": {
 			"fontCharacter": "\\e00c",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
 		"_e00d_81858a_light": {
 			"fontCharacter": "\\e00d",
@@ -754,29 +754,29 @@
 			"fontCharacter": "\\e018",
 			"fontColor": "#81858a"
 		},
-		"_e019_688898_light": {
+		"_e019_6d898d_light": {
 			"fontCharacter": "\\e019",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e01a_688898_light": {
+		"_e01a_6d898d_light": {
 			"fontCharacter": "\\e01a",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e01b_688898_light": {
+		"_e01b_6d898d_light": {
 			"fontCharacter": "\\e01b",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e01c_78839e_light": {
+		"_e01c_7d84a1_light": {
 			"fontCharacter": "\\e01c",
-			"fontColor": "#78839e"
+			"fontColor": "#7d84a1"
 		},
-		"_e01d_78839e_light": {
+		"_e01d_7d84a1_light": {
 			"fontCharacter": "\\e01d",
-			"fontColor": "#78839e"
+			"fontColor": "#7d84a1"
 		},
-		"_e01e_78839e_light": {
+		"_e01e_7d84a1_light": {
 			"fontCharacter": "\\e01e",
-			"fontColor": "#78839e"
+			"fontColor": "#7d84a1"
 		},
 		"_e01f_81858a_light": {
 			"fontCharacter": "\\e01f",
@@ -802,21 +802,21 @@
 			"fontCharacter": "\\e024",
 			"fontColor": "#81858a"
 		},
-		"_e025_78839e_light": {
+		"_e025_7d84a1_light": {
 			"fontCharacter": "\\e025",
-			"fontColor": "#78839e"
+			"fontColor": "#7d84a1"
 		},
-		"_e026_718797_light": {
+		"_e026_70879b_light": {
 			"fontCharacter": "\\e026",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e027_688898_light": {
+		"_e027_6d898d_light": {
 			"fontCharacter": "\\e027",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e028_718797_light": {
+		"_e028_70879b_light": {
 			"fontCharacter": "\\e028",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
 		"_e029_74879a_light": {
 			"fontCharacter": "\\e029",
@@ -834,133 +834,133 @@
 			"fontCharacter": "\\e02c",
 			"fontColor": "#7c8690"
 		},
-		"_e02d_688898_light": {
+		"_e02d_6d898d_light": {
 			"fontCharacter": "\\e02d",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e02e_718797_light": {
+		"_e02e_70879b_light": {
 			"fontCharacter": "\\e02e",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e02f_718797_light": {
+		"_e02f_70879b_light": {
 			"fontCharacter": "\\e02f",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e030_718797_light": {
+		"_e030_70879b_light": {
 			"fontCharacter": "\\e030",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e031_718797_light": {
+		"_e031_70879b_light": {
 			"fontCharacter": "\\e031",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e032_718797_light": {
+		"_e032_70879b_light": {
 			"fontCharacter": "\\e032",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e033_718797_light": {
+		"_e033_70879b_light": {
 			"fontCharacter": "\\e033",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e034_718797_light": {
+		"_e034_70879b_light": {
 			"fontCharacter": "\\e034",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e035_718797_light": {
+		"_e035_70879b_light": {
 			"fontCharacter": "\\e035",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e036_718797_light": {
+		"_e036_70879b_light": {
 			"fontCharacter": "\\e036",
-			"fontColor": "#718797"
+			"fontColor": "#70879b"
 		},
-		"_e037_688898_light": {
+		"_e037_6d898d_light": {
 			"fontCharacter": "\\e037",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e038_688898_light": {
+		"_e038_6d898d_light": {
 			"fontCharacter": "\\e038",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e039_688898_light": {
+		"_e039_6d898d_light": {
 			"fontCharacter": "\\e039",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e03a_688898_light": {
+		"_e03a_6d898d_light": {
 			"fontCharacter": "\\e03a",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e03b_688898_light": {
+		"_e03b_6d898d_light": {
 			"fontCharacter": "\\e03b",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e03c_688898_light": {
+		"_e03c_6d898d_light": {
 			"fontCharacter": "\\e03c",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e03d_688898_light": {
+		"_e03d_6d898d_light": {
 			"fontCharacter": "\\e03d",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e03e_688898_light": {
+		"_e03e_6d898d_light": {
 			"fontCharacter": "\\e03e",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e03f_688898_light": {
+		"_e03f_6d898d_light": {
 			"fontCharacter": "\\e03f",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e040_688898_light": {
+		"_e040_6d898d_light": {
 			"fontCharacter": "\\e040",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e041_688898_light": {
+		"_e041_6d898d_light": {
 			"fontCharacter": "\\e041",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e042_688898_light": {
+		"_e042_6d898d_light": {
 			"fontCharacter": "\\e042",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e043_688898_light": {
+		"_e043_6d898d_light": {
 			"fontCharacter": "\\e043",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e044_688898_light": {
+		"_e044_6d898d_light": {
 			"fontCharacter": "\\e044",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e045_688898_light": {
+		"_e045_6d898d_light": {
 			"fontCharacter": "\\e045",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e046_688898_light": {
+		"_e046_6d898d_light": {
 			"fontCharacter": "\\e046",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e047_688898_light": {
+		"_e047_6d898d_light": {
 			"fontCharacter": "\\e047",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e048_688898_light": {
+		"_e048_6d898d_light": {
 			"fontCharacter": "\\e048",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e049_688898_light": {
+		"_e049_6d898d_light": {
 			"fontCharacter": "\\e049",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e04a_688898_light": {
+		"_e04a_6d898d_light": {
 			"fontCharacter": "\\e04a",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e04b_688898_light": {
+		"_e04b_6d898d_light": {
 			"fontCharacter": "\\e04b",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
-		"_e04c_688898_light": {
+		"_e04c_6d898d_light": {
 			"fontCharacter": "\\e04c",
-			"fontColor": "#688898"
+			"fontColor": "#6d898d"
 		},
 		"_e04d_7c8690_light": {
 			"fontCharacter": "\\e04d",
@@ -1288,12 +1288,12 @@
 		"cts": "_e002_eef6ff",
 		"jsx": "_e003_eef6ff",
 		"tsx": "_e004_eef6ff",
-		"json": "_e005_a8dcf5",
-		"jsonc": "_e005_a8dcf5",
-		"json5": "_e005_a8dcf5",
-		"md": "_e006_b4d6f0",
-		"mdx": "_e006_b4d6f0",
-		"markdown": "_e006_b4d6f0",
+		"json": "_e005_afdde4",
+		"jsonc": "_e005_afdde4",
+		"json5": "_e005_afdde4",
+		"md": "_e006_b1d6f6",
+		"mdx": "_e006_b1d6f6",
+		"markdown": "_e006_b1d6f6",
 		"html": "_e007_eef6ff",
 		"htm": "_e007_eef6ff",
 		"css": "_e008_eef6ff",
@@ -1303,7 +1303,7 @@
 		"py": "_e00b_eef6ff",
 		"pyi": "_e00b_eef6ff",
 		"pyw": "_e00b_eef6ff",
-		"ipynb": "_e00c_b4d6f0",
+		"ipynb": "_e00c_b1d6f6",
 		"go": "_e00d_eef6ff",
 		"rs": "_e00e_eef6ff",
 		"java": "_e00f_eef6ff",
@@ -1329,50 +1329,50 @@
 		"ps1": "_e018_eef6ff",
 		"psm1": "_e018_eef6ff",
 		"psd1": "_e018_eef6ff",
-		"yml": "_e019_a8dcf5",
-		"yaml": "_e019_a8dcf5",
-		"toml": "_e01a_a8dcf5",
-		"xml": "_e01b_a8dcf5",
-		"xsd": "_e01b_a8dcf5",
-		"plist": "_e01b_a8dcf5",
-		"svg": "_e01c_c2d4ff",
-		"png": "_e01d_c2d4ff",
-		"jpg": "_e01d_c2d4ff",
-		"jpeg": "_e01d_c2d4ff",
-		"gif": "_e01d_c2d4ff",
-		"webp": "_e01d_c2d4ff",
-		"ico": "_e01d_c2d4ff",
-		"bmp": "_e01d_c2d4ff",
-		"avif": "_e01d_c2d4ff",
-		"woff": "_e01e_c2d4ff",
-		"woff2": "_e01e_c2d4ff",
-		"ttf": "_e01e_c2d4ff",
-		"otf": "_e01e_c2d4ff",
-		"eot": "_e01e_c2d4ff",
+		"yml": "_e019_afdde4",
+		"yaml": "_e019_afdde4",
+		"toml": "_e01a_afdde4",
+		"xml": "_e01b_afdde4",
+		"xsd": "_e01b_afdde4",
+		"plist": "_e01b_afdde4",
+		"svg": "_e01c_c6d2ff",
+		"png": "_e01d_c6d2ff",
+		"jpg": "_e01d_c6d2ff",
+		"jpeg": "_e01d_c6d2ff",
+		"gif": "_e01d_c6d2ff",
+		"webp": "_e01d_c6d2ff",
+		"ico": "_e01d_c6d2ff",
+		"bmp": "_e01d_c6d2ff",
+		"avif": "_e01d_c6d2ff",
+		"woff": "_e01e_c6d2ff",
+		"woff2": "_e01e_c6d2ff",
+		"ttf": "_e01e_c6d2ff",
+		"otf": "_e01e_c6d2ff",
+		"eot": "_e01e_c6d2ff",
 		"sql": "_e01f_eef6ff",
 		"vue": "_e020_eef6ff",
 		"svelte": "_e021_eef6ff",
 		"lua": "_e022_eef6ff",
 		"dart": "_e023_eef6ff",
 		"swift": "_e024_eef6ff",
-		"zip": "_e025_c2d4ff",
-		"tar": "_e025_c2d4ff",
-		"gz": "_e025_c2d4ff",
-		"tgz": "_e025_c2d4ff",
-		"7z": "_e025_c2d4ff",
-		"rar": "_e025_c2d4ff",
-		"xz": "_e025_c2d4ff",
-		"vsix": "_e025_c2d4ff",
-		"pdf": "_e026_b4d6f0",
-		"csv": "_e027_a8dcf5",
-		"tsv": "_e027_a8dcf5",
-		"txt": "_e028_b4d6f0",
-		"log": "_e028_b4d6f0",
+		"zip": "_e025_c6d2ff",
+		"tar": "_e025_c6d2ff",
+		"gz": "_e025_c6d2ff",
+		"tgz": "_e025_c6d2ff",
+		"7z": "_e025_c6d2ff",
+		"rar": "_e025_c6d2ff",
+		"xz": "_e025_c6d2ff",
+		"vsix": "_e025_c6d2ff",
+		"pdf": "_e026_b1d6f6",
+		"csv": "_e027_afdde4",
+		"tsv": "_e027_afdde4",
+		"txt": "_e028_b1d6f6",
+		"log": "_e028_b1d6f6",
 		"lock": "_e029_8196ab",
-		"env": "_e02a_cfe0f0",
-		"dockerfile": "_e02b_cfe0f0",
-		"csproj": "_e042_a8dcf5",
-		"sln": "_e042_a8dcf5",
+		"env": "_e02a_cbdcec",
+		"dockerfile": "_e02b_cbdcec",
+		"csproj": "_e042_afdde4",
+		"sln": "_e042_afdde4",
 		"instructions.md": "_e05c_9fe6ff",
 		"prompt.md": "_e05c_9fe6ff",
 		"agent.md": "_e05c_9fe6ff",
@@ -1395,127 +1395,127 @@
 		"go.sum": "_e029_8196ab",
 		"Gemfile.lock": "_e029_8196ab",
 		"composer.lock": "_e029_8196ab",
-		".env": "_e02a_cfe0f0",
-		".env.local": "_e02a_cfe0f0",
-		".env.example": "_e02a_cfe0f0",
-		".env.development": "_e02a_cfe0f0",
-		".env.production": "_e02a_cfe0f0",
-		"Dockerfile": "_e02b_cfe0f0",
-		"Containerfile": "_e02b_cfe0f0",
-		"docker-compose.yml": "_e02b_cfe0f0",
-		"docker-compose.yaml": "_e02b_cfe0f0",
-		"compose.yml": "_e02b_cfe0f0",
-		"compose.yaml": "_e02b_cfe0f0",
-		".dockerignore": "_e02b_cfe0f0",
-		".gitignore": "_e02c_cfe0f0",
-		".gitattributes": "_e02c_cfe0f0",
-		".gitmodules": "_e02c_cfe0f0",
-		".git-blame-ignore-revs": "_e02c_cfe0f0",
-		".cursorignore": "_e02c_cfe0f0",
-		"package.json": "_e02d_a8dcf5",
-		".npmrc": "_e02d_a8dcf5",
-		"LICENSE": "_e02e_b4d6f0",
-		"LICENSE.md": "_e02e_b4d6f0",
-		"LICENSE.txt": "_e02e_b4d6f0",
-		"COPYING": "_e02e_b4d6f0",
-		"README.md": "_e02f_b4d6f0",
-		"README": "_e02f_b4d6f0",
-		"README.rst": "_e02f_b4d6f0",
-		"README.txt": "_e02f_b4d6f0",
-		"CHANGELOG.md": "_e030_b4d6f0",
-		"CHANGES.md": "_e030_b4d6f0",
-		"HISTORY.md": "_e030_b4d6f0",
-		"CONTRIBUTING.md": "_e031_b4d6f0",
-		"SECURITY.md": "_e032_b4d6f0",
-		"CODE_OF_CONDUCT.md": "_e033_b4d6f0",
-		"CODEOWNERS": "_e034_b4d6f0",
-		".github/CODEOWNERS": "_e034_b4d6f0",
-		"mkdocs.yml": "_e035_b4d6f0",
-		"llms.txt": "_e036_b4d6f0",
-		"llms-full.txt": "_e036_b4d6f0",
-		"pyproject.toml": "_e037_a8dcf5",
-		"requirements.txt": "_e038_a8dcf5",
-		"requirements-dev.txt": "_e038_a8dcf5",
-		"dev-requirements.txt": "_e038_a8dcf5",
-		"setup.py": "_e039_a8dcf5",
-		"setup.cfg": "_e039_a8dcf5",
-		"Pipfile": "_e03a_a8dcf5",
-		"environment.yml": "_e03b_a8dcf5",
-		"environment.yaml": "_e03b_a8dcf5",
-		"conda.yaml": "_e03b_a8dcf5",
-		"conda.yml": "_e03b_a8dcf5",
-		"Cargo.toml": "_e03c_a8dcf5",
-		"go.mod": "_e03d_a8dcf5",
-		"pom.xml": "_e03e_a8dcf5",
-		"build.gradle": "_e03f_a8dcf5",
-		"build.gradle.kts": "_e03f_a8dcf5",
-		"settings.gradle": "_e03f_a8dcf5",
-		"settings.gradle.kts": "_e03f_a8dcf5",
-		"gradle.properties": "_e03f_a8dcf5",
-		"gradlew": "_e03f_a8dcf5",
-		"gradlew.bat": "_e03f_a8dcf5",
-		"composer.json": "_e040_a8dcf5",
-		"Gemfile": "_e041_a8dcf5",
-		"global.json": "_e042_a8dcf5",
-		"nuget.config": "_e042_a8dcf5",
-		"tsconfig.json": "_e043_a8dcf5",
-		"jsconfig.json": "_e043_a8dcf5",
-		"tsconfig.build.json": "_e043_a8dcf5",
-		"eslint.config.js": "_e044_a8dcf5",
-		"eslint.config.mjs": "_e044_a8dcf5",
-		"eslint.config.cjs": "_e044_a8dcf5",
-		"eslint.config.ts": "_e044_a8dcf5",
-		".eslintrc.json": "_e044_a8dcf5",
-		".eslintrc.js": "_e044_a8dcf5",
-		".eslintrc.cjs": "_e044_a8dcf5",
-		".eslintrc.yml": "_e044_a8dcf5",
-		".prettierrc": "_e045_a8dcf5",
-		".prettierrc.json": "_e045_a8dcf5",
-		".prettierrc.yaml": "_e045_a8dcf5",
-		".prettierrc.yml": "_e045_a8dcf5",
-		"prettier.config.js": "_e045_a8dcf5",
-		"prettier.config.mjs": "_e045_a8dcf5",
-		"vite.config.js": "_e046_a8dcf5",
-		"vite.config.mjs": "_e046_a8dcf5",
-		"vite.config.ts": "_e046_a8dcf5",
-		"vitest.config.js": "_e047_a8dcf5",
-		"vitest.config.mjs": "_e047_a8dcf5",
-		"vitest.config.ts": "_e047_a8dcf5",
-		"jest.config.js": "_e048_a8dcf5",
-		"jest.config.mjs": "_e048_a8dcf5",
-		"jest.config.ts": "_e048_a8dcf5",
-		"webpack.config.js": "_e049_a8dcf5",
-		"webpack.config.mjs": "_e049_a8dcf5",
-		"webpack.config.ts": "_e049_a8dcf5",
-		"next.config.js": "_e04a_a8dcf5",
-		"next.config.mjs": "_e04a_a8dcf5",
-		"next.config.ts": "_e04a_a8dcf5",
-		"babel.config.js": "_e04b_a8dcf5",
-		"babel.config.json": "_e04b_a8dcf5",
-		".babelrc": "_e04b_a8dcf5",
-		".editorconfig": "_e04c_a8dcf5",
-		"Makefile": "_e04d_cfe0f0",
-		"GNUmakefile": "_e04d_cfe0f0",
-		"CMakeLists.txt": "_e04e_cfe0f0",
-		"meson.build": "_e04f_cfe0f0",
-		"justfile": "_e050_cfe0f0",
-		"Rakefile": "_e051_cfe0f0",
-		"Procfile": "_e052_cfe0f0",
-		"Vagrantfile": "_e053_cfe0f0",
-		".gitlab-ci.yml": "_e054_cfe0f0",
-		"Jenkinsfile": "_e054_cfe0f0",
-		"azure-pipelines.yml": "_e054_cfe0f0",
-		".travis.yml": "_e054_cfe0f0",
-		".pre-commit-config.yaml": "_e055_cfe0f0",
-		"dependabot.yml": "_e056_cfe0f0",
-		".github/dependabot.yml": "_e056_cfe0f0",
-		"renovate.json": "_e056_cfe0f0",
-		"codecov.yml": "_e057_cfe0f0",
-		".codecov.yml": "_e057_cfe0f0",
-		".nvmrc": "_e058_cfe0f0",
-		".node-version": "_e058_cfe0f0",
-		".python-version": "_e058_cfe0f0",
-		".tool-versions": "_e058_cfe0f0",
+		".env": "_e02a_cbdcec",
+		".env.local": "_e02a_cbdcec",
+		".env.example": "_e02a_cbdcec",
+		".env.development": "_e02a_cbdcec",
+		".env.production": "_e02a_cbdcec",
+		"Dockerfile": "_e02b_cbdcec",
+		"Containerfile": "_e02b_cbdcec",
+		"docker-compose.yml": "_e02b_cbdcec",
+		"docker-compose.yaml": "_e02b_cbdcec",
+		"compose.yml": "_e02b_cbdcec",
+		"compose.yaml": "_e02b_cbdcec",
+		".dockerignore": "_e02b_cbdcec",
+		".gitignore": "_e02c_cbdcec",
+		".gitattributes": "_e02c_cbdcec",
+		".gitmodules": "_e02c_cbdcec",
+		".git-blame-ignore-revs": "_e02c_cbdcec",
+		".cursorignore": "_e02c_cbdcec",
+		"package.json": "_e02d_afdde4",
+		".npmrc": "_e02d_afdde4",
+		"LICENSE": "_e02e_b1d6f6",
+		"LICENSE.md": "_e02e_b1d6f6",
+		"LICENSE.txt": "_e02e_b1d6f6",
+		"COPYING": "_e02e_b1d6f6",
+		"README.md": "_e02f_b1d6f6",
+		"README": "_e02f_b1d6f6",
+		"README.rst": "_e02f_b1d6f6",
+		"README.txt": "_e02f_b1d6f6",
+		"CHANGELOG.md": "_e030_b1d6f6",
+		"CHANGES.md": "_e030_b1d6f6",
+		"HISTORY.md": "_e030_b1d6f6",
+		"CONTRIBUTING.md": "_e031_b1d6f6",
+		"SECURITY.md": "_e032_b1d6f6",
+		"CODE_OF_CONDUCT.md": "_e033_b1d6f6",
+		"CODEOWNERS": "_e034_b1d6f6",
+		".github/CODEOWNERS": "_e034_b1d6f6",
+		"mkdocs.yml": "_e035_b1d6f6",
+		"llms.txt": "_e036_b1d6f6",
+		"llms-full.txt": "_e036_b1d6f6",
+		"pyproject.toml": "_e037_afdde4",
+		"requirements.txt": "_e038_afdde4",
+		"requirements-dev.txt": "_e038_afdde4",
+		"dev-requirements.txt": "_e038_afdde4",
+		"setup.py": "_e039_afdde4",
+		"setup.cfg": "_e039_afdde4",
+		"Pipfile": "_e03a_afdde4",
+		"environment.yml": "_e03b_afdde4",
+		"environment.yaml": "_e03b_afdde4",
+		"conda.yaml": "_e03b_afdde4",
+		"conda.yml": "_e03b_afdde4",
+		"Cargo.toml": "_e03c_afdde4",
+		"go.mod": "_e03d_afdde4",
+		"pom.xml": "_e03e_afdde4",
+		"build.gradle": "_e03f_afdde4",
+		"build.gradle.kts": "_e03f_afdde4",
+		"settings.gradle": "_e03f_afdde4",
+		"settings.gradle.kts": "_e03f_afdde4",
+		"gradle.properties": "_e03f_afdde4",
+		"gradlew": "_e03f_afdde4",
+		"gradlew.bat": "_e03f_afdde4",
+		"composer.json": "_e040_afdde4",
+		"Gemfile": "_e041_afdde4",
+		"global.json": "_e042_afdde4",
+		"nuget.config": "_e042_afdde4",
+		"tsconfig.json": "_e043_afdde4",
+		"jsconfig.json": "_e043_afdde4",
+		"tsconfig.build.json": "_e043_afdde4",
+		"eslint.config.js": "_e044_afdde4",
+		"eslint.config.mjs": "_e044_afdde4",
+		"eslint.config.cjs": "_e044_afdde4",
+		"eslint.config.ts": "_e044_afdde4",
+		".eslintrc.json": "_e044_afdde4",
+		".eslintrc.js": "_e044_afdde4",
+		".eslintrc.cjs": "_e044_afdde4",
+		".eslintrc.yml": "_e044_afdde4",
+		".prettierrc": "_e045_afdde4",
+		".prettierrc.json": "_e045_afdde4",
+		".prettierrc.yaml": "_e045_afdde4",
+		".prettierrc.yml": "_e045_afdde4",
+		"prettier.config.js": "_e045_afdde4",
+		"prettier.config.mjs": "_e045_afdde4",
+		"vite.config.js": "_e046_afdde4",
+		"vite.config.mjs": "_e046_afdde4",
+		"vite.config.ts": "_e046_afdde4",
+		"vitest.config.js": "_e047_afdde4",
+		"vitest.config.mjs": "_e047_afdde4",
+		"vitest.config.ts": "_e047_afdde4",
+		"jest.config.js": "_e048_afdde4",
+		"jest.config.mjs": "_e048_afdde4",
+		"jest.config.ts": "_e048_afdde4",
+		"webpack.config.js": "_e049_afdde4",
+		"webpack.config.mjs": "_e049_afdde4",
+		"webpack.config.ts": "_e049_afdde4",
+		"next.config.js": "_e04a_afdde4",
+		"next.config.mjs": "_e04a_afdde4",
+		"next.config.ts": "_e04a_afdde4",
+		"babel.config.js": "_e04b_afdde4",
+		"babel.config.json": "_e04b_afdde4",
+		".babelrc": "_e04b_afdde4",
+		".editorconfig": "_e04c_afdde4",
+		"Makefile": "_e04d_cbdcec",
+		"GNUmakefile": "_e04d_cbdcec",
+		"CMakeLists.txt": "_e04e_cbdcec",
+		"meson.build": "_e04f_cbdcec",
+		"justfile": "_e050_cbdcec",
+		"Rakefile": "_e051_cbdcec",
+		"Procfile": "_e052_cbdcec",
+		"Vagrantfile": "_e053_cbdcec",
+		".gitlab-ci.yml": "_e054_cbdcec",
+		"Jenkinsfile": "_e054_cbdcec",
+		"azure-pipelines.yml": "_e054_cbdcec",
+		".travis.yml": "_e054_cbdcec",
+		".pre-commit-config.yaml": "_e055_cbdcec",
+		"dependabot.yml": "_e056_cbdcec",
+		".github/dependabot.yml": "_e056_cbdcec",
+		"renovate.json": "_e056_cbdcec",
+		"codecov.yml": "_e057_cbdcec",
+		".codecov.yml": "_e057_cbdcec",
+		".nvmrc": "_e058_cbdcec",
+		".node-version": "_e058_cbdcec",
+		".python-version": "_e058_cbdcec",
+		".tool-versions": "_e058_cbdcec",
 		"conftest.py": "_e059_eef6ff",
 		"manage.py": "_e05a_eef6ff",
 		"__init__.py": "_e05b_eef6ff",
@@ -1542,9 +1542,9 @@
 		"typescript": "_e002_eef6ff",
 		"javascriptreact": "_e003_eef6ff",
 		"typescriptreact": "_e004_eef6ff",
-		"json": "_e005_a8dcf5",
-		"jsonc": "_e005_a8dcf5",
-		"markdown": "_e006_b4d6f0",
+		"json": "_e005_afdde4",
+		"jsonc": "_e005_afdde4",
+		"markdown": "_e006_b1d6f6",
 		"html": "_e007_eef6ff",
 		"css": "_e008_eef6ff",
 		"scss": "_e009_eef6ff",
@@ -1562,19 +1562,19 @@
 		"ruby": "_e016_eef6ff",
 		"shellscript": "_e017_eef6ff",
 		"powershell": "_e018_eef6ff",
-		"yaml": "_e019_a8dcf5",
-		"toml": "_e01a_a8dcf5",
-		"xml": "_e01b_a8dcf5",
+		"yaml": "_e019_afdde4",
+		"toml": "_e01a_afdde4",
+		"xml": "_e01b_afdde4",
 		"sql": "_e01f_eef6ff",
 		"vue": "_e020_eef6ff",
 		"svelte": "_e021_eef6ff",
 		"lua": "_e022_eef6ff",
 		"dart": "_e023_eef6ff",
 		"swift": "_e024_eef6ff",
-		"plaintext": "_e028_b4d6f0",
-		"log": "_e028_b4d6f0",
-		"dockerfile": "_e02b_cfe0f0",
-		"ignore": "_e02c_cfe0f0"
+		"plaintext": "_e028_b1d6f6",
+		"log": "_e028_b1d6f6",
+		"dockerfile": "_e02b_cbdcec",
+		"ignore": "_e02c_cbdcec"
 	},
 	"folderNames": {
 		"src": "_e065_9fe6ff",
@@ -1906,12 +1906,12 @@
 			"cts": "_e002_81858a_light",
 			"jsx": "_e003_81858a_light",
 			"tsx": "_e004_81858a_light",
-			"json": "_e005_688898_light",
-			"jsonc": "_e005_688898_light",
-			"json5": "_e005_688898_light",
-			"md": "_e006_718797_light",
-			"mdx": "_e006_718797_light",
-			"markdown": "_e006_718797_light",
+			"json": "_e005_6d898d_light",
+			"jsonc": "_e005_6d898d_light",
+			"json5": "_e005_6d898d_light",
+			"md": "_e006_70879b_light",
+			"mdx": "_e006_70879b_light",
+			"markdown": "_e006_70879b_light",
 			"html": "_e007_81858a_light",
 			"htm": "_e007_81858a_light",
 			"css": "_e008_81858a_light",
@@ -1921,7 +1921,7 @@
 			"py": "_e00b_81858a_light",
 			"pyi": "_e00b_81858a_light",
 			"pyw": "_e00b_81858a_light",
-			"ipynb": "_e00c_718797_light",
+			"ipynb": "_e00c_70879b_light",
 			"go": "_e00d_81858a_light",
 			"rs": "_e00e_81858a_light",
 			"java": "_e00f_81858a_light",
@@ -1947,50 +1947,50 @@
 			"ps1": "_e018_81858a_light",
 			"psm1": "_e018_81858a_light",
 			"psd1": "_e018_81858a_light",
-			"yml": "_e019_688898_light",
-			"yaml": "_e019_688898_light",
-			"toml": "_e01a_688898_light",
-			"xml": "_e01b_688898_light",
-			"xsd": "_e01b_688898_light",
-			"plist": "_e01b_688898_light",
-			"svg": "_e01c_78839e_light",
-			"png": "_e01d_78839e_light",
-			"jpg": "_e01d_78839e_light",
-			"jpeg": "_e01d_78839e_light",
-			"gif": "_e01d_78839e_light",
-			"webp": "_e01d_78839e_light",
-			"ico": "_e01d_78839e_light",
-			"bmp": "_e01d_78839e_light",
-			"avif": "_e01d_78839e_light",
-			"woff": "_e01e_78839e_light",
-			"woff2": "_e01e_78839e_light",
-			"ttf": "_e01e_78839e_light",
-			"otf": "_e01e_78839e_light",
-			"eot": "_e01e_78839e_light",
+			"yml": "_e019_6d898d_light",
+			"yaml": "_e019_6d898d_light",
+			"toml": "_e01a_6d898d_light",
+			"xml": "_e01b_6d898d_light",
+			"xsd": "_e01b_6d898d_light",
+			"plist": "_e01b_6d898d_light",
+			"svg": "_e01c_7d84a1_light",
+			"png": "_e01d_7d84a1_light",
+			"jpg": "_e01d_7d84a1_light",
+			"jpeg": "_e01d_7d84a1_light",
+			"gif": "_e01d_7d84a1_light",
+			"webp": "_e01d_7d84a1_light",
+			"ico": "_e01d_7d84a1_light",
+			"bmp": "_e01d_7d84a1_light",
+			"avif": "_e01d_7d84a1_light",
+			"woff": "_e01e_7d84a1_light",
+			"woff2": "_e01e_7d84a1_light",
+			"ttf": "_e01e_7d84a1_light",
+			"otf": "_e01e_7d84a1_light",
+			"eot": "_e01e_7d84a1_light",
 			"sql": "_e01f_81858a_light",
 			"vue": "_e020_81858a_light",
 			"svelte": "_e021_81858a_light",
 			"lua": "_e022_81858a_light",
 			"dart": "_e023_81858a_light",
 			"swift": "_e024_81858a_light",
-			"zip": "_e025_78839e_light",
-			"tar": "_e025_78839e_light",
-			"gz": "_e025_78839e_light",
-			"tgz": "_e025_78839e_light",
-			"7z": "_e025_78839e_light",
-			"rar": "_e025_78839e_light",
-			"xz": "_e025_78839e_light",
-			"vsix": "_e025_78839e_light",
-			"pdf": "_e026_718797_light",
-			"csv": "_e027_688898_light",
-			"tsv": "_e027_688898_light",
-			"txt": "_e028_718797_light",
-			"log": "_e028_718797_light",
+			"zip": "_e025_7d84a1_light",
+			"tar": "_e025_7d84a1_light",
+			"gz": "_e025_7d84a1_light",
+			"tgz": "_e025_7d84a1_light",
+			"7z": "_e025_7d84a1_light",
+			"rar": "_e025_7d84a1_light",
+			"xz": "_e025_7d84a1_light",
+			"vsix": "_e025_7d84a1_light",
+			"pdf": "_e026_70879b_light",
+			"csv": "_e027_6d898d_light",
+			"tsv": "_e027_6d898d_light",
+			"txt": "_e028_70879b_light",
+			"log": "_e028_70879b_light",
 			"lock": "_e029_74879a_light",
 			"env": "_e02a_7c8690_light",
 			"dockerfile": "_e02b_7c8690_light",
-			"csproj": "_e042_688898_light",
-			"sln": "_e042_688898_light",
+			"csproj": "_e042_6d898d_light",
+			"sln": "_e042_6d898d_light",
 			"instructions.md": "_e05c_5f8a99_light",
 			"prompt.md": "_e05c_5f8a99_light",
 			"agent.md": "_e05c_5f8a99_light",
@@ -2030,88 +2030,88 @@
 			".gitmodules": "_e02c_7c8690_light",
 			".git-blame-ignore-revs": "_e02c_7c8690_light",
 			".cursorignore": "_e02c_7c8690_light",
-			"package.json": "_e02d_688898_light",
-			".npmrc": "_e02d_688898_light",
-			"LICENSE": "_e02e_718797_light",
-			"LICENSE.md": "_e02e_718797_light",
-			"LICENSE.txt": "_e02e_718797_light",
-			"COPYING": "_e02e_718797_light",
-			"README.md": "_e02f_718797_light",
-			"README": "_e02f_718797_light",
-			"README.rst": "_e02f_718797_light",
-			"README.txt": "_e02f_718797_light",
-			"CHANGELOG.md": "_e030_718797_light",
-			"CHANGES.md": "_e030_718797_light",
-			"HISTORY.md": "_e030_718797_light",
-			"CONTRIBUTING.md": "_e031_718797_light",
-			"SECURITY.md": "_e032_718797_light",
-			"CODE_OF_CONDUCT.md": "_e033_718797_light",
-			"CODEOWNERS": "_e034_718797_light",
-			".github/CODEOWNERS": "_e034_718797_light",
-			"mkdocs.yml": "_e035_718797_light",
-			"llms.txt": "_e036_718797_light",
-			"llms-full.txt": "_e036_718797_light",
-			"pyproject.toml": "_e037_688898_light",
-			"requirements.txt": "_e038_688898_light",
-			"requirements-dev.txt": "_e038_688898_light",
-			"dev-requirements.txt": "_e038_688898_light",
-			"setup.py": "_e039_688898_light",
-			"setup.cfg": "_e039_688898_light",
-			"Pipfile": "_e03a_688898_light",
-			"environment.yml": "_e03b_688898_light",
-			"environment.yaml": "_e03b_688898_light",
-			"conda.yaml": "_e03b_688898_light",
-			"conda.yml": "_e03b_688898_light",
-			"Cargo.toml": "_e03c_688898_light",
-			"go.mod": "_e03d_688898_light",
-			"pom.xml": "_e03e_688898_light",
-			"build.gradle": "_e03f_688898_light",
-			"build.gradle.kts": "_e03f_688898_light",
-			"settings.gradle": "_e03f_688898_light",
-			"settings.gradle.kts": "_e03f_688898_light",
-			"gradle.properties": "_e03f_688898_light",
-			"gradlew": "_e03f_688898_light",
-			"gradlew.bat": "_e03f_688898_light",
-			"composer.json": "_e040_688898_light",
-			"Gemfile": "_e041_688898_light",
-			"global.json": "_e042_688898_light",
-			"nuget.config": "_e042_688898_light",
-			"tsconfig.json": "_e043_688898_light",
-			"jsconfig.json": "_e043_688898_light",
-			"tsconfig.build.json": "_e043_688898_light",
-			"eslint.config.js": "_e044_688898_light",
-			"eslint.config.mjs": "_e044_688898_light",
-			"eslint.config.cjs": "_e044_688898_light",
-			"eslint.config.ts": "_e044_688898_light",
-			".eslintrc.json": "_e044_688898_light",
-			".eslintrc.js": "_e044_688898_light",
-			".eslintrc.cjs": "_e044_688898_light",
-			".eslintrc.yml": "_e044_688898_light",
-			".prettierrc": "_e045_688898_light",
-			".prettierrc.json": "_e045_688898_light",
-			".prettierrc.yaml": "_e045_688898_light",
-			".prettierrc.yml": "_e045_688898_light",
-			"prettier.config.js": "_e045_688898_light",
-			"prettier.config.mjs": "_e045_688898_light",
-			"vite.config.js": "_e046_688898_light",
-			"vite.config.mjs": "_e046_688898_light",
-			"vite.config.ts": "_e046_688898_light",
-			"vitest.config.js": "_e047_688898_light",
-			"vitest.config.mjs": "_e047_688898_light",
-			"vitest.config.ts": "_e047_688898_light",
-			"jest.config.js": "_e048_688898_light",
-			"jest.config.mjs": "_e048_688898_light",
-			"jest.config.ts": "_e048_688898_light",
-			"webpack.config.js": "_e049_688898_light",
-			"webpack.config.mjs": "_e049_688898_light",
-			"webpack.config.ts": "_e049_688898_light",
-			"next.config.js": "_e04a_688898_light",
-			"next.config.mjs": "_e04a_688898_light",
-			"next.config.ts": "_e04a_688898_light",
-			"babel.config.js": "_e04b_688898_light",
-			"babel.config.json": "_e04b_688898_light",
-			".babelrc": "_e04b_688898_light",
-			".editorconfig": "_e04c_688898_light",
+			"package.json": "_e02d_6d898d_light",
+			".npmrc": "_e02d_6d898d_light",
+			"LICENSE": "_e02e_70879b_light",
+			"LICENSE.md": "_e02e_70879b_light",
+			"LICENSE.txt": "_e02e_70879b_light",
+			"COPYING": "_e02e_70879b_light",
+			"README.md": "_e02f_70879b_light",
+			"README": "_e02f_70879b_light",
+			"README.rst": "_e02f_70879b_light",
+			"README.txt": "_e02f_70879b_light",
+			"CHANGELOG.md": "_e030_70879b_light",
+			"CHANGES.md": "_e030_70879b_light",
+			"HISTORY.md": "_e030_70879b_light",
+			"CONTRIBUTING.md": "_e031_70879b_light",
+			"SECURITY.md": "_e032_70879b_light",
+			"CODE_OF_CONDUCT.md": "_e033_70879b_light",
+			"CODEOWNERS": "_e034_70879b_light",
+			".github/CODEOWNERS": "_e034_70879b_light",
+			"mkdocs.yml": "_e035_70879b_light",
+			"llms.txt": "_e036_70879b_light",
+			"llms-full.txt": "_e036_70879b_light",
+			"pyproject.toml": "_e037_6d898d_light",
+			"requirements.txt": "_e038_6d898d_light",
+			"requirements-dev.txt": "_e038_6d898d_light",
+			"dev-requirements.txt": "_e038_6d898d_light",
+			"setup.py": "_e039_6d898d_light",
+			"setup.cfg": "_e039_6d898d_light",
+			"Pipfile": "_e03a_6d898d_light",
+			"environment.yml": "_e03b_6d898d_light",
+			"environment.yaml": "_e03b_6d898d_light",
+			"conda.yaml": "_e03b_6d898d_light",
+			"conda.yml": "_e03b_6d898d_light",
+			"Cargo.toml": "_e03c_6d898d_light",
+			"go.mod": "_e03d_6d898d_light",
+			"pom.xml": "_e03e_6d898d_light",
+			"build.gradle": "_e03f_6d898d_light",
+			"build.gradle.kts": "_e03f_6d898d_light",
+			"settings.gradle": "_e03f_6d898d_light",
+			"settings.gradle.kts": "_e03f_6d898d_light",
+			"gradle.properties": "_e03f_6d898d_light",
+			"gradlew": "_e03f_6d898d_light",
+			"gradlew.bat": "_e03f_6d898d_light",
+			"composer.json": "_e040_6d898d_light",
+			"Gemfile": "_e041_6d898d_light",
+			"global.json": "_e042_6d898d_light",
+			"nuget.config": "_e042_6d898d_light",
+			"tsconfig.json": "_e043_6d898d_light",
+			"jsconfig.json": "_e043_6d898d_light",
+			"tsconfig.build.json": "_e043_6d898d_light",
+			"eslint.config.js": "_e044_6d898d_light",
+			"eslint.config.mjs": "_e044_6d898d_light",
+			"eslint.config.cjs": "_e044_6d898d_light",
+			"eslint.config.ts": "_e044_6d898d_light",
+			".eslintrc.json": "_e044_6d898d_light",
+			".eslintrc.js": "_e044_6d898d_light",
+			".eslintrc.cjs": "_e044_6d898d_light",
+			".eslintrc.yml": "_e044_6d898d_light",
+			".prettierrc": "_e045_6d898d_light",
+			".prettierrc.json": "_e045_6d898d_light",
+			".prettierrc.yaml": "_e045_6d898d_light",
+			".prettierrc.yml": "_e045_6d898d_light",
+			"prettier.config.js": "_e045_6d898d_light",
+			"prettier.config.mjs": "_e045_6d898d_light",
+			"vite.config.js": "_e046_6d898d_light",
+			"vite.config.mjs": "_e046_6d898d_light",
+			"vite.config.ts": "_e046_6d898d_light",
+			"vitest.config.js": "_e047_6d898d_light",
+			"vitest.config.mjs": "_e047_6d898d_light",
+			"vitest.config.ts": "_e047_6d898d_light",
+			"jest.config.js": "_e048_6d898d_light",
+			"jest.config.mjs": "_e048_6d898d_light",
+			"jest.config.ts": "_e048_6d898d_light",
+			"webpack.config.js": "_e049_6d898d_light",
+			"webpack.config.mjs": "_e049_6d898d_light",
+			"webpack.config.ts": "_e049_6d898d_light",
+			"next.config.js": "_e04a_6d898d_light",
+			"next.config.mjs": "_e04a_6d898d_light",
+			"next.config.ts": "_e04a_6d898d_light",
+			"babel.config.js": "_e04b_6d898d_light",
+			"babel.config.json": "_e04b_6d898d_light",
+			".babelrc": "_e04b_6d898d_light",
+			".editorconfig": "_e04c_6d898d_light",
 			"Makefile": "_e04d_7c8690_light",
 			"GNUmakefile": "_e04d_7c8690_light",
 			"CMakeLists.txt": "_e04e_7c8690_light",
@@ -2160,9 +2160,9 @@
 			"typescript": "_e002_81858a_light",
 			"javascriptreact": "_e003_81858a_light",
 			"typescriptreact": "_e004_81858a_light",
-			"json": "_e005_688898_light",
-			"jsonc": "_e005_688898_light",
-			"markdown": "_e006_718797_light",
+			"json": "_e005_6d898d_light",
+			"jsonc": "_e005_6d898d_light",
+			"markdown": "_e006_70879b_light",
 			"html": "_e007_81858a_light",
 			"css": "_e008_81858a_light",
 			"scss": "_e009_81858a_light",
@@ -2180,17 +2180,17 @@
 			"ruby": "_e016_81858a_light",
 			"shellscript": "_e017_81858a_light",
 			"powershell": "_e018_81858a_light",
-			"yaml": "_e019_688898_light",
-			"toml": "_e01a_688898_light",
-			"xml": "_e01b_688898_light",
+			"yaml": "_e019_6d898d_light",
+			"toml": "_e01a_6d898d_light",
+			"xml": "_e01b_6d898d_light",
 			"sql": "_e01f_81858a_light",
 			"vue": "_e020_81858a_light",
 			"svelte": "_e021_81858a_light",
 			"lua": "_e022_81858a_light",
 			"dart": "_e023_81858a_light",
 			"swift": "_e024_81858a_light",
-			"plaintext": "_e028_718797_light",
-			"log": "_e028_718797_light",
+			"plaintext": "_e028_70879b_light",
+			"log": "_e028_70879b_light",
 			"dockerfile": "_e02b_7c8690_light",
 			"ignore": "_e02c_7c8690_light"
 		},

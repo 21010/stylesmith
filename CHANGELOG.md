@@ -4,6 +4,10 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ## Unreleased
 
+### Changed
+
+- **Syntax colors read apart in every theme (#116).** In 17 themes two syntax roles were nearly the same color: strings and properties in Command Deck and Teal Terminal (so a JSON key looked like its value), types and properties in Sunroom, strings and types in Grid and ICE. Keyword, string, function, type, number and property now differ by at least ΔE 10 in every theme. Most colors moved only slightly, keeping each theme's look and contrast, and a test keeps them apart.
+
 ### Removed
 
 - **The Stylesmith 1.x cleanup and settings migration.** Stylesmith no longer checks VS Code's installation on startup for changes left by 1.x, and no longer moves or removes 1.x settings, which are no longer declared. It now never reads or writes VS Code's installation. If 1.x changes are somehow still in place, reinstalling VS Code removes them.

@@ -190,17 +190,17 @@
 			"fontCharacter": "\\e029",
 			"fontColor": "#9aa3bd"
 		},
-		"_e02a_e3dccb": {
+		"_e02a_e7dcbf": {
 			"fontCharacter": "\\e02a",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e02b_e3dccb": {
+		"_e02b_e7dcbf": {
 			"fontCharacter": "\\e02b",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e02c_e3dccb": {
+		"_e02c_e7dcbf": {
 			"fontCharacter": "\\e02c",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
 		"_e02d_8fc1ff": {
 			"fontCharacter": "\\e02d",
@@ -330,53 +330,53 @@
 			"fontCharacter": "\\e04c",
 			"fontColor": "#8fc1ff"
 		},
-		"_e04d_e3dccb": {
+		"_e04d_e7dcbf": {
 			"fontCharacter": "\\e04d",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e04e_e3dccb": {
+		"_e04e_e7dcbf": {
 			"fontCharacter": "\\e04e",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e04f_e3dccb": {
+		"_e04f_e7dcbf": {
 			"fontCharacter": "\\e04f",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e050_e3dccb": {
+		"_e050_e7dcbf": {
 			"fontCharacter": "\\e050",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e051_e3dccb": {
+		"_e051_e7dcbf": {
 			"fontCharacter": "\\e051",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e052_e3dccb": {
+		"_e052_e7dcbf": {
 			"fontCharacter": "\\e052",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e053_e3dccb": {
+		"_e053_e7dcbf": {
 			"fontCharacter": "\\e053",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e054_e3dccb": {
+		"_e054_e7dcbf": {
 			"fontCharacter": "\\e054",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e055_e3dccb": {
+		"_e055_e7dcbf": {
 			"fontCharacter": "\\e055",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e056_e3dccb": {
+		"_e056_e7dcbf": {
 			"fontCharacter": "\\e056",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e057_e3dccb": {
+		"_e057_e7dcbf": {
 			"fontCharacter": "\\e057",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
-		"_e058_e3dccb": {
+		"_e058_e7dcbf": {
 			"fontCharacter": "\\e058",
-			"fontColor": "#e3dccb"
+			"fontColor": "#e7dcbf"
 		},
 		"_e059_f8f2e4": {
 			"fontCharacter": "\\e059",
@@ -822,17 +822,17 @@
 			"fontCharacter": "\\e029",
 			"fontColor": "#7d8499"
 		},
-		"_e02a_88847a_light": {
+		"_e02a_8b8473_light": {
 			"fontCharacter": "\\e02a",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e02b_88847a_light": {
+		"_e02b_8b8473_light": {
 			"fontCharacter": "\\e02b",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e02c_88847a_light": {
+		"_e02c_8b8473_light": {
 			"fontCharacter": "\\e02c",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
 		"_e02d_6487b3_light": {
 			"fontCharacter": "\\e02d",
@@ -962,53 +962,53 @@
 			"fontCharacter": "\\e04c",
 			"fontColor": "#6487b3"
 		},
-		"_e04d_88847a_light": {
+		"_e04d_8b8473_light": {
 			"fontCharacter": "\\e04d",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e04e_88847a_light": {
+		"_e04e_8b8473_light": {
 			"fontCharacter": "\\e04e",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e04f_88847a_light": {
+		"_e04f_8b8473_light": {
 			"fontCharacter": "\\e04f",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e050_88847a_light": {
+		"_e050_8b8473_light": {
 			"fontCharacter": "\\e050",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e051_88847a_light": {
+		"_e051_8b8473_light": {
 			"fontCharacter": "\\e051",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e052_88847a_light": {
+		"_e052_8b8473_light": {
 			"fontCharacter": "\\e052",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e053_88847a_light": {
+		"_e053_8b8473_light": {
 			"fontCharacter": "\\e053",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e054_88847a_light": {
+		"_e054_8b8473_light": {
 			"fontCharacter": "\\e054",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e055_88847a_light": {
+		"_e055_8b8473_light": {
 			"fontCharacter": "\\e055",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e056_88847a_light": {
+		"_e056_8b8473_light": {
 			"fontCharacter": "\\e056",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e057_88847a_light": {
+		"_e057_8b8473_light": {
 			"fontCharacter": "\\e057",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
-		"_e058_88847a_light": {
+		"_e058_8b8473_light": {
 			"fontCharacter": "\\e058",
-			"fontColor": "#88847a"
+			"fontColor": "#8b8473"
 		},
 		"_e059_88857d_light": {
 			"fontCharacter": "\\e059",
@@ -1369,8 +1369,8 @@
 		"txt": "_e028_a8e6a3",
 		"log": "_e028_a8e6a3",
 		"lock": "_e029_9aa3bd",
-		"env": "_e02a_e3dccb",
-		"dockerfile": "_e02b_e3dccb",
+		"env": "_e02a_e7dcbf",
+		"dockerfile": "_e02b_e7dcbf",
 		"csproj": "_e042_8fc1ff",
 		"sln": "_e042_8fc1ff",
 		"instructions.md": "_e05c_ffd23f",
@@ -1395,23 +1395,23 @@
 		"go.sum": "_e029_9aa3bd",
 		"Gemfile.lock": "_e029_9aa3bd",
 		"composer.lock": "_e029_9aa3bd",
-		".env": "_e02a_e3dccb",
-		".env.local": "_e02a_e3dccb",
-		".env.example": "_e02a_e3dccb",
-		".env.development": "_e02a_e3dccb",
-		".env.production": "_e02a_e3dccb",
-		"Dockerfile": "_e02b_e3dccb",
-		"Containerfile": "_e02b_e3dccb",
-		"docker-compose.yml": "_e02b_e3dccb",
-		"docker-compose.yaml": "_e02b_e3dccb",
-		"compose.yml": "_e02b_e3dccb",
-		"compose.yaml": "_e02b_e3dccb",
-		".dockerignore": "_e02b_e3dccb",
-		".gitignore": "_e02c_e3dccb",
-		".gitattributes": "_e02c_e3dccb",
-		".gitmodules": "_e02c_e3dccb",
-		".git-blame-ignore-revs": "_e02c_e3dccb",
-		".cursorignore": "_e02c_e3dccb",
+		".env": "_e02a_e7dcbf",
+		".env.local": "_e02a_e7dcbf",
+		".env.example": "_e02a_e7dcbf",
+		".env.development": "_e02a_e7dcbf",
+		".env.production": "_e02a_e7dcbf",
+		"Dockerfile": "_e02b_e7dcbf",
+		"Containerfile": "_e02b_e7dcbf",
+		"docker-compose.yml": "_e02b_e7dcbf",
+		"docker-compose.yaml": "_e02b_e7dcbf",
+		"compose.yml": "_e02b_e7dcbf",
+		"compose.yaml": "_e02b_e7dcbf",
+		".dockerignore": "_e02b_e7dcbf",
+		".gitignore": "_e02c_e7dcbf",
+		".gitattributes": "_e02c_e7dcbf",
+		".gitmodules": "_e02c_e7dcbf",
+		".git-blame-ignore-revs": "_e02c_e7dcbf",
+		".cursorignore": "_e02c_e7dcbf",
 		"package.json": "_e02d_8fc1ff",
 		".npmrc": "_e02d_8fc1ff",
 		"LICENSE": "_e02e_a8e6a3",
@@ -1494,28 +1494,28 @@
 		"babel.config.json": "_e04b_8fc1ff",
 		".babelrc": "_e04b_8fc1ff",
 		".editorconfig": "_e04c_8fc1ff",
-		"Makefile": "_e04d_e3dccb",
-		"GNUmakefile": "_e04d_e3dccb",
-		"CMakeLists.txt": "_e04e_e3dccb",
-		"meson.build": "_e04f_e3dccb",
-		"justfile": "_e050_e3dccb",
-		"Rakefile": "_e051_e3dccb",
-		"Procfile": "_e052_e3dccb",
-		"Vagrantfile": "_e053_e3dccb",
-		".gitlab-ci.yml": "_e054_e3dccb",
-		"Jenkinsfile": "_e054_e3dccb",
-		"azure-pipelines.yml": "_e054_e3dccb",
-		".travis.yml": "_e054_e3dccb",
-		".pre-commit-config.yaml": "_e055_e3dccb",
-		"dependabot.yml": "_e056_e3dccb",
-		".github/dependabot.yml": "_e056_e3dccb",
-		"renovate.json": "_e056_e3dccb",
-		"codecov.yml": "_e057_e3dccb",
-		".codecov.yml": "_e057_e3dccb",
-		".nvmrc": "_e058_e3dccb",
-		".node-version": "_e058_e3dccb",
-		".python-version": "_e058_e3dccb",
-		".tool-versions": "_e058_e3dccb",
+		"Makefile": "_e04d_e7dcbf",
+		"GNUmakefile": "_e04d_e7dcbf",
+		"CMakeLists.txt": "_e04e_e7dcbf",
+		"meson.build": "_e04f_e7dcbf",
+		"justfile": "_e050_e7dcbf",
+		"Rakefile": "_e051_e7dcbf",
+		"Procfile": "_e052_e7dcbf",
+		"Vagrantfile": "_e053_e7dcbf",
+		".gitlab-ci.yml": "_e054_e7dcbf",
+		"Jenkinsfile": "_e054_e7dcbf",
+		"azure-pipelines.yml": "_e054_e7dcbf",
+		".travis.yml": "_e054_e7dcbf",
+		".pre-commit-config.yaml": "_e055_e7dcbf",
+		"dependabot.yml": "_e056_e7dcbf",
+		".github/dependabot.yml": "_e056_e7dcbf",
+		"renovate.json": "_e056_e7dcbf",
+		"codecov.yml": "_e057_e7dcbf",
+		".codecov.yml": "_e057_e7dcbf",
+		".nvmrc": "_e058_e7dcbf",
+		".node-version": "_e058_e7dcbf",
+		".python-version": "_e058_e7dcbf",
+		".tool-versions": "_e058_e7dcbf",
 		"conftest.py": "_e059_f8f2e4",
 		"manage.py": "_e05a_f8f2e4",
 		"__init__.py": "_e05b_f8f2e4",
@@ -1573,8 +1573,8 @@
 		"swift": "_e024_f8f2e4",
 		"plaintext": "_e028_a8e6a3",
 		"log": "_e028_a8e6a3",
-		"dockerfile": "_e02b_e3dccb",
-		"ignore": "_e02c_e3dccb"
+		"dockerfile": "_e02b_e7dcbf",
+		"ignore": "_e02c_e7dcbf"
 	},
 	"folderNames": {
 		"src": "_e065_ffd23f",
@@ -1987,8 +1987,8 @@
 			"txt": "_e028_688f65_light",
 			"log": "_e028_688f65_light",
 			"lock": "_e029_7d8499_light",
-			"env": "_e02a_88847a_light",
-			"dockerfile": "_e02b_88847a_light",
+			"env": "_e02a_8b8473_light",
+			"dockerfile": "_e02b_8b8473_light",
 			"csproj": "_e042_6487b3_light",
 			"sln": "_e042_6487b3_light",
 			"instructions.md": "_e05c_9e8227_light",
@@ -2013,23 +2013,23 @@
 			"go.sum": "_e029_7d8499_light",
 			"Gemfile.lock": "_e029_7d8499_light",
 			"composer.lock": "_e029_7d8499_light",
-			".env": "_e02a_88847a_light",
-			".env.local": "_e02a_88847a_light",
-			".env.example": "_e02a_88847a_light",
-			".env.development": "_e02a_88847a_light",
-			".env.production": "_e02a_88847a_light",
-			"Dockerfile": "_e02b_88847a_light",
-			"Containerfile": "_e02b_88847a_light",
-			"docker-compose.yml": "_e02b_88847a_light",
-			"docker-compose.yaml": "_e02b_88847a_light",
-			"compose.yml": "_e02b_88847a_light",
-			"compose.yaml": "_e02b_88847a_light",
-			".dockerignore": "_e02b_88847a_light",
-			".gitignore": "_e02c_88847a_light",
-			".gitattributes": "_e02c_88847a_light",
-			".gitmodules": "_e02c_88847a_light",
-			".git-blame-ignore-revs": "_e02c_88847a_light",
-			".cursorignore": "_e02c_88847a_light",
+			".env": "_e02a_8b8473_light",
+			".env.local": "_e02a_8b8473_light",
+			".env.example": "_e02a_8b8473_light",
+			".env.development": "_e02a_8b8473_light",
+			".env.production": "_e02a_8b8473_light",
+			"Dockerfile": "_e02b_8b8473_light",
+			"Containerfile": "_e02b_8b8473_light",
+			"docker-compose.yml": "_e02b_8b8473_light",
+			"docker-compose.yaml": "_e02b_8b8473_light",
+			"compose.yml": "_e02b_8b8473_light",
+			"compose.yaml": "_e02b_8b8473_light",
+			".dockerignore": "_e02b_8b8473_light",
+			".gitignore": "_e02c_8b8473_light",
+			".gitattributes": "_e02c_8b8473_light",
+			".gitmodules": "_e02c_8b8473_light",
+			".git-blame-ignore-revs": "_e02c_8b8473_light",
+			".cursorignore": "_e02c_8b8473_light",
 			"package.json": "_e02d_6487b3_light",
 			".npmrc": "_e02d_6487b3_light",
 			"LICENSE": "_e02e_688f65_light",
@@ -2112,28 +2112,28 @@
 			"babel.config.json": "_e04b_6487b3_light",
 			".babelrc": "_e04b_6487b3_light",
 			".editorconfig": "_e04c_6487b3_light",
-			"Makefile": "_e04d_88847a_light",
-			"GNUmakefile": "_e04d_88847a_light",
-			"CMakeLists.txt": "_e04e_88847a_light",
-			"meson.build": "_e04f_88847a_light",
-			"justfile": "_e050_88847a_light",
-			"Rakefile": "_e051_88847a_light",
-			"Procfile": "_e052_88847a_light",
-			"Vagrantfile": "_e053_88847a_light",
-			".gitlab-ci.yml": "_e054_88847a_light",
-			"Jenkinsfile": "_e054_88847a_light",
-			"azure-pipelines.yml": "_e054_88847a_light",
-			".travis.yml": "_e054_88847a_light",
-			".pre-commit-config.yaml": "_e055_88847a_light",
-			"dependabot.yml": "_e056_88847a_light",
-			".github/dependabot.yml": "_e056_88847a_light",
-			"renovate.json": "_e056_88847a_light",
-			"codecov.yml": "_e057_88847a_light",
-			".codecov.yml": "_e057_88847a_light",
-			".nvmrc": "_e058_88847a_light",
-			".node-version": "_e058_88847a_light",
-			".python-version": "_e058_88847a_light",
-			".tool-versions": "_e058_88847a_light",
+			"Makefile": "_e04d_8b8473_light",
+			"GNUmakefile": "_e04d_8b8473_light",
+			"CMakeLists.txt": "_e04e_8b8473_light",
+			"meson.build": "_e04f_8b8473_light",
+			"justfile": "_e050_8b8473_light",
+			"Rakefile": "_e051_8b8473_light",
+			"Procfile": "_e052_8b8473_light",
+			"Vagrantfile": "_e053_8b8473_light",
+			".gitlab-ci.yml": "_e054_8b8473_light",
+			"Jenkinsfile": "_e054_8b8473_light",
+			"azure-pipelines.yml": "_e054_8b8473_light",
+			".travis.yml": "_e054_8b8473_light",
+			".pre-commit-config.yaml": "_e055_8b8473_light",
+			"dependabot.yml": "_e056_8b8473_light",
+			".github/dependabot.yml": "_e056_8b8473_light",
+			"renovate.json": "_e056_8b8473_light",
+			"codecov.yml": "_e057_8b8473_light",
+			".codecov.yml": "_e057_8b8473_light",
+			".nvmrc": "_e058_8b8473_light",
+			".node-version": "_e058_8b8473_light",
+			".python-version": "_e058_8b8473_light",
+			".tool-versions": "_e058_8b8473_light",
 			"conftest.py": "_e059_88857d_light",
 			"manage.py": "_e05a_88857d_light",
 			"__init__.py": "_e05b_88857d_light",
@@ -2191,8 +2191,8 @@
 			"swift": "_e024_88857d_light",
 			"plaintext": "_e028_688f65_light",
 			"log": "_e028_688f65_light",
-			"dockerfile": "_e02b_88847a_light",
-			"ignore": "_e02c_88847a_light"
+			"dockerfile": "_e02b_8b8473_light",
+			"ignore": "_e02c_8b8473_light"
 		},
 		"folderNames": {
 			"src": "_e065_9e8227_light",

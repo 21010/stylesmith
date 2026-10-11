@@ -14,7 +14,7 @@
 		"selection.background": "#5c403a80",
 		"textLink.foreground": "#ff7a66",
 		"textLink.activeForeground": "#cbbfb2",
-		"textPreformat.foreground": "#c6bfa2",
+		"textPreformat.foreground": "#c8bf9c",
 		"textBlockQuote.background": "#2a2826",
 		"textBlockQuote.border": "#ff7a66",
 		"textCodeBlock.background": "#2a2826",
@@ -44,8 +44,8 @@
 		"editorBracketPairGuide.activeBackground1": "#ff7a6699",
 		"editorBracketHighlight.foreground2": "#ff8a77",
 		"editorBracketPairGuide.activeBackground2": "#ff8a7799",
-		"editorBracketHighlight.foreground3": "#c6bfa2",
-		"editorBracketPairGuide.activeBackground3": "#c6bfa299",
+		"editorBracketHighlight.foreground3": "#c8bf9c",
+		"editorBracketPairGuide.activeBackground3": "#c8bf9c99",
 		"editorBracketHighlight.foreground4": "#c2b8ac",
 		"editorBracketPairGuide.activeBackground4": "#c2b8ac99",
 		"editorBracketHighlight.foreground5": "#d6b48c",
@@ -87,19 +87,19 @@
 		"symbolIcon.structForeground": "#c2b8ac",
 		"symbolIcon.enumeratorForeground": "#c2b8ac",
 		"symbolIcon.typeParameterForeground": "#c2b8ac",
-		"symbolIcon.functionForeground": "#ede9e4",
-		"symbolIcon.methodForeground": "#ede9e4",
-		"symbolIcon.constructorForeground": "#ede9e4",
-		"symbolIcon.fieldForeground": "#d4cdc5",
-		"symbolIcon.propertyForeground": "#d4cdc5",
-		"symbolIcon.variableForeground": "#d4cdc5",
+		"symbolIcon.functionForeground": "#efebe6",
+		"symbolIcon.methodForeground": "#efebe6",
+		"symbolIcon.constructorForeground": "#efebe6",
+		"symbolIcon.fieldForeground": "#cecece",
+		"symbolIcon.propertyForeground": "#cecece",
+		"symbolIcon.variableForeground": "#cecece",
 		"symbolIcon.enumeratorMemberForeground": "#d6b48c",
 		"symbolIcon.constantForeground": "#d6b48c",
 		"symbolIcon.numberForeground": "#d6b48c",
 		"symbolIcon.booleanForeground": "#d6b48c",
 		"symbolIcon.eventForeground": "#ff8a77",
 		"symbolIcon.keywordForeground": "#ff8a77",
-		"symbolIcon.stringForeground": "#c6bfa2",
+		"symbolIcon.stringForeground": "#c8bf9c",
 		"editorOverviewRuler.border": "#00000000",
 		"editorWidget.background": "#2a2826",
 		"editorWidget.foreground": "#dedad5",
@@ -262,10 +262,10 @@
 		"debugIcon.stepIntoForeground": "#ff7a66",
 		"debugIcon.stepOutForeground": "#ff7a66",
 		"debugIcon.stepBackForeground": "#ff7a66",
-		"debugTokenExpression.name": "#d4cdc5",
+		"debugTokenExpression.name": "#cecece",
 		"debugTokenExpression.type": "#c2b8ac",
 		"debugTokenExpression.value": "#aba59d",
-		"debugTokenExpression.string": "#c6bfa2",
+		"debugTokenExpression.string": "#c8bf9c",
 		"debugTokenExpression.number": "#d6b48c",
 		"debugTokenExpression.boolean": "#d6b48c",
 		"debugTokenExpression.error": "#ff6fb0",
@@ -377,7 +377,7 @@
 				"meta.function-call"
 			],
 			"settings": {
-				"foreground": "#ede9e4"
+				"foreground": "#efebe6"
 			}
 		},
 		{
@@ -387,7 +387,7 @@
 				"string.template"
 			],
 			"settings": {
-				"foreground": "#c6bfa2"
+				"foreground": "#c8bf9c"
 			}
 		},
 		{
@@ -429,7 +429,7 @@
 				"meta.object-literal.key"
 			],
 			"settings": {
-				"foreground": "#d4cdc5"
+				"foreground": "#cecece"
 			}
 		},
 		{
@@ -498,7 +498,7 @@
 				"markup.fenced_code"
 			],
 			"settings": {
-				"foreground": "#c6bfa2"
+				"foreground": "#c8bf9c"
 			}
 		},
 		{
@@ -535,20 +535,20 @@
 		}
 	],
 	"semanticTokenColors": {
-		"function": "#ede9e4",
-		"method": "#ede9e4",
+		"function": "#efebe6",
+		"method": "#efebe6",
 		"class": "#c2b8ac",
 		"interface": "#c2b8ac",
 		"type": "#c2b8ac",
 		"enumMember": "#d6b48c",
-		"property": "#d4cdc5",
+		"property": "#cecece",
 		"parameter": {
 			"foreground": "#dedad5",
 			"italic": true
 		},
 		"variable.readonly": "#d6b48c",
 		"keyword": "#ff8a77",
-		"string": "#c6bfa2",
+		"string": "#c8bf9c",
 		"number": "#d6b48c",
 		"regexp": "#c6bfa2"
 	}
