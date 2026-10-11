@@ -1,4 +1,4 @@
-// The small part of opentype.js the product icon test reads (a dev dependency without types).
+// The small part of opentype.js the icon tests read (a dev dependency without types).
 declare module "opentype.js" {
 	type Command = { type: string; x?: number; y?: number };
 	interface Glyph {
@@ -12,6 +12,5 @@ declare module "opentype.js" {
 		descender: number;
 		charToGlyph(char: string): Glyph;
 	}
-	const opentype: { loadSync(path: string): Font };
-	export default opentype;
+	export function parse(buffer: ArrayBuffer): Font;
 }

@@ -5,6 +5,7 @@
 
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
+import * as opentype from "opentype.js";
 
 export const ROOT = path.join(__dirname, "..", "..");
 
@@ -63,3 +64,11 @@ export const manifest = (): Manifest => readJson<Manifest>("package.json");
  */
 export const themeSettingsId = (theme: { id?: string; label: string }): string =>
 	theme.id ?? theme.label;
+
+/** Reads a font file with opentype.js. */
+export function loadFont(file: string): opentype.Font {
+	const bytes = readFileSync(file);
+	return opentype.parse(
+		bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
+	);
+}

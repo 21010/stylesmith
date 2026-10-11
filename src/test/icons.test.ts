@@ -2,9 +2,15 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import opentype from "opentype.js";
 import { colorDifference, contrast, VISION } from "../color";
-import { manifest, readJson, type ColorTheme, type IconMappings, type IconTheme } from "./files";
+import {
+	loadFont,
+	manifest,
+	readJson,
+	type ColorTheme,
+	type IconMappings,
+	type IconTheme
+} from "./files";
 
 // Tests run from out/test, two levels below the project root.
 const ROOT = path.join(__dirname, "..", "..");
@@ -86,7 +92,7 @@ describe("pixel icon themes", () => {
 	const files = readdirSync(ICONS).filter(file => file.endsWith("-icon-theme.json"));
 	const original = readJson<IconTheme>("icons", "pixel-icon-theme.json");
 	const fontFile = path.join(ICONS, "stylesmith-pixel-icons.otf");
-	const font = opentype.loadSync(fontFile);
+	const font = loadFont(fontFile);
 	const themes = readdirSync(path.join(ROOT, "themes")).map(file => ({
 		file,
 		...readJson<ColorTheme & { name: string }>("themes", file)

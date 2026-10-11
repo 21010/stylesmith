@@ -28,6 +28,7 @@ const normal = VISION["normal vision"];
 const dE = (a, b) => colorDifference(a, b, normal);
 
 /** The backgrounds syntax is read on, and the contrast it needs there. */
+/** @param {import("./data/palette.js").Palette} p */
 function readingBackgrounds(p) {
 	const kind = p.kind ?? "dark";
 	const bg = p.bg.slice(0, 7);
@@ -49,6 +50,7 @@ const shortfall = colors => {
 	return sum;
 };
 
+/** @param {import("./data/palette.js").Palette} p */
 export function fit(p) {
 	const { backgrounds, minimum } = readingBackgrounds(p);
 	const readable = hex => backgrounds.every(bg => contrast(hex, bg) >= minimum);

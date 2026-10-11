@@ -119,7 +119,9 @@ export class StateFile {
 					throw error;
 				}
 				if (Date.now() >= deadline)
-					throw new Error("Timed out waiting for Stylesmith state lock");
+					throw new Error("Timed out waiting for Stylesmith state lock", {
+						cause: error
+					});
 				if (await this.lockIsStale(lock)) await this.breakStaleLock(lock);
 				await new Promise(resolve => setTimeout(resolve, LOCK_RETRY_MS));
 			}

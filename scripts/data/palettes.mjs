@@ -1,6 +1,7 @@
 // The palettes of Stylesmith's color themes. scripts/build-themes.mjs maps them to VS Code
 // theme colors and token colors; src/test/themes.test.ts checks the contrast of the result.
 
+/** @type {import("./palette.js").Palette[]} */
 export const palettes = [
 	{
 		id: "neon-night",
@@ -106,14 +107,6 @@ export const palettes = [
 		},
 		// Its own Stylesmith Pixel icons: band colors by kind of file (see CATEGORIES in
 		// icons.mjs). They set the mood; the labels tell the file types apart.
-		icons: {
-			code: "#6dff9a",
-			config: "#ffcf73",
-			docs: "#d6f5b0",
-			media: "#8fe3d0",
-			folder: "#4dff88",
-			outline: "#8cc294"
-		},
 		ansi: {
 			black: "#1f3826",
 			red: "#ff7a6b",
@@ -176,14 +169,6 @@ export const palettes = [
 		},
 		// Its own Stylesmith Pixel icons: band colors by kind of file (see CATEGORIES in
 		// icons.mjs). They set the mood; the labels tell the file types apart.
-		icons: {
-			code: "#ffb000",
-			config: "#ff9466",
-			docs: "#ffe6b8",
-			media: "#d9e27a",
-			folder: "#ffae40",
-			outline: "#c9a36b"
-		},
 		ansi: {
 			black: "#3a2c14",
 			red: "#ff7f66",
@@ -247,14 +232,6 @@ export const palettes = [
 		},
 		// Its own Stylesmith Pixel icons: band colors by kind of file (see CATEGORIES in
 		// icons.mjs). They set the mood; the labels tell the file types apart.
-		icons: {
-			code: "#9fe6ff",
-			config: "#c9c2ff",
-			docs: "#eef6ff",
-			media: "#7fb8ff",
-			folder: "#b4d6f0",
-			outline: "#9fb3c8"
-		},
 		ansi: {
 			black: "#22303f",
 			red: "#fab6b1",

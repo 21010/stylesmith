@@ -28,6 +28,7 @@ jobs:
       - name: Verify package signatures and provenance
         run: npm audit signatures
       - run: npm run lint
+      - run: npm run check:scripts
       - run: npm run format:check
       - run: npm test
 

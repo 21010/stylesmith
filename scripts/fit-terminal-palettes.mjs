@@ -64,6 +64,10 @@ function brightOf(c, light) {
 }
 let TERM_BG;
 
+/**
+ * @param {import("./data/palette.js").Palette} p
+ * @param {string} termBg
+ */
 function optimize(p, termBg) {
 	TERM_BG = termBg;
 	const light = p.kind === "light";
@@ -77,7 +81,7 @@ function optimize(p, termBg) {
 	// All candidates for a slot, best first, given the colors already chosen.
 	const candidates = (fam, cmaxExtra, wide) => {
 		families = wide ? WIDE : FAMILIES;
-		const nearest = nearestFor(fam);
+		const nearest = nearestFor();
 		const cmin = fam === "red" || fam === "green" ? 0.08 : 0.045;
 		const cmax = base + cmaxExtra;
 		const list = [];

@@ -221,14 +221,15 @@ function outline(g) {
 function atFixedTime(write) {
 	const RealDate = Date;
 	const fixed = RealDate.UTC(2026, 9, 11);
-	globalThis.Date = class extends RealDate {
+	const FixedDate = class extends RealDate {
 		constructor(...args) {
-			super(...(args.length ? args : [fixed]));
+			super(.../** @type {[number]} */ (args.length ? args : [fixed]));
 		}
 		static now() {
 			return fixed;
 		}
 	};
+	globalThis.Date = /** @type {DateConstructor} */ (/** @type {unknown} */ (FixedDate));
 	try {
 		return write();
 	} finally {

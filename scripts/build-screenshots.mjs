@@ -5,6 +5,9 @@
 // The functions given to page.waitForFunction run in VS Code's window.
 /* global document */
 
+/// <reference lib="dom" />
+// (The page.evaluate callbacks below run in the browser.)
+
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -97,14 +100,18 @@ function gitProject(project) {
 }
 
 /** The terminal's text, line by line. */
-const terminalText = () => document.querySelector(".terminal-wrapper .xterm-rows")?.innerText ?? "";
+const terminalText = () =>
+	/** @type {HTMLElement | null} */ (document.querySelector(".terminal-wrapper .xterm-rows"))
+		?.innerText ?? "";
 
 /**
  * Whether a prompt waits at the bottom, after the text changed from `before`. (Counting the ❯ on
  * screen fails once a command's output scrolls an earlier prompt away.)
  */
 const promptReady = before => {
-	const text = document.querySelector(".terminal-wrapper .xterm-rows")?.innerText ?? "";
+	const text =
+		/** @type {HTMLElement | null} */ (document.querySelector(".terminal-wrapper .xterm-rows"))
+			?.innerText ?? "";
 	const last = text.trimEnd().split("\n").at(-1) ?? "";
 	return text !== before && /❯\s*$/.test(last);
 };

@@ -2,9 +2,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import opentype from "opentype.js";
 import { PRESETS, PRODUCT_ICON_THEME } from "../presets";
-import { manifest, ROOT } from "./files";
+import { loadFont, manifest, ROOT } from "./files";
 
 /**
  * The Stylesmith Pixel product icon theme (#67): every id it maps must be a real codicon, so
@@ -23,7 +22,7 @@ const contribution = manifest().contributes.productIconThemes.find(
 const themePath = path.join(ROOT, contribution?.path ?? "");
 const theme = JSON.parse(readFileSync(themePath, "utf-8")) as ProductIconTheme;
 const fontFile = path.join(path.dirname(themePath), theme.fonts[0]!.src[0]!.path);
-const font = opentype.loadSync(fontFile);
+const font = loadFont(fontFile);
 const codicons = JSON.parse(
 	readFileSync(
 		path.join(ROOT, "node_modules/@vscode/codicons/src/template/mapping.json"),
