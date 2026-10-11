@@ -324,7 +324,7 @@
 		"terminalCommandDecoration.successBackground": "#8cedff",
 		"terminalCommandDecoration.errorBackground": "#ff9fb3",
 		"terminalOverviewRuler.cursorForeground": "#6fe6ff",
-		"terminal.ansiBlack": "#3a3f5c",
+		"terminal.ansiBlack": "#0b0b16",
 		"terminal.ansiRed": "#ff8a7a",
 		"terminal.ansiGreen": "#a8f9d2",
 		"terminal.ansiYellow": "#fff29a",

@@ -665,7 +665,7 @@ export const palettes = [
 			blue: "#31506a",
 			magenta: "#7c3b6c",
 			cyan: "#265a52",
-			white: "#8a8fa0",
+			white: "#5d6b52",
 			brightBlack: "#4d5d43",
 			brightRed: "#812f0c",
 			brightGreen: "#094833",
@@ -673,7 +673,7 @@ export const palettes = [
 			brightBlue: "#1e3d56",
 			brightMagenta: "#672758",
 			brightCyan: "#0f473f",
-			brightWhite: "#a3a7b5"
+			brightWhite: "#c9d4b0"
 		}
 	},
 	{
@@ -725,7 +725,7 @@ export const palettes = [
 			blue: "#3d5b83",
 			magenta: "#6d4a7a",
 			cyan: "#466576",
-			white: "#8a8fa0",
+			white: "#6a6c78",
 			brightBlack: "#5d6070",
 			brightRed: "#62304a",
 			brightGreen: "#305830",
@@ -733,7 +733,7 @@ export const palettes = [
 			brightBlue: "#2a476e",
 			brightMagenta: "#593765",
 			brightCyan: "#335162",
-			brightWhite: "#a3a7b5"
+			brightWhite: "#dccfba"
 		}
 	},
 	{
@@ -1083,7 +1083,7 @@ export const palettes = [
 			blue: "#215a8a",
 			magenta: "#6a3c6b",
 			cyan: "#234951",
-			white: "#8a8fa0",
+			white: "#56706c",
 			brightBlack: "#46625f",
 			brightRed: "#731c13",
 			brightGreen: "#185a3f",
@@ -1091,7 +1091,7 @@ export const palettes = [
 			brightBlue: "#074675",
 			brightMagenta: "#562957",
 			brightCyan: "#0f363e",
-			brightWhite: "#a3a7b5"
+			brightWhite: "#c4cfc4"
 		}
 	},
 	{
@@ -1323,7 +1323,7 @@ export const palettes = [
 			blue: "#1f5a94",
 			magenta: "#a0127a",
 			cyan: "#006a8a",
-			white: "#8a8fa0",
+			white: "#5f6479",
 			brightBlack: "#4f5569",
 			brightRed: "#a51b33",
 			brightGreen: "#17602f",
@@ -1331,7 +1331,7 @@ export const palettes = [
 			brightBlue: "#1b5086",
 			brightMagenta: "#8f106d",
 			brightCyan: "#005e7b",
-			brightWhite: "#a3a7b5"
+			brightWhite: "#d8ccb0"
 		}
 	},
 	{
@@ -1378,7 +1378,7 @@ export const palettes = [
 			deleted: "#ff8a7a"
 		},
 		ansi: {
-			black: "#3a3f5c",
+			black: "#0b0b16",
 			red: "#ff8a7a",
 			green: "#a8f9d2",
 			yellow: "#fff29a",
@@ -1447,7 +1447,7 @@ export const palettes = [
 			blue: "#123a66",
 			magenta: "#7a005c",
 			cyan: "#003f60",
-			white: "#4a4f60",
+			white: "#2b3040",
 			brightBlack: "#1f2433",
 			brightRed: "#80001a",
 			brightGreen: "#08451f",
@@ -1455,7 +1455,7 @@ export const palettes = [
 			brightBlue: "#0e3056",
 			brightMagenta: "#66004d",
 			brightCyan: "#003350",
-			brightWhite: "#5c6172"
+			brightWhite: "#35392a"
 		}
 	}
 ];

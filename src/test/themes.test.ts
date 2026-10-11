@@ -885,6 +885,39 @@ describe("terminal colors (#100)", () => {
 			});
 		}
 
+		// The terminal palette is made of the theme's own colors (#142): on average its 16 colors
+		// sit close to them, and the neutral ones, which carry no meaning, match them. VS Code's
+		// default terminal colors average 19 to 25 from these themes; Stylesmith's at most 7.
+		const own = [
+			...Object.entries(theme.colors)
+				.filter(([key]) => !key.startsWith("terminal.ansi"))
+				.map(([, color]) => color),
+			...theme.tokenColors.flatMap(rule => rule.settings.foreground ?? [])
+		].map(color => color.slice(0, 7));
+		const fromTheme = (color: string) =>
+			Math.min(...own.map(o => colorDifference(color, o, VISION["normal vision"])));
+		const all = Object.entries(theme.colors).filter(([key]) => key.startsWith("terminal.ansi"));
+
+		it(`${file}: its terminal palette is made of the theme's colors (average ΔE 10)`, () => {
+			assert.equal(all.length, 16);
+			const average =
+				all.reduce((sum, [, color]) => sum + fromTheme(color.slice(0, 7)), 0) / all.length;
+			assert.ok(
+				average <= 10,
+				`terminal colors average ${average.toFixed(1)} from the theme`
+			);
+		});
+
+		it(`${file}: black and white in the terminal are the theme's own (ΔE 12)`, () => {
+			for (const name of ["Black", "BrightBlack", "White", "BrightWhite"]) {
+				const gap = fromTheme(ansi(theme, name));
+				assert.ok(
+					gap <= 12,
+					`${name} ${ansi(theme, name)} is ${gap.toFixed(1)} from the theme`
+				);
+			}
+		});
+
 		it(`${file}: no terminal color is more saturated than the theme`, () => {
 			for (const [family, name] of slots) {
 				// Red and green must read as colors even in a muted theme.
