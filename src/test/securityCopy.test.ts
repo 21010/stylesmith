@@ -33,6 +33,11 @@ describe("API-only security boundary", () => {
 		}
 	});
 
+	it("no longer mentions Stylesmith 1.x, whose cleanup was removed (#115)", () => {
+		for (const file of ["package.json", "README.md", "SECURITY.md", "site/security.html"])
+			assert.doesNotMatch(read(file), /Stylesmith 1\.x|1\.x\b/, file);
+	});
+
 	it("documents the API-only boundary", () => {
 		assert.match(read("README.md"), /does not modify VS Code installation files/);
 		assert.match(read("SECURITY.md"), /does not read or write VS Code installation files/);

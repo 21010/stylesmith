@@ -1,7 +1,7 @@
 {
 	"name": "stylesmith",
 	"displayName": "Stylesmith",
-	"description": "One click for a complete look in VS Code and your terminal: themes, pixel icons and editor settings that belong together, checked for contrast and color blindness, with a matching Nerd Font if you want one. One click to undo it. Stylesmith does not modify VS Code installation files, apart from removing changes made by Stylesmith 1.x.",
+	"description": "One click for a complete look in VS Code and your terminal: themes, pixel icons and editor settings that belong together, checked for contrast and color blindness, with a matching Nerd Font if you want one. One click to undo it. Stylesmith does not modify VS Code installation files.",
 	"version": "2.8.1",
 	"publisher": "21010",
 	"author": {

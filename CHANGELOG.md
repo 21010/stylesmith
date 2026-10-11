@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Fixed
+
+- The Marketplace description no longer says Stylesmith removes changes made by Stylesmith 1.x: that cleanup was removed in 2.8.1.
+
 ## 2.8.1 (2026-10-11)
 
 2.8.0 was tagged but never released: its release stopped at the color audit (a stock diff shadow in Daylight High Contrast), fixed here. 2.8.1 contains everything listed below.
