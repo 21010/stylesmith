@@ -51,7 +51,17 @@ const SIZE = { width: 1280, height: 760 };
 // The Oh My Posh prompt (extras/oh-my-posh/stylesmith.omp.json) in PowerShell, in VS Code's
 // terminal with each preset. The prompt uses the terminal's ANSI colors, which every Stylesmith
 // theme defines. Needs PowerShell 7 (pwsh) and oh-my-posh on the PATH.
-const OMP_PRESETS = ["night-city", "phosphor-terminal", "amber-monitor", "black-ice", "daylight"];
+// The website shows these five; OMP_PRESETS=all (or a list) shoots others, to check every theme.
+const OMP_PRESETS =
+	process.env.OMP_PRESETS === "all"
+		? PRESETS.map(preset => preset.id)
+		: (process.env.OMP_PRESETS?.split(",") ?? [
+				"night-city",
+				"phosphor-terminal",
+				"amber-monitor",
+				"black-ice",
+				"daylight"
+			]);
 const OMP_CONFIG = join(ROOT, "extras", "oh-my-posh", "stylesmith.omp.json");
 // Smaller than the other shots, with the same shape: the prompt is shown small on the website.
 const OMP_SIZE = { width: 960, height: 570 };
@@ -63,7 +73,12 @@ const OMP_INIT =
 	`oh-my-posh init pwsh --config '${OMP_CONFIG}' | Invoke-Expression`;
 // A clean tree, a slow command (the "took" segment) and a failing one (the error state), whose
 // messages show no path of this computer.
-const OMP_COMMANDS = ["git status --short", "Start-Sleep -Milliseconds 2200", "git push"];
+// A one-line git error, so the failure doesn't fill the screen.
+const OMP_COMMANDS = [
+	"git status --short",
+	"Start-Sleep -Milliseconds 2200",
+	"git checkout no-such-branch"
+];
 
 /** Makes the sample project a git repository with a staged file and a changed one. */
 function gitProject(project) {
@@ -81,9 +96,18 @@ function gitProject(project) {
 	writeFileSync(join(project, "README.md"), "# Neon server\n\nServes the current palette.\n");
 }
 
-/** How many prompts the terminal shows: each one ends with ❯. */
-const promptCount = () =>
-	(document.querySelector(".terminal-wrapper .xterm-rows")?.textContent.match(/❯/g) ?? []).length;
+/** The terminal's text, line by line. */
+const terminalText = () => document.querySelector(".terminal-wrapper .xterm-rows")?.innerText ?? "";
+
+/**
+ * Whether a prompt waits at the bottom, after the text changed from `before`. (Counting the ❯ on
+ * screen fails once a command's output scrolls an earlier prompt away.)
+ */
+const promptReady = before => {
+	const text = document.querySelector(".terminal-wrapper .xterm-rows")?.innerText ?? "";
+	const last = text.trimEnd().split("\n").at(-1) ?? "";
+	return text !== before && /❯\s*$/.test(last);
+};
 
 async function shootOhMyPosh(vscode, preset) {
 	const { page, project, close } = await openVSCode(vscode, preset, {
@@ -97,6 +121,8 @@ async function shootOhMyPosh(vscode, preset) {
 			},
 			"terminal.integrated.defaultProfile.windows": "Oh My Posh",
 			"terminal.integrated.fontSize": 16,
+			// The prompt's icons need a Nerd Font; without one installed, it falls back to Consolas.
+			"terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font Mono', Consolas, monospace",
 			"terminal.integrated.gpuAcceleration": "off", // the text is in the page, to wait for
 			"terminal.integrated.shellIntegration.enabled": false,
 			"stylesmith.problems.statusBar": false // doesn't fit in this narrow window
@@ -107,7 +133,7 @@ async function shootOhMyPosh(vscode, preset) {
 		await settle(page, `oh-my-posh ${preset.id}`);
 		await page.keyboard.press("Control+B"); // no sidebar: the terminal gets the width
 		await page.keyboard.press("Control+Backquote");
-		await page.waitForFunction(promptCount, undefined, { timeout: 30_000 });
+		await page.waitForFunction(promptReady, "", { timeout: 30_000 });
 		await page.keyboard.press("F1");
 		await page.keyboard.type("View: Toggle Maximized Panel");
 		await page.waitForTimeout(400);
@@ -115,19 +141,10 @@ async function shootOhMyPosh(vscode, preset) {
 		await page.waitForTimeout(600);
 		await page.click(".terminal-wrapper");
 		for (const command of OMP_COMMANDS) {
-			const before = await page.evaluate(promptCount);
+			const before = await page.evaluate(terminalText);
 			await page.keyboard.type(command, { delay: 15 });
 			await page.keyboard.press("Enter");
-			await page.waitForFunction(
-				count =>
-					(
-						document
-							.querySelector(".terminal-wrapper .xterm-rows")
-							?.textContent.match(/❯/g) ?? []
-					).length > count,
-				before,
-				{ timeout: 30_000 }
-			);
+			await page.waitForFunction(promptReady, before, { timeout: 30_000 });
 			await page.waitForTimeout(300);
 		}
 		await hideClutter(page);
