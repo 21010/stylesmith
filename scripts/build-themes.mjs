@@ -204,6 +204,9 @@ function theme(p) {
 			"peekViewTitle.background": p.bgRaised,
 			"diffEditor.insertedTextBackground": `${p.status.added}1f`,
 			"diffEditor.removedTextBackground": `${p.status.deleted}1f`,
+			"diffEditor.unchangedCodeBackground": `${p.lineNumber}29`,
+			"diffEditor.move.border": `${p.muted}9c`,
+			"diffEditor.moveActive.border": p.accentAlt,
 			"minimap.selectionHighlight": p.selection,
 			"scrollbarSlider.background": `${p.lineNumber}40`,
 			"scrollbarSlider.hoverBackground": `${p.lineNumber}66`,
@@ -330,6 +333,100 @@ function theme(p) {
 			"gitDecoration.stageModifiedResourceForeground": p.status.modified,
 			"gitDecoration.stageDeletedResourceForeground": p.status.deleted,
 			"gitDecoration.submoduleResourceForeground": t.type,
+
+			// Feature areas (#107): debugging, the merge editor, the Source Control graph, Chat,
+			// Testing, Extensions and charts, in the theme's own colors.
+
+			// Debugging: breakpoints in the error color, the paused frame in the warning color.
+			"debugIcon.breakpointForeground": p.status.error,
+			"debugIcon.breakpointDisabledForeground": p.lineNumber,
+			"debugIcon.breakpointUnverifiedForeground": p.lineNumber,
+			"debugIcon.breakpointCurrentStackframeForeground": p.status.warning,
+			"debugIcon.breakpointStackframeForeground": p.status.added,
+			"editor.stackFrameHighlightBackground": `${p.status.warning}26`,
+			"editor.focusedStackFrameHighlightBackground": `${p.status.added}26`,
+			"debugExceptionWidget.border": p.status.error,
+			"debugExceptionWidget.background": p.bgRaised,
+			"debugView.exceptionLabelBackground": p.status.error,
+			"debugView.exceptionLabelForeground": on(p.status.error),
+			"debugView.stateLabelBackground": p.bgRaised,
+			"debugView.stateLabelForeground": p.fg,
+			"debugView.valueChangedHighlight": p.accent,
+			// The debug toolbar: start and restart in green, stop in red, the steps in the accent.
+			"debugIcon.startForeground": p.status.added,
+			"debugIcon.restartForeground": p.status.added,
+			"debugIcon.stopForeground": p.status.error,
+			"debugIcon.disconnectForeground": p.status.error,
+			...Object.fromEntries(
+				["pause", "continue", "stepOver", "stepInto", "stepOut", "stepBack"].map(name => [
+					`debugIcon.${name}Foreground`,
+					p.accent
+				])
+			),
+			// Variables and watch expressions, in the syntax colors.
+			"debugTokenExpression.name": t.property,
+			"debugTokenExpression.type": t.type,
+			"debugTokenExpression.value": p.muted,
+			"debugTokenExpression.string": t.string,
+			"debugTokenExpression.number": t.number,
+			"debugTokenExpression.boolean": t.number,
+			"debugTokenExpression.error": p.status.error,
+
+			// The merge editor: changes in the added color, the base in the deleted color, and
+			// unhandled conflicts in the warning color.
+			"mergeEditor.change.background": `${p.status.added}1f`,
+			"mergeEditor.change.word.background": `${p.status.added}40`,
+			"mergeEditor.changeBase.background": `${p.status.deleted}1f`,
+			"mergeEditor.changeBase.word.background": `${p.status.deleted}40`,
+			"mergeEditor.conflictingLines.background": `${p.status.warning}26`,
+			"mergeEditor.conflict.unhandledFocused.border": p.status.warning,
+			"mergeEditor.conflict.unhandledUnfocused.border": `${p.status.warning}7a`,
+			"mergeEditor.conflict.unhandled.minimapOverViewRuler": p.status.warning,
+			"mergeEditor.conflict.handledFocused.border": `${p.muted}cc`,
+			"mergeEditor.conflict.handledUnfocused.border": `${p.lineNumber}80`,
+			"mergeEditor.conflict.handled.minimapOverViewRuler": p.muted,
+
+			// The Source Control graph: its lanes take terminal colors, which every theme keeps
+			// apart by hue, even the one-hue themes.
+			...Object.fromEntries(
+				[p.ansi.yellow, p.ansi.magenta, p.ansi.cyan, p.ansi.blue, p.ansi.green].map(
+					(color, i) => [`scmGraph.foreground${i + 1}`, color]
+				)
+			),
+			"scmGraph.historyItemBaseRefColor": t.number,
+			"scmGraph.historyItemHoverAdditionsForeground": p.status.added,
+			"scmGraph.historyItemHoverDeletionsForeground": p.status.deleted,
+
+			// Chat and agents.
+			"chat.linesAddedForeground": p.status.added,
+			"chat.linesRemovedForeground": p.status.deleted,
+			"chat.editedFileForeground": p.status.modified,
+			"chat.slashCommandForeground": p.accent,
+			"chat.slashCommandBackground": `${p.accent}26`,
+			"chat.requestCodeBorder": `${p.accent}66`,
+			"chat.checkpointSeparator": p.lineNumber,
+			"chat.avatarBackground": p.bgRaised,
+			"chat.workingProgressStableIconForeground": p.accent,
+			"chat.workingProgressInsidersIconForeground": p.accentAlt,
+			"chat.mcpCompatibilityWarningForeground": p.status.warning,
+			"agentsVoice.speakingForeground": p.accentAlt,
+			"agentsVoice.speakingBackground": `${p.accentAlt}14`,
+
+			// Testing, Extensions and charts.
+			"testing.iconPassed": p.status.added,
+			"testing.iconFailed": p.status.error,
+			"testing.iconErrored": p.status.error,
+			"testing.iconUnset": p.lineNumber,
+			"testing.iconSkipped": p.lineNumber,
+			"extensionIcon.starForeground": p.status.warning,
+			"extensionIcon.sponsorForeground": p.accentAlt,
+			"extensionIcon.preReleaseForeground": p.accent,
+			"mcpIcon.starForeground": p.status.warning,
+			"profileBadge.background": p.bgRaised,
+			"profileBadge.foreground": p.fg,
+			"chart.line": p.accent,
+			"charts.green": p.status.added,
+			"charts.purple": t.type,
 
 			// Terminal
 			"terminal.background": p.bgDark,
