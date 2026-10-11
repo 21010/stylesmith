@@ -104,6 +104,29 @@ export async function run(): Promise<void> {
 		assert.ok(extension.isActive);
 	});
 
+	// The gutter icons follow the Stylesmith theme in use (#106); the unit tests check which
+	// icons, against a fake of VS Code's API (#120). This checks a real theme switch.
+	await step("Problem Lens keeps working across a color theme switch", async () => {
+		const document = await vscode.workspace.openTextDocument({ content: "a\n" });
+		await vscode.window.showTextDocument(document);
+		const diagnostics = vscode.languages.createDiagnosticCollection("stylesmith-theme");
+		diagnostics.set(document.uri, [
+			new vscode.Diagnostic(new vscode.Range(0, 0, 0, 1), "an error")
+		]);
+		const workbench = vscode.workspace.getConfiguration("workbench");
+		await workbench.update("colorTheme", "Stylesmith Amber", true);
+		await until(
+			() => vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark,
+			"the dark theme applies"
+		);
+		await sleep(300);
+		assert.ok(existsSync(path.join(extension.extensionPath, "icons/problems/amber/error.svg")));
+		await workbench.update("colorTheme", undefined, true);
+		diagnostics.dispose();
+		await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+		assert.ok(extension.isActive);
+	});
+
 	// The website says VS Code's own gutter marks tell modified lines apart from added ones by a
 	// striped pattern, not by color alone (issue #20). Check that default in every tested version.
 	// The readable terminal effect raises this from VS Code's default (#69).
