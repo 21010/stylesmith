@@ -23,13 +23,14 @@ describe("presets", () => {
 				assert.ok(ids.includes(preset.theme), preset.theme);
 			});
 
-			it("uses its color theme's own pixel icons, if it has them", () => {
-				// "Stylesmith Phosphor" has its own icons if "Stylesmith Pixel Phosphor" exists.
+			it("uses its color theme's own pixel icons", () => {
+				// "Stylesmith Phosphor" has its own icons: "Stylesmith Pixel Phosphor".
+				const theme = contributes.themes.find(t => themeSettingsId(t) === preset.theme)!;
 				const own = contributes.iconThemes.find(
-					theme =>
-						theme.label === preset.theme.replace("Stylesmith ", "Stylesmith Pixel ")
+					icons => icons.label === theme.label.replace("Stylesmith ", "Stylesmith Pixel ")
 				);
-				assert.equal(preset.iconTheme, own?.id ?? ICON_THEME);
+				assert.ok(own, `${theme.label} has its own icon set`);
+				assert.equal(preset.iconTheme, own.id);
 			});
 
 			it("recommends one of Stylesmith's fonts", () => {

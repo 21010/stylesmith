@@ -29,7 +29,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Night City",
 		description: "Cyberpunk colors, pixel icons and smooth editor settings",
 		theme: "Stylesmith Neon Night",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-neon-night",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
@@ -99,7 +99,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Monolith",
 		description: "Calm blue-grey colors, quiet editor settings and dimmed unfocused editors",
 		theme: "Stylesmith Monolith",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-monolith",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
@@ -117,7 +117,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"Warm concrete colors with a coral accent, quiet settings and dimmed unfocused editors",
 		theme: "Stylesmith Glass Lab",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-glass-lab",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
@@ -134,7 +134,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Vault",
 		description: "Navy and vault-yellow colors with a block terminal cursor",
 		theme: "Stylesmith Vault",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-vault",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "SpaceMono",
 		effects: {
@@ -153,7 +153,7 @@ export const PRESETS: readonly Preset[] = [
 			"A greyed, green-cast city where only the code glows, with a block terminal cursor",
 		// The theme's id in VS Code's settings: its earlier name, so existing choices still work.
 		theme: "Stylesmith Digital Rain",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-simulation",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
@@ -171,7 +171,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"Cold blue-grey steel with rust accents, quiet settings and dimmed unfocused editors",
 		theme: "Stylesmith Steel and Rust",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-steel-and-rust",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "ShureTechMono",
 		effects: {
@@ -188,7 +188,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Brass",
 		description: "Brass, copper and verdigris on dark bronze, with calm settings",
 		theme: "Stylesmith Brass",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-brass",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "MonaspiceXe",
 		effects: {
@@ -206,7 +206,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"A sunlit greenhouse in leaf, sunflower and terracotta, with nothing mechanical",
 		theme: "Stylesmith Tea Garden",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-tea-garden",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "RecMonoCasual",
 		effects: {
@@ -225,7 +225,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Sunroom",
 		description: "Soft sunlight on pale walls, with unfocused editors dimmed",
 		theme: "Stylesmith Sunroom",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-sunroom",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "RecMonoCasual",
 		effects: {
@@ -244,7 +244,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Countdown",
 		description: "Cold grey-black with every number in red, and unfocused editors dimmed",
 		theme: "Stylesmith Countdown",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-countdown",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "ShureTechMono",
 		effects: {
@@ -261,7 +261,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Overlay",
 		description: "Cyan overlays and amber alerts on dark slate, with a block terminal cursor",
 		theme: "Stylesmith Overlay",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-overlay",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "MartianMono",
 		effects: {
@@ -278,7 +278,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Deep Desert",
 		description: "Sand, ochre and spice orange on rock-black, with one deep blue",
 		theme: "Stylesmith Deep Desert",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-deep-desert",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "SpaceMono",
 		effects: {
@@ -295,7 +295,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Haze",
 		description: "Orange haze and teal rain over cold concrete, with unfocused editors dimmed",
 		theme: "Stylesmith Haze",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-haze",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
@@ -312,7 +312,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Grid",
 		description: "Cyan lines on black, with orange for the adversary",
 		theme: "Stylesmith Grid",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-grid",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
@@ -330,7 +330,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"A sterile office floor in pale green and teal, compact, with a block terminal cursor",
 		theme: "Stylesmith Corridor",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-corridor",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "3270",
 		effects: {
@@ -349,7 +349,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Horizon",
 		description: "Warm orange, peach and lilac on black, calm and optimistic",
 		theme: "Stylesmith Horizon",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-horizon",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "GeistMono",
 		effects: {
@@ -366,7 +366,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Command Deck",
 		description: "Grey-black consoles with one red alarm, and a block terminal cursor",
 		theme: "Stylesmith Command Deck",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-command-deck",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "ShureTechMono",
 		effects: {
@@ -383,7 +383,7 @@ export const PRESETS: readonly Preset[] = [
 		label: "Daylight",
 		description: "Bright colors with a smooth cursor and current-line highlight",
 		theme: "Stylesmith Daylight",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-daylight",
 		productIconTheme: PRODUCT_ICON_THEME,
 		font: "JetBrainsMono",
 		effects: {
@@ -403,7 +403,7 @@ export const PRESETS: readonly Preset[] = [
 		description:
 			"High-contrast colors, minimal motion, clear bracket guides and readable terminal colors",
 		theme: "Stylesmith Neon High Contrast",
-		iconTheme: ICON_THEME,
+		iconTheme: "stylesmith-pixel-neon-high-contrast",
 		font: "AtkynsonMono",
 		effects: {
 			"effects.smoothCursor": false,
