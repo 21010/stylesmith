@@ -33,6 +33,30 @@ const WORDS: Record<Severity, string> = { error: "Error", warning: "Warning", in
  * High contrast themes get no tint: their text keeps its full contrast, and the gutter icon
  * and the message mark the line. Stylesmith's tests check every theme against these values.
  */
+/** The kind of theme each `uiTheme` in package.json stands for. */
+const UI_THEME_KIND: Record<string, ThemeKind> = {
+	"vs-dark": "dark",
+	vs: "light",
+	"hc-black": "hc-dark",
+	"hc-light": "hc-light"
+};
+
+/**
+ * The Stylesmith color theme in use, as its id ("amber" for Stylesmith Amber), so the Problem
+ * Lens can draw its gutter icons in that theme's own colors (#106). `label` is the theme the
+ * settings name; if it isn't a Stylesmith theme, or VS Code shows a different kind of theme
+ * (an automatic switch to light or high contrast), there is none and the generic icons stay.
+ */
+export function stylesmithTheme(
+	label: string | undefined,
+	kind: ThemeKind,
+	themes: readonly { label: string; uiTheme: string; path: string }[]
+): string | undefined {
+	const theme = themes.find(t => t.label === label);
+	if (!theme || UI_THEME_KIND[theme.uiTheme] !== kind) return undefined;
+	return /([^/]+)-color-theme\.json$/.exec(theme.path)?.[1];
+}
+
 export const LINE_TINT: Record<ThemeKind, number> = {
 	dark: 12,
 	light: 8,

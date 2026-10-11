@@ -7,6 +7,7 @@ import {
 	documentProblems,
 	lineDecorations,
 	statusItem,
+	stylesmithTheme,
 	type LineProblem,
 	type ProblemLensOptions,
 	type Severity,
@@ -167,14 +168,20 @@ export class ProblemLens implements vscode.Disposable {
 
 	/** One decoration type per severity, styled for the current theme. */
 	private createTypes(): Record<Severity, vscode.TextEditorDecorationType> {
-		const tint = LINE_TINT[themeKind()];
+		const kind = themeKind();
+		const tint = LINE_TINT[kind];
+		const themes = (this.context.extension.packageJSON as PackageJson).contributes.themes;
+		const theme = stylesmithTheme(activeThemeLabel(kind), kind, themes);
 		const create = (severity: Severity) => {
 			const color = COLOR[severity];
-			const icon = (kind: "dark" | "light") =>
+			// A Stylesmith theme's own icons, or a dark and a light icon for any other theme.
+			const icon = (variant: "dark" | "light") =>
 				this.options.gutterIcons
 					? {
 							gutterIconPath: this.context.asAbsolutePath(
-								`icons/problems/${severity}-${kind}.svg`
+								theme
+									? `icons/problems/${theme}/${severity}.svg`
+									: `icons/problems/${severity}-${variant}.svg`
 							)
 						}
 					: {};
@@ -256,6 +263,26 @@ Click to open the Problems panel.`;
 			.map(d => ({ line: d.range.start.line, severity: d.severity, message: d.message }));
 		return documentProblems(diagnostics, document.lineCount, this.options.minimumSeverity);
 	}
+}
+
+interface PackageJson {
+	contributes: { themes: { label: string; uiTheme: string; path: string }[] };
+}
+
+/**
+ * The color theme the settings name for the current kind of theme: the chosen theme, or the
+ * preferred dark or light one while VS Code follows the system's color scheme.
+ */
+function activeThemeLabel(kind: ThemeKind): string | undefined {
+	const workbench = vscode.workspace.getConfiguration("workbench");
+	if (!vscode.workspace.getConfiguration("window").get<boolean>("autoDetectColorScheme")) {
+		return workbench.get<string>("colorTheme");
+	}
+	return workbench.get<string>(
+		kind === "light" || kind === "hc-light"
+			? "preferredLightColorTheme"
+			: "preferredDarkColorTheme"
+	);
 }
 
 function themeKind(): ThemeKind {

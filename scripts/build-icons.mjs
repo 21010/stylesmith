@@ -10,7 +10,8 @@
 // Colors are adjusted so every icon keeps at least 3:1 contrast on the side bar (WCAG
 // non-text contrast), in dark and in light themes.
 //
-// The Problem Lens gutter icons are drawn here too, as SVG files.
+// The Problem Lens gutter icons are drawn here too, as SVG files: one set in each Stylesmith
+// theme's own colors, and a dark and a light set for any other theme.
 
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -399,21 +400,32 @@ function build() {
 	const problemDir = join(root, "problems");
 	rmSync(problemDir, { recursive: true, force: true });
 	mkdirSync(problemDir, { recursive: true });
+	const problemIcon = (map, color) => {
+		const rects = [];
+		map.forEach((row, y) => {
+			for (let x = 0; x < row.length; x++) {
+				if (row[x] === "#")
+					rects.push(`<rect x="${x}" y="${y}" width="1" height="1" fill="${color}"/>`);
+			}
+		});
+		return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">${rects.join("")}</svg>\n`;
+	};
+	// For any other theme: one icon per severity for dark themes, one for light themes.
 	for (const [name, icon] of Object.entries(PROBLEM_ICONS)) {
 		for (const kind of ["dark", "light"]) {
 			const color = fit(icon.color[kind], kind, EDITOR[kind]);
-			const rects = [];
-			icon.map.forEach((row, y) => {
-				for (let x = 0; x < row.length; x++) {
-					if (row[x] === "#")
-						rects.push(
-							`<rect x="${x}" y="${y}" width="1" height="1" fill="${color}"/>`
-						);
-				}
-			});
+			writeFileSync(join(problemDir, `${name}-${kind}.svg`), problemIcon(icon.map, color));
+		}
+	}
+	// For each Stylesmith theme (#106): its own color for each severity, as its editor uses.
+	for (const palette of palettes) {
+		const kind = (palette.kind ?? "dark").endsWith("light") ? "light" : "dark";
+		mkdirSync(join(problemDir, palette.id));
+		for (const [name, icon] of Object.entries(PROBLEM_ICONS)) {
+			const color = fit(palette.status[name], kind, [palette.bg]);
 			writeFileSync(
-				join(problemDir, `${name}-${kind}.svg`),
-				`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">${rects.join("")}</svg>\n`
+				join(problemDir, palette.id, `${name}.svg`),
+				problemIcon(icon.map, color)
 			);
 		}
 	}
