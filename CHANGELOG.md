@@ -4,8 +4,13 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ## Unreleased
 
+### Added
+
+- **High Contrast Light preset (#122):** Daylight High Contrast with its own file icons, the AtkynsonMono font and High Contrast's calm settings (no smooth cursor, clear bracket guides, readable terminal colors), for high contrast in a bright room.
+
 ### Changed
 
+- **More variety in the recommended fonts (#122).** No font is recommended by more than three presets now: Countdown takes Blex Mono, Grid Martian Mono and Horizon Recursive Casual.
 - **More of your code is colored (#118).** Every theme now colors `this`, `self` and `super` like keywords; namespaces, modules, enums and type parameters like types; decorators and annotations like functions; JSON keys and CSS properties as properties (before, in the type color); the `<` `>` around HTML tags more quietly than the tag; and Markdown quotes and list markers. Deprecated symbols are struck through.
 - **Syntax colors read apart in every theme (#116).** In 17 themes two syntax roles were nearly the same color: strings and properties in Command Deck and Teal Terminal (so a JSON key looked like its value), types and properties in Sunroom, strings and types in Grid and ICE. Keyword, string, function, type, number and property now differ by at least ΔE 10 in every theme. Most colors moved only slightly, keeping each theme's look and contrast, and a test keeps them apart.
 
