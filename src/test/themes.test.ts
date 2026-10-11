@@ -86,6 +86,72 @@ const EVERYDAY = [
 	"terminalCommandDecoration.errorBackground"
 ];
 
+// Feature areas, stock-colored before #107: debugging, the merge editor, the Source Control
+// graph, Chat, Testing, Extensions and charts.
+const FEATURES = [
+	"debugIcon.breakpointForeground",
+	"debugIcon.breakpointCurrentStackframeForeground",
+	"debugIcon.breakpointStackframeForeground",
+	"debugIcon.breakpointDisabledForeground",
+	"editor.stackFrameHighlightBackground",
+	"editor.focusedStackFrameHighlightBackground",
+	"debugExceptionWidget.border",
+	"debugExceptionWidget.background",
+	"debugView.exceptionLabelBackground",
+	"debugView.stateLabelBackground",
+	"debugView.valueChangedHighlight",
+	...[
+		"start",
+		"restart",
+		"stop",
+		"pause",
+		"continue",
+		"stepOver",
+		"stepInto",
+		"stepOut",
+		"stepBack"
+	].map(name => `debugIcon.${name}Foreground`),
+	...["name", "type", "string", "boolean", "error"].map(kind => `debugTokenExpression.${kind}`),
+	"mergeEditor.change.background",
+	"mergeEditor.change.word.background",
+	"mergeEditor.changeBase.background",
+	"mergeEditor.changeBase.word.background",
+	"mergeEditor.conflictingLines.background",
+	"mergeEditor.conflict.unhandledFocused.border",
+	"mergeEditor.conflict.unhandledUnfocused.border",
+	"mergeEditor.conflict.unhandled.minimapOverViewRuler",
+	"mergeEditor.conflict.handledUnfocused.border",
+	"mergeEditor.conflict.handled.minimapOverViewRuler",
+	"diffEditor.move.border",
+	"diffEditor.moveActive.border",
+	"diffEditor.unchangedCodeBackground",
+	...[1, 2, 3, 4, 5].map(i => `scmGraph.foreground${i}`),
+	"scmGraph.historyItemBaseRefColor",
+	"scmGraph.historyItemHoverAdditionsForeground",
+	"scmGraph.historyItemHoverDeletionsForeground",
+	"chat.linesAddedForeground",
+	"chat.slashCommandBackground",
+	"chat.slashCommandForeground",
+	"chat.requestCodeBorder",
+	"chat.checkpointSeparator",
+	"chat.workingProgressStableIconForeground",
+	"chat.workingProgressInsidersIconForeground",
+	"chat.mcpCompatibilityWarningForeground",
+	"agentsVoice.speakingForeground",
+	"agentsVoice.speakingBackground",
+	"testing.iconPassed",
+	"testing.iconUnset",
+	"testing.iconSkipped",
+	"extensionIcon.starForeground",
+	"extensionIcon.sponsorForeground",
+	"extensionIcon.preReleaseForeground",
+	"mcpIcon.starForeground",
+	"profileBadge.background",
+	"chart.line",
+	"charts.green",
+	"charts.purple"
+];
+
 const files = readdirSync(THEMES_DIR).filter(file => file.endsWith("-color-theme.json"));
 const contributed = manifest().contributes.themes;
 
@@ -281,7 +347,85 @@ describe("color themes", () => {
 					c("editorSuggestWidget.background"),
 					nonText
 				]
-			)
+			),
+			// Feature areas (#107): icons in the editor's glyph margin, the debug toolbar
+			// and the side bar's views, and text in the views.
+			["breakpoint", c("debugIcon.breakpointForeground"), background, nonText],
+			[
+				"paused frame",
+				c("debugIcon.breakpointCurrentStackframeForeground"),
+				background,
+				nonText
+			],
+			...FEATURES.filter(key => /^debugIcon\.(?!breakpoint)/.test(key)).map(
+				(key): [string, string, string, number] => [
+					key,
+					c(key),
+					c("editorWidget.background"),
+					nonText
+				]
+			),
+			...FEATURES.filter(key => key.startsWith("debugTokenExpression.")).map(
+				(key): [string, string, string, number] => [
+					key,
+					c(key),
+					c("sideBar.background"),
+					text
+				]
+			),
+			[
+				"exception label",
+				c("debugView.exceptionLabelForeground"),
+				c("debugView.exceptionLabelBackground"),
+				text
+			],
+			[
+				"debug state label",
+				c("debugView.stateLabelForeground"),
+				c("debugView.stateLabelBackground"),
+				text
+			],
+			[
+				"exception widget border",
+				c("debugExceptionWidget.border"),
+				c("debugExceptionWidget.background"),
+				nonText
+			],
+			[
+				"unhandled merge conflict",
+				c("mergeEditor.conflict.unhandledFocused.border"),
+				background,
+				nonText
+			],
+			...[1, 2, 3, 4, 5].map((i): [string, string, string, number] => [
+				`Source Control graph lane ${i}`,
+				c(`scmGraph.foreground${i}`),
+				c("sideBar.background"),
+				nonText
+			]),
+			["Chat: lines added", c("chat.linesAddedForeground"), c("sideBar.background"), text],
+			[
+				"Chat: lines removed",
+				c("chat.linesRemovedForeground"),
+				c("sideBar.background"),
+				text
+			],
+			[
+				"Chat: slash command",
+				c("chat.slashCommandForeground"),
+				c("sideBar.background"),
+				text
+			],
+			["test passed", c("testing.iconPassed"), c("sideBar.background"), nonText],
+			["test failed", c("testing.iconFailed"), c("sideBar.background"), nonText],
+			["test skipped", c("testing.iconSkipped"), c("sideBar.background"), nonText],
+			[
+				"extension rating star",
+				c("extensionIcon.starForeground"),
+				c("sideBar.background"),
+				nonText
+			],
+			["profile badge", c("profileBadge.foreground"), c("profileBadge.background"), text]
 		];
 		if (highContrast) {
 			checks.push(["contrast border", c("contrastBorder"), background, nonText]);
@@ -345,7 +489,11 @@ describe("color themes", () => {
 				"terminalCommandDecoration.successBackground",
 				"terminalCommandDecoration.errorBackground"
 			],
-			["activityWarningBadge.background", "activityErrorBadge.background"]
+			["activityWarningBadge.background", "activityErrorBadge.background"],
+			["chat.linesAddedForeground", "chat.linesRemovedForeground"],
+			// Not testing.iconPassed and iconFailed: like VS Code's own, they stay green and red,
+			// told apart by their shape (a check and a cross), not by color alone.
+			["debugIcon.breakpointForeground", "debugIcon.breakpointCurrentStackframeForeground"]
 		];
 
 		describe(theme.name, () => {
@@ -372,25 +520,30 @@ describe("color themes", () => {
 				});
 			}
 
-			it("sets the everyday colors from its own colors, not VS Code's stock ones (#105)", () => {
-				const everyday = new Set(EVERYDAY);
-				const own = [
-					...Object.entries(theme.colors)
-						.filter(([key]) => !everyday.has(key))
-						.map(([, color]) => color),
-					...syntax.values()
-				].map(color => color.slice(0, 7));
-				for (const key of EVERYDAY) {
-					const color = c(key).slice(0, 7);
-					const gap = Math.min(
-						...own.map(o => colorDifference(color, o, VISION["normal vision"]))
-					);
-					assert.ok(
-						gap <= 8,
-						`${key} ${color} is ${gap.toFixed(1)} from the theme's colors`
-					);
-				}
-			});
+			for (const [keys, label] of [
+				[EVERYDAY, "the everyday colors (#105)"],
+				[FEATURES, "the feature area colors (#107)"]
+			] as const) {
+				it(`sets ${label} from its own colors, not VS Code's stock ones`, () => {
+					const listed = new Set([...EVERYDAY, ...FEATURES]);
+					const own = [
+						...Object.entries(theme.colors)
+							.filter(([key]) => !listed.has(key))
+							.map(([, color]) => color),
+						...syntax.values()
+					].map(color => color.slice(0, 7));
+					for (const key of keys) {
+						const color = c(key).slice(0, 7);
+						const gap = Math.min(
+							...own.map(o => colorDifference(color, o, VISION["normal vision"]))
+						);
+						assert.ok(
+							gap <= 8,
+							`${key} ${color} is ${gap.toFixed(1)} from the theme's colors`
+						);
+					}
+				});
+			}
 
 			for (const [label, foreground, back, minimum] of checks) {
 				it(`has readable ${label} (at least ${minimum}:1)`, () => {
