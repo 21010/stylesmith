@@ -160,6 +160,52 @@ describe("Themes page", () => {
 	}
 });
 
+describe("Themes page counts", () => {
+	const NUMBERS = [
+		"zero",
+		"one",
+		"two",
+		"three",
+		"four",
+		"five",
+		"six",
+		"seven",
+		"eight",
+		"nine",
+		"ten",
+		"eleven",
+		"twelve",
+		"thirteen",
+		"fourteen",
+		"fifteen",
+		"sixteen",
+		"seventeen",
+		"eighteen",
+		"nineteen",
+		"twenty",
+		"twenty-one",
+		"twenty-two",
+		"twenty-three",
+		"twenty-four",
+		"twenty-five",
+		"twenty-six",
+		"twenty-seven",
+		"twenty-eight",
+		"twenty-nine",
+		"thirty"
+	];
+
+	it("states the number of color themes and presets, in the description and the intro", () => {
+		const text = words(page);
+		const themes = NUMBERS[manifest().contributes.themes.length]!;
+		const presets = NUMBERS[PRESETS.length]!;
+		assert.ok(text.includes(`has ${themes} color themes`), `intro: ${themes} color themes`);
+		assert.ok(text.includes(`and ${presets} presets`), `intro: ${presets} presets`);
+		assert.ok(page.includes(`Stylesmith's ${themes} color themes`), "description: themes");
+		assert.ok(page.includes(`the ${presets} presets`), "description: presets");
+	});
+});
+
 describe("Compare presets table", () => {
 	const rows = new Map(
 		[...page.matchAll(/<tr>\s*<th scope="row">([^<]+)<\/th>([\s\S]*?)<\/tr>/g)].map(
