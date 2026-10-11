@@ -35,6 +35,7 @@ import {
 } from "./data/icons.mjs";
 import { palettes } from "./data/palettes.mjs";
 import { atFixedTime } from "./fixed-time.mjs";
+import { pixelPath } from "./pixel-glyph.mjs";
 
 const MIN_CONTRAST = 3;
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "icons");
@@ -195,27 +196,7 @@ function outline(g) {
 		}
 		return found;
 	});
-	const path = new opentype.Path();
-	const done = new Set();
-	runs.forEach((rowRuns, y) => {
-		for (const [start, end] of rowRuns) {
-			if (done.has(`${y}:${start}:${end}`)) continue;
-			let last = y;
-			while (runs[last + 1]?.some(([s, e]) => s === start && e === end)) {
-				last++;
-				done.add(`${last}:${start}:${end}`);
-			}
-			// Font coordinates grow upwards: row 0 is the top of the em box.
-			const top = EM - y * PIXEL;
-			const bottom = EM - (last + 1) * PIXEL;
-			path.moveTo(start * PIXEL, bottom);
-			path.lineTo(end * PIXEL, bottom);
-			path.lineTo(end * PIXEL, top);
-			path.lineTo(start * PIXEL, top);
-			path.close();
-		}
-	});
-	return path;
+	return pixelPath(runs, PIXEL, EM);
 }
 
 function writeFont(list) {

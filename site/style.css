@@ -816,75 +816,6 @@ img {
 	}
 }
 
-.editor-window {
-	border: 1px solid var(--pink);
-	background: var(--bg-deep);
-	border-radius: 6px;
-	overflow: hidden;
-	box-shadow: 0 10px 40px -10px rgb(255 114 216 / 0.15);
-}
-
-.editor-header {
-	display: flex;
-	align-items: center;
-	padding: 0.2rem 0.8rem;
-	font-size: 0.85rem;
-	line-height: 1.4;
-	background: rgba(0, 0, 0, 0.4);
-	border-bottom: 1px solid var(--border);
-	position: relative;
-}
-
-.editor-dots {
-	display: flex;
-	gap: 6px;
-}
-
-.editor-dots .dot {
-	width: 11px;
-	height: 11px;
-	border-radius: 50%;
-}
-
-.editor-dots .dot.red {
-	background: #ff5f56;
-}
-.editor-dots .dot.yellow {
-	background: #ffbd2e;
-}
-.editor-dots .dot.green {
-	background: #27c93f;
-}
-
-.editor-header .filename {
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	color: var(--muted);
-	font-family: var(--mono);
-	font-size: 0.8rem;
-}
-
-.editor-window pre {
-	margin: 0;
-	border: none;
-	background: transparent;
-	padding: 1.25rem 1.5rem;
-	font-size: 0.85rem;
-	line-height: 1.6;
-	color: var(--text);
-}
-
-.token-key {
-	color: var(--cyan);
-}
-.token-string {
-	color: var(--pink);
-}
-.token-punctuation {
-	color: var(--muted);
-}
-
 /* Ergonomics Grid */
 .ergo-grid {
 	display: grid;
@@ -1218,9 +1149,6 @@ footer a {
 	color: var(--cyan);
 }
 
-.menu-title {
-	margin-top: 2.5rem;
-}
 .steps-list {
 	list-style-type: none;
 	padding-left: 0;
@@ -1465,43 +1393,6 @@ kbd {
 	overflow: hidden;
 }
 
-.theme-img-wrapper {
-	border-bottom: 1px solid var(--border);
-	background: var(--bg-deep);
-}
-
-.theme-img-wrapper img {
-	display: block;
-	width: 100%;
-	height: auto;
-}
-
-.theme-content {
-	padding: 1.5rem;
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
-}
-
-.theme-content h3 {
-	margin: 0 0 0.5rem;
-	color: var(--text);
-	font-size: 1.25rem;
-}
-
-.theme-content p {
-	margin: 0 0 1.5rem;
-	color: var(--muted);
-	line-height: 1.5;
-}
-
-.theme-badges {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-	margin-top: auto;
-}
-
 .badge {
 	background: var(--bg-deep);
 	color: var(--cyan);
@@ -1741,25 +1632,6 @@ kbd {
 	border-left: 3px solid var(--pink);
 	border-radius: 6px;
 	overflow: hidden;
-}
-
-.effect-vid-wrapper {
-	position: relative;
-	width: 100%;
-	aspect-ratio: 16 / 9;
-	background: var(--bg-deep);
-	border-bottom: 1px solid var(--border);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	overflow: hidden;
-}
-
-.effect-vid-wrapper video {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	z-index: 2;
 }
 
 .effect-content {
