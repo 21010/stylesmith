@@ -72,11 +72,6 @@
 				"category": "Stylesmith"
 			},
 			{
-				"command": "stylesmith.reload",
-				"title": "Apply Settings",
-				"category": "Stylesmith"
-			},
-			{
 				"command": "stylesmith.applyPreset",
 				"title": "Apply Preset…",
 				"category": "Stylesmith"
@@ -584,12 +579,10 @@
 		"icons": "npm run compile && node scripts/build-icons.mjs",
 		"screenshots": "npm run compile && node scripts/build-screenshots.mjs",
 		"test:integration": "npm run compile && node out/test-integration/runTest.js",
-		"release": "release-it",
 		"test:browser": "npm run compile && tsc -p tsconfig.browser.json && node --test \"out/test-browser/**/*.test.js\""
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.5",
-		"@release-it/conventional-changelog": "^12.0.2",
 		"@types/node": "^20.19.43",
 		"@types/vscode": "~1.93.0",
 		"@vscode/codicons": "0.0.36",
@@ -602,7 +595,6 @@
 		"opentype.js": "1.3.4",
 		"playwright-core": "^1.63.0",
 		"prettier": "^3.9.9",
-		"release-it": "^21.1.0",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.71.0"
 	},

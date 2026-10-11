@@ -44,8 +44,6 @@ export function activate(context: vscode.ExtensionContext): void {
 
 	context.subscriptions.push(
 		queued("stylesmith.enable", async () => status.show(await enable(services))),
-		// Kept as a compatibility alias; API-backed settings take effect without reloading VS Code.
-		queued("stylesmith.reload", async () => status.show(await enable(services))),
 		queued("stylesmith.disable", async () => {
 			await disable(services);
 			status.show(false);
