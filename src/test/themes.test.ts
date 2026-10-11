@@ -21,7 +21,7 @@ interface Theme {
 	type: string;
 	colors: Record<string, string>;
 	tokenColors: { scope: string[]; settings: { foreground?: string } }[];
-	semanticTokenColors: Record<string, string | { foreground: string }>;
+	semanticTokenColors: Record<string, string | { foreground?: string }>;
 }
 
 // VS Code's package.json uiTheme for each theme type.
@@ -453,7 +453,9 @@ describe("color themes", () => {
 			if (scope && rule.settings.foreground) syntax.set(scope, rule.settings.foreground);
 		}
 		for (const [name, value] of Object.entries(theme.semanticTokenColors)) {
-			syntax.set(`semantic ${name}`, typeof value === "string" ? value : value.foreground);
+			// A style without a color (deprecated symbols are struck through) keeps the text's own.
+			const color = typeof value === "string" ? value : value.foreground;
+			if (color) syntax.set(`semantic ${name}`, color);
 		}
 		for (let i = 1; i <= 6; i++) {
 			syntax.set(`bracket pair ${i}`, c(`editorBracketHighlight.foreground${i}`));
@@ -577,6 +579,27 @@ describe("color themes", () => {
 	}
 });
 
+describe("syntax coverage (#118)", () => {
+	const SCOPES = [
+		"variable.language",
+		"entity.name.namespace",
+		"meta.decorator",
+		"support.type.property-name",
+		"punctuation.definition.tag",
+		"markup.quote",
+		"punctuation.definition.list.begin"
+	];
+	const SEMANTIC = ["namespace", "enum", "typeParameter", "decorator", "macro", "*.deprecated"];
+	for (const file of files) {
+		const theme = readJson<Theme>("themes", file);
+		it(`${theme.name}: colors this, namespaces, decorators, JSON keys, tags, quotes and lists`, () => {
+			const scopes = new Set(theme.tokenColors.flatMap(rule => rule.scope));
+			for (const scope of SCOPES) assert.ok(scopes.has(scope), scope);
+			for (const token of SEMANTIC) assert.ok(theme.semanticTokenColors[token], token);
+		});
+	}
+});
+
 describe("syntax colors within a theme (#116)", () => {
 	// Roles that sit side by side in code: a JSON key and its value, a call and a field.
 	const ROLES = ["keyword", "string", "function", "type", "number", "property"];
@@ -585,8 +608,9 @@ describe("syntax colors within a theme (#116)", () => {
 		it(`${theme.name}: keeps ${ROLES.join(", ")} apart (ΔE ${MIN_SYNTAX_DIFFERENCE})`, () => {
 			const color = (role: string) => {
 				const value = theme.semanticTokenColors[role];
-				assert.ok(value, `${file} colors ${role}`);
-				return (typeof value === "string" ? value : value.foreground).slice(0, 7);
+				const color = typeof value === "string" ? value : value?.foreground;
+				assert.ok(color, `${file} colors ${role}`);
+				return color.slice(0, 7);
 			};
 			for (let i = 0; i < ROLES.length; i++) {
 				for (let j = i + 1; j < ROLES.length; j++) {
@@ -731,11 +755,13 @@ describe("typography (#68)", () => {
 					assert.equal(s.of("variable.parameter"), "italic");
 					break;
 				case "everyday":
-					// Italic comments, and markdown italics as written.
+					// Italic comments (and Markdown quotes, styled as comments), and markdown
+					// italics as written.
 					assert.deepEqual(italic, [
 						"comment",
 						"punctuation.definition.comment",
-						"markup.italic"
+						"markup.italic",
+						"markup.quote"
 					]);
 					assert.ok(!s.semanticItalic);
 					break;
