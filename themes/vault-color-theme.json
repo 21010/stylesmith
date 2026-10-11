@@ -90,9 +90,9 @@
 		"symbolIcon.functionForeground": "#f8f2e4",
 		"symbolIcon.methodForeground": "#f8f2e4",
 		"symbolIcon.constructorForeground": "#f8f2e4",
-		"symbolIcon.fieldForeground": "#e3dccb",
-		"symbolIcon.propertyForeground": "#e3dccb",
-		"symbolIcon.variableForeground": "#e3dccb",
+		"symbolIcon.fieldForeground": "#e7dcbf",
+		"symbolIcon.propertyForeground": "#e7dcbf",
+		"symbolIcon.variableForeground": "#e7dcbf",
 		"symbolIcon.enumeratorMemberForeground": "#ffb36b",
 		"symbolIcon.constantForeground": "#ffb36b",
 		"symbolIcon.numberForeground": "#ffb36b",
@@ -262,7 +262,7 @@
 		"debugIcon.stepIntoForeground": "#ffd23f",
 		"debugIcon.stepOutForeground": "#ffd23f",
 		"debugIcon.stepBackForeground": "#ffd23f",
-		"debugTokenExpression.name": "#e3dccb",
+		"debugTokenExpression.name": "#e7dcbf",
 		"debugTokenExpression.type": "#8fc1ff",
 		"debugTokenExpression.value": "#b3b9c9",
 		"debugTokenExpression.string": "#a8e6a3",
@@ -430,7 +430,7 @@
 				"meta.object-literal.key"
 			],
 			"settings": {
-				"foreground": "#e3dccb"
+				"foreground": "#e7dcbf"
 			}
 		},
 		{
@@ -542,7 +542,7 @@
 		"interface": "#8fc1ff",
 		"type": "#8fc1ff",
 		"enumMember": "#ffb36b",
-		"property": "#e3dccb",
+		"property": "#e7dcbf",
 		"parameter": {
 			"foreground": "#efe8d6",
 			"italic": true

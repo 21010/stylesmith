@@ -46,8 +46,8 @@
 		"editorBracketPairGuide.activeBackground2": "#ffae4099",
 		"editorBracketHighlight.foreground3": "#e9c27e",
 		"editorBracketPairGuide.activeBackground3": "#e9c27e99",
-		"editorBracketHighlight.foreground4": "#ffdca6",
-		"editorBracketPairGuide.activeBackground4": "#ffdca699",
+		"editorBracketHighlight.foreground4": "#fddda5",
+		"editorBracketPairGuide.activeBackground4": "#fddda599",
 		"editorBracketHighlight.foreground5": "#ff9466",
 		"editorBracketPairGuide.activeBackground5": "#ff946699",
 		"editorBracketHighlight.foreground6": "#ff9466",
@@ -82,17 +82,17 @@
 		"peekViewResult.selectionBackground": "#ffb00033",
 		"peekViewResult.matchHighlightBackground": "#ff946655",
 		"peekViewEditor.matchHighlightBackground": "#ff946655",
-		"symbolIcon.classForeground": "#ffdca6",
-		"symbolIcon.interfaceForeground": "#ffdca6",
-		"symbolIcon.structForeground": "#ffdca6",
-		"symbolIcon.enumeratorForeground": "#ffdca6",
-		"symbolIcon.typeParameterForeground": "#ffdca6",
-		"symbolIcon.functionForeground": "#ffe6b8",
-		"symbolIcon.methodForeground": "#ffe6b8",
-		"symbolIcon.constructorForeground": "#ffe6b8",
-		"symbolIcon.fieldForeground": "#f2c48a",
-		"symbolIcon.propertyForeground": "#f2c48a",
-		"symbolIcon.variableForeground": "#f2c48a",
+		"symbolIcon.classForeground": "#fddda5",
+		"symbolIcon.interfaceForeground": "#fddda5",
+		"symbolIcon.structForeground": "#fddda5",
+		"symbolIcon.enumeratorForeground": "#fddda5",
+		"symbolIcon.typeParameterForeground": "#fddda5",
+		"symbolIcon.functionForeground": "#fae7c5",
+		"symbolIcon.methodForeground": "#fae7c5",
+		"symbolIcon.constructorForeground": "#fae7c5",
+		"symbolIcon.fieldForeground": "#f4c294",
+		"symbolIcon.propertyForeground": "#f4c294",
+		"symbolIcon.variableForeground": "#f4c294",
 		"symbolIcon.enumeratorMemberForeground": "#ff9466",
 		"symbolIcon.constantForeground": "#ff9466",
 		"symbolIcon.numberForeground": "#ff9466",
@@ -237,7 +237,7 @@
 		"gitDecoration.renamedResourceForeground": "#bfe36a",
 		"gitDecoration.stageModifiedResourceForeground": "#fff1d6",
 		"gitDecoration.stageDeletedResourceForeground": "#ff7060",
-		"gitDecoration.submoduleResourceForeground": "#ffdca6",
+		"gitDecoration.submoduleResourceForeground": "#fddda5",
 		"debugIcon.breakpointForeground": "#ff7f66",
 		"debugIcon.breakpointDisabledForeground": "#a17d48",
 		"debugIcon.breakpointUnverifiedForeground": "#a17d48",
@@ -262,8 +262,8 @@
 		"debugIcon.stepIntoForeground": "#ffb000",
 		"debugIcon.stepOutForeground": "#ffb000",
 		"debugIcon.stepBackForeground": "#ffb000",
-		"debugTokenExpression.name": "#f2c48a",
-		"debugTokenExpression.type": "#ffdca6",
+		"debugTokenExpression.name": "#f4c294",
+		"debugTokenExpression.type": "#fddda5",
 		"debugTokenExpression.value": "#c9a36b",
 		"debugTokenExpression.string": "#e9c27e",
 		"debugTokenExpression.number": "#ff9466",
@@ -314,7 +314,7 @@
 		"profileBadge.foreground": "#ffd28f",
 		"chart.line": "#ffb000",
 		"charts.green": "#bfe36a",
-		"charts.purple": "#ffdca6",
+		"charts.purple": "#fddda5",
 		"terminal.background": "#0f0b04",
 		"terminal.foreground": "#ffd28f",
 		"terminalCursor.foreground": "#ffb000",
@@ -376,7 +376,7 @@
 				"meta.function-call"
 			],
 			"settings": {
-				"foreground": "#ffe6b8"
+				"foreground": "#fae7c5"
 			}
 		},
 		{
@@ -409,7 +409,7 @@
 				"entity.other.inherited-class"
 			],
 			"settings": {
-				"foreground": "#ffdca6"
+				"foreground": "#fddda5"
 			}
 		},
 		{
@@ -428,7 +428,7 @@
 				"meta.object-literal.key"
 			],
 			"settings": {
-				"foreground": "#f2c48a"
+				"foreground": "#f4c294"
 			}
 		},
 		{
@@ -532,13 +532,13 @@
 		}
 	],
 	"semanticTokenColors": {
-		"function": "#ffe6b8",
-		"method": "#ffe6b8",
-		"class": "#ffdca6",
-		"interface": "#ffdca6",
-		"type": "#ffdca6",
+		"function": "#fae7c5",
+		"method": "#fae7c5",
+		"class": "#fddda5",
+		"interface": "#fddda5",
+		"type": "#fddda5",
 		"enumMember": "#ff9466",
-		"property": "#f2c48a",
+		"property": "#f4c294",
 		"parameter": "#ffd28f",
 		"variable.readonly": "#ff9466",
 		"keyword": "#ffae40",

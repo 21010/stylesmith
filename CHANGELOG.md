@@ -4,6 +4,10 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ## Unreleased
 
+### Changed
+
+- **Syntax colors read apart in every theme (#116).** In 17 themes two syntax roles were nearly the same color: strings and properties in Command Deck and Teal Terminal (so a JSON key looked like its value), types and properties in Sunroom, strings and types in Grid and ICE. Keyword, string, function, type, number and property now differ by at least ΔE 10 in every theme. Most colors moved only slightly, keeping each theme's look and contrast, and a test keeps them apart.
+
 ### Removed
 
 - **Stylesmith: Apply Settings** (`stylesmith.reload`), an alias of **Stylesmith: Enable** kept from 1.x.

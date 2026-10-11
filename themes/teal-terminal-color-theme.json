@@ -46,8 +46,8 @@
 		"editorBracketPairGuide.activeBackground2": "#5fe0c099",
 		"editorBracketHighlight.foreground3": "#a8d8c8",
 		"editorBracketPairGuide.activeBackground3": "#a8d8c899",
-		"editorBracketHighlight.foreground4": "#8fd8c6",
-		"editorBracketPairGuide.activeBackground4": "#8fd8c699",
+		"editorBracketHighlight.foreground4": "#88dac6",
+		"editorBracketPairGuide.activeBackground4": "#88dac699",
 		"editorBracketHighlight.foreground5": "#e8d27a",
 		"editorBracketPairGuide.activeBackground5": "#e8d27a99",
 		"editorBracketHighlight.foreground6": "#c8e0a0",
@@ -82,17 +82,17 @@
 		"peekViewResult.selectionBackground": "#5fe0c033",
 		"peekViewResult.matchHighlightBackground": "#e8d27a40",
 		"peekViewEditor.matchHighlightBackground": "#e8d27a40",
-		"symbolIcon.classForeground": "#8fd8c6",
-		"symbolIcon.interfaceForeground": "#8fd8c6",
-		"symbolIcon.structForeground": "#8fd8c6",
-		"symbolIcon.enumeratorForeground": "#8fd8c6",
-		"symbolIcon.typeParameterForeground": "#8fd8c6",
+		"symbolIcon.classForeground": "#88dac6",
+		"symbolIcon.interfaceForeground": "#88dac6",
+		"symbolIcon.structForeground": "#88dac6",
+		"symbolIcon.enumeratorForeground": "#88dac6",
+		"symbolIcon.typeParameterForeground": "#88dac6",
 		"symbolIcon.functionForeground": "#d6f2ea",
 		"symbolIcon.methodForeground": "#d6f2ea",
 		"symbolIcon.constructorForeground": "#d6f2ea",
-		"symbolIcon.fieldForeground": "#b2dcd2",
-		"symbolIcon.propertyForeground": "#b2dcd2",
-		"symbolIcon.variableForeground": "#b2dcd2",
+		"symbolIcon.fieldForeground": "#c8d5d2",
+		"symbolIcon.propertyForeground": "#c8d5d2",
+		"symbolIcon.variableForeground": "#c8d5d2",
 		"symbolIcon.enumeratorMemberForeground": "#e8d27a",
 		"symbolIcon.constantForeground": "#e8d27a",
 		"symbolIcon.numberForeground": "#e8d27a",
@@ -237,7 +237,7 @@
 		"gitDecoration.renamedResourceForeground": "#7fd6a3",
 		"gitDecoration.stageModifiedResourceForeground": "#a9a6f2",
 		"gitDecoration.stageDeletedResourceForeground": "#ff8a5c",
-		"gitDecoration.submoduleResourceForeground": "#8fd8c6",
+		"gitDecoration.submoduleResourceForeground": "#88dac6",
 		"debugIcon.breakpointForeground": "#ff6b6b",
 		"debugIcon.breakpointDisabledForeground": "#74a398",
 		"debugIcon.breakpointUnverifiedForeground": "#74a398",
@@ -262,8 +262,8 @@
 		"debugIcon.stepIntoForeground": "#5fe0c0",
 		"debugIcon.stepOutForeground": "#5fe0c0",
 		"debugIcon.stepBackForeground": "#5fe0c0",
-		"debugTokenExpression.name": "#b2dcd2",
-		"debugTokenExpression.type": "#8fd8c6",
+		"debugTokenExpression.name": "#c8d5d2",
+		"debugTokenExpression.type": "#88dac6",
 		"debugTokenExpression.value": "#8fbdb2",
 		"debugTokenExpression.string": "#a8d8c8",
 		"debugTokenExpression.number": "#e8d27a",
@@ -314,7 +314,7 @@
 		"profileBadge.foreground": "#bfe8dd",
 		"chart.line": "#5fe0c0",
 		"charts.green": "#7fd6a3",
-		"charts.purple": "#8fd8c6",
+		"charts.purple": "#88dac6",
 		"terminal.background": "#0b1817",
 		"terminal.foreground": "#bfe8dd",
 		"terminalCursor.foreground": "#5fe0c0",
@@ -409,7 +409,7 @@
 				"entity.other.inherited-class"
 			],
 			"settings": {
-				"foreground": "#8fd8c6"
+				"foreground": "#88dac6"
 			}
 		},
 		{
@@ -428,7 +428,7 @@
 				"meta.object-literal.key"
 			],
 			"settings": {
-				"foreground": "#b2dcd2"
+				"foreground": "#c8d5d2"
 			}
 		},
 		{
@@ -534,11 +534,11 @@
 	"semanticTokenColors": {
 		"function": "#d6f2ea",
 		"method": "#d6f2ea",
-		"class": "#8fd8c6",
-		"interface": "#8fd8c6",
-		"type": "#8fd8c6",
+		"class": "#88dac6",
+		"interface": "#88dac6",
+		"type": "#88dac6",
 		"enumMember": "#e8d27a",
-		"property": "#b2dcd2",
+		"property": "#c8d5d2",
 		"parameter": "#bfe8dd",
 		"variable.readonly": "#e8d27a",
 		"keyword": "#5fe0c0",

@@ -3,7 +3,12 @@ import { readdirSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { colorDifference, contrast, mix, oklch, VISION } from "../color";
-import { LEVELS, MAX_BODY_CONTRAST, MIN_COLOR_DIFFERENCE } from "../readability";
+import {
+	LEVELS,
+	MAX_BODY_CONTRAST,
+	MIN_COLOR_DIFFERENCE,
+	MIN_SYNTAX_DIFFERENCE
+} from "../readability";
 import { LINE_TINT } from "../problems";
 import { manifest, readJson } from "./files";
 
@@ -567,6 +572,31 @@ describe("color themes", () => {
 						);
 					}
 				});
+			}
+		});
+	}
+});
+
+describe("syntax colors within a theme (#116)", () => {
+	// Roles that sit side by side in code: a JSON key and its value, a call and a field.
+	const ROLES = ["keyword", "string", "function", "type", "number", "property"];
+	for (const file of files) {
+		const theme = readJson<Theme>("themes", file);
+		it(`${theme.name}: keeps ${ROLES.join(", ")} apart (ΔE ${MIN_SYNTAX_DIFFERENCE})`, () => {
+			const color = (role: string) => {
+				const value = theme.semanticTokenColors[role];
+				assert.ok(value, `${file} colors ${role}`);
+				return (typeof value === "string" ? value : value.foreground).slice(0, 7);
+			};
+			for (let i = 0; i < ROLES.length; i++) {
+				for (let j = i + 1; j < ROLES.length; j++) {
+					const [a = "", b = ""] = [ROLES[i], ROLES[j]];
+					const gap = colorDifference(color(a), color(b), VISION["normal vision"]);
+					assert.ok(
+						gap >= MIN_SYNTAX_DIFFERENCE,
+						`${a} ${color(a)} and ${b} ${color(b)} differ by only ${gap.toFixed(1)}`
+					);
+				}
 			}
 		});
 	}

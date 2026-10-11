@@ -48,8 +48,8 @@
 		"editorBracketPairGuide.activeBackground3": "#86c9aa99",
 		"editorBracketHighlight.foreground4": "#a8d8c2",
 		"editorBracketPairGuide.activeBackground4": "#a8d8c299",
-		"editorBracketHighlight.foreground5": "#f2a878",
-		"editorBracketPairGuide.activeBackground5": "#f2a87899",
+		"editorBracketHighlight.foreground5": "#ebab83",
+		"editorBracketPairGuide.activeBackground5": "#ebab8399",
 		"editorBracketHighlight.foreground6": "#e8c060",
 		"editorBracketPairGuide.activeBackground6": "#e8c06099",
 		"editorBracketHighlight.unexpectedBracket.foreground": "#ff6b6b",
@@ -93,10 +93,10 @@
 		"symbolIcon.fieldForeground": "#dccdb0",
 		"symbolIcon.propertyForeground": "#dccdb0",
 		"symbolIcon.variableForeground": "#dccdb0",
-		"symbolIcon.enumeratorMemberForeground": "#f2a878",
-		"symbolIcon.constantForeground": "#f2a878",
-		"symbolIcon.numberForeground": "#f2a878",
-		"symbolIcon.booleanForeground": "#f2a878",
+		"symbolIcon.enumeratorMemberForeground": "#ebab83",
+		"symbolIcon.constantForeground": "#ebab83",
+		"symbolIcon.numberForeground": "#ebab83",
+		"symbolIcon.booleanForeground": "#ebab83",
 		"symbolIcon.eventForeground": "#e0aa48",
 		"symbolIcon.keywordForeground": "#e0aa48",
 		"symbolIcon.stringForeground": "#86c9aa",
@@ -266,8 +266,8 @@
 		"debugTokenExpression.type": "#a8d8c2",
 		"debugTokenExpression.value": "#b5a68a",
 		"debugTokenExpression.string": "#86c9aa",
-		"debugTokenExpression.number": "#f2a878",
-		"debugTokenExpression.boolean": "#f2a878",
+		"debugTokenExpression.number": "#ebab83",
+		"debugTokenExpression.boolean": "#ebab83",
 		"debugTokenExpression.error": "#ff6b6b",
 		"mergeEditor.change.background": "#7fd6a31f",
 		"mergeEditor.change.word.background": "#7fd6a340",
@@ -285,7 +285,7 @@
 		"scmGraph.foreground3": "#a1d7cd",
 		"scmGraph.foreground4": "#b0cfe5",
 		"scmGraph.foreground5": "#91cfad",
-		"scmGraph.historyItemBaseRefColor": "#f2a878",
+		"scmGraph.historyItemBaseRefColor": "#ebab83",
 		"scmGraph.historyItemHoverAdditionsForeground": "#7fd6a3",
 		"scmGraph.historyItemHoverDeletionsForeground": "#ff8a5c",
 		"chat.linesAddedForeground": "#7fd6a3",
@@ -398,7 +398,7 @@
 				"support.constant"
 			],
 			"settings": {
-				"foreground": "#f2a878"
+				"foreground": "#ebab83"
 			}
 		},
 		{
@@ -540,16 +540,16 @@
 		"class": "#a8d8c2",
 		"interface": "#a8d8c2",
 		"type": "#a8d8c2",
-		"enumMember": "#f2a878",
+		"enumMember": "#ebab83",
 		"property": "#dccdb0",
 		"parameter": {
 			"foreground": "#e8dcc4",
 			"italic": true
 		},
-		"variable.readonly": "#f2a878",
+		"variable.readonly": "#ebab83",
 		"keyword": "#e0aa48",
 		"string": "#86c9aa",
-		"number": "#f2a878",
+		"number": "#ebab83",
 		"regexp": "#e8c060"
 	}
 }

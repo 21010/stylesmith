@@ -134,17 +134,17 @@
 			"fontCharacter": "\\e01b",
 			"fontColor": "#a8d8c2"
 		},
-		"_e01c_f2a878": {
+		"_e01c_ebab83": {
 			"fontCharacter": "\\e01c",
-			"fontColor": "#f2a878"
+			"fontColor": "#ebab83"
 		},
-		"_e01d_f2a878": {
+		"_e01d_ebab83": {
 			"fontCharacter": "\\e01d",
-			"fontColor": "#f2a878"
+			"fontColor": "#ebab83"
 		},
-		"_e01e_f2a878": {
+		"_e01e_ebab83": {
 			"fontCharacter": "\\e01e",
-			"fontColor": "#f2a878"
+			"fontColor": "#ebab83"
 		},
 		"_e01f_ec9a6a": {
 			"fontCharacter": "\\e01f",
@@ -170,9 +170,9 @@
 			"fontCharacter": "\\e024",
 			"fontColor": "#ec9a6a"
 		},
-		"_e025_f2a878": {
+		"_e025_ebab83": {
 			"fontCharacter": "\\e025",
-			"fontColor": "#f2a878"
+			"fontColor": "#ebab83"
 		},
 		"_e026_86c9aa": {
 			"fontCharacter": "\\e026",
@@ -766,17 +766,17 @@
 			"fontCharacter": "\\e01b",
 			"fontColor": "#6d8c7e"
 		},
-		"_e01c_ae7956_light": {
+		"_e01c_a97b5e_light": {
 			"fontCharacter": "\\e01c",
-			"fontColor": "#ae7956"
+			"fontColor": "#a97b5e"
 		},
-		"_e01d_ae7956_light": {
+		"_e01d_a97b5e_light": {
 			"fontCharacter": "\\e01d",
-			"fontColor": "#ae7956"
+			"fontColor": "#a97b5e"
 		},
-		"_e01e_ae7956_light": {
+		"_e01e_a97b5e_light": {
 			"fontCharacter": "\\e01e",
-			"fontColor": "#ae7956"
+			"fontColor": "#a97b5e"
 		},
 		"_e01f_b37551_light": {
 			"fontCharacter": "\\e01f",
@@ -802,9 +802,9 @@
 			"fontCharacter": "\\e024",
 			"fontColor": "#b37551"
 		},
-		"_e025_ae7956_light": {
+		"_e025_a97b5e_light": {
 			"fontCharacter": "\\e025",
-			"fontColor": "#ae7956"
+			"fontColor": "#a97b5e"
 		},
 		"_e026_5f8f79_light": {
 			"fontCharacter": "\\e026",
@@ -1335,34 +1335,34 @@
 		"xml": "_e01b_a8d8c2",
 		"xsd": "_e01b_a8d8c2",
 		"plist": "_e01b_a8d8c2",
-		"svg": "_e01c_f2a878",
-		"png": "_e01d_f2a878",
-		"jpg": "_e01d_f2a878",
-		"jpeg": "_e01d_f2a878",
-		"gif": "_e01d_f2a878",
-		"webp": "_e01d_f2a878",
-		"ico": "_e01d_f2a878",
-		"bmp": "_e01d_f2a878",
-		"avif": "_e01d_f2a878",
-		"woff": "_e01e_f2a878",
-		"woff2": "_e01e_f2a878",
-		"ttf": "_e01e_f2a878",
-		"otf": "_e01e_f2a878",
-		"eot": "_e01e_f2a878",
+		"svg": "_e01c_ebab83",
+		"png": "_e01d_ebab83",
+		"jpg": "_e01d_ebab83",
+		"jpeg": "_e01d_ebab83",
+		"gif": "_e01d_ebab83",
+		"webp": "_e01d_ebab83",
+		"ico": "_e01d_ebab83",
+		"bmp": "_e01d_ebab83",
+		"avif": "_e01d_ebab83",
+		"woff": "_e01e_ebab83",
+		"woff2": "_e01e_ebab83",
+		"ttf": "_e01e_ebab83",
+		"otf": "_e01e_ebab83",
+		"eot": "_e01e_ebab83",
 		"sql": "_e01f_ec9a6a",
 		"vue": "_e020_ec9a6a",
 		"svelte": "_e021_ec9a6a",
 		"lua": "_e022_ec9a6a",
 		"dart": "_e023_ec9a6a",
 		"swift": "_e024_ec9a6a",
-		"zip": "_e025_f2a878",
-		"tar": "_e025_f2a878",
-		"gz": "_e025_f2a878",
-		"tgz": "_e025_f2a878",
-		"7z": "_e025_f2a878",
-		"rar": "_e025_f2a878",
-		"xz": "_e025_f2a878",
-		"vsix": "_e025_f2a878",
+		"zip": "_e025_ebab83",
+		"tar": "_e025_ebab83",
+		"gz": "_e025_ebab83",
+		"tgz": "_e025_ebab83",
+		"7z": "_e025_ebab83",
+		"rar": "_e025_ebab83",
+		"xz": "_e025_ebab83",
+		"vsix": "_e025_ebab83",
 		"pdf": "_e026_86c9aa",
 		"csv": "_e027_a8d8c2",
 		"tsv": "_e027_a8d8c2",
@@ -1953,34 +1953,34 @@
 			"xml": "_e01b_6d8c7e_light",
 			"xsd": "_e01b_6d8c7e_light",
 			"plist": "_e01b_6d8c7e_light",
-			"svg": "_e01c_ae7956_light",
-			"png": "_e01d_ae7956_light",
-			"jpg": "_e01d_ae7956_light",
-			"jpeg": "_e01d_ae7956_light",
-			"gif": "_e01d_ae7956_light",
-			"webp": "_e01d_ae7956_light",
-			"ico": "_e01d_ae7956_light",
-			"bmp": "_e01d_ae7956_light",
-			"avif": "_e01d_ae7956_light",
-			"woff": "_e01e_ae7956_light",
-			"woff2": "_e01e_ae7956_light",
-			"ttf": "_e01e_ae7956_light",
-			"otf": "_e01e_ae7956_light",
-			"eot": "_e01e_ae7956_light",
+			"svg": "_e01c_a97b5e_light",
+			"png": "_e01d_a97b5e_light",
+			"jpg": "_e01d_a97b5e_light",
+			"jpeg": "_e01d_a97b5e_light",
+			"gif": "_e01d_a97b5e_light",
+			"webp": "_e01d_a97b5e_light",
+			"ico": "_e01d_a97b5e_light",
+			"bmp": "_e01d_a97b5e_light",
+			"avif": "_e01d_a97b5e_light",
+			"woff": "_e01e_a97b5e_light",
+			"woff2": "_e01e_a97b5e_light",
+			"ttf": "_e01e_a97b5e_light",
+			"otf": "_e01e_a97b5e_light",
+			"eot": "_e01e_a97b5e_light",
 			"sql": "_e01f_b37551_light",
 			"vue": "_e020_b37551_light",
 			"svelte": "_e021_b37551_light",
 			"lua": "_e022_b37551_light",
 			"dart": "_e023_b37551_light",
 			"swift": "_e024_b37551_light",
-			"zip": "_e025_ae7956_light",
-			"tar": "_e025_ae7956_light",
-			"gz": "_e025_ae7956_light",
-			"tgz": "_e025_ae7956_light",
-			"7z": "_e025_ae7956_light",
-			"rar": "_e025_ae7956_light",
-			"xz": "_e025_ae7956_light",
-			"vsix": "_e025_ae7956_light",
+			"zip": "_e025_a97b5e_light",
+			"tar": "_e025_a97b5e_light",
+			"gz": "_e025_a97b5e_light",
+			"tgz": "_e025_a97b5e_light",
+			"7z": "_e025_a97b5e_light",
+			"rar": "_e025_a97b5e_light",
+			"xz": "_e025_a97b5e_light",
+			"vsix": "_e025_a97b5e_light",
 			"pdf": "_e026_5f8f79_light",
 			"csv": "_e027_6d8c7e_light",
 			"tsv": "_e027_6d8c7e_light",
