@@ -56,7 +56,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Brass**: Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
 - **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
 - **Sunroom**: Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.
-- **Countdown**: Cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.
+- **Countdown**: A deep blue-black night sky with sun-gold keywords and every number in red, like a countdown, with unfocused editors dimmed.
 - **Overlay**: A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.
 - **Deep Desert**: Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.
 - **Haze**: Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.
@@ -82,7 +82,7 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Brass**: Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.
 - **Stylesmith Tea Garden**: Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.
 - **Stylesmith Sunroom**: Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.
-- **Stylesmith Countdown**: Neutral grey-black, pale steel text, faint cyan keywords and types, and one red: every number.
+- **Stylesmith Countdown**: Deep blue-black night sky, pale starlight text, sun-gold keywords, pale cyan types, and one red: every number.
 - **Stylesmith Overlay**: Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.
 - **Stylesmith Deep Desert**: Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.
 - **Stylesmith Haze**: Cold grey concrete with haze-orange keywords and teal strings; everything else muted.

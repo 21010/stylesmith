@@ -242,7 +242,8 @@ export const PRESETS: readonly Preset[] = [
 	{
 		id: "countdown",
 		label: "Countdown",
-		description: "Cold grey-black with every number in red, and unfocused editors dimmed",
+		description:
+			"A night sky with sun-gold keywords, every number in red, and unfocused editors dimmed",
 		theme: "Stylesmith Countdown",
 		iconTheme: "stylesmith-pixel-countdown",
 		productIconTheme: PRODUCT_ICON_THEME,

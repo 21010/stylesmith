@@ -662,6 +662,41 @@ describe("theme distinctness", () => {
 		}
 	});
 
+	it("keeps every two themes of a kind apart overall, not just in one color (#117)", () => {
+		// Countdown and Command Deck passed the test above while looking alike: the same
+		// background and a red accent, 8.5 apart on average in 2.7.0 (10.4 after #116).
+		const MIN_MEAN_DIFFERENCE = 12;
+		const look = (file: string) => {
+			const theme = readJson<Theme>("themes", file);
+			const semantic = (role: string) => {
+				const value = theme.semanticTokenColors[role];
+				return (typeof value === "string" ? value : value?.foreground) ?? "";
+			};
+			return [
+				theme.colors["editor.background"]!,
+				theme.colors["focusBorder"]!,
+				semantic("keyword"),
+				semantic("string"),
+				semantic("function"),
+				semantic("type")
+			];
+		};
+		for (let i = 0; i < files.length; i++) {
+			for (let j = i + 1; j < files.length; j++) {
+				const [a, b] = [files[i]!, files[j]!];
+				if (readJson<Theme>("themes", a).type !== readJson<Theme>("themes", b).type)
+					continue;
+				const [x, y] = [look(a), look(b)];
+				const mean =
+					x.reduce((sum, color, k) => sum + difference(color, y[k]!), 0) / x.length;
+				assert.ok(
+					mean >= MIN_MEAN_DIFFERENCE,
+					`${a} and ${b}: ${mean.toFixed(1)} on average`
+				);
+			}
+		}
+	});
+
 	it("keeps Simulation apart from Phosphor, as #87 asks", () => {
 		const simulation = key("simulation-color-theme.json");
 		const phosphor = key("phosphor-color-theme.json");
