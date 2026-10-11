@@ -40,7 +40,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	"Deep Desert":
 		"Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.",
 	Haze: "Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.",
-	Grid: "Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes.",
+	Grid: "Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes, in a compact layout.",
 	Corridor:
 		"A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.",
 	Horizon:
@@ -218,7 +218,7 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		origin: "A 2010 film set inside a computer drew its world as pure black crossed by glowing lines: cyan for the programs, orange for their adversary.",
 		colors: "Near-black, with cyan keywords and pale cyan text and strings. Orange appears only for return, break and throw, the adversary's color. The extension API can't draw a glow, so the lines stay clean.",
 		settings:
-			"Smooth cursor, current-line highlight and bracket guides: the guides draw the grid."
+			"Smooth cursor, current-line highlight and bracket guides: the guides draw the grid, and a compact layout lets it fill the screen."
 	},
 	Corridor: {
 		origin: "A 2020s thriller series set its story on a sterile mid-century office floor: long white corridors, boxy teal-green terminals, and numbers on screen that somehow feel frightening.",
