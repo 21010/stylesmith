@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import opentype from "opentype.js";
 import { LARGE, SMALL } from "./data/product-icons.mjs";
 import { atFixedTime } from "./fixed-time.mjs";
+import { pixelPath } from "./pixel-glyph.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "product-icons");
@@ -41,28 +42,7 @@ function outline(rows) {
 	const runs = rows.map(row =>
 		[...row.matchAll(/#+/g)].map(m => [m.index, m.index + m[0].length])
 	);
-	const path = new opentype.Path();
-	const done = new Set();
-	runs.forEach((rowRuns, y) => {
-		for (const [start, end] of rowRuns) {
-			const key = `${y}:${start}:${end}`;
-			if (done.has(key)) continue;
-			let last = y;
-			while (runs[last + 1]?.some(([s, e]) => s === start && e === end)) {
-				last++;
-				done.add(`${last}:${start}:${end}`);
-			}
-			// Font coordinates grow upwards: row 0 is the top of the em box.
-			const top = EM - y * PIXEL;
-			const bottom = EM - (last + 1) * PIXEL;
-			path.moveTo(start * PIXEL, bottom);
-			path.lineTo(end * PIXEL, bottom);
-			path.lineTo(end * PIXEL, top);
-			path.lineTo(start * PIXEL, top);
-			path.close();
-		}
-	});
-	return path;
+	return pixelPath(runs, PIXEL, EM);
 }
 
 function build() {
