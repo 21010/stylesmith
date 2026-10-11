@@ -239,6 +239,509 @@
 				</div>
 			</section>
 
+			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 0">
+				<h2 style="font-size: 2rem; margin-bottom: 1rem; text-align: center">
+					The prompt in every theme
+				</h2>
+				<p
+					style="
+						max-width: 70ch;
+						margin: 0 auto 2rem;
+						color: var(--muted);
+						line-height: 1.6;
+					"
+				>
+					The prompt uses your terminal&rsquo;s color names, so each Stylesmith theme
+					colors it: every theme has its own terminal palette, tinted to the theme, while
+					red still means a failure and green a success. Here it is in each theme&rsquo;s
+					real colors: the folder, the git branch, a slow command, and a failed one.
+				</p>
+				<!-- prompt-previews:start -->
+				<div class="prompt-previews">
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Neon Night"
+						style="
+							--p-bg: #0b0d19;
+							--p-fg: #e2e4f3;
+							--p-chrome: #8a91c0;
+							--p-path: #5fe0ff;
+							--p-git: #7df2b8;
+							--p-took: #f4e27c;
+							--p-error: #ff6b8b;
+							--p-ok: #a6f7cf;
+							--p-fail: #ff94ab;
+						"
+					>
+						<pre
+							aria-label="The prompt in Neon Night"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Neon Night</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Phosphor"
+						style="
+							--p-bg: #070e09;
+							--p-fg: #b9f2b4;
+							--p-chrome: #6fa878;
+							--p-path: #8fe3d0;
+							--p-git: #6dff9a;
+							--p-took: #ffcf73;
+							--p-error: #ff7a6b;
+							--p-ok: #9dffbc;
+							--p-fail: #ff9d92;
+						"
+					>
+						<pre
+							aria-label="The prompt in Phosphor"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Phosphor</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Amber"
+						style="
+							--p-bg: #0f0b04;
+							--p-fg: #ffd28f;
+							--p-chrome: #b08a55;
+							--p-path: #f2d6a2;
+							--p-git: #d9e27a;
+							--p-took: #ffcc4d;
+							--p-error: #ff7f66;
+							--p-ok: #e6ec9f;
+							--p-fail: #ffa08c;
+						"
+					>
+						<pre
+							aria-label="The prompt in Amber"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Amber</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith ICE"
+						style="
+							--p-bg: #080c12;
+							--p-fg: #dce9f5;
+							--p-chrome: #8196ab;
+							--p-path: #9ed3ea;
+							--p-git: #6e9b71;
+							--p-took: #d1cbaa;
+							--p-error: #fab6b1;
+							--p-ok: #89b78c;
+							--p-fail: #fad7d4;
+						"
+					>
+						<pre
+							aria-label="The prompt in ICE"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>ICE</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Monolith"
+						style="
+							--p-bg: #131519;
+							--p-fg: #d5dae1;
+							--p-chrome: #9ba3ae;
+							--p-path: #9bbccf;
+							--p-git: #669465;
+							--p-took: #d6b48f;
+							--p-error: #e8aa94;
+							--p-ok: #81b080;
+							--p-fail: #fecab8;
+						"
+					>
+						<pre
+							aria-label="The prompt in Monolith"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Monolith</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Glass Lab"
+						style="
+							--p-bg: #1b1a18;
+							--p-fg: #dedad5;
+							--p-chrome: #aba49c;
+							--p-path: #a5cfd1;
+							--p-git: #a1dab2;
+							--p-took: #c8be9e;
+							--p-error: #fe7a67;
+							--p-ok: #bef8cf;
+							--p-fail: #feac9e;
+						"
+					>
+						<pre
+							aria-label="The prompt in Glass Lab"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Glass Lab</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Vault"
+						style="
+							--p-bg: #0b1428;
+							--p-fg: #efe8d6;
+							--p-chrome: #9aa3bd;
+							--p-path: #85a6b8;
+							--p-git: #a0de8b;
+							--p-took: #efc631;
+							--p-error: #fab6af;
+							--p-ok: #bdfca8;
+							--p-fail: #fad7d3;
+						"
+					>
+						<pre
+							aria-label="The prompt in Vault"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Vault</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Simulation"
+						style="
+							--p-bg: #1d1f1b;
+							--p-fg: #d2d5ca;
+							--p-chrome: #a6aa97;
+							--p-path: #7bd2ff;
+							--p-git: #3fe65f;
+							--p-took: #d5c785;
+							--p-error: #fb8b79;
+							--p-ok: #88fe94;
+							--p-fail: #feb8ac;
+						"
+					>
+						<pre
+							aria-label="The prompt in Simulation"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Simulation</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Steel and Rust"
+						style="
+							--p-bg: #15191e;
+							--p-fg: #cfd6de;
+							--p-chrome: #9aa4b0;
+							--p-path: #a2c4d7;
+							--p-git: #a7d4a5;
+							--p-took: #c9ae8b;
+							--p-error: #f3855d;
+							--p-ok: #c4f2c2;
+							--p-fail: #fdae91;
+						"
+					>
+						<pre
+							aria-label="The prompt in Steel and Rust"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Steel and Rust</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Brass"
+						style="
+							--p-bg: #1a1510;
+							--p-fg: #e8dcc4;
+							--p-chrome: #ad9d82;
+							--p-path: #a1d7cd;
+							--p-git: #91cfad;
+							--p-took: #cab896;
+							--p-error: #ec906f;
+							--p-ok: #aeedca;
+							--p-fail: #ffb398;
+						"
+					>
+						<pre
+							aria-label="The prompt in Brass"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Brass</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Tea Garden"
+						style="
+							--p-bg: #e8eed8;
+							--p-fg: #24321e;
+							--p-chrome: #4d5d43;
+							--p-path: #265a52;
+							--p-git: #195d44;
+							--p-took: #795600;
+							--p-error: #984424;
+							--p-ok: #094833;
+							--p-fail: #812f0c;
+						"
+					>
+						<pre
+							aria-label="The prompt in Tea Garden"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Tea Garden</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Sunroom"
+						style="
+							--p-bg: #f2eadc;
+							--p-fg: #363a46;
+							--p-chrome: #5d6070;
+							--p-path: #466576;
+							--p-git: #436c43;
+							--p-took: #795b04;
+							--p-error: #77435d;
+							--p-ok: #305830;
+							--p-fail: #62304a;
+						"
+					>
+						<pre
+							aria-label="The prompt in Sunroom"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Sunroom</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Countdown"
+						style="
+							--p-bg: #0c0e0f;
+							--p-fg: #c9cdd0;
+							--p-chrome: #8d9297;
+							--p-path: #86c3cc;
+							--p-git: #a9d8ab;
+							--p-took: #cfc6a6;
+							--p-error: #fd6b5d;
+							--p-ok: #c6f6c8;
+							--p-fail: #fba195;
+						"
+					>
+						<pre
+							aria-label="The prompt in Countdown"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Countdown</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Overlay"
+						style="
+							--p-bg: #11171b;
+							--p-fg: #d2dce3;
+							--p-chrome: #8e9ca9;
+							--p-path: #65d5e8;
+							--p-git: #67946a;
+							--p-took: #f0b760;
+							--p-error: #f7b49c;
+							--p-ok: #82b085;
+							--p-fail: #fedbce;
+						"
+					>
+						<pre
+							aria-label="The prompt in Overlay"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Overlay</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Deep Desert"
+						style="
+							--p-bg: #120e0a;
+							--p-fg: #e6d3b0;
+							--p-chrome: #a59276;
+							--p-path: #abd4cc;
+							--p-git: #628c61;
+							--p-took: #a59276;
+							--p-error: #fba688;
+							--p-ok: #7da87b;
+							--p-fail: #fdd0c0;
+						"
+					>
+						<pre
+							aria-label="The prompt in Deep Desert"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Deep Desert</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Haze"
+						style="
+							--p-bg: #16181a;
+							--p-fg: #d0d4d6;
+							--p-chrome: #9aa0a5;
+							--p-path: #a0d1ce;
+							--p-git: #86c7a9;
+							--p-took: #f3b97a;
+							--p-error: #f3855d;
+							--p-ok: #a2e4c5;
+							--p-fail: #fdae91;
+						"
+					>
+						<pre
+							aria-label="The prompt in Haze"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Haze</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Grid"
+						style="
+							--p-bg: #040506;
+							--p-fg: #c8dde3;
+							--p-chrome: #768d96;
+							--p-path: #7fc8d4;
+							--p-git: #99dbbc;
+							--p-took: #f8a038;
+							--p-error: #fd6e37;
+							--p-ok: #b6f9d9;
+							--p-fail: #faa385;
+						"
+					>
+						<pre
+							aria-label="The prompt in Grid"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Grid</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Corridor"
+						style="
+							--p-bg: #e4e9e0;
+							--p-fg: #123e3d;
+							--p-chrome: #46625f;
+							--p-path: #234951;
+							--p-git: #2f6e52;
+							--p-took: #5f581a;
+							--p-error: #8a3227;
+							--p-ok: #185a3f;
+							--p-fail: #731c13;
+						"
+					>
+						<pre
+							aria-label="The prompt in Corridor"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Corridor</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Teal Terminal"
+						style="
+							--p-bg: #0b1817;
+							--p-fg: #bfe8dd;
+							--p-chrome: #7fa89e;
+							--p-path: #90b9b1;
+							--p-git: #bad68f;
+							--p-took: #dfca72;
+							--p-error: #fab6b1;
+							--p-ok: #d7f4ab;
+							--p-fail: #fad7d4;
+						"
+					>
+						<pre
+							aria-label="The prompt in Teal Terminal"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Teal Terminal</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Horizon"
+						style="
+							--p-bg: #08070a;
+							--p-fg: #ece2d6;
+							--p-chrome: #9c90a0;
+							--p-path: #8bb4b8;
+							--p-git: #729f74;
+							--p-took: #ecc46b;
+							--p-error: #f8b9a3;
+							--p-ok: #8dbb8f;
+							--p-fail: #fed7c9;
+						"
+					>
+						<pre
+							aria-label="The prompt in Horizon"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Horizon</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Command Deck"
+						style="
+							--p-bg: #0f1012;
+							--p-fg: #c9cdd2;
+							--p-chrome: #8e9299;
+							--p-path: #93b5c7;
+							--p-git: #a9d8ab;
+							--p-took: #cfc6a6;
+							--p-error: #fc5859;
+							--p-ok: #c6f6c8;
+							--p-fail: #f8958f;
+						"
+					>
+						<pre
+							aria-label="The prompt in Command Deck"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Command Deck</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Daylight"
+						style="
+							--p-bg: #efe8d6;
+							--p-fg: #1e2230;
+							--p-chrome: #4f5569;
+							--p-path: #006a8a;
+							--p-git: #0d7351;
+							--p-took: #6e5000;
+							--p-error: #a7212f;
+							--p-ok: #17602f;
+							--p-fail: #a51b33;
+						"
+					>
+						<pre
+							aria-label="The prompt in Daylight"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Daylight</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Neon High Contrast"
+						style="
+							--p-bg: #000000;
+							--p-fg: #ffffff;
+							--p-chrome: #c5cbee;
+							--p-path: #8cedff;
+							--p-git: #a8f9d2;
+							--p-took: #fff29a;
+							--p-error: #ff8a7a;
+							--p-ok: #c9fce3;
+							--p-fail: #ffc2cf;
+						"
+					>
+						<pre
+							aria-label="The prompt in Neon High Contrast"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Neon High Contrast</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Daylight High Contrast"
+						style="
+							--p-bg: #ffffff;
+							--p-fg: #000000;
+							--p-chrome: #1f2433;
+							--p-path: #003f60;
+							--p-git: #08632e;
+							--p-took: #533500;
+							--p-error: #a40021;
+							--p-ok: #08451f;
+							--p-fail: #80001a;
+						"
+					>
+						<pre
+							aria-label="The prompt in Daylight High Contrast"
+						><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="chrome">on</span><span class="git"> main</span><br><span class="chrome">╰─</span><span class="ok">❯</span> npm test<br><span class="chrome">╭─</span><span class="path"> ~/stylesmith</span> <span class="took">took 3s</span><span class="error"> ✗ 1</span><br><span class="chrome">╰─</span><span class="fail">❯</span></pre>
+						<figcaption>Daylight High Contrast</figcaption>
+					</figure>
+				</div>
+				<!-- prompt-previews:end -->
+			</section>
+
 			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 8rem">
 				<h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center">
 					Installation

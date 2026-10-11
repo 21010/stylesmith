@@ -2058,3 +2058,50 @@ kbd {
 		font-size: 1.3rem;
 	}
 }
+
+/* Prompt previews on the Oh My Posh page: each in its theme's terminal colors. */
+.prompt-previews {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+	gap: 1rem;
+}
+.prompt-preview {
+	margin: 0;
+}
+.prompt-preview pre {
+	margin: 0;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	border: 1px solid var(--border);
+	overflow-x: auto;
+	font-size: 0.85rem;
+	line-height: 1.6;
+	background: var(--p-bg);
+	color: var(--p-fg);
+}
+.prompt-preview .chrome {
+	color: var(--p-chrome);
+}
+.prompt-preview .path {
+	color: var(--p-path);
+}
+.prompt-preview .git {
+	color: var(--p-git);
+}
+.prompt-preview .took {
+	color: var(--p-took);
+}
+.prompt-preview .error {
+	color: var(--p-error);
+}
+.prompt-preview .ok {
+	color: var(--p-ok);
+}
+.prompt-preview .fail {
+	color: var(--p-fail);
+}
+.prompt-preview figcaption {
+	margin-top: 0.4rem;
+	font-size: 0.85rem;
+	color: var(--muted);
+}
