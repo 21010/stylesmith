@@ -46,6 +46,36 @@ describe("problem gutter icons", () => {
 	}
 });
 
+/** Each Stylesmith theme's own gutter icons (#106): its color for each severity. */
+describe("problem gutter icons per theme", () => {
+	for (const entry of manifest().contributes.themes) {
+		const id = /([^/]+)-color-theme\.json$/.exec(entry.path)?.[1];
+		const theme = readJson<ColorTheme>("themes", path.basename(entry.path));
+		const background = theme.colors["editor.background"]?.slice(0, 7) ?? "";
+		for (const [severity, key] of [
+			["error", "editorError.foreground"],
+			["warning", "editorWarning.foreground"],
+			["info", "editorInfo.foreground"]
+		] as const) {
+			it(`${entry.label}: ${severity} in the theme's own color, visible (3:1)`, () => {
+				assert.ok(id, entry.path);
+				const svg = readFileSync(
+					path.join(ICONS, "problems", id, `${severity}.svg`),
+					"utf-8"
+				);
+				const fills = new Set([...svg.matchAll(/fill="(#[0-9a-f]{6})"/gi)].map(m => m[1]));
+				assert.equal(fills.size, 1, "one color, so the shape carries the meaning");
+				const [fill = ""] = fills;
+				const own = theme.colors[key]?.slice(0, 7) ?? "";
+				const gap = colorDifference(fill, own, VISION["normal vision"]);
+				assert.ok(gap <= 8, `${fill} is ${gap.toFixed(1)} from ${key} ${own}`);
+				const ratio = contrast(fill, background);
+				assert.ok(ratio >= 3, `${fill} on ${background}: ${ratio.toFixed(2)}:1`);
+			});
+		}
+	}
+});
+
 /**
  * The file icon themes (#101): every set uses the one Stylesmith pixel icon font, and colors
  * its glyphs in its JSON. Stylesmith Pixel colors each file type; every color theme has its own

@@ -2,6 +2,12 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Changed
+
+- **Problem Lens gutter icons in the theme's own colors (#106).** With a Stylesmith theme, the error, warning and info icons in the gutter now use that theme's own colors for them, the same as its squiggles and messages. Before, every dark theme shared one set of icons and every light theme another, so they clashed in some themes (Amber's info icon was cyan). Other themes keep the generic icons, and so does an automatic switch to a theme of another kind.
+
 ## 2.5.0 (2026-10-11)
 
 ### Changed

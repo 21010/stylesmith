@@ -19,7 +19,8 @@ import {
 	commandFailed,
 	commandFailedLabel,
 	INTERRUPTED,
-	SignalCooldown
+	SignalCooldown,
+	stylesmithTheme
 } from "../problems";
 
 const error = (line: number, message = "Cannot find name 'x'."): Problem => ({
@@ -341,5 +342,41 @@ describe("failed-command signal", () => {
 
 	it("has an accessible label", () => {
 		assert.equal(commandFailedLabel(1), "Command failed with exit code 1");
+	});
+});
+
+describe("stylesmithTheme (#106)", () => {
+	const themes = [
+		{ label: "Stylesmith Amber", uiTheme: "vs-dark", path: "./themes/amber-color-theme.json" },
+		{
+			label: "Stylesmith Daylight",
+			uiTheme: "vs",
+			path: "./themes/daylight-color-theme.json"
+		},
+		{
+			label: "Stylesmith Neon High Contrast",
+			uiTheme: "hc-black",
+			path: "./themes/neon-high-contrast-color-theme.json"
+		}
+	];
+
+	it("finds the Stylesmith theme in use, by its label", () => {
+		assert.equal(stylesmithTheme("Stylesmith Amber", "dark", themes), "amber");
+		assert.equal(stylesmithTheme("Stylesmith Daylight", "light", themes), "daylight");
+		assert.equal(
+			stylesmithTheme("Stylesmith Neon High Contrast", "hc-dark", themes),
+			"neon-high-contrast"
+		);
+	});
+
+	it("has none for another theme or no theme", () => {
+		assert.equal(stylesmithTheme("Default Dark Modern", "dark", themes), undefined);
+		assert.equal(stylesmithTheme(undefined, "dark", themes), undefined);
+	});
+
+	it("has none when VS Code shows a different kind of theme than the one named", () => {
+		// e.g. the system switched VS Code to high contrast, or to its light theme.
+		assert.equal(stylesmithTheme("Stylesmith Amber", "hc-dark", themes), undefined);
+		assert.equal(stylesmithTheme("Stylesmith Amber", "light", themes), undefined);
 	});
 });
