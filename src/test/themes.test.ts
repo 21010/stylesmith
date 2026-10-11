@@ -665,7 +665,14 @@ describe("theme distinctness", () => {
 	it("keeps every two themes of a kind apart overall, not just in one color (#117)", () => {
 		// Countdown and Command Deck passed the test above while looking alike: the same
 		// background and a red accent, 8.5 apart on average in 2.7.0 (10.4 after #116).
-		const MIN_MEAN_DIFFERENCE = 12;
+		// With simulated color blindness (#137) the floor is lower: the simulation is full
+		// dichromacy, the strongest form. ICE and Grid were 6.9 apart with protanopia.
+		const MIN_MEAN_DIFFERENCE: Record<string, number> = {
+			"normal vision": 12,
+			protanopia: 8,
+			deuteranopia: 8,
+			tritanopia: 8
+		};
 		const look = (file: string) => {
 			const theme = readJson<Theme>("themes", file);
 			const semantic = (role: string) => {
@@ -679,20 +686,27 @@ describe("theme distinctness", () => {
 				semantic("string"),
 				semantic("function"),
 				semantic("type")
-			];
+			].map(color => color.slice(0, 7));
 		};
+		assert.deepEqual(Object.keys(MIN_MEAN_DIFFERENCE).sort(), Object.keys(VISION).sort());
 		for (let i = 0; i < files.length; i++) {
 			for (let j = i + 1; j < files.length; j++) {
 				const [a, b] = [files[i]!, files[j]!];
 				if (readJson<Theme>("themes", a).type !== readJson<Theme>("themes", b).type)
 					continue;
 				const [x, y] = [look(a), look(b)];
-				const mean =
-					x.reduce((sum, color, k) => sum + difference(color, y[k]!), 0) / x.length;
-				assert.ok(
-					mean >= MIN_MEAN_DIFFERENCE,
-					`${a} and ${b}: ${mean.toFixed(1)} on average`
-				);
+				for (const [vision, matrix] of Object.entries(VISION)) {
+					const mean =
+						x.reduce(
+							(sum, color, k) => sum + colorDifference(color, y[k]!, matrix),
+							0
+						) / x.length;
+					const minimum = MIN_MEAN_DIFFERENCE[vision]!;
+					assert.ok(
+						mean >= minimum,
+						`${a} and ${b}: ${mean.toFixed(1)} on average with ${vision}`
+					);
+				}
 			}
 		}
 	});
