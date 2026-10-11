@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { colorDifference, contrast, luminance, mix, VISION } from "../color";
+import { colorDifference, contrast, luminance, mix, oklch, VISION } from "../color";
 
 describe("color", () => {
 	it("computes WCAG luminance and contrast", () => {
@@ -33,5 +33,25 @@ describe("color", () => {
 		assert.ok(
 			colorDifference(red, green, normal) > colorDifference(red, green, VISION.deuteranopia)
 		);
+	});
+});
+
+describe("oklch", () => {
+	it("matches the published OKLCH values of the sRGB primaries", () => {
+		const close = (hex: string, l: number, c: number, h: number) => {
+			const o = oklch(hex);
+			assert.ok(
+				Math.abs(o.l - l) < 0.002 && Math.abs(o.c - c) < 0.002 && Math.abs(o.h - h) < 0.5,
+				hex
+			);
+		};
+		close("#ff0000", 0.628, 0.258, 29.2);
+		close("#00ff00", 0.866, 0.295, 142.5);
+		close("#0000ff", 0.452, 0.313, 264.1);
+	});
+
+	it("gives greys no chroma", () => {
+		assert.ok(oklch("#808080").c < 0.0005);
+		assert.ok(Math.abs(oklch("#ffffff").l - 1) < 0.001);
 	});
 });
