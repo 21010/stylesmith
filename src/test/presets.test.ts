@@ -2,8 +2,16 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { EFFECTS } from "../effects";
 import { FONTS } from "../fonts";
+import { colorDifference, VISION } from "../color";
 import { ICON_THEME, PRESET_ALIASES, PRESETS, presetEffects } from "../presets";
-import { manifest, themeSettingsId } from "./files";
+import { PRESET_STORIES, PRESET_TALES } from "../stories";
+import { manifest, readJson, themeSettingsId, type IconTheme } from "./files";
+
+interface SemanticTheme {
+	type: string;
+	colors: Record<string, string>;
+	semanticTokenColors: Record<string, string | { foreground?: string }>;
+}
 
 const contributes = manifest().contributes;
 
@@ -79,5 +87,94 @@ describe("presets", () => {
 			theme => theme.label === "Stylesmith Simulation"
 		);
 		assert.equal(simulation?.id, "Stylesmith Digital Rain");
+	});
+});
+
+/**
+ * Presets close on several axes at once (#132): each axis has its own test, but two presets can
+ * pass them all and still feel the same. A pair's score adds up its distances: colors (the
+ * look-alike mean ΔE), file icons (mean ΔE over folder, code, docs and config), 10 if the fonts
+ * differ and 5 for each effect that differs. The 2.8 audit found Steel and Rust and Command Deck
+ * at 33.7 and Black ICE and Grid at 39.7; the next pair was 43.7.
+ */
+describe("preset distinctness (#132)", () => {
+	const MIN_SCORE = 42;
+	const difference = (a: string, b: string) =>
+		colorDifference(a.slice(0, 7), b.slice(0, 7), VISION["normal vision"]);
+	const meanDifference = (a: readonly string[], b: readonly string[]) =>
+		a.reduce((sum, color, i) => sum + difference(color, b[i]!), 0) / a.length;
+
+	const profiles = PRESETS.map(preset => {
+		const entry = contributes.themes.find(theme => themeSettingsId(theme) === preset.theme)!;
+		const theme = readJson<SemanticTheme>(entry.path);
+		const semantic = (role: string) => {
+			const value = theme.semanticTokenColors[role];
+			return (typeof value === "string" ? value : value?.foreground) ?? "";
+		};
+		const iconEntry = contributes.iconThemes.find(icons => icons.id === preset.iconTheme)!;
+		const icons = readJson<IconTheme>(iconEntry.path);
+		const iconColor = (id: string | undefined) =>
+			icons.iconDefinitions[id ?? ""]?.fontColor ?? "";
+		return {
+			preset,
+			kind: theme.type,
+			look: [
+				theme.colors["editor.background"]!,
+				theme.colors["focusBorder"]!,
+				...["keyword", "string", "function", "type"].map(semantic)
+			],
+			icons: [
+				iconColor(icons.folder),
+				iconColor(icons.fileExtensions["ts"]),
+				iconColor(icons.fileExtensions["md"]),
+				iconColor(icons.fileExtensions["json"])
+			]
+		};
+	});
+
+	it("keeps every two presets of a kind apart across colors, icons, font and effects", () => {
+		for (let i = 0; i < profiles.length; i++) {
+			for (let j = i + 1; j < profiles.length; j++) {
+				const [a, b] = [profiles[i]!, profiles[j]!];
+				if (a.kind !== b.kind) continue;
+				const colors = meanDifference(a.look, b.look);
+				const icons = meanDifference(a.icons, b.icons);
+				const font = a.preset.font === b.preset.font ? 0 : 10;
+				const effects = EFFECTS.filter(
+					effect =>
+						Boolean(a.preset.effects[effect.setting]) !==
+						Boolean(b.preset.effects[effect.setting])
+				).length;
+				const score = colors + icons + font + effects * 5;
+				assert.ok(
+					score >= MIN_SCORE,
+					`${a.preset.label} and ${b.preset.label}: ${score.toFixed(1)} (colors ${colors.toFixed(1)}, icons ${icons.toFixed(1)}, ${font ? "different fonts" : "the same font"}, ${effects} effects differ)`
+				);
+			}
+		}
+	});
+
+	it("says what its settings do: descriptions and stories match the effects", () => {
+		// [what the words say, the effects that make it true, whether they must be on]
+		const promises: [RegExp, string[], boolean][] = [
+			[/compact/i, ["effects.compactLayout"], true],
+			[/block cursor/i, ["effects.blockCursor", "effects.blockTerminalCursor"], true],
+			[/dimm?ed/i, ["effects.dimUnfocused"], true],
+			[/without animation|no smooth/i, ["effects.smoothCursor"], false],
+			[/readable terminal/i, ["effects.readableTerminal"], true],
+			[/bracket guides/i, ["effects.bracketGuides"], true]
+		];
+		for (const preset of PRESETS) {
+			const words = [
+				preset.description,
+				PRESET_STORIES[preset.label] ?? "",
+				PRESET_TALES[preset.label]?.settings ?? ""
+			].join(" ");
+			for (const [pattern, settings, on] of promises) {
+				if (!pattern.test(words)) continue;
+				const isOn = settings.some(setting => preset.effects[setting]);
+				assert.equal(isOn, on, `${preset.label} says "${pattern.source}"`);
+			}
+		}
 	});
 });
