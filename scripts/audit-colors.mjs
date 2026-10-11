@@ -66,9 +66,16 @@ const colors = registry([
 if (colors.length < 500)
 	throw new Error(`only ${colors.length} colors found in VS Code ${version}`);
 
-const baseline = existsSync(baselineFile)
-	? JSON.parse(readFileSync(baselineFile, "utf-8"))
-	: { vscode: "none", colors: [] };
+/** The baseline, read once; none yet before the first --update-baseline. */
+function readBaseline() {
+	try {
+		return JSON.parse(readFileSync(baselineFile, "utf-8"));
+	} catch (error) {
+		if (error.code === "ENOENT") return { vscode: "none", colors: [] };
+		throw error;
+	}
+}
+const baseline = readBaseline();
 const ids = new Set(colors.map(c => c.id));
 const added = colors.map(c => c.id).filter(id => !baseline.colors.includes(id));
 const removed = baseline.colors.filter(id => !ids.has(id));
