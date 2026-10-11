@@ -1,0 +1,53 @@
+name: Color audit
+
+# Every week: checks the color themes against the newest stable VS Code's theme colors (#108).
+# When a theme sets a color VS Code doesn't know, or leaves one to a stock default that is
+# clearly off from its own colors (VS Code adds colors in most releases), it opens an issue
+# with the report, or adds the report to the one already open.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: write # to report what the audit found
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Audit the themes against the newest VS Code
+        id: audit
+        continue-on-error: true
+        run: npm run audit:colors -- --report "$RUNNER_TEMP/report.md"
+      - name: Open or update the issue
+        if: steps.audit.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ runner.temp }}/report.md
+        run: |
+          # No report means the audit itself failed (a download, or VS Code's code changed).
+          if [ ! -f "$REPORT" ]; then
+            echo "::error::The color audit failed before writing its report."
+            exit 1
+          fi
+          title="Color audit: the newest VS Code has colors the themes don't cover"
+          number=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file "$REPORT"
+          else
+            gh issue create --title "$title" --body-file "$REPORT" --label enhancement
+          fi
