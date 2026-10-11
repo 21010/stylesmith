@@ -48,14 +48,14 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Phosphor Terminal**: A late-1970s green-phosphor video terminal: green on near-black, pixel icons in the same greens, a dense, compact layout, and block cursors that blink without animation.
 - **Amber Monitor**: An early-1980s amber monochrome monitor: warm amber tones, matching pixel icons, a compact layout, and block cursors that blink without animation.
 - **Black ICE**: A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.
-- **Monolith**: Blue-grey stone with one deep blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.
+- **Monolith**: Blue-grey stone with one soft blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.
 - **Glass Lab**: Warm concrete greys, soft off-white text and one coral accent, with the quiet editor settings and dimmed unfocused editors.
 - **Vault**: Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.
 - **Simulation**: A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.
 - **Steel and Rust**: Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.
 - **Brass**: Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
-- **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.
-- **Sunroom**: Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.
+- **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, mustard and terracotta accents, with only a smooth cursor and the current line.
+- **Sunroom**: Soft sunlight on pale walls: warm cream, muted grey-blue structure and terracotta accents, with unfocused editors dimmed.
 - **Countdown**: A deep blue-black night sky with sun-gold keywords and every number in red, like a countdown, with unfocused editors dimmed.
 - **Overlay**: A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.
 - **Deep Desert**: Sand and ochre under a harsh sun, on the black of rock interiors, with one deep blue for the moments that change the flow.
@@ -73,15 +73,15 @@ A preset sets a color theme, a file icon theme, a product icon theme for VS Code
 - **Stylesmith Neon Night**: Neon signs reflected on wet streets at night: hot pink and cyan accents and yellow strings on a deep indigo background.
 - **Stylesmith Phosphor**: A late-1970s video terminal with green phosphor: one green range on near-black, with comments dimmed like a fading trace.
 - **Stylesmith Amber**: An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.
-- **Stylesmith ICE**: A cold white-phosphor screen at night: blue-white text, accents and syntax on a dark blue-grey background.
-- **Stylesmith Monolith**: Blue-grey stone and a single deep blue accent: a calm, minimal dark theme, with syntax in quiet greys and sage.
+- **Stylesmith ICE**: A cold white-phosphor screen at night: blue-white text, accents and syntax on a blue-black background.
+- **Stylesmith Monolith**: Blue-grey stone and a single soft blue accent: a calm, minimal dark theme, with syntax in quiet greys, sage and tan.
 - **Stylesmith Glass Lab**: Warm concrete greys, soft off-white text and one coral accent. Errors lean magenta and deleted lines orange, so neither reads as the accent.
 - **Stylesmith Vault**: A deep navy shelter with warm off-white text and a bright yellow accent: the upbeat look of a 1950s vision of the future.
 - **Stylesmith Simulation**: A charcoal city with a faint green cast: greyed text and syntax, keywords in glowing code green, a warm red for return, break and throw, and blue for constants.
 - **Stylesmith Steel and Rust**: Cold blue-grey steel and dim light: steel-blue keywords, rust for numbers and control flow, and muted brass strings.
 - **Stylesmith Brass**: Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.
-- **Stylesmith Tea Garden**: Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.
-- **Stylesmith Sunroom**: Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.
+- **Stylesmith Tea Garden**: Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and mustard numbers.
+- **Stylesmith Sunroom**: Light: pale warm cream, grey-blue keywords and types, terracotta strings and ochre numbers, warm and muted.
 - **Stylesmith Countdown**: Deep blue-black night sky, pale starlight text, sun-gold keywords, pale cyan types, and one red: every number.
 - **Stylesmith Overlay**: Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.
 - **Stylesmith Deep Desert**: Near-black brown with sand text, spice-orange keywords, ochre strings, and a deep blue for return, break and throw.

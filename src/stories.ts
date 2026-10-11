@@ -20,7 +20,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	"Black ICE":
 		"A cold white-phosphor screen with ice-blue accents and matching pixel icons, and only the calmer editor settings.",
 	Monolith:
-		"Blue-grey stone with one deep blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.",
+		"Blue-grey stone with one soft blue accent, and only the quiet editor settings. Editors you aren't working in are dimmed, so the one in use stands out.",
 	"Glass Lab":
 		"Warm concrete greys, soft off-white text and one coral accent, with the quiet editor settings and dimmed unfocused editors.",
 	Vault: "Deep navy and bright vault yellow, an optimistic 1950s vision of the future, with a block cursor in the terminal.",
@@ -30,9 +30,9 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.",
 	Brass: "Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.",
 	"Tea Garden":
-		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, sunflower and terracotta accents, with only a smooth cursor and the current line.",
+		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, mustard and terracotta accents, with only a smooth cursor and the current line.",
 	Sunroom:
-		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.",
+		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and terracotta accents, with unfocused editors dimmed.",
 	Countdown:
 		"A deep blue-black night sky with sun-gold keywords and every number in red, like a countdown, with unfocused editors dimmed.",
 	Overlay:
@@ -64,9 +64,9 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 	"Stylesmith Amber":
 		"An early-1980s monochrome monitor with amber phosphor: warm amber and orange tones on a dark brown-black background.",
 	"Stylesmith ICE":
-		"A cold white-phosphor screen at night: blue-white text, accents and syntax on a dark blue-grey background.",
+		"A cold white-phosphor screen at night: blue-white text, accents and syntax on a blue-black background.",
 	"Stylesmith Monolith":
-		"Blue-grey stone and a single deep blue accent: a calm, minimal dark theme, with syntax in quiet greys and sage.",
+		"Blue-grey stone and a single soft blue accent: a calm, minimal dark theme, with syntax in quiet greys, sage and tan.",
 	"Stylesmith Glass Lab":
 		"Warm concrete greys, soft off-white text and one coral accent. Errors lean magenta and deleted lines orange, so neither reads as the accent.",
 	"Stylesmith Vault":
@@ -78,9 +78,9 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 	"Stylesmith Brass":
 		"Dark bronze-brown with warm cream text: brass keywords, copper functions and numbers, and verdigris strings and types.",
 	"Stylesmith Tea Garden":
-		"Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and sunflower numbers.",
+		"Light: warm off-white with a hint of green, dark moss text, leaf-green keywords, terracotta strings and mustard numbers.",
 	"Stylesmith Sunroom":
-		"Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.",
+		"Light: pale warm cream, grey-blue keywords and types, terracotta strings and ochre numbers, warm and muted.",
 	"Stylesmith Countdown":
 		"Deep blue-black night sky, pale starlight text, sun-gold keywords, pale cyan types, and one red: every number.",
 	"Stylesmith Overlay":
@@ -146,7 +146,7 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 	},
 	Monolith: {
 		origin: "Ted Chiang's novella Story of Your Life (1998), and the film made from it, imagine a linguist learning a language written in rings of ink, in grey rooms full of fog and patience.",
-		colors: "Blue-grey stone and one deep blue accent. Syntax stays in quiet greys and sage, so the single accent carries the structure.",
+		colors: "Blue-grey stone and one soft blue accent, shared by the keywords. Syntax stays in quiet greys, sage and tan, so the single accent carries the structure.",
 		settings:
 			"Only the quiet settings, and the editors you aren't working in are dimmed, as if in fog, so the one in use stands out."
 	},
@@ -181,13 +181,13 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 	},
 	"Tea Garden": {
 		origin: "Becky Chambers' A Psalm for the Wild-Built (2021) follows a tea monk through a gentle world where people learned to live within their means, long after the robots walked away into the wilderness.",
-		colors: "A warm off-white with a hint of green, like light through a greenhouse. Text in dark moss, keywords in leaf green, strings in terracotta and numbers in sunflower.",
+		colors: "A warm off-white with a hint of green, like light through a greenhouse. Text in dark moss, keywords in leaf green, strings in terracotta and numbers in a deep mustard.",
 		settings:
 			"Only a smooth cursor and the current-line highlight: nothing mechanical, nothing that ticks."
 	},
 	Sunroom: {
 		origin: "Kazuo Ishiguro's Klara and the Sun (2021) is told by an artificial friend who watches the world through a shop window, and trusts in the kindness of the Sun.",
-		colors: "Pale warm cream, like a wall in afternoon light. Muted grey-blue for keywords and types, peach for strings, and the soft yellow of sunlight for numbers. Nothing is saturated.",
+		colors: "Pale warm cream, like a wall in afternoon light. Muted grey-blue for keywords and types, terracotta for strings, and the ochre of late sun for numbers. Warm, but never bright: dark enough to read on the cream.",
 		settings:
 			"A smooth cursor, the current-line highlight, and unfocused editors dimmed, so attention rests on one window at a time, as Klara's does."
 	},
