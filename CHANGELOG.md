@@ -10,6 +10,7 @@ All notable changes to Stylesmith. Versions follow [Semantic Versioning](https:/
 
 ### Changed
 
+- **Diff editor shadows follow the theme.** The shadow over a diff's folded, unchanged lines takes each theme's own colors instead of VS Code's stock grey.
 - **Terminal white and black follow the theme (#142).** The four light themes shared one generic cool grey for terminal white and bright white; they now take each theme's own line-number and border colors. Daylight High Contrast's whites and Neon High Contrast's black follow their themes too. A test keeps every terminal palette made of its theme's colors.
 - **ICE sets itself apart from Grid (#136).** Both were pale cyan on blue-black, and with red-green color blindness they looked almost the same. ICE's keywords and accent are now ice blue instead of frost cyan, leaving cyan to Grid, and its terminal colors follow.
 - **Theme stories name the colors the themes have (#138).** Sunroom's strings and numbers are terracotta and ochre (not peach and pale yellow, which can't be read on cream), Tea Garden's numbers mustard, Monolith's accent a soft blue with tan numbers, and ICE's background blue-black in both its stories.

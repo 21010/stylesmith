@@ -205,6 +205,9 @@ function theme(p) {
 			"peekViewTitle.background": p.bgRaised,
 			"diffEditor.insertedTextBackground": `${p.status.added}1f`,
 			"diffEditor.removedTextBackground": `${p.status.deleted}1f`,
+			// The shadow over a diff's folded, unchanged regions: the theme's text in a light theme,
+			// its darkest background in a dark one, never VS Code's stock grey (#108 audit).
+			"diffEditor.unchangedRegionShadow": `${kind.endsWith("light") ? p.fg : p.bgDark}66`,
 			"diffEditor.unchangedCodeBackground": `${p.lineNumber}29`,
 			"diffEditor.move.border": `${p.muted}9c`,
 			"diffEditor.moveActive.border": p.accentAlt,

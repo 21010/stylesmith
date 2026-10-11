@@ -121,6 +121,7 @@
 		"peekViewTitle.background": "#1c252b",
 		"diffEditor.insertedTextBackground": "#7fd6a31f",
 		"diffEditor.removedTextBackground": "#ff8a5c1f",
+		"diffEditor.unchangedRegionShadow": "#11171b66",
 		"diffEditor.unchangedCodeBackground": "#83929e29",
 		"diffEditor.move.border": "#9fadb89c",
 		"diffEditor.moveActive.border": "#f5a83a",
