@@ -58,7 +58,11 @@ const GROUPS = [
 		"Moods from novels and stories, named with credit to their authors.",
 		["brass", "tea-garden", "sunroom", "countdown", "overlay"]
 	],
-	["Everyday", "Bright rooms and maximum contrast.", ["daylight", "high-contrast"]]
+	[
+		"Everyday",
+		"Bright rooms and maximum contrast.",
+		["daylight", "high-contrast", "high-contrast-light"]
+	]
 ];
 /** @type {[title: string, labels: string[]][]} */
 const THEME_GROUPS = [

@@ -246,7 +246,7 @@ export const PRESETS: readonly Preset[] = [
 		theme: "Stylesmith Countdown",
 		iconTheme: "stylesmith-pixel-countdown",
 		productIconTheme: PRODUCT_ICON_THEME,
-		font: "ShureTechMono",
+		font: "BlexMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -314,7 +314,7 @@ export const PRESETS: readonly Preset[] = [
 		theme: "Stylesmith Grid",
 		iconTheme: "stylesmith-pixel-grid",
 		productIconTheme: PRODUCT_ICON_THEME,
-		font: "GeistMono",
+		font: "MartianMono",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -351,7 +351,7 @@ export const PRESETS: readonly Preset[] = [
 		theme: "Stylesmith Horizon",
 		iconTheme: "stylesmith-pixel-horizon",
 		productIconTheme: PRODUCT_ICON_THEME,
-		font: "GeistMono",
+		font: "RecMonoCasual",
 		effects: {
 			...BASE,
 			"effects.compactLayout": false,
@@ -404,6 +404,25 @@ export const PRESETS: readonly Preset[] = [
 			"High-contrast colors, minimal motion, clear bracket guides and readable terminal colors",
 		theme: "Stylesmith Neon High Contrast",
 		iconTheme: "stylesmith-pixel-neon-high-contrast",
+		font: "AtkynsonMono",
+		effects: {
+			"effects.smoothCursor": false,
+			"effects.currentLine": true,
+			"effects.bracketGuides": true,
+			"effects.compactLayout": false,
+			"effects.blockCursor": false,
+			"effects.blockTerminalCursor": false,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": true
+		}
+	},
+	{
+		id: "high-contrast-light",
+		label: "High Contrast Light",
+		description:
+			"Light high-contrast colors, minimal motion, clear bracket guides and readable terminal colors",
+		theme: "Stylesmith Daylight High Contrast",
+		iconTheme: "stylesmith-pixel-daylight-high-contrast",
 		font: "AtkynsonMono",
 		effects: {
 			"effects.smoothCursor": false,
