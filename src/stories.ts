@@ -34,7 +34,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	Sunroom:
 		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and peach accents, with unfocused editors dimmed.",
 	Countdown:
-		"Cold grey-black with faint cyan structure and every number in red, like a countdown, with unfocused editors dimmed.",
+		"A deep blue-black night sky with sun-gold keywords and every number in red, like a countdown, with unfocused editors dimmed.",
 	Overlay:
 		"A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.",
 	"Deep Desert":
@@ -82,7 +82,7 @@ export const THEME_STORIES: Readonly<Record<string, string>> = {
 	"Stylesmith Sunroom":
 		"Light: pale warm cream, grey-blue keywords and types, peach strings and soft sunlit numbers, low in saturation.",
 	"Stylesmith Countdown":
-		"Neutral grey-black, pale steel text, faint cyan keywords and types, and one red: every number.",
+		"Deep blue-black night sky, pale starlight text, sun-gold keywords, pale cyan types, and one red: every number.",
 	"Stylesmith Overlay":
 		"Dark slate with cyan keywords like interface overlays, and amber strings and numbers like alerts. Utilitarian, not neon.",
 	"Stylesmith Deep Desert":
@@ -192,8 +192,8 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 			"A smooth cursor, the current-line highlight, and unfocused editors dimmed, so attention rests on one window at a time, as Klara's does."
 	},
 	Countdown: {
-		origin: "Liu Cixin's The Three-Body Problem (2008; in English, 2014) begins with physics breaking down, and a countdown that only one scientist can see, ticking in his vision.",
-		colors: "Neutral grey-black and pale steel text, with faint cyan for keywords and types. One red is reserved for numbers: every number in the code is part of the countdown.",
+		origin: "Liu Cixin's The Three-Body Problem (2008; in English, 2014) begins with physics breaking down, and a countdown that only one scientist can see, ticking in his vision, under a sky that will blink for him, in a story of a world with three suns.",
+		colors: "A deep blue-black night sky and pale starlight text, with sun-gold keywords, pale cyan types and faint lilac strings. One red is reserved for numbers: every number in the code is part of the countdown.",
 		settings: "The calm settings, with unfocused editors dimmed: cold, quiet and focused."
 	},
 	Overlay: {
