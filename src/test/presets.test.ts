@@ -50,9 +50,17 @@ describe("presets", () => {
 		});
 	}
 
-	it("keeps motion low in the high contrast preset", () => {
-		const high = PRESETS.find(preset => preset.id === "high-contrast")!;
-		assert.equal(high.effects["effects.smoothCursor"], false);
+	it("keeps motion low in the high contrast presets", () => {
+		for (const id of ["high-contrast", "high-contrast-light"]) {
+			const high = PRESETS.find(preset => preset.id === id)!;
+			assert.equal(high.effects["effects.smoothCursor"], false, id);
+		}
+	});
+
+	it("spreads the recommended fonts: no font for more than three presets (#122)", () => {
+		const count = new Map<string, number>();
+		for (const preset of PRESETS) count.set(preset.font, (count.get(preset.font) ?? 0) + 1);
+		for (const [font, n] of count) assert.ok(n <= 3, `${font} is recommended by ${n} presets`);
 	});
 
 	it("keeps earlier preset ids working, pointing at presets that exist", () => {

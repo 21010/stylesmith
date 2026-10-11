@@ -143,7 +143,7 @@ describe("Stylesmith Pixel product icons", () => {
 		for (const preset of PRESETS) {
 			assert.equal(
 				preset.productIconTheme,
-				preset.id === "high-contrast" ? undefined : PRODUCT_ICON_THEME,
+				preset.id.startsWith("high-contrast") ? undefined : PRODUCT_ICON_THEME,
 				preset.id
 			);
 		}
