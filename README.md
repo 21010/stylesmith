@@ -166,6 +166,12 @@ npm test
 npm run lint
 ```
 
+The browser tests (`npm run test:browser`) need Playwright's headless Chromium, once per machine:
+
+```sh
+npx playwright-core install chromium-headless-shell
+```
+
 See [SECURITY.md](SECURITY.md) for the security boundary and recovery notes.
 
 ## Credits
