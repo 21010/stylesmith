@@ -172,6 +172,29 @@ export class ManagedSettings {
 		});
 	}
 
+	/**
+	 * Stops managing `keys` in `group`: each one Stylesmith set is put back to the user's own
+	 * value (a change the user made since is kept), and forgotten. Keys it didn't set are left
+	 * alone.
+	 */
+	async release(group: Group, keys: readonly string[]): Promise<void> {
+		const stored = validEntries((await this.store.read())[group.name]);
+		if (!keys.some(key => stored[key])) return; // the usual case: nothing to write
+		await this.store.transact(async current => {
+			const state = validEntries(current[group.name]);
+			for (const key of keys) {
+				const saved = state[key];
+				if (!saved) continue;
+				await this.restore(key, saved, group);
+				delete state[key];
+			}
+			return {
+				change: { [group.name]: Object.keys(state).length > 0 ? state : undefined },
+				result: undefined
+			};
+		});
+	}
+
 	private async restore(key: string, saved: SavedValue, group: Group): Promise<void> {
 		const { user, known } = this.settings.read(key);
 		if (!known) return; // gone after a VS Code downgrade: nothing to put back

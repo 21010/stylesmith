@@ -54,7 +54,7 @@ export async function run(): Promise<void> {
 			);
 			assert.equal(userValue("workbench", "colorTheme"), "Stylesmith Phosphor");
 			assert.equal(userValue("workbench", "iconTheme"), "stylesmith-pixel-phosphor");
-			assert.equal(userValue("workbench", "productIconTheme"), "stylesmith-pixel");
+			assert.equal(userValue("workbench", "productIconTheme"), undefined, "left alone");
 			const hasDensity =
 				vscode.workspace.getConfiguration("window").inspect("density.layout")
 					?.defaultValue !== undefined;

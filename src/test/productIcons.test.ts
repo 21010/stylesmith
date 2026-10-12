@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { PRESETS, PRODUCT_ICON_THEME } from "../presets";
+import { PRESETS } from "../presets";
 import { loadFont, manifest, ROOT } from "./files";
 
 /**
@@ -17,7 +17,7 @@ interface ProductIconTheme {
 }
 
 const contribution = manifest().contributes.productIconThemes.find(
-	theme => theme.id === PRODUCT_ICON_THEME
+	theme => theme.id === "stylesmith-pixel"
 );
 const themePath = path.join(ROOT, contribution?.path ?? "");
 const theme = JSON.parse(readFileSync(themePath, "utf-8")) as ProductIconTheme;
@@ -139,13 +139,7 @@ describe("Stylesmith Pixel product icons", () => {
 		assert.ok(covered.length / DEFAULT_WINDOW.length > 0.75);
 	});
 
-	it("is set by every preset except High Contrast, which keeps VS Code's own icons", () => {
-		for (const preset of PRESETS) {
-			assert.equal(
-				preset.productIconTheme,
-				preset.id.startsWith("high-contrast") ? undefined : PRODUCT_ICON_THEME,
-				preset.id
-			);
-		}
+	it("is never set by a preset: the Activity Bar keeps VS Code's own icons", () => {
+		for (const preset of PRESETS) assert.ok(!("productIconTheme" in preset), preset.id);
 	});
 });

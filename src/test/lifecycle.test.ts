@@ -152,19 +152,47 @@ describe("API-only lifecycle", () => {
 		assert.equal(values.get("workbench.iconTheme"), "vs-seti", "the icons go back");
 	});
 
-	it("sets the pixel product icons with a preset, and Disable puts the user's back", async () => {
+	it("leaves the product icons (the Activity Bar's) alone", async () => {
 		values.set("workbench.productIconTheme", "their-icons");
-		await applyThemes(services, "Stylesmith Vault", "stylesmith-pixel", "stylesmith-pixel");
-		assert.equal(values.get("workbench.productIconTheme"), "stylesmith-pixel");
+		await applyThemes(services, "Stylesmith Vault", "stylesmith-pixel");
+		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
 		await disable(services);
 		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
 	});
 
-	it("gives the user's product icons back when the next preset sets none", async () => {
-		values.set("workbench.productIconTheme", "their-icons");
-		await applyThemes(services, "Stylesmith Vault", "stylesmith-pixel", "stylesmith-pixel");
-		await applyThemes(services, "Stylesmith Neon High Contrast", "stylesmith-pixel");
+	/** What a preset from Stylesmith 2.8 or earlier left: the pixel product icons, managed. */
+	async function setByOldPreset(previous: unknown) {
+		values.set("workbench.productIconTheme", "stylesmith-pixel");
+		await services.store.update({
+			themeSettings: {
+				"workbench.productIconTheme": { previous, applied: "stylesmith-pixel" }
+			}
+		});
+	}
+
+	it("gives back product icons an earlier preset set, at startup", async () => {
+		await setByOldPreset("their-icons");
+		await checkAfterStartup(services);
 		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
+		assert.equal((await services.store.read()).themeSettings, undefined, "forgotten");
+
+		values.set("workbench.productIconTheme", "stylesmith-pixel"); // chosen by hand now
+		await checkAfterStartup(services);
+		assert.equal(values.get("workbench.productIconTheme"), "stylesmith-pixel", "kept");
+	});
+
+	it("keeps product icons the user picked after the earlier preset", async () => {
+		await setByOldPreset(undefined);
+		values.set("workbench.productIconTheme", "picked-later");
+		await checkAfterStartup(services);
+		assert.equal(values.get("workbench.productIconTheme"), "picked-later");
+	});
+
+	it("gives back product icons an earlier preset set, when the next preset is applied", async () => {
+		await setByOldPreset(undefined);
+		await applyThemes(services, "Stylesmith ICE", "stylesmith-pixel-ice");
+		assert.equal(values.has("workbench.productIconTheme"), false);
+		assert.equal(values.get("workbench.colorTheme"), "Stylesmith ICE");
 	});
 
 	it("doesn't take over a theme the user already had", async () => {

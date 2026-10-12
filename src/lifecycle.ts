@@ -44,29 +44,26 @@ export async function enable(services: Services, options: EnableOptions = {}): P
 }
 
 /**
- * Sets the color theme, file icon theme and product icon theme a preset chose, as managed
- * settings: Disable puts the user's own themes back. Without a product icon theme, the user's
- * own comes back. Enable never touches them; only presets set themes.
+ * Sets the color theme and file icon theme a preset chose, as managed settings: Disable puts
+ * the user's own themes back. Enable never touches them; only presets set themes. Presets
+ * leave VS Code's own interface icons (the product icon theme) alone; one that an earlier
+ * version set is given back here.
  */
 export async function applyThemes(
 	services: Services,
 	colorTheme: string,
-	iconTheme: string,
-	productIconTheme?: string
+	iconTheme: string
 ): Promise<void> {
 	const same = (expected: string) => (value: unknown) => value === expected;
 	const wanted = new Map([
 		["workbench.colorTheme", toggleWanted(colorTheme, same(colorTheme))],
 		["workbench.iconTheme", toggleWanted(iconTheme, same(iconTheme))]
 	]);
-	if (productIconTheme) {
-		wanted.set(
-			"workbench.productIconTheme",
-			toggleWanted(productIconTheme, same(productIconTheme))
-		);
-	}
 	await services.managed.update(THEME_GROUP, wanted);
 }
+
+// Presets up to 2.8 set the product icon theme too; Stylesmith no longer manages it.
+const RELEASED_SETTINGS = ["workbench.productIconTheme"];
 
 /** Restores the user's prior settings through the VS Code configuration API. */
 export async function disable(services: Services): Promise<void> {
@@ -78,6 +75,7 @@ export async function disable(services: Services): Promise<void> {
 
 /** Re-applies active choices after activation without touching the installation. */
 export async function checkAfterStartup(services: Services): Promise<boolean> {
+	await services.managed.release(THEME_GROUP, RELEASED_SETTINGS);
 	const { enabled } = await services.store.read();
 	if (enabled) await enable(services, { keepUserChanges: true });
 	return Boolean(enabled);

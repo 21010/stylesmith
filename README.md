@@ -24,7 +24,7 @@ As with any extension, installing Stylesmith means trusting its published extens
 
 ## Use
 
-Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and icon themes a preset chose. These operations do not require a window reload.
+Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and file icon theme a preset chose. These operations do not require a window reload.
 
 Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up. With `stylesmith.terminal.failSignal` on, it does the same when a command in the integrated terminal fails, showing its exit code; this needs VS Code's shell integration (on by default for bash, zsh, fish and PowerShell), and a command stopped with Ctrl+C doesn't count.
 
@@ -40,7 +40,7 @@ Run **Stylesmith: Digital Rain** to watch characters fall down a terminal tab, i
 
 ## Presets and themes
 
-A preset sets a color theme, a file icon theme, a product icon theme for VS Code's own interface icons, and native VS Code settings. Every color theme also works on its own. The [Themes page](https://stylesmith.dev/themes.html) shows each one.
+A preset sets a color theme, a file icon theme for the Explorer, and native VS Code settings. It leaves VS Code's own interface icons (the Activity Bar's) alone; the Stylesmith Pixel product icon theme is there to choose yourself. Every color theme also works on its own. The [Themes page](https://stylesmith.dev/themes.html) shows each one.
 
 ### Presets
 
@@ -140,18 +140,18 @@ All Stylesmith settings are global user settings. The font settings select a fam
 
 Stylesmith manages the following VS Code settings while enabled. Disable restores the saved value, unless the user changed that setting while Stylesmith was active; in that case, the newer user value is preserved. Stylesmith also keeps such a change when it re-applies its settings at startup or after a Stylesmith setting changes; running **Stylesmith: Enable** applies its values again.
 
-| VS Code setting                                                             | Stylesmith option                                     |
-| --------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `workbench.colorTheme`, `workbench.iconTheme`, `workbench.productIconTheme` | the preset you apply                                  |
-| `editor.fontFamily`, `terminal.integrated.fontFamily`                       | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
-| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`                | `stylesmith.effects.smoothCursor`                     |
-| `editor.renderLineHighlight`                                                | `stylesmith.effects.currentLine`                      |
-| `editor.guides.bracketPairs`                                                | `stylesmith.effects.bracketGuides`                    |
-| `window.density.layout`                                                     | `stylesmith.effects.compactLayout`                    |
-| `editor.cursorStyle`                                                        | `stylesmith.effects.blockCursor`                      |
-| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking`     | `stylesmith.effects.blockTerminalCursor`              |
-| `accessibility.dimUnfocused.enabled`                                        | `stylesmith.effects.dimUnfocused`                     |
-| `terminal.integrated.minimumContrastRatio`                                  | `stylesmith.effects.readableTerminal`                 |
+| VS Code setting                                                         | Stylesmith option                                     |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `workbench.colorTheme`, `workbench.iconTheme`                           | the preset you apply                                  |
+| `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
+| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`            | `stylesmith.effects.smoothCursor`                     |
+| `editor.renderLineHighlight`                                            | `stylesmith.effects.currentLine`                      |
+| `editor.guides.bracketPairs`                                            | `stylesmith.effects.bracketGuides`                    |
+| `window.density.layout`                                                 | `stylesmith.effects.compactLayout`                    |
+| `editor.cursorStyle`                                                    | `stylesmith.effects.blockCursor`                      |
+| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
+| `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
+| `terminal.integrated.minimumContrastRatio`                              | `stylesmith.effects.readableTerminal`                 |
 
 Settings that are not available in the installed VS Code version are skipped. Stylesmith writes user (global) settings only, so a workspace or folder value for the same setting takes precedence in that workspace.
 

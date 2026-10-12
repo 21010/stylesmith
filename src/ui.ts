@@ -156,7 +156,7 @@ export async function installFontCommand(config: Config, fonts: FontInstaller): 
  */
 export async function applyPreset(
 	config: Config,
-	setThemes: (colorTheme: string, iconTheme: string, productIconTheme?: string) => Promise<void>,
+	setThemes: (colorTheme: string, iconTheme: string) => Promise<void>,
 	id?: unknown
 ): Promise<void> {
 	let preset: Preset | undefined;
@@ -176,7 +176,7 @@ export async function applyPreset(
 		preset = choice?.preset;
 	}
 	if (!preset) return;
-	await setThemes(preset.theme, preset.iconTheme, preset.productIconTheme);
+	await setThemes(preset.theme, preset.iconTheme);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);
 	await vscode.commands.executeCommand("stylesmith.enable");
 }
