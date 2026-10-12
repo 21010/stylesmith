@@ -352,7 +352,7 @@ const SETS = [
 ];
 
 function build() {
-	// Old SVG sets and theme files: the font and the JSON files replace them.
+	// Every set is rebuilt from scratch, so a removed or renamed theme leaves no set behind.
 	for (const entry of readdirSync(root)) {
 		if (entry.startsWith("pixel")) rmSync(join(root, entry), { recursive: true, force: true });
 	}

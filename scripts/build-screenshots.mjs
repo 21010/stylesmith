@@ -211,6 +211,7 @@ export function formatPrice(price: number): string {
 async function shootProblemLens(vscode) {
 	const preset = PRESETS.find(candidate => candidate.id === "night-city");
 	const { page, close } = await openVSCode(vscode, preset, {
+		use: [SPELL_CHECKER],
 		size: LENS_SIZE,
 		files: LENS_PROJECT,
 		open: "src/cart.ts",

@@ -105,8 +105,6 @@ export const palettes = [
 			modified: "#ffb03f",
 			deleted: "#ff6b6b"
 		},
-		// Its own Stylesmith Pixel icons: band colors by kind of file (see CATEGORIES in
-		// icons.mjs). They set the mood; the labels tell the file types apart.
 		ansi: {
 			black: "#1f3826",
 			red: "#ff7a6b",
@@ -167,8 +165,6 @@ export const palettes = [
 			modified: "#fff1d6",
 			deleted: "#ff7060"
 		},
-		// Its own Stylesmith Pixel icons: band colors by kind of file (see CATEGORIES in
-		// icons.mjs). They set the mood; the labels tell the file types apart.
 		ansi: {
 			black: "#3a2c14",
 			red: "#ff7f66",
@@ -231,8 +227,6 @@ export const palettes = [
 			modified: "#7fb8ff",
 			deleted: "#ff8a7a"
 		},
-		// Its own Stylesmith Pixel icons: band colors by kind of file (see CATEGORIES in
-		// icons.mjs). They set the mood; the labels tell the file types apart.
 		ansi: {
 			black: "#22303f",
 			red: "#be7e7a",
@@ -253,8 +247,8 @@ export const palettes = [
 		}
 	},
 	{
-		// Blue-grey stone and a single deep blue (#21): calm and minimal. Syntax stays in quiet greys
-		// and sage, so the one accent carries the structure.
+		// Blue-grey stone and a single soft blue accent (#21, #138): calm and minimal. Syntax stays in
+		// quiet greys, sage and tan, so the one accent carries the structure.
 		id: "monolith",
 		typography: "film",
 		name: "Stylesmith Monolith",
@@ -681,7 +675,8 @@ export const palettes = [
 		typography: "film",
 		name: "Stylesmith Sunroom",
 		kind: "light",
-		// Soft sunlight on pale walls, low in saturation (#73).
+		// Soft sunlight on pale walls: grey-blue structure, terracotta and ochre, warm and muted, dark
+		// enough to read on cream (#73, #138).
 		bg: "#faf4ea",
 		bgDark: "#f2eadc",
 		bgRaised: "#fffefd",

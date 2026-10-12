@@ -68,12 +68,17 @@ export async function prepareVSCode(marketplace = []) {
 	return {
 		executable,
 		extensions,
+		marketplace,
 		dispose: () => rmSync(extensions, { recursive: true, force: true, maxRetries: 5 })
 	};
 }
 
-export async function openVSCode({ executable, extensions }, preset, options = {}) {
+// Marketplace extensions are installed once for every window, but each window turns on only
+// the ones it names in `use`: another extension's panel tab or status item would show in
+// every shot.
+export async function openVSCode({ executable, extensions, marketplace }, preset, options = {}) {
 	const {
+		use = [],
 		size,
 		effects: override = {},
 		settings: extra = {},
@@ -93,7 +98,6 @@ export async function openVSCode({ executable, extensions }, preset, options = {
 	const settings = {
 		"workbench.colorTheme": preset.theme,
 		"workbench.iconTheme": preset.iconTheme,
-		...(preset.productIconTheme && { "workbench.productIconTheme": preset.productIconTheme }),
 		...Object.fromEntries(Object.entries(chosen).map(([key, on]) => [`stylesmith.${key}`, on])),
 		"editor.fontSize": 14,
 		"editor.minimap.enabled": false,
@@ -125,6 +129,9 @@ export async function openVSCode({ executable, extensions }, preset, options = {
 				`--extensions-dir=${extensions}`,
 				"--skip-welcome",
 				"--skip-release-notes",
+				...marketplace
+					.filter(id => !use.includes(id))
+					.map(id => `--disable-extension=${id}`),
 				project,
 				join(project, open)
 			]
