@@ -244,22 +244,6 @@ async function shootProblemLens(vscode) {
 		await close();
 	}
 }
-// The preset whose window is also used for the screenshot of the open menu.
-const MENU_PRESET = "night-city";
-
-/** The Stylesmith menu, opened from the paint-can button, for the README and the website. */
-async function shootMenu(page) {
-	const button = ".statusbar-item:has(.codicon-paintcan)";
-	await page.click(button);
-	await page.waitForSelector(".quick-input-widget .monaco-list-row", { timeout: 10_000 });
-	await page.mouse.move(5, 5); // no hover highlight or tooltip
-	await page.waitForTimeout(600);
-	for (const file of [join(OUT, "menu.png"), join(ROOT, "images", "menu.png")]) {
-		await page.screenshot({ path: file });
-		console.log(`wrote ${file}`);
-	}
-	await page.keyboard.press("Escape");
-}
 
 async function shoot(vscode, preset) {
 	const { page, userData, close } = await openVSCode(vscode, preset, { size: SIZE });
@@ -278,7 +262,6 @@ async function shoot(vscode, preset) {
 		const file = join(OUT, `${preset.id}.png`);
 		await page.screenshot({ path: file });
 		console.log(`wrote ${file}`);
-		if (preset.id === MENU_PRESET) await shootMenu(page);
 	} finally {
 		await close();
 	}
