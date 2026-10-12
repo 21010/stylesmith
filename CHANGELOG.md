@@ -2,7 +2,11 @@
 
 All notable changes to Stylesmith. Versions follow [Semantic Versioning](https://semver.org).
 
-## Unreleased
+## 2.9.0 (2026-10-12)
+
+### Changed
+
+- **Presets leave the Activity Bar's icons alone.** A preset sets the color theme, the file icon theme for the Explorer and its settings, but no longer switches VS Code's own interface icons (the Activity Bar, the panel and the rest of the window) to the Stylesmith Pixel product icon theme. If an earlier preset set it, Stylesmith puts your own product icon theme back at startup; one you picked yourself since stays. Stylesmith Pixel is still there to choose under **Preferences: Product Icon Theme**.
 
 ### Fixed
 
