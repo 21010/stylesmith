@@ -3,6 +3,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { VISION } from "../color";
+import { EFFECTS } from "../effects";
 import { LEVELS, MAX_BODY_CONTRAST, MIN_COLOR_DIFFERENCE } from "../readability";
 import { ROOT } from "./files";
 
@@ -72,6 +73,29 @@ describe("readability claims on the website", () => {
 			]) {
 				assert.ok(!copy.includes(phrase), `${page}: "${phrase}"`);
 			}
+		}
+	});
+
+	it("documents every effect in EFFECTS and every feedback setting on the website (#238)", () => {
+		const effectsPage = text("effects.html");
+		const problemLensPage = text("problem-lens.html");
+		const combined = `${effectsPage} ${problemLensPage}`;
+		for (const effect of EFFECTS) {
+			assert.ok(
+				effectsPage.toLowerCase().includes(effect.label.toLowerCase()) ||
+					(effect.editorSettings ?? []).some(s => effectsPage.includes(s.key)),
+				`effects.html documents ${effect.label} (${effect.setting})`
+			);
+		}
+		for (const setting of [
+			"stylesmith.problems.errorSignal",
+			"stylesmith.undoHighlight",
+			"stylesmith.pasteHighlight",
+			"stylesmith.saveReceipt",
+			"stylesmith.terminal.failSignal",
+			"stylesmith.terminal.doneSignal"
+		]) {
+			assert.ok(combined.includes(setting), `website documents ${setting}`);
 		}
 	});
 });

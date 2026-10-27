@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import {
 	alacrittySchemeToml,
 	buildTerminalScheme,
+	ghosttySchemeConf,
 	kittySchemeConf,
 	orderThemesForPicker,
 	terminalSchemeJson
@@ -48,6 +49,11 @@ describe("terminal ANSI palette export (#174, #182, #192)", () => {
 			assert.ok(kitty.includes(`background ${scheme.background}`));
 			assert.ok(kitty.includes(`color0 ${scheme.black}`));
 			assert.ok(kitty.includes(`color15 ${scheme.brightWhite}`));
+
+			const ghostty = ghosttySchemeConf(entry.label, theme.colors);
+			assert.ok(ghostty.includes(`background = ${scheme.background}`));
+			assert.ok(ghostty.includes(`palette = 0=${scheme.black}`));
+			assert.ok(ghostty.includes(`palette = 15=${scheme.brightWhite}`));
 		});
 	}
 });

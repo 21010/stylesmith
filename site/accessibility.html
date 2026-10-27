@@ -121,8 +121,9 @@
 						7:1 contrast for body text and 4.5:1 for everything else.
 					</li>
 					<li>
-						<strong>Small screens.</strong> Every page works down to 320 pixels wide
-						without scrolling sideways.
+						<strong>Small screens and text zoom.</strong> Every page works down to 320
+						pixels wide without scrolling sideways, and the Themes page is tested at
+						200% text size on a 320-pixel screen.
 					</li>
 				</ul>
 			</section>
@@ -131,16 +132,21 @@
 				<h2 id="limits-title">Not tested yet</h2>
 				<p>
 					Automated checks find only part of what WCAG asks for. We haven&rsquo;t yet
-					tested the site with a screen reader (such as NVDA or VoiceOver), at 200% zoom,
-					or with custom text spacing, so we don&rsquo;t claim full conformance yet.
+					tested the site with a screen reader (such as NVDA or VoiceOver) or with custom
+					text spacing, so we don&rsquo;t claim full conformance yet.
 				</p>
 			</section>
 
 			<section aria-labelledby="extension-title" class="statement">
 				<h2 id="extension-title">The extension</h2>
 				<p>
-					This statement is about the website. For how the Stylesmith color themes are
-					tested for contrast, see <a href="ergonomics.html">Ergonomics</a>.
+					In the VS Code extension, <strong>Stylesmith: Preset Gallery</strong> is also
+					checked automatically with axe-core for WCAG 2.2 level A and AA in headless
+					Chromium, supports full keyboard navigation and live-region filter
+					announcements, and <strong>Boot Sequence</strong> and
+					<strong>Digital Rain</strong> honor <code>workbench.reduceMotion</code>. For how
+					the Stylesmith color themes are tested for contrast and color blindness, see
+					<a href="ergonomics.html">Ergonomics</a>.
 				</p>
 			</section>
 

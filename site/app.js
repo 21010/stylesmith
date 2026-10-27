@@ -20,7 +20,7 @@ const motionButton = document.querySelector(".motion-toggle");
 const applyMotion = () => {
 	document.documentElement.classList.toggle("motion-paused", motionPaused);
 	motionButton?.setAttribute("aria-pressed", String(motionPaused));
-	if (motionButton) motionButton.title = motionPaused ? "Play animations" : "Pause animations";
+	if (motionButton) motionButton.title = "Pause animations";
 };
 if (motionButton) {
 	motionButton.hidden = false;
@@ -70,6 +70,9 @@ for (const dropdown of dropdowns) {
 	dropdown.querySelector(".dropbtn").addEventListener("click", () => {
 		const open = !dropdown.classList.contains("open");
 		dropdowns.forEach(other => setDropdown(other, other === dropdown && open));
+	});
+	dropdown.addEventListener("focusout", event => {
+		if (!dropdown.contains(event.relatedTarget)) setDropdown(dropdown, false);
 	});
 }
 document.addEventListener("click", event => {

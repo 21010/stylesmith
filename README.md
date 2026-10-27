@@ -32,7 +32,7 @@ With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a m
 
 With `stylesmith.saveReceipt` on, a manual save is noted at the end of the cursor's line for two seconds, like a terminal log: `▸ saved 14:02:11`. Auto-saves get no note, and a Problem Lens message on the line takes precedence. Themes can change its color with `stylesmith.saveReceiptForeground`.
 
-Run **Stylesmith: Preset Gallery**, or choose it in the Stylesmith menu, to see every preset inside VS Code before you apply one: a code sample in its theme's colors, its story, its settings and its recommended font, with an **Apply** button and a **Disable** button. The gallery page loads nothing from outside and can only ask Stylesmith to apply a preset or to disable.
+Run **Stylesmith: Preset Gallery**, or choose it in the Stylesmith menu, to see every preset inside VS Code before you apply one: a code sample in its theme's colors, its story, its file icon theme, its settings and its recommended font, with filter buttons for Dark, Light and High contrast, an **Apply** button, an inline **Install** button when its font isn't installed yet, and a **Disable** button. The gallery page loads nothing from outside and can only ask Stylesmith to apply a preset, install a known font after you confirm, or disable.
 
 Run **Stylesmith: Boot Sequence** to see a short boot log typed out in a terminal tab, in the style of the active theme's preset (a memory check for Phosphor Terminal, a self-test for Amber Monitor, a shelter console for Vault); any key closes it. With `workbench.reduceMotion` set to `on`, the whole log appears at once.
 
@@ -98,7 +98,7 @@ A preset sets a color theme, a file icon theme for the Explorer, and native VS C
 
 ## Installing a font
 
-Choosing a font that isn't installed in the Stylesmith menu, or running **Stylesmith: Install Font…**, offers to install it for your user account. Nothing is downloaded unless you choose **Install** in the confirmation dialog, which shows what is downloaded, from where, and where it goes.
+Choosing a font that isn't installed in the Stylesmith menu, clicking **Install** on a card in **Stylesmith: Preset Gallery**, or running **Stylesmith: Install Font…**, offers to install it for your user account. Nothing is downloaded unless you choose **Install** in the confirmation dialog, which shows what is downloaded, from where, and where it goes.
 
 - The files come from this repository's [fonts-3.5.1-r2 release](https://github.com/21010/stylesmith/releases/tag/fonts-3.5.1-r2): the Nerd Fonts 3.5.1 Mono Regular and Bold files, unchanged. Each file's size and SHA-256 are built into Stylesmith, and a file that doesn't match is refused before anything is written.
 - They go to your own font folder, without administrator rights: `%LOCALAPPDATA%\Microsoft\Windows\Fonts` on Windows (registered under `HKCU`), `~/Library/Fonts` on macOS, and `~/.local/share/fonts/stylesmith` on Linux.

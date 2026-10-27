@@ -160,7 +160,7 @@
 						"Needs the MartianMono Nerd Font family installed; Stylesmith can install it for you. Based on Martian Mono.",
 						"Needs the 3270 Nerd Font family installed; Stylesmith can install it for you. A recreation of the IBM 3270 terminal font, in Regular only."
 					],
-					"markdownDescription": "Which font family to use. It must be installed on your system: install it yourself, or let Stylesmith install it for your user account from the Stylesmith menu, after you confirm. The setting takes effect immediately."
+					"markdownDescription": "Which font family to use. It must be installed on your system: install it yourself, or let Stylesmith install it for your user account from the Stylesmith menu or **Stylesmith: Preset Gallery**, after you confirm. The setting takes effect immediately."
 				},
 				"stylesmith.problems.enabled": {
 					"type": "boolean",

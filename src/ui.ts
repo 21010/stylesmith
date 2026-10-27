@@ -3,6 +3,7 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import {
 	alacrittySchemeToml,
+	ghosttySchemeConf,
 	kittySchemeConf,
 	orderThemesForPicker,
 	terminalSchemeJson
@@ -98,9 +99,15 @@ export async function showMenu(
 	config: Config,
 	fonts: FontInstaller,
 	extension?: vscode.Extension<unknown>,
-	setProductIcons?: (enabled: boolean) => Promise<void>
+	setProductIcons?: (enabled: boolean) => Promise<void>,
+	isEnabled?: () => Promise<boolean>
 ): Promise<void> {
 	const font = config.font();
+	const activeTheme = activeColorTheme();
+	const activePreset = PRESETS.find(
+		candidate =>
+			candidate.theme === activeTheme || `Stylesmith ${candidate.label}` === activeTheme
+	);
 	const workbench = vscode.workspace.getConfiguration("workbench");
 	const pixelProductIcons = workbench.get<string>("productIconTheme") === ICON_THEME;
 	const separator = (label: string): MenuItem => ({
@@ -110,6 +117,7 @@ export async function showMenu(
 	const items: MenuItem[] = [
 		{
 			label: "$(symbol-color) Apply a preset…",
+			description: activePreset?.label,
 			detail: "A complete look: theme, icons and VS Code API settings",
 			run: () => vscode.commands.executeCommand("stylesmith.applyPreset")
 		},
@@ -143,7 +151,7 @@ export async function showMenu(
 		{
 			label: `$(text-size) ${font ? font.label : "Your own font"}`,
 			description: "change…",
-			run: () => pickFont(config, fonts)
+			run: () => pickFont(config, fonts, isEnabled)
 		},
 		{
 			label: `${pixelProductIcons ? "$(pass-filled)" : "$(circle-large-outline)"} Pixel product icons`,
@@ -216,10 +224,16 @@ const PALETTE_FORMATS: readonly {
 		format: alacrittySchemeToml
 	},
 	{
-		label: "Kitty / Ghostty (conf)",
+		label: "Kitty (kitty.conf)",
 		detail: "Color directives for kitty.conf",
-		hint: "Paste it into ~/.config/kitty/kitty.conf or ~/.config/ghostty/config.",
+		hint: "Paste it into ~/.config/kitty/kitty.conf.",
 		format: kittySchemeConf
+	},
+	{
+		label: "Ghostty (config)",
+		detail: "Palette directives for Ghostty's config",
+		hint: "Paste it into ~/.config/ghostty/config.",
+		format: ghosttySchemeConf
 	}
 ];
 
@@ -256,7 +270,7 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 		},
 		{
 			label: "$(symbol-color) Copy terminal ANSI palette…",
-			detail: "Copies a Stylesmith theme's 16-color terminal scheme (Windows Terminal, Alacritty, Kitty)",
+			detail: "Copies a Stylesmith theme's 16-color terminal scheme (Windows Terminal, Alacritty, Kitty, Ghostty)",
 			run: async () => {
 				const themes = (
 					extension.packageJSON as {
@@ -295,7 +309,11 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 	await choice?.run?.();
 }
 
-async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
+async function pickFont(
+	config: Config,
+	fonts: FontInstaller,
+	isEnabled?: () => Promise<boolean>
+): Promise<void> {
 	const current = config.font()?.id;
 	const ids = await fonts.installedIds();
 	const ours = await fonts.recordedIds();
@@ -332,8 +350,12 @@ async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 	// A font that isn't installed: offer to install it. Declining still selects it, as before.
 	const justInstalled = font && !states[FONTS.indexOf(font)] && (await fonts.offer(font));
 	await config.set("fonts.enabled", choice.id !== undefined);
-	if (choice.id) await config.set("fonts.family", choice.id);
-	await vscode.commands.executeCommand("stylesmith.enable");
+	if (choice.id) {
+		await config.set("fonts.family", choice.id);
+		await vscode.commands.executeCommand("stylesmith.enable");
+	} else if (!isEnabled || (await isEnabled())) {
+		await vscode.commands.executeCommand("stylesmith.enable");
+	}
 	if (font && justInstalled) await fonts.announce(font);
 }
 

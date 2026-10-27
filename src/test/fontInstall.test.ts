@@ -116,8 +116,9 @@ describe("installing a font", () => {
 			if (platform === "darwin") assert.deepEqual(commands, []);
 
 			assert.equal(await isInstalled(FONT, sys), true);
-			assert.deepEqual(await removeFont(installed, sys), []);
+			assert.deepEqual(await removeFont(installed, sys, licenses), []);
 			assert.deepEqual(await readdir(dir), []);
+			assert.equal(existsSync(licenses), false, "removes saved license directory (#237)");
 			assert.equal(await isInstalled(FONT, sys), false);
 			if (platform === "win32") {
 				assert.deepEqual(

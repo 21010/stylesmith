@@ -148,7 +148,9 @@ export class FontInstaller {
 		if (!picked?.length) return [];
 		const locked: string[] = [];
 		for (const { id } of picked) {
-			locked.push(...(await removeFont(installs[id]!, this.system)));
+			locked.push(
+				...(await removeFont(installs[id]!, this.system, path.join(this.licenseDir, id)))
+			);
 		}
 		await this.store.transact(state => {
 			const remaining = recorded(state.installedFonts);

@@ -70,8 +70,12 @@ export function activate(context: vscode.ExtensionContext): void {
 		),
 		vscode.commands.registerCommand("stylesmith.menu", () =>
 			reportErrors(async () => {
-				await showMenu(services.config, fonts, context.extension, enabled =>
-					applyProductIcons(services, enabled)
+				await showMenu(
+					services.config,
+					fonts,
+					context.extension,
+					enabled => applyProductIcons(services, enabled),
+					async () => Boolean((await store.read()).enabled)
 				);
 				gallery.refresh();
 			})

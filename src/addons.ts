@@ -144,6 +144,37 @@ export function kittySchemeConf(name: string, colors: Readonly<Record<string, st
 	].join("\n");
 }
 
+/** Formats a Stylesmith theme's terminal palette as a Ghostty config (#232). */
+export function ghosttySchemeConf(name: string, colors: Readonly<Record<string, string>>): string {
+	const s = buildTerminalScheme(name, colors);
+	return [
+		`# ${s.name} — Ghostty color scheme`,
+		`background = ${s.background}`,
+		`foreground = ${s.foreground}`,
+		`cursor-color = ${s.cursorColor}`,
+		`cursor-text = ${s.background}`,
+		`selection-foreground = ${s.foreground}`,
+		`selection-background = ${s.selectionBackground}`,
+		`palette = 0=${s.black}`,
+		`palette = 1=${s.red}`,
+		`palette = 2=${s.green}`,
+		`palette = 3=${s.yellow}`,
+		`palette = 4=${s.blue}`,
+		`palette = 5=${s.purple}`,
+		`palette = 6=${s.cyan}`,
+		`palette = 7=${s.white}`,
+		`palette = 8=${s.brightBlack}`,
+		`palette = 9=${s.brightRed}`,
+		`palette = 10=${s.brightGreen}`,
+		`palette = 11=${s.brightYellow}`,
+		`palette = 12=${s.brightBlue}`,
+		`palette = 13=${s.brightPurple}`,
+		`palette = 14=${s.brightCyan}`,
+		`palette = 15=${s.brightWhite}`,
+		""
+	].join("\n");
+}
+
 /**
  * Orders color themes for the terminal palette picker (#182): the currently active Stylesmith
  * theme comes first and is marked `current: true`.

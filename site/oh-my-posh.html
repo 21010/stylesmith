@@ -862,7 +862,117 @@
 										<path
 											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
 										></path></svg
-									><span>Copy<span class="sr-only"> command</span></span></span
+									><span
+										>Copy<span class="sr-only"> PowerShell command</span></span
+									></span
+								>
+								<span class="copy-success"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline></svg
+									><span>Copied</span></span
+								>
+							</button>
+						</div>
+						<p style="color: var(--muted); margin: 1.5rem 0 1rem">
+							For Bash (<code>~/.bashrc</code>) or Zsh (<code>~/.zshrc</code>):
+						</p>
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+							<pre><code>eval "$(oh-my-posh init bash --config ~/stylesmith.omp.json)"
+# or for Zsh:
+eval "$(oh-my-posh init zsh --config ~/stylesmith.omp.json)"</code></pre>
+							<button
+								class="button ghost copy-btn on-deep"
+								data-copy='eval "$(oh-my-posh init zsh --config ~/stylesmith.omp.json)"'
+							>
+								<span class="copy-default"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect
+											x="9"
+											y="9"
+											width="13"
+											height="13"
+											rx="2"
+											ry="2"
+										></rect>
+										<path
+											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+										></path></svg
+									><span
+										>Copy<span class="sr-only"> Zsh command</span></span
+									></span
+								>
+								<span class="copy-success"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline></svg
+									><span>Copied</span></span
+								>
+							</button>
+						</div>
+						<p style="color: var(--muted); margin: 1.5rem 0 1rem">
+							For Fish (<code>~/.config/fish/config.fish</code>):
+						</p>
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+							<pre><code>oh-my-posh init fish --config ~/stylesmith.omp.json | source</code></pre>
+							<button
+								class="button ghost copy-btn on-deep"
+								data-copy="oh-my-posh init fish --config ~/stylesmith.omp.json | source"
+							>
+								<span class="copy-default"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect
+											x="9"
+											y="9"
+											width="13"
+											height="13"
+											rx="2"
+											ry="2"
+										></rect>
+										<path
+											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+										></path></svg
+									><span
+										>Copy<span class="sr-only"> Fish command</span></span
+									></span
 								>
 								<span class="copy-success"
 									><svg

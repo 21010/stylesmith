@@ -344,11 +344,16 @@ describe("website in the browser", () => {
 		await page.close();
 	});
 
-	it("keeps the plain nav, without a menu button, on wide screens", async () => {
+	it("keeps the plain nav, without a menu button, on wide screens, and closes dropdowns on focusout (#234)", async () => {
 		const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 		await page.goto(base);
 		assert.ok(!(await page.locator(".menu-toggle").isVisible()));
 		assert.ok(await page.locator("#site-nav").isVisible());
+		const dropbtn = page.locator(".dropbtn").first();
+		await dropbtn.click();
+		assert.equal(await dropbtn.getAttribute("aria-expanded"), "true");
+		await page.locator("#site-nav > a").first().focus();
+		assert.equal(await dropbtn.getAttribute("aria-expanded"), "false");
 		await page.close();
 	});
 });

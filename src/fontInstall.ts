@@ -207,7 +207,11 @@ export async function installFont(
  * Removes a font Stylesmith installed. Returns the files it couldn't delete: on Windows a font
  * in use stays locked until the programs using it close.
  */
-export async function removeFont(installed: InstalledFont, system: System): Promise<string[]> {
+export async function removeFont(
+	installed: InstalledFont,
+	system: System,
+	licenseDir?: string
+): Promise<string[]> {
 	const locked: string[] = [];
 	// The record comes from a state file that could be damaged or edited: only ever touch a
 	// pinned font file in the user's font folder, and a registry value Stylesmith would write.
@@ -231,6 +235,9 @@ export async function removeFont(installed: InstalledFont, system: System): Prom
 	}
 	for (const file of files) {
 		await rm(file, { force: true }).catch(() => locked.push(file));
+	}
+	if (locked.length === 0 && licenseDir) {
+		await rm(licenseDir, { recursive: true, force: true }).catch(() => undefined);
 	}
 	if (system.platform === "linux") await refreshFontCache(system);
 	return locked;
