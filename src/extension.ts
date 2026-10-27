@@ -56,12 +56,13 @@ export function activate(context: vscode.ExtensionContext): void {
 				applyPreset(
 					services.config,
 					(colorTheme, iconTheme) => applyThemes(services, colorTheme, iconTheme),
-					id
+					id,
+					() => fonts.installedIds()
 				)
 			)
 		),
 		vscode.commands.registerCommand("stylesmith.menu", () =>
-			reportErrors(() => showMenu(services.config, fonts))
+			reportErrors(() => showMenu(services.config, fonts, context.extension))
 		),
 		vscode.commands.registerCommand("stylesmith.installFont", () =>
 			reportErrors(() => installFontCommand(services.config, fonts))

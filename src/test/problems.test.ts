@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
 	accessibleLabel,
+	claimSignalSlot,
 	documentProblems,
 	inlineText,
 	lineDecorations,
+	lineTooltip,
 	statusItem,
 	statusText,
 	summarize,
@@ -92,6 +94,40 @@ describe("messages", () => {
 			accessibleLabel({ ...warning(11), more: 1 }),
 			"Warning on line 12: 'y' is never read., and 1 more"
 		);
+	});
+
+	it("lists every problem on the line in the status bar tooltip (#178)", () => {
+		const summary = "Error on line 4: first error, and 1 more";
+		assert.equal(
+			lineTooltip(
+				[
+					{ line: 3, severity: 1, message: "unused variable" },
+					{ line: 3, severity: 0, message: "first error" }
+				],
+				3,
+				"warning",
+				summary
+			),
+			`${summary}\n• Error: first error\n• Warning: unused variable`
+		);
+		assert.equal(
+			lineTooltip([{ line: 3, severity: 0, message: "only one" }], 3, "warning", "one"),
+			"one"
+		);
+	});
+
+	it("hides an earlier transient signal when a new one claims the slot (#177)", () => {
+		let firstVisible = true;
+		let secondVisible = true;
+		claimSignalSlot(() => {
+			firstVisible = false;
+		});
+		assert.equal(firstVisible, true);
+		claimSignalSlot(() => {
+			secondVisible = false;
+		});
+		assert.equal(firstVisible, false);
+		assert.equal(secondVisible, true);
 	});
 });
 

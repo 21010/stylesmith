@@ -8,6 +8,7 @@ import * as vscode from "vscode";
 import {
 	ERROR_SIGNAL_DURATION,
 	SignalCooldown,
+	claimSignalSlot,
 	commandDone,
 	commandDoneLabel,
 	formatDuration
@@ -54,6 +55,10 @@ export class DoneSignal implements vscode.Disposable {
 			!this.cooldown.ready(Date.now())
 		)
 			return;
+		claimSignalSlot(() => {
+			clearTimeout(this.timer);
+			this.item.hide();
+		});
 		const label = commandDoneLabel(durationMs);
 		this.item.text = `$(check) done ${formatDuration(durationMs)}`;
 		this.item.tooltip = `${label}. Click to open the terminal.`;

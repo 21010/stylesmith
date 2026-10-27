@@ -18,6 +18,7 @@ import { PRESET_STORIES } from "./stories";
 interface ThemeContribution {
 	id?: string;
 	label: string;
+	uiTheme?: string;
 	path: string;
 }
 
@@ -86,7 +87,12 @@ export class PresetGallery implements vscode.Disposable {
 					effect => effect.label
 				),
 				fontLabel: FONTS.find(font => font.id === preset.font)?.label ?? preset.font,
-				current: current === preset.theme
+				current: current === preset.theme,
+				kind: theme.uiTheme?.startsWith("hc")
+					? "hc"
+					: theme.uiTheme === "vs"
+						? "light"
+						: "dark"
 			};
 		});
 		this.panel.webview.html = galleryHtml(cards, randomBytes(18).toString("base64"));

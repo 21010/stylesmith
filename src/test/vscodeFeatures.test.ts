@@ -20,6 +20,8 @@ import { ProblemLens } from "../problemLens";
 import { ERROR_SIGNAL_DURATION, INTERRUPTED, SAVE_RECEIPT_DURATION } from "../problems";
 import { SaveReceipt } from "../saveReceipt";
 import { UndoHighlight } from "../undoHighlight";
+import { applyPreset, FEEDBACK_TOGGLES } from "../ui";
+import type { Config } from "../config";
 import { manifest } from "./files";
 
 const SAVE = { Manual: 1, AfterDelay: 2 };
@@ -349,6 +351,87 @@ describe("long-command done signal", () => {
 		} finally {
 			Date.now = realNow;
 			signal.dispose();
+		}
+	});
+
+	it("hides an active done signal when a failed-command signal arrives (#177)", () => {
+		const done = new DoneSignal(() => true);
+		const fail = new FailSignal(() => true);
+		const doneItem = state.statusItems.find(i => i.id === "stylesmith.doneSignal")!;
+		const failItem = state.statusItems.find(i => i.id === "stylesmith.failSignal")!;
+		const realNow = Date.now;
+		let now = 1_000;
+		Date.now = () => now;
+		try {
+			const exec = {};
+			events.shellStart.fire({ execution: exec });
+			now += 15_000;
+			events.shellEnd.fire({ execution: exec, exitCode: 0 });
+			assert.equal(doneItem.visible, true);
+			assert.equal(failItem.visible, false);
+
+			now += 100;
+			events.shellEnd.fire({ exitCode: 2 });
+			assert.equal(doneItem.visible, false, "previous transient signal hid immediately");
+			assert.equal(failItem.visible, true);
+		} finally {
+			Date.now = realNow;
+			done.dispose();
+			fail.dispose();
+		}
+	});
+});
+
+describe("preset font auto-apply (#168) and menu feedback toggles (#176)", () => {
+	it("automatically enables a preset's recommended font when it is already installed (#168)", async () => {
+		const written = new Map<string, boolean | string>();
+		const config = {
+			set: (key: string, value: boolean | string) => {
+				written.set(key, value);
+				return Promise.resolve();
+			}
+		} as unknown as Config;
+		let themes: [string, string] | undefined;
+
+		await applyPreset(
+			config,
+			(color, icon) => {
+				themes = [color, icon];
+				return Promise.resolve();
+			},
+			"phosphor-terminal",
+			() => Promise.resolve(new Set(["DepartureMono"]))
+		);
+		assert.deepEqual(themes, ["Stylesmith Phosphor", "stylesmith-pixel-phosphor"]);
+		assert.equal(written.get("fonts.enabled"), true);
+		assert.equal(written.get("fonts.family"), "DepartureMono");
+
+		written.clear();
+		await applyPreset(
+			config,
+			() => Promise.resolve(),
+			"phosphor-terminal",
+			() => Promise.resolve(new Set(["JetBrainsMono"]))
+		);
+		assert.equal(written.has("fonts.enabled"), false);
+		assert.equal(written.has("fonts.family"), false);
+	});
+
+	it("exposes only declared boolean settings in FEEDBACK_TOGGLES (#176)", () => {
+		const properties = (
+			manifest() as unknown as {
+				contributes: {
+					configuration: {
+						properties: Record<string, { type?: string; default?: unknown }>;
+					};
+				};
+			}
+		).contributes.configuration.properties;
+		for (const item of FEEDBACK_TOGGLES) {
+			const prop = properties[`stylesmith.${item.setting}`];
+			assert.ok(prop, `stylesmith.${item.setting} exists in package.json`);
+			assert.equal(prop.type, "boolean");
+			assert.equal(prop.default, item.defaultOn);
 		}
 	});
 });

@@ -177,6 +177,9 @@ export const fake = {
 	ColorThemeKind: { Light: 1, Dark: 2, HighContrast: 3, HighContrastLight: 4 },
 	TextDocumentSaveReason: { Manual: 1, AfterDelay: 2, FocusOut: 3 },
 	TextDocumentChangeReason: { Undo: 1, Redo: 2 },
+	QuickPickItemKind: { Separator: -1, Default: 0 },
+	ConfigurationTarget: { Global: 1, Workspace: 2, WorkspaceFolder: 3 },
+	commands: { executeCommand: () => Promise.resolve() },
 	env: { language: "en" },
 	window,
 	workspace: {
@@ -193,10 +196,12 @@ export const fake = {
 	},
 	languages: {
 		onDidChangeDiagnostics: events.diagnostics.event,
-		getDiagnostics: (uri: { toString(): string }) =>
-			[...state.diagnostics].find(
-				([document]) => document.uri.toString() === uri.toString()
-			)?.[1] ?? []
+		getDiagnostics: (uri?: { toString(): string }) =>
+			uri
+				? ([...state.diagnostics].find(
+						([document]) => document.uri.toString() === uri.toString()
+					)?.[1] ?? [])
+				: [...state.diagnostics].map(([document, list]) => [document.uri, list] as const)
 	}
 };
 

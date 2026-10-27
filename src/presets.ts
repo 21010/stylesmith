@@ -103,7 +103,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": true,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -120,7 +122,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": true,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -171,7 +175,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -187,7 +192,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -208,7 +214,7 @@ export const PRESETS: readonly Preset[] = [
 			"effects.dimUnfocused": false,
 			"effects.readableTerminal": false,
 			"effects.stickyScroll": false,
-			"effects.calmMinimap": false
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -228,7 +234,7 @@ export const PRESETS: readonly Preset[] = [
 			"effects.dimUnfocused": true,
 			"effects.readableTerminal": false,
 			"effects.stickyScroll": false,
-			"effects.calmMinimap": false
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -245,7 +251,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -261,7 +268,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": true
 		}
 	},
 	{
@@ -277,7 +285,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -293,7 +302,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.calmMinimap": true
 		}
 	},
 	{
@@ -309,7 +319,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": true
 		}
 	},
 	{
@@ -330,6 +341,27 @@ export const PRESETS: readonly Preset[] = [
 			"effects.dimUnfocused": false,
 			"effects.readableTerminal": false,
 			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
+		}
+	},
+	{
+		id: "teal-terminal",
+		label: "Teal Terminal",
+		description:
+			"Boxy teal-green office terminals, compact, with block cursors without animation",
+		theme: "Stylesmith Teal Terminal",
+		iconTheme: "stylesmith-pixel-teal-terminal",
+		font: "3270",
+		effects: {
+			"effects.smoothCursor": false,
+			"effects.currentLine": true,
+			"effects.bracketGuides": false,
+			"effects.compactLayout": true,
+			"effects.blockCursor": true,
+			"effects.blockTerminalCursor": true,
+			"effects.dimUnfocused": false,
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": true,
 			"effects.calmMinimap": false
 		}
 	},
@@ -362,7 +394,8 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": true
 		}
 	},
 	{

@@ -103,6 +103,26 @@ describe("preset gallery page", () => {
 		assert.equal([...html.matchAll(/class="badge">In use</g)].length, 1);
 	});
 
+	it("includes filter buttons for All, Dark, Light and High contrast (#170)", () => {
+		for (const kind of ["all", "dark", "light", "hc"]) {
+			assert.match(
+				html,
+				new RegExp(`<button type="button" class="filter"[^>]*data-filter="${kind}">`)
+			);
+		}
+		const mixed = galleryHtml(
+			[
+				card({ id: "night-city", kind: "dark" }),
+				card({ id: "daylight", kind: "light" }),
+				card({ id: "high-contrast", kind: "hc" })
+			],
+			NONCE
+		);
+		assert.ok(mixed.includes('<li data-kind="dark">'));
+		assert.ok(mixed.includes('<li data-kind="light">'));
+		assert.ok(mixed.includes('<li data-kind="hc">'));
+	});
+
 	it("escapes every text, and refuses anything but hex colors", () => {
 		const page = galleryHtml([card({ label: "<b>x</b>", story: `"a" & 'b' <script>` })], NONCE);
 		assert.ok(page.includes("&lt;b&gt;x&lt;/b&gt;"));

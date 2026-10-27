@@ -108,6 +108,29 @@ export function accessibleLabel(problem: LineProblem): string {
 	return `${WORDS[problem.severity]} on line ${problem.line + 1}: ${firstLine(problem.message)}${more}`;
 }
 
+/**
+ * Full tooltip for the status bar item when a line has one or more problems (#178): starts with
+ * the screen-reader summary and, when there are additional problems on the same line, lists each
+ * one below it.
+ */
+export function lineTooltip(
+	diagnostics: readonly Diagnostic[],
+	line: number,
+	minimum: Severity,
+	summary: string
+): string {
+	const matching: Problem[] = [];
+	for (const { line: dLine, severity, message } of diagnostics) {
+		const kind = SEVERITIES[severity];
+		if (kind === undefined || dLine !== line || RANK[kind] > RANK[minimum]) continue;
+		matching.push({ line: dLine, severity: kind, message });
+	}
+	if (matching.length <= 1) return summary;
+	matching.sort((a, b) => RANK[a.severity] - RANK[b.severity]);
+	const details = matching.map(p => `• ${WORDS[p.severity]}: ${firstLine(p.message)}`);
+	return [summary, ...details].join("\n");
+}
+
 function firstLine(message: string): string {
 	return (message.split(/\r?\n/)[0] ?? "").replace(/\s+/g, " ").trim();
 }
@@ -198,6 +221,17 @@ export function statusItem(
 export const ERROR_SIGNAL_COOLDOWN = 2000;
 /** How long the error signal shows (ms). */
 export const ERROR_SIGNAL_DURATION = 1500;
+
+let activeSignalHide: (() => void) | undefined;
+
+/**
+ * Hides any other transient status bar signal currently showing (#177), so at most one
+ * transient pill (error count, failed command, or finished long command) appears at a time.
+ */
+export function claimSignalSlot(hide: () => void): void {
+	if (activeSignalHide && activeSignalHide !== hide) activeSignalHide();
+	activeSignalHide = hide;
+}
 
 /**
  * Decides when to signal that the number of errors went up: only on an increase (not when

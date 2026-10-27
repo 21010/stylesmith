@@ -4,6 +4,9 @@
 " follows when you switch themes. Every color is one that Stylesmith's theme
 " tests check for contrast on the terminal background.
 
+if exists("+termguicolors")
+  set notermguicolors
+endif
 highlight clear
 if exists("syntax_on")
   syntax reset

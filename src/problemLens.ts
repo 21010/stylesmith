@@ -4,8 +4,10 @@ import {
 	ErrorSignal,
 	LINE_TINT,
 	SEVERITIES,
+	claimSignalSlot,
 	documentProblems,
 	lineDecorations,
+	lineTooltip,
 	statusItem,
 	stylesmithTheme,
 	type LineProblem,
@@ -141,6 +143,10 @@ export class ProblemLens implements vscode.Disposable {
 					0
 				);
 			if (!this.errorSignal.next(errors, Date.now())) return;
+			claimSignalSlot(() => {
+				clearTimeout(this.signalTimer);
+				this.signalItem.hide();
+			});
 			const label = `Errors went up to ${errors}`;
 			this.signalItem.text = `$(error) ${errors}`;
 			this.signalItem.tooltip = `${label}. Click to open the Problems panel.`;
@@ -236,8 +242,16 @@ export class ProblemLens implements vscode.Disposable {
 			this.status.hide();
 			return;
 		}
+		const details = lineTooltip(
+			vscode.languages
+				.getDiagnostics(editor!.document.uri)
+				.map(d => ({ line: d.range.start.line, severity: d.severity, message: d.message })),
+			line,
+			this.options.minimumSeverity,
+			item.label
+		);
 		this.status.text = `${STATUS_ICON[item.severity]} ${item.text}`;
-		this.status.tooltip = `${item.label}
+		this.status.tooltip = `${details}
 Click to open the Problems panel.`;
 		this.status.accessibilityInformation = { label: item.label };
 		this.status.backgroundColor =

@@ -62,6 +62,7 @@ A preset sets a color theme, a file icon theme for the Explorer, and native VS C
 - **Haze**: Orange dust over cold concrete, with teal rain: a muted, modern noir, with unfocused editors dimmed.
 - **Grid**: Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes, in a compact layout.
 - **Corridor**: A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.
+- **Teal Terminal**: The office floor's boxy teal-green terminals: mint keywords and pale yellow numbers on dark teal, in a compact layout with block cursors that blink without animation.
 - **Horizon**: Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.
 - **Command Deck**: The grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.

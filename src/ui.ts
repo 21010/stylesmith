@@ -1,10 +1,13 @@
+import { readFileSync } from "node:fs";
+import * as path from "node:path";
 import * as vscode from "vscode";
+import { terminalSchemeJson } from "./addons";
 import { CONFIG_SECTION, type Config } from "./config";
 import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
 import type { FontInstaller } from "./fontUi";
 import { messages } from "./messages";
-import { PRESET_ALIASES, PRESETS, presetEffects, type Preset } from "./presets";
+import { ICON_THEME, PRESET_ALIASES, PRESETS, presetEffects, type Preset } from "./presets";
 
 /** Stylesmith's UI uses VS Code commands, settings, themes, decorations and status bar APIs. */
 
@@ -47,9 +50,26 @@ export function createStatusButton(context: vscode.ExtensionContext, config: Con
 
 type MenuItem = vscode.QuickPickItem & { run?: () => Thenable<unknown> };
 
+/** Micro-feedback signals shown in the Stylesmith menu (#176). */
+export const FEEDBACK_TOGGLES: readonly { setting: string; label: string; defaultOn: boolean }[] = [
+	{ setting: "problems.enabled", label: "Problem Lens", defaultOn: true },
+	{ setting: "problems.errorSignal", label: "Error count signal", defaultOn: false },
+	{ setting: "undoHighlight", label: "Undo line highlight", defaultOn: false },
+	{ setting: "pasteHighlight", label: "Paste line highlight", defaultOn: false },
+	{ setting: "saveReceipt", label: "Manual save receipt", defaultOn: false },
+	{ setting: "terminal.failSignal", label: "Failed command signal", defaultOn: false },
+	{ setting: "terminal.doneSignal", label: "Long command done signal", defaultOn: false }
+];
+
 /** The Stylesmith menu, opened from the status bar button. */
-export async function showMenu(config: Config, fonts: FontInstaller): Promise<void> {
+export async function showMenu(
+	config: Config,
+	fonts: FontInstaller,
+	extension?: vscode.Extension<unknown>
+): Promise<void> {
 	const font = config.font();
+	const workbench = vscode.workspace.getConfiguration("workbench");
+	const pixelProductIcons = workbench.get<string>("productIconTheme") === ICON_THEME;
 	const separator = (label: string): MenuItem => ({
 		label,
 		kind: vscode.QuickPickItemKind.Separator
@@ -77,12 +97,41 @@ export async function showMenu(config: Config, fonts: FontInstaller): Promise<vo
 				}
 			};
 		}),
-		separator("Font"),
+		separator("Feedback"),
+		...FEEDBACK_TOGGLES.map((item): MenuItem => {
+			const on = config.get(item.setting, item.defaultOn);
+			return {
+				label: `${on ? "$(pass-filled)" : "$(circle-large-outline)"} ${item.label}`,
+				description: on ? "on" : "off",
+				run: () => config.set(item.setting, !on)
+			};
+		}),
+		separator("Font & Icons"),
 		{
 			label: `$(text-size) ${font ? font.label : "Your own font"}`,
 			description: "change…",
 			run: () => pickFont(config, fonts)
 		},
+		{
+			label: `${pixelProductIcons ? "$(pass-filled)" : "$(circle-large-outline)"} Pixel product icons`,
+			description: pixelProductIcons ? "on" : "off",
+			run: () =>
+				workbench.update(
+					"productIconTheme",
+					pixelProductIcons ? undefined : ICON_THEME,
+					vscode.ConfigurationTarget.Global
+				)
+		},
+		...(extension
+			? [
+					separator("Add-ons"),
+					{
+						label: "$(terminal) Terminal & editor add-ons…",
+						detail: "Copy Vim color scheme, Oh My Posh prompt or terminal ANSI palette",
+						run: () => pickAddon(extension)
+					}
+				]
+			: []),
 		separator(""),
 		{
 			label: "$(refresh) Apply settings",
@@ -99,6 +148,69 @@ export async function showMenu(config: Config, fonts: FontInstaller): Promise<vo
 		}
 	];
 	const choice = await vscode.window.showQuickPick(items, { title: "Stylesmith" });
+	await choice?.run?.();
+}
+
+async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
+	const root = extension.extensionPath;
+	const items: MenuItem[] = [
+		{
+			label: "$(code) Copy Vim / Neovim color scheme",
+			detail: "Copies extras/vim/colors/stylesmith.vim to your clipboard",
+			run: async () => {
+				const content = readFileSync(
+					path.join(root, "extras", "vim", "colors", "stylesmith.vim"),
+					"utf-8"
+				);
+				await vscode.env.clipboard.writeText(content);
+				void vscode.window.showInformationMessage(
+					"Copied stylesmith.vim to clipboard. Save it as ~/.vim/colors/stylesmith.vim or ~/.config/nvim/colors/stylesmith.vim."
+				);
+			}
+		},
+		{
+			label: "$(terminal) Copy Oh My Posh prompt",
+			detail: "Copies extras/oh-my-posh/stylesmith.omp.json to your clipboard",
+			run: async () => {
+				const content = readFileSync(
+					path.join(root, "extras", "oh-my-posh", "stylesmith.omp.json"),
+					"utf-8"
+				);
+				await vscode.env.clipboard.writeText(content);
+				void vscode.window.showInformationMessage(
+					"Copied stylesmith.omp.json to clipboard."
+				);
+			}
+		},
+		{
+			label: "$(symbol-color) Copy terminal ANSI palette (Windows Terminal JSON)…",
+			detail: "Copies a Stylesmith theme's 16-color terminal scheme to your clipboard",
+			run: async () => {
+				const themes = (
+					extension.packageJSON as {
+						contributes: { themes: { label: string; path: string }[] };
+					}
+				).contributes.themes;
+				const picked = await vscode.window.showQuickPick(
+					themes.map(theme => ({ label: theme.label, theme })),
+					{ title: "Stylesmith: Copy Terminal ANSI Palette" }
+				);
+				if (!picked) return;
+				const file = JSON.parse(
+					readFileSync(path.join(root, picked.theme.path), "utf-8")
+				) as { colors: Record<string, string> };
+				await vscode.env.clipboard.writeText(
+					terminalSchemeJson(picked.theme.label, file.colors)
+				);
+				void vscode.window.showInformationMessage(
+					`Copied ${picked.theme.label} terminal palette to clipboard.`
+				);
+			}
+		}
+	];
+	const choice = await vscode.window.showQuickPick(items, {
+		title: "Stylesmith: Terminal & Editor Add-ons"
+	});
 	await choice?.run?.();
 }
 
@@ -157,7 +269,8 @@ export async function installFontCommand(config: Config, fonts: FontInstaller): 
 export async function applyPreset(
 	config: Config,
 	setThemes: (colorTheme: string, iconTheme: string) => Promise<void>,
-	id?: unknown
+	id?: unknown,
+	installedFonts?: () => Promise<ReadonlySet<string>>
 ): Promise<void> {
 	let preset: Preset | undefined;
 	if (typeof id === "string") {
@@ -178,5 +291,9 @@ export async function applyPreset(
 	if (!preset) return;
 	await setThemes(preset.theme, preset.iconTheme);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);
+	if (installedFonts && (await installedFonts()).has(preset.font)) {
+		await config.set("fonts.enabled", true);
+		await config.set("fonts.family", preset.font);
+	}
 	await vscode.commands.executeCommand("stylesmith.enable");
 }

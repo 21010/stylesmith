@@ -64,7 +64,8 @@ const highlights = scheme
 	.filter(line => line.startsWith("highlight ") && line !== "highlight clear");
 
 describe("Vim color scheme", () => {
-	it("resets existing highlights and names itself stylesmith", () => {
+	it("resets existing highlights, turns off termguicolors, and names itself stylesmith", () => {
+		assert.match(scheme, /^\s*set notermguicolors$/m);
 		assert.match(scheme, /^highlight clear$/m);
 		assert.match(scheme, /^let g:colors_name = "stylesmith"$/m);
 	});

@@ -119,7 +119,8 @@ describe("preset gallery in a browser", () => {
 			await page.evaluate(() => document.activeElement?.textContent),
 			"Disable Stylesmith"
 		);
-		await page.keyboard.press("Tab");
+		// Tab past the 4 filter buttons (All, Dark, Light, High contrast) to the first Apply button.
+		for (let i = 0; i < 5; i++) await page.keyboard.press("Tab");
 		await page.keyboard.press("Enter");
 		assert.deepEqual(
 			await page.evaluate(() => (window as unknown as { sent: unknown[] }).sent),

@@ -43,6 +43,8 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	Grid: "Light lines on black: cyan for the code you trust, and orange for the adversary, only where the flow changes, in a compact layout.",
 	Corridor:
 		"A sterile office floor: pale institutional green, dark teal text, a compact layout and a block cursor in the terminal.",
+	"Teal Terminal":
+		"The office floor's boxy teal-green terminals: mint keywords and pale yellow numbers on dark teal, in a compact layout with block cursors that blink without animation.",
 	Horizon:
 		"Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.",
 	"Command Deck":
@@ -225,6 +227,12 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		colors: "Pale institutional green with dark teal text, teal keywords and a blue for functions. Numbers are rust, and quietly unsettling. No italics or bold, like the terminals on the desks. Teal Terminal is the dark theme of the same floor.",
 		settings:
 			"A compact layout, the current-line highlight and a block cursor in the terminal: efficient, orderly, and slightly eerie."
+	},
+	"Teal Terminal": {
+		origin: "On the same mid-century office floor as Corridor, each desk holds a boxy terminal with a dark teal-green screen, where rows of numbers wait to be sorted into bins.",
+		colors: "Dark teal-green with pale mint text, mint keywords and pale yellow numbers. One weight and no italics, like a character terminal built for one job.",
+		settings:
+			"A compact layout, sticky scroll, and block cursors in the editor and terminal that blink without animation."
 	},
 	Horizon: {
 		origin: "Television's starship sagas of the 1980s and 90s imagined computer screens as calm, rounded panels in warm orange, peach and lilac on black: the future as a friendly place.",

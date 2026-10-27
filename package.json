@@ -646,6 +646,7 @@
 	},
 	"overrides": {
 		"undici": "^8.11.2",
-		"basic-ftp": "^6.2.1"
+		"basic-ftp": "^6.2.1",
+		"@azure/msal-node": "^7.0.3"
 	}
 }

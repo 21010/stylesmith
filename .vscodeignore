@@ -18,4 +18,3 @@ out/test-os/**
 out/test-browser/**
 .vscode-test/
 site/
-extras/

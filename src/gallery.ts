@@ -29,6 +29,8 @@ export interface GalleryCard {
 	fontLabel: string;
 	/** The preset's color theme is the one in use. */
 	current: boolean;
+	/** The luminance / contrast group of the preset's color theme (#170). */
+	kind?: "dark" | "light" | "hc";
 }
 
 /** What the page may ask for. */
@@ -102,6 +104,12 @@ button { margin-top: auto; align-self: flex-start; font: inherit; padding: 6px 1
 button:hover { background: var(--vscode-button-hoverBackground, #1177bb); }
 button.secondary { margin: 0; color: var(--vscode-button-secondaryForeground, #ffffff);
 	background: var(--vscode-button-secondaryBackground, #3a3d41); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+button.filter { margin: 0; color: var(--vscode-button-secondaryForeground, #ffffff);
+	background: var(--vscode-button-secondaryBackground, #3a3d41); }
+button.filter[aria-pressed="true"] { color: var(--vscode-button-foreground, #ffffff);
+	background: var(--vscode-button-background, #0e639c); }
+li[hidden] { display: none; }
 button:focus-visible { outline: 2px solid var(--vscode-focusBorder, #3794ff); outline-offset: 2px; }
 `;
 
@@ -112,6 +120,13 @@ document.addEventListener("click", event => {
 	if (!button) return;
 	if (button.dataset.preset) vscode.postMessage({ type: "apply", id: button.dataset.preset });
 	else if (button.dataset.action === "disable") vscode.postMessage({ type: "disable" });
+	else if (button.dataset.filter) {
+		const kind = button.dataset.filter;
+		for (const item of document.querySelectorAll(".filters button"))
+			item.setAttribute("aria-pressed", String(item === button));
+		for (const card of document.querySelectorAll("main li"))
+			card.hidden = kind !== "all" && card.dataset.kind !== kind;
+	}
 });
 `;
 
@@ -120,7 +135,8 @@ function card(card: GalleryCard, i: number): string {
 <span class="kw">function</span> <span class="fn">total</span>(hours) {
   <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
 }</code></pre>`;
-	return `<li><article class="${card.current ? "current" : ""}" aria-labelledby="p${i}">
+	const kind = card.kind ?? "dark";
+	return `<li data-kind="${escape(kind)}"><article class="${card.current ? "current" : ""}" aria-labelledby="p${i}">
 <h2 id="p${i}">${escape(card.label)}${card.current ? ' <span class="badge">In use</span>' : ""}</h2>
 ${sample}
 <p>${escape(card.story)}</p>
@@ -158,6 +174,12 @@ ${colors}</style>
 <button type="button" class="secondary" data-action="disable">Disable Stylesmith</button>
 </header>
 <main>
+<nav class="filters" aria-label="Filter presets by kind">
+<button type="button" class="filter" aria-pressed="true" data-filter="all">All</button>
+<button type="button" class="filter" aria-pressed="false" data-filter="dark">Dark</button>
+<button type="button" class="filter" aria-pressed="false" data-filter="light">Light</button>
+<button type="button" class="filter" aria-pressed="false" data-filter="hc">High contrast</button>
+</nav>
 <ul>
 ${cards.map(card).join("\n")}
 </ul>

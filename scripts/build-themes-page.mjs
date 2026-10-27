@@ -46,6 +46,7 @@ const GROUPS = [
 			"haze",
 			"grid",
 			"corridor",
+			"teal-terminal",
 			"horizon",
 			"command-deck"
 		]
