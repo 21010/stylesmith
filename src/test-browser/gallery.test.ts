@@ -21,17 +21,22 @@ const ROOT = path.join(__dirname, "..", "..");
 const AXE = readFileSync(require.resolve("axe-core/axe.min.js"), "utf-8");
 const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 const pkg = JSON.parse(readFileSync(path.join(ROOT, "package.json"), "utf-8")) as {
-	contributes: { themes: { id?: string; label: string; path: string }[] };
+	contributes: {
+		themes: { id?: string; label: string; uiTheme?: string; path: string }[];
+		iconThemes: { id: string; label: string }[];
+	};
 };
 
 const html = galleryHtml(
 	PRESETS.map((preset, i) => {
 		const theme = pkg.contributes.themes.find(t => (t.id ?? t.label) === preset.theme)!;
+		const iconTheme = pkg.contributes.iconThemes.find(t => t.id === preset.iconTheme);
 		return {
 			id: preset.id,
 			label: preset.label,
 			story: PRESET_STORIES[preset.label]!,
 			themeLabel: theme.label,
+			iconThemeLabel: iconTheme?.label,
 			colors: sampleColors(
 				JSON.parse(readFileSync(path.join(ROOT, theme.path), "utf-8")) as Parameters<
 					typeof sampleColors
@@ -39,7 +44,10 @@ const html = galleryHtml(
 			),
 			settingsOn: EFFECTS.filter(e => preset.effects[e.setting]).map(e => e.label),
 			fontLabel: FONTS.find(f => f.id === preset.font)!.label,
-			current: i === 0
+			fontId: preset.font,
+			fontInstalled: i > 0,
+			current: i === 0,
+			kind: theme.uiTheme?.startsWith("hc") ? "hc" : theme.uiTheme === "vs" ? "light" : "dark"
 		};
 	}),
 	"Z2FsbGVyeS10ZXN0LW5vbmNlLTEyMzQ="
@@ -101,26 +109,65 @@ describe("preset gallery in a browser", () => {
 		);
 	});
 
-	it("sends Apply with the preset's id, and Disable, under its own policy", async () => {
+	it("sends Apply with the preset's id, installFont, and Disable, under its own policy (#220)", async () => {
 		await open(strict);
 		await strict.getByRole("button", { name: "Apply Vault" }).click();
+		const firstFont = FONTS.find(f => f.id === PRESETS[0]!.font)!;
+		await strict.getByRole("button", { name: `Install ${firstFont.label}` }).click();
 		await strict.getByRole("button", { name: "Disable Stylesmith" }).click();
 		assert.deepEqual(violations, [], "no policy violations or script errors");
 		assert.deepEqual(
 			await strict.evaluate(() => (window as unknown as { sent: unknown[] }).sent),
-			[{ type: "apply", id: "vault" }, { type: "disable" }]
+			[
+				{ type: "apply", id: "vault" },
+				{ type: "installFont", id: firstFont.id },
+				{ type: "disable" }
+			]
 		);
 	});
 
-	it("can be used with the keyboard", async () => {
+	it("filters cards by kind and announces the count (#220)", async () => {
+		await open(strict);
+		await strict.getByRole("button", { name: /^Light \(/ }).click();
+		const visible = await strict.locator("main li:not([hidden])").count();
+		assert.equal(visible, 4);
+		assert.equal(
+			await strict.locator("#filter-status").textContent(),
+			`Showing 4 of ${PRESETS.length} presets.`
+		);
+		await strict.getByRole("button", { name: /^All \(/ }).click();
+		assert.equal(await strict.locator("main li:not([hidden])").count(), PRESETS.length);
+	});
+
+	it("can be used with the keyboard, including arrow keys across filter buttons (#224)", async () => {
 		await open();
 		await page.keyboard.press("Tab");
 		assert.equal(
 			await page.evaluate(() => document.activeElement?.textContent),
 			"Disable Stylesmith"
 		);
-		// Tab past the 4 filter buttons (All, Dark, Light, High contrast) to the first Apply button.
-		for (let i = 0; i < 5; i++) await page.keyboard.press("Tab");
+		await page.keyboard.press("Tab");
+		assert.match(
+			(await page.evaluate(() => document.activeElement?.textContent)) ?? "",
+			/^All \(/
+		);
+		await page.keyboard.press("ArrowRight");
+		assert.match(
+			(await page.evaluate(() => document.activeElement?.textContent)) ?? "",
+			/^Dark \(/
+		);
+		await page.keyboard.press("End");
+		assert.match(
+			(await page.evaluate(() => document.activeElement?.textContent)) ?? "",
+			/^High contrast \(/
+		);
+		await page.keyboard.press("Home");
+		assert.match(
+			(await page.evaluate(() => document.activeElement?.textContent)) ?? "",
+			/^All \(/
+		);
+		// Tab past the remaining 3 filter buttons (Dark, Light, High contrast) to the first Apply button.
+		for (let i = 0; i < 4; i++) await page.keyboard.press("Tab");
 		await page.keyboard.press("Enter");
 		assert.deepEqual(
 			await page.evaluate(() => (window as unknown as { sent: unknown[] }).sent),

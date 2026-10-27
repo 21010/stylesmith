@@ -17,6 +17,8 @@ export interface SampleColors {
 	string: string;
 	number: string;
 	comment: string;
+	/** Optional 1px border around high-contrast code samples (#223). */
+	border?: string;
 }
 
 export interface GalleryCard {
@@ -73,7 +75,8 @@ export function sampleColors(theme: {
 		function: token("entity.name.function"),
 		string: token("string"),
 		number: token("constant.numeric"),
-		comment: token("comment")
+		comment: token("comment"),
+		border: theme.colors["contrastBorder"]
 	};
 }
 
@@ -107,7 +110,7 @@ h2 { font-size: 1.2em; margin: 0; display: flex; gap: 8px; align-items: baseline
 article p { margin: 0; }
 pre { margin: 0; padding: 10px 12px; border-radius: 4px; overflow-x: auto;
 	font-family: var(--vscode-editor-font-family, monospace); font-size: 12px; line-height: 1.6;
-	background: var(--bg); color: var(--fg); }
+	background: var(--bg); color: var(--fg); border: 1px solid var(--bd, transparent); }
 .kw { color: var(--kw); } .fn { color: var(--fn); } .str { color: var(--str); } .num { color: var(--num); } .cm { color: var(--cm); }
 dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 0.92em; }
 dt { color: var(--vscode-descriptionForeground, #b4b4b4); } dd { margin: 0; }
@@ -161,6 +164,22 @@ document.addEventListener("click", event => {
 		applyFilter(kind, true);
 	}
 });
+document.addEventListener("keydown", event => {
+	const button = event.target.closest(".filters button");
+	if (!button) return;
+	const buttons = Array.from(document.querySelectorAll(".filters button"));
+	const index = buttons.indexOf(button);
+	if (index < 0) return;
+	let next = -1;
+	if (event.key === "ArrowRight") next = (index + 1) % buttons.length;
+	else if (event.key === "ArrowLeft") next = (index - 1 + buttons.length) % buttons.length;
+	else if (event.key === "Home") next = 0;
+	else if (event.key === "End") next = buttons.length - 1;
+	if (next >= 0) {
+		event.preventDefault();
+		buttons[next].focus();
+	}
+});
 `;
 
 function card(card: GalleryCard, i: number): string {
@@ -201,7 +220,7 @@ export function galleryHtml(cards: readonly GalleryCard[], nonce: string): strin
 	const colors = cards
 		.map(
 			({ colors: c }, i) =>
-				`.s${i} { --bg: ${hex(c.bg)}; --fg: ${hex(c.fg)}; --kw: ${hex(c.keyword)}; --fn: ${hex(c.function)}; --str: ${hex(c.string)}; --num: ${hex(c.number)}; --cm: ${hex(c.comment)}; }`
+				`.s${i} { --bg: ${hex(c.bg)}; --fg: ${hex(c.fg)}; --kw: ${hex(c.keyword)}; --fn: ${hex(c.function)}; --str: ${hex(c.string)}; --num: ${hex(c.number)}; --cm: ${hex(c.comment)};${c.border ? ` --bd: ${hex(c.border)};` : ""} }`
 		)
 		.join("\n");
 	const count = (kind: "dark" | "light" | "hc") =>

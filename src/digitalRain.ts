@@ -115,15 +115,22 @@ class RainTerminal implements vscode.Pseudoterminal {
 	}
 }
 
-/** Opens the rain in a new terminal tab in the editor area. */
+let currentTerminal: vscode.Terminal | undefined;
+
+/** Opens the rain in a new terminal tab in the editor area, replacing any previous one (#226). */
 export function showDigitalRain(): vscode.Terminal {
+	currentTerminal?.dispose();
 	const pty = new RainTerminal();
 	const terminal = vscode.window.createTerminal({
 		name: "Digital Rain",
 		pty,
 		location: vscode.TerminalLocation.Editor
 	});
+	currentTerminal = terminal;
 	pty.terminal = terminal;
+	pty.onDidClose(() => {
+		if (currentTerminal === terminal) currentTerminal = undefined;
+	});
 	terminal.show();
 	return terminal;
 }

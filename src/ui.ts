@@ -200,21 +200,25 @@ export async function showMenu(
 const PALETTE_FORMATS: readonly {
 	label: string;
 	detail: string;
+	hint: string;
 	format: (name: string, colors: Readonly<Record<string, string>>) => string;
 }[] = [
 	{
 		label: "Windows Terminal (JSON)",
 		detail: "A scheme object for Windows Terminal's settings.json schemes array",
+		hint: "Paste it into the schemes array in Windows Terminal's settings.json.",
 		format: terminalSchemeJson
 	},
 	{
 		label: "Alacritty (TOML)",
 		detail: "A [colors] table for alacritty.toml",
+		hint: "Paste it into ~/.config/alacritty/alacritty.toml.",
 		format: alacrittySchemeToml
 	},
 	{
 		label: "Kitty / Ghostty (conf)",
 		detail: "Color directives for kitty.conf",
+		hint: "Paste it into ~/.config/kitty/kitty.conf or ~/.config/ghostty/config.",
 		format: kittySchemeConf
 	}
 ];
@@ -246,7 +250,7 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 				);
 				await vscode.env.clipboard.writeText(content);
 				void vscode.window.showInformationMessage(
-					"Copied stylesmith.omp.json to clipboard."
+					"Copied stylesmith.omp.json to clipboard. Save it as ~/stylesmith.omp.json."
 				);
 			}
 		},
@@ -280,7 +284,7 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 					target.format(picked.theme.label, file.colors)
 				);
 				void vscode.window.showInformationMessage(
-					`Copied ${picked.theme.label} terminal palette (${target.label}) to clipboard.`
+					`Copied ${picked.theme.label} terminal palette (${target.label}) to clipboard. ${target.hint}`
 				);
 			}
 		}

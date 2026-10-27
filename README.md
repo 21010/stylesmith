@@ -103,7 +103,7 @@ Choosing a font that isn't installed in the Stylesmith menu, or running **Styles
 - The files come from this repository's [fonts-3.5.1-r2 release](https://github.com/21010/stylesmith/releases/tag/fonts-3.5.1-r2): the Nerd Fonts 3.5.1 Mono Regular and Bold files, unchanged. Each file's size and SHA-256 are built into Stylesmith, and a file that doesn't match is refused before anything is written.
 - They go to your own font folder, without administrator rights: `%LOCALAPPDATA%\Microsoft\Windows\Fonts` on Windows (registered under `HKCU`), `~/Library/Fonts` on macOS, and `~/.local/share/fonts/stylesmith` on Linux.
 - On macOS the font works right away. On Windows and Linux, quit and reopen VS Code: only then does VS Code see a new font.
-- The fonts are under the SIL Open Font License; each font's license is saved in Stylesmith's own storage.
+- The fonts are under the SIL Open Font License (and the BSD 3-Clause License for 3270); each font's license is saved in Stylesmith's own storage.
 - **Stylesmith: Remove Installed Fonts…** removes the fonts Stylesmith installed, and nothing else.
 
 ## Settings

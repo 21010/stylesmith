@@ -90,12 +90,20 @@ class BootTerminal implements vscode.Pseudoterminal {
 	}
 }
 
-/** Opens the boot log in a new terminal tab in the editor area. */
+let currentTerminal: vscode.Terminal | undefined;
+
+/** Opens the boot log in a new terminal tab in the editor area, replacing any previous one (#226). */
 export function showBootSequence(): vscode.Terminal {
+	currentTerminal?.dispose();
+	const pty = new BootTerminal();
 	const terminal = vscode.window.createTerminal({
 		name: "Boot Sequence",
-		pty: new BootTerminal(),
+		pty,
 		location: vscode.TerminalLocation.Editor
+	});
+	currentTerminal = terminal;
+	pty.onDidClose(() => {
+		if (currentTerminal === terminal) currentTerminal = undefined;
 	});
 	terminal.show();
 	return terminal;

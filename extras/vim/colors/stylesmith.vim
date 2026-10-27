@@ -41,11 +41,14 @@ highlight VisualNOS ctermfg=NONE ctermbg=NONE cterm=reverse,underline
 highlight Search ctermfg=Yellow ctermbg=NONE cterm=reverse
 highlight IncSearch ctermfg=LightCyan ctermbg=NONE cterm=reverse,bold
 highlight CurSearch ctermfg=LightCyan ctermbg=NONE cterm=reverse,bold
+highlight Substitute ctermfg=LightCyan ctermbg=NONE cterm=reverse,bold
 highlight MatchParen ctermfg=LightCyan ctermbg=NONE cterm=bold,underline
 
 " Status line, tab line and popup menu
 highlight StatusLine ctermfg=Cyan ctermbg=NONE cterm=reverse,bold
 highlight StatusLineNC ctermfg=DarkGray ctermbg=NONE cterm=reverse
+highlight WinBar ctermfg=Cyan ctermbg=NONE cterm=bold
+highlight WinBarNC ctermfg=DarkGray ctermbg=NONE cterm=NONE
 highlight WildMenu ctermfg=LightCyan ctermbg=NONE cterm=reverse,bold
 highlight TabLine ctermfg=DarkGray ctermbg=NONE cterm=underline
 highlight TabLineSel ctermfg=Cyan ctermbg=NONE cterm=bold
@@ -137,3 +140,6 @@ highlight DiagnosticSignWarn ctermfg=Yellow ctermbg=NONE cterm=NONE
 highlight DiagnosticSignInfo ctermfg=Cyan ctermbg=NONE cterm=NONE
 highlight DiagnosticSignHint ctermfg=DarkGray ctermbg=NONE cterm=NONE
 highlight DiagnosticSignOk ctermfg=Green ctermbg=NONE cterm=NONE
+highlight LspReferenceText ctermfg=NONE ctermbg=NONE cterm=underline
+highlight LspReferenceRead ctermfg=NONE ctermbg=NONE cterm=underline
+highlight LspReferenceWrite ctermfg=LightCyan ctermbg=NONE cterm=bold,underline

@@ -88,7 +88,8 @@ export function activate(context: vscode.ExtensionContext): void {
 				const activeFont = services.config.font()?.id;
 				if (activeFont && removed.includes(activeFont)) {
 					await services.config.set("fonts.enabled", false);
-					await vscode.commands.executeCommand("stylesmith.enable");
+					if ((await services.store.read()).enabled)
+						await vscode.commands.executeCommand("stylesmith.enable");
 				}
 				gallery.refresh();
 			})

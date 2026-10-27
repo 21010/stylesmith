@@ -18,7 +18,7 @@ Stylesmith can install a Nerd Font for the current user (`src/fontInstall.ts`). 
 - **Pinned files:** files are downloaded over HTTPS only, from the `fonts-3.5.1-r2` release of this repository, following GitHub's redirects. Each file's size and SHA-256 are built into the extension (`src/fonts.ts`). A download larger than the pinned size is stopped, and every file is checked before any is written; a mismatch installs nothing.
 - **No administrator rights:** fonts go to the user's own font folder. On Windows Stylesmith runs `reg.exe` to register the per-user font under `HKCU`, and on Linux it runs `fc-cache`. Programs are started without a shell, with fixed arguments.
 - **Recorded and removable:** Stylesmith records what it installed in its own storage. **Stylesmith: Remove Installed Fonts…** deletes only pinned font file names directly in the user's font folder, and only registry values of the form Stylesmith writes, even if the record was changed.
-- **Licenses:** the fonts are under the SIL Open Font License 1.1; their licenses are saved with Stylesmith's data.
+- **Licenses:** the fonts are under the SIL Open Font License 1.1 (and the BSD 3-Clause License for 3270); their licenses are saved with Stylesmith's data.
 
 ## Uninstalling
 

@@ -38,9 +38,13 @@ describe("API-only security boundary", () => {
 			assert.doesNotMatch(read(file), /Stylesmith 1\.x|1\.x\b/, file);
 	});
 
-	it("documents the API-only boundary", () => {
+	it("documents the API-only boundary and font licenses (#227)", () => {
 		assert.match(read("README.md"), /does not modify VS Code installation files/);
 		assert.match(read("SECURITY.md"), /does not read or write VS Code installation files/);
+		for (const file of ["README.md", "SECURITY.md", "site/fonts.html"]) {
+			assert.match(read(file), /SIL Open Font License/, file);
+			assert.match(read(file), /BSD 3-Clause/, file);
+		}
 	});
 
 	it("never looks at VS Code's installation", () => {
@@ -97,6 +101,14 @@ describe("API-only security boundary", () => {
 				assert.ok(
 					ignoreLines.has(outJs),
 					`${outJs} is only used by tests/scripts and must be excluded in .vscodeignore`
+				);
+			}
+		}
+		for (const dir of ["themes", "icons", "product-icons", "extras"]) {
+			for (const pattern of [dir, `${dir}/`, `${dir}/**`]) {
+				assert.ok(
+					!ignoreLines.has(pattern),
+					`${pattern} is needed at runtime and must not be in .vscodeignore (#228)`
 				);
 			}
 		}

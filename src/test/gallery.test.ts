@@ -174,6 +174,24 @@ describe("preset gallery page", () => {
 		);
 	});
 
+	it("draws contrastBorder around high-contrast code samples (#223)", () => {
+		const hcTheme = JSON.parse(
+			readFileSync(
+				path.join(
+					ROOT,
+					manifest().contributes.themes.find(t => t.label.includes("Neon High Contrast"))!
+						.path
+				),
+				"utf-8"
+			)
+		) as Parameters<typeof sampleColors>[0];
+		const hcColors = sampleColors(hcTheme);
+		assert.ok(hcColors.border, "extracts contrastBorder from high-contrast theme");
+		const page = galleryHtml([card({ colors: hcColors, kind: "hc" })], NONCE);
+		assert.ok(page.includes(`--bd: ${hcColors.border};`));
+		assert.ok(page.includes("border: 1px solid var(--bd, transparent);"));
+	});
+
 	it("escapes every text, and refuses anything but hex colors", () => {
 		const page = galleryHtml([card({ label: "<b>x</b>", story: `"a" & 'b' <script>` })], NONCE);
 		assert.ok(page.includes("&lt;b&gt;x&lt;/b&gt;"));
