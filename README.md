@@ -2,7 +2,7 @@
 
 **One click for a complete look in VS Code and your terminal: a color theme, pixel file icons and editor settings that belong together, with a matching Nerd Font if you want one. One click to undo it.**
 
-Pick a preset, such as a green-phosphor terminal, a neon city at night or a calm blue-grey studio, and Stylesmith applies it through VS Code's own settings. It can install the matching Nerd Font for you after you confirm, and the optional Oh My Posh prompt gives your terminal the same colors. **Stylesmith: Disable** puts your own theme, icons and settings back.
+Pick a preset, such as a green-phosphor terminal, a neon city at night or a calm blue-grey studio, and Stylesmith applies it through VS Code's own settings. It can install the matching Nerd Font for you after you confirm, and the optional Oh My Posh prompt and Vim color scheme give your terminal the same colors. **Stylesmith: Disable** puts your own theme, icons and settings back.
 
 Every theme is checked for contrast and color blindness: contrast for text, syntax and markers, and simulated color blindness for errors, warnings, git and terminal colors (see the [ergonomics page](https://stylesmith.dev/ergonomics.html) for exactly what is and isn't tested). By default, Problem Lens shows problems on their line with shapes and words, not color alone.
 

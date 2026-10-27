@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<title>Vim &amp; Neovim - Stylesmith Integrations</title>
+		<meta
+			name="description"
+			content="Integrate Vim and Neovim with your active Stylesmith terminal palette."
+		/>
+		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content="#0f1120" />
+		<link rel="icon" href="logo.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="style.css" />
+		<script src="app.js" defer></script>
+	</head>
+	<body>
+		<a class="skip" href="#main">Skip to content</a>
+
+		<header class="top">
+			<a class="brand" href="./">
+				<img src="logo.svg" width="36" height="36" alt="" />
+				<span>Stylesmith</span>
+			</a>
+			<button class="motion-toggle" type="button" aria-pressed="false" hidden>
+				<svg
+					class="icon-pause"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<rect x="6" y="5" width="4" height="14" fill="currentColor" />
+					<rect x="14" y="5" width="4" height="14" fill="currentColor" />
+				</svg>
+				<svg
+					class="icon-play"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path d="M7 5v14l12-7z" fill="currentColor" />
+				</svg>
+				<span class="sr-only">Pause animations</span>
+			</button>
+			<button
+				class="menu-toggle"
+				type="button"
+				aria-expanded="false"
+				aria-controls="site-nav"
+				hidden
+			>
+				<span class="menu-icon" aria-hidden="true"></span>
+				<span class="sr-only">Menu</span>
+			</button>
+			<nav id="site-nav" aria-label="Main">
+				<div class="dropdown">
+					<button class="dropbtn" aria-expanded="false">Aesthetics</button>
+					<div class="dropdown-content">
+						<a href="themes.html">Presets &amp; Themes</a>
+						<a href="effects.html">Effects</a>
+						<a href="fonts.html">Fonts</a>
+					</div>
+				</div>
+				<a href="security.html">Security</a>
+				<a href="ergonomics.html">Ergonomics</a>
+				<div class="dropdown">
+					<button class="dropbtn" aria-expanded="false">Productivity</button>
+					<div class="dropdown-content">
+						<a href="problem-lens.html">Problem Lens</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn" aria-expanded="false" style="color: var(--cyan)">
+						Add-ons
+					</button>
+					<div class="dropdown-content">
+						<a href="oh-my-posh.html">Oh-My-Posh Theme</a>
+						<a href="vim.html" style="color: var(--cyan)" aria-current="page"
+							>Vim Theme</a
+						>
+					</div>
+				</div>
+				<a href="https://github.com/21010/stylesmith">GitHub</a>
+				<a href="./#install" class="button nav-install">Install</a>
+			</nav>
+		</header>
+
+		<main id="main">
+			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 0">
+				<div
+					style="
+						font-family: var(--mono);
+						color: var(--pink);
+						margin-bottom: 1rem;
+						font-weight: bold;
+						letter-spacing: 0.1em;
+					"
+				>
+					TERMINAL INTEGRATION
+				</div>
+				<h1
+					style="
+						font-size: clamp(1.6rem, 7.5vw, 3.5rem);
+						margin-top: 0;
+						line-height: 1.1;
+						margin-bottom: 2rem;
+					"
+				>
+					Vim &amp; <span>Neovim</span>
+				</h1>
+
+				<div
+					style="
+						display: grid;
+						grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+						gap: 4rem;
+						align-items: flex-start;
+					"
+				>
+					<div>
+						<p
+							class="lead"
+							style="
+								font-size: 1.2rem;
+								color: var(--muted);
+								line-height: 1.6;
+								margin-top: 0;
+								margin-bottom: 2.5rem;
+							"
+						>
+							Edit in the terminal without leaving your theme behind. The Stylesmith
+							Vim color scheme follows your active VS Code palette automatically.
+						</p>
+
+						<h3 style="color: var(--cyan); margin-bottom: 1rem; font-size: 1.5rem">
+							How it works
+						</h3>
+						<p
+							style="
+								color: var(--text);
+								line-height: 1.7;
+								font-size: 1.05rem;
+								margin-bottom: 0;
+							"
+						>
+							The included <code>stylesmith.vim</code> color scheme uses your
+							terminal&rsquo;s 16 named ANSI colors instead of fixed 24-bit hex codes.
+							Because every Stylesmith theme defines a contrast-checked terminal
+							palette, Vim and Neovim take on your active preset&rsquo;s colors in VS
+							Code&rsquo;s integrated terminal and update right away when you switch
+							themes.
+						</p>
+					</div>
+
+					<div>
+						<h3
+							style="
+								color: var(--yellow);
+								margin-top: 0;
+								margin-bottom: 1rem;
+								font-size: 1.5rem;
+							"
+						>
+							Checked for contrast
+						</h3>
+						<p
+							style="
+								color: var(--text);
+								line-height: 1.7;
+								font-size: 1.05rem;
+								margin-bottom: 1.5rem;
+							"
+						>
+							Every highlight group in <code>stylesmith.vim</code> uses only the
+							terminal ANSI colors that Stylesmith&rsquo;s automated tests check for
+							at least 4.5:1 contrast on the terminal background (7:1 in high-contrast
+							themes), with <code>ctermbg=NONE</code> so the terminal&rsquo;s own
+							background shows through.
+						</p>
+						<p
+							style="
+								color: var(--muted);
+								line-height: 1.7;
+								font-size: 1rem;
+								margin-bottom: 0;
+							"
+						>
+							Covers standard Vim syntax groups, line numbers, search, diffs,
+							spelling, and Neovim diagnostic highlights.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 0">
+				<h2 style="font-size: 2rem; margin-bottom: 1rem; text-align: center">
+					The color scheme in every theme
+				</h2>
+				<p
+					style="
+						max-width: 70ch;
+						margin: 0 auto 2rem;
+						color: var(--muted);
+						line-height: 1.6;
+					"
+				>
+					Because <code>stylesmith.vim</code> uses your terminal&rsquo;s color names, one
+					color scheme adapts to all 24 Stylesmith themes. Here is a code sample in each
+					theme&rsquo;s real terminal colors: comments, keywords, functions, numbers,
+					strings, and the active line number.
+				</p>
+				<!-- vim-previews:start -->
+				<div class="prompt-previews">
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Neon Night"
+						style="
+							--p-bg: #0b0d19;
+							--p-fg: #e2e4f3;
+							--p-chrome: #8a91c0;
+							--p-kw: #ff72d8;
+							--p-fn: #5fe0ff;
+							--p-str: #f4e27c;
+							--p-num: #f8ec9f;
+						"
+					>
+						<pre
+							aria-label="Vim in Neon Night"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Neon Night</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Phosphor"
+						style="
+							--p-bg: #070e09;
+							--p-fg: #b9f2b4;
+							--p-chrome: #6fa878;
+							--p-kw: #d7a6ff;
+							--p-fn: #8fe3d0;
+							--p-str: #ffcf73;
+							--p-num: #ffdf9e;
+						"
+					>
+						<pre
+							aria-label="Vim in Phosphor"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Phosphor</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Amber"
+						style="
+							--p-bg: #0f0b04;
+							--p-fg: #ffd28f;
+							--p-chrome: #b08a55;
+							--p-kw: #ff9f8a;
+							--p-fn: #f2d6a2;
+							--p-str: #ffcc4d;
+							--p-num: #ffdb80;
+						"
+					>
+						<pre
+							aria-label="Vim in Amber"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Amber</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith ICE"
+						style="
+							--p-bg: #080c12;
+							--p-fg: #dce9f5;
+							--p-chrome: #8196ab;
+							--p-kw: #cdc3ec;
+							--p-fn: #a8d3d5;
+							--p-str: #cbcdac;
+							--p-num: #e8eac9;
+						"
+					>
+						<pre
+							aria-label="Vim in ICE"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>ICE</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Monolith"
+						style="
+							--p-bg: #131519;
+							--p-fg: #d5dae1;
+							--p-chrome: #9ba3ae;
+							--p-kw: #b5aecd;
+							--p-fn: #9bbccf;
+							--p-str: #d6b48f;
+							--p-num: #f4d1ab;
+						"
+					>
+						<pre
+							aria-label="Vim in Monolith"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Monolith</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Glass Lab"
+						style="
+							--p-bg: #1b1a18;
+							--p-fg: #dedad5;
+							--p-chrome: #aba49c;
+							--p-kw: #c0a1b3;
+							--p-fn: #a5cfd1;
+							--p-str: #c8be9e;
+							--p-num: #e5dbba;
+						"
+					>
+						<pre
+							aria-label="Vim in Glass Lab"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Glass Lab</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Vault"
+						style="
+							--p-bg: #0b1428;
+							--p-fg: #efe8d6;
+							--p-chrome: #9aa3bd;
+							--p-kw: #a69fbe;
+							--p-fn: #85a6b8;
+							--p-str: #efc631;
+							--p-num: #fee69d;
+						"
+					>
+						<pre
+							aria-label="Vim in Vault"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Vault</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Simulation"
+						style="
+							--p-bg: #1d1f1b;
+							--p-fg: #d2d5ca;
+							--p-chrome: #a6aa97;
+							--p-kw: #dcc0d7;
+							--p-fn: #7bd2ff;
+							--p-str: #d5c785;
+							--p-num: #f3e4a1;
+						"
+					>
+						<pre
+							aria-label="Vim in Simulation"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Simulation</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Steel and Rust"
+						style="
+							--p-bg: #15191e;
+							--p-fg: #cfd6de;
+							--p-chrome: #9aa4b0;
+							--p-kw: #b69fb8;
+							--p-fn: #a2c4d7;
+							--p-str: #c9ae8b;
+							--p-num: #e6cba7;
+						"
+					>
+						<pre
+							aria-label="Vim in Steel and Rust"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Steel and Rust</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Brass"
+						style="
+							--p-bg: #1a1510;
+							--p-fg: #e8dcc4;
+							--p-chrome: #ad9d82;
+							--p-kw: #b596a7;
+							--p-fn: #a1d7cd;
+							--p-str: #cab896;
+							--p-num: #e7d5b2;
+						"
+					>
+						<pre
+							aria-label="Vim in Brass"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Brass</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Tea Garden"
+						style="
+							--p-bg: #e8eed8;
+							--p-fg: #24321e;
+							--p-chrome: #4d5d43;
+							--p-kw: #7c3b6c;
+							--p-fn: #265a52;
+							--p-str: #795600;
+							--p-num: #5f450a;
+						"
+					>
+						<pre
+							aria-label="Vim in Tea Garden"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Tea Garden</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Sunroom"
+						style="
+							--p-bg: #f2eadc;
+							--p-fg: #363a46;
+							--p-chrome: #5d6070;
+							--p-kw: #6d4a7a;
+							--p-fn: #466576;
+							--p-str: #795b04;
+							--p-num: #60490e;
+						"
+					>
+						<pre
+							aria-label="Vim in Sunroom"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Sunroom</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Countdown"
+						style="
+							--p-bg: #0a0c13;
+							--p-fg: #cfd3de;
+							--p-chrome: #8a90a3;
+							--p-kw: #d2beda;
+							--p-fn: #90d3dd;
+							--p-str: #d7c9a5;
+							--p-num: #f5e6c2;
+						"
+					>
+						<pre
+							aria-label="Vim in Countdown"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Countdown</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Overlay"
+						style="
+							--p-bg: #11171b;
+							--p-fg: #d2dce3;
+							--p-chrome: #8e9ca9;
+							--p-kw: #aa94ad;
+							--p-fn: #65d5e8;
+							--p-str: #f0b760;
+							--p-num: #fcdaa9;
+						"
+					>
+						<pre
+							aria-label="Vim in Overlay"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Overlay</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Deep Desert"
+						style="
+							--p-bg: #120e0a;
+							--p-fg: #e6d3b0;
+							--p-chrome: #a59276;
+							--p-kw: #b0a0e0;
+							--p-fn: #abd4cc;
+							--p-str: #a59276;
+							--p-num: #c1ae91;
+						"
+					>
+						<pre
+							aria-label="Vim in Deep Desert"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Deep Desert</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Haze"
+						style="
+							--p-bg: #16181a;
+							--p-fg: #d0d4d6;
+							--p-chrome: #9aa0a5;
+							--p-kw: #b39bb3;
+							--p-fn: #a0d1ce;
+							--p-str: #f3b97a;
+							--p-num: #fbddbf;
+						"
+					>
+						<pre
+							aria-label="Vim in Haze"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Haze</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Grid"
+						style="
+							--p-bg: #040506;
+							--p-fg: #c8dde3;
+							--p-chrome: #768d96;
+							--p-kw: #a089a1;
+							--p-fn: #7fc8d4;
+							--p-str: #f8a038;
+							--p-num: #fec893;
+						"
+					>
+						<pre
+							aria-label="Vim in Grid"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Grid</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Corridor"
+						style="
+							--p-bg: #e4e9e0;
+							--p-fg: #123e3d;
+							--p-chrome: #46625f;
+							--p-kw: #6a3c6b;
+							--p-fn: #234951;
+							--p-str: #5f581a;
+							--p-num: #4c4500;
+						"
+					>
+						<pre
+							aria-label="Vim in Corridor"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Corridor</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Teal Terminal"
+						style="
+							--p-bg: #0b1817;
+							--p-fg: #bfe8dd;
+							--p-chrome: #7fa89e;
+							--p-kw: #d8c1dc;
+							--p-fn: #90b9b1;
+							--p-str: #dfca72;
+							--p-num: #fde88f;
+						"
+					>
+						<pre
+							aria-label="Vim in Teal Terminal"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Teal Terminal</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Horizon"
+						style="
+							--p-bg: #08070a;
+							--p-fg: #ece2d6;
+							--p-chrome: #9c90a0;
+							--p-kw: #dfb7fd;
+							--p-fn: #8bb4b8;
+							--p-str: #ecc46b;
+							--p-num: #fce4b2;
+						"
+					>
+						<pre
+							aria-label="Vim in Horizon"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Horizon</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Command Deck"
+						style="
+							--p-bg: #0f1012;
+							--p-fg: #c9cdd2;
+							--p-chrome: #8e9299;
+							--p-kw: #c1b9d8;
+							--p-fn: #93b5c7;
+							--p-str: #cfc6a6;
+							--p-num: #ece3c3;
+						"
+					>
+						<pre
+							aria-label="Vim in Command Deck"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Command Deck</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Daylight"
+						style="
+							--p-bg: #efe8d6;
+							--p-fg: #1e2230;
+							--p-chrome: #4f5569;
+							--p-kw: #a0127a;
+							--p-fn: #006a8a;
+							--p-str: #6e5000;
+							--p-num: #634800;
+						"
+					>
+						<pre
+							aria-label="Vim in Daylight"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Daylight</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Neon High Contrast"
+						style="
+							--p-bg: #000000;
+							--p-fg: #ffffff;
+							--p-chrome: #c5cbee;
+							--p-kw: #ff9ce6;
+							--p-fn: #8cedff;
+							--p-str: #fff29a;
+							--p-num: #fff7c2;
+						"
+					>
+						<pre
+							aria-label="Vim in Neon High Contrast"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Neon High Contrast</figcaption>
+					</figure>
+					<figure
+						class="prompt-preview"
+						data-theme="Stylesmith Daylight High Contrast"
+						style="
+							--p-bg: #ffffff;
+							--p-fg: #000000;
+							--p-chrome: #1f2433;
+							--p-kw: #7a005c;
+							--p-fn: #003f60;
+							--p-str: #533500;
+							--p-num: #452c00;
+						"
+					>
+						<pre
+							aria-label="Vim in Daylight High Contrast"
+						><span class="chrome">  1 </span><span class="chrome">// tally the night shift</span><br><span class="chrome">  2 </span><span class="kw">function</span> <span class="fn">total</span>(hours) {<br><span class="num">  3 </span>  <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;<br><span class="chrome">  4 </span>}</pre>
+						<figcaption>Daylight High Contrast</figcaption>
+					</figure>
+				</div>
+				<!-- vim-previews:end -->
+			</section>
+
+			<section class="wide-section" style="max-width: 1200px; margin: 4rem auto 8rem">
+				<h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center">
+					Installation
+				</h2>
+				<ol class="steps-list">
+					<li style="margin-bottom: 3rem">
+						<h3 style="color: var(--pink); margin-top: 0; font-size: 1.25rem">
+							1. Download the color scheme
+						</h3>
+						<p style="color: var(--muted); margin-bottom: 1rem">
+							Save <code>stylesmith.vim</code> to your Vim or Neovim
+							<code>colors</code> folder. For Vim:
+						</p>
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+							<pre><code>curl -fLo ~/.vim/colors/stylesmith.vim --create-dirs https://raw.githubusercontent.com/21010/stylesmith/main/extras/vim/colors/stylesmith.vim</code></pre>
+							<button
+								class="button ghost copy-btn on-deep"
+								data-copy="curl -fLo ~/.vim/colors/stylesmith.vim --create-dirs https://raw.githubusercontent.com/21010/stylesmith/main/extras/vim/colors/stylesmith.vim"
+							>
+								<span class="copy-default"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect
+											x="9"
+											y="9"
+											width="13"
+											height="13"
+											rx="2"
+											ry="2"
+										></rect>
+										<path
+											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+										></path></svg
+									><span>Copy<span class="sr-only"> command</span></span></span
+								>
+								<span class="copy-success"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline></svg
+									><span>Copied</span></span
+								>
+							</button>
+						</div>
+						<p style="color: var(--muted); margin: 1.5rem 0 1rem">Or for Neovim:</p>
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+							<pre><code>curl -fLo ~/.config/nvim/colors/stylesmith.vim --create-dirs https://raw.githubusercontent.com/21010/stylesmith/main/extras/vim/colors/stylesmith.vim</code></pre>
+							<button
+								class="button ghost copy-btn on-deep"
+								data-copy="curl -fLo ~/.config/nvim/colors/stylesmith.vim --create-dirs https://raw.githubusercontent.com/21010/stylesmith/main/extras/vim/colors/stylesmith.vim"
+							>
+								<span class="copy-default"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect
+											x="9"
+											y="9"
+											width="13"
+											height="13"
+											rx="2"
+											ry="2"
+										></rect>
+										<path
+											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+										></path></svg
+									><span>Copy<span class="sr-only"> command</span></span></span
+								>
+								<span class="copy-success"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline></svg
+									><span>Copied</span></span
+								>
+							</button>
+						</div>
+					</li>
+					<li>
+						<h3 style="color: var(--cyan); margin-top: 0; font-size: 1.25rem">
+							2. Enable the color scheme
+						</h3>
+						<p style="color: var(--muted); margin-bottom: 1rem">
+							Turn off 24-bit <code>termguicolors</code> so Vim uses the
+							terminal&rsquo;s ANSI palette, and load <code>stylesmith</code> in your
+							<code>~/.vimrc</code> or <code>~/.config/nvim/init.vim</code>:
+						</p>
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+							<pre><code>set notermguicolors
+syntax on
+colorscheme stylesmith</code></pre>
+							<button
+								class="button ghost copy-btn on-deep"
+								data-copy="set notermguicolors&#10;syntax on&#10;colorscheme stylesmith"
+							>
+								<span class="copy-default"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect
+											x="9"
+											y="9"
+											width="13"
+											height="13"
+											rx="2"
+											ry="2"
+										></rect>
+										<path
+											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+										></path></svg
+									><span
+										>Copy<span class="sr-only"> configuration</span></span
+									></span
+								>
+								<span class="copy-success"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline></svg
+									><span>Copied</span></span
+								>
+							</button>
+						</div>
+					</li>
+				</ol>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-grid">
+				<div class="footer-brand">
+					<a class="brand" href="./">
+						<img src="logo.svg" width="36" height="36" alt="" />
+						<span>Stylesmith</span>
+					</a>
+					<p>
+						Themes, icons, diagnostics and native settings for VS Code. Stylesmith does
+						not modify installation files.
+					</p>
+					<a
+						class="button"
+						href="https://marketplace.visualstudio.com/items?itemName=21010.stylesmith"
+						>Install from Marketplace</a
+					>
+				</div>
+				<nav class="footer-links" aria-label="Footer">
+					<div>
+						<h2 class="footer-title">Aesthetics</h2>
+						<ul>
+							<li><a href="themes.html">Presets &amp; Themes</a></li>
+							<li><a href="effects.html">Effects</a></li>
+							<li><a href="fonts.html">Fonts</a></li>
+						</ul>
+					</div>
+					<div>
+						<h2 class="footer-title">Features</h2>
+						<ul>
+							<li><a href="security.html">Security</a></li>
+							<li><a href="ergonomics.html">Ergonomics</a></li>
+							<li><a href="problem-lens.html">Problem Lens</a></li>
+							<li><a href="oh-my-posh.html">Oh My Posh</a></li>
+							<li><a href="vim.html" aria-current="page">Vim</a></li>
+						</ul>
+					</div>
+					<div>
+						<h2 class="footer-title">Project</h2>
+						<ul>
+							<li><a href="https://github.com/21010/stylesmith">GitHub</a></li>
+							<li>
+								<a href="https://github.com/21010/stylesmith/blob/main/CHANGELOG.md"
+									>Changelog</a
+								>
+							</li>
+							<li>
+								<a href="https://github.com/21010/stylesmith/issues"
+									>Report an issue</a
+								>
+							</li>
+							<li><a href="accessibility.html">Accessibility</a></li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+			<div class="footer-bottom">
+				<p>
+					&copy; 2026 Grzegorz Zioło (21010). Released under the
+					<a href="https://github.com/21010/stylesmith/blob/main/LICENSE.txt"
+						>MIT License</a
+					>.
+				</p>
+				<p>
+					Visual Studio Code is a trademark of Microsoft. Stylesmith is not affiliated
+					with Microsoft.
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

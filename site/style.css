@@ -1972,6 +1972,19 @@ kbd {
 .prompt-preview .fail {
 	color: var(--p-fail);
 }
+.prompt-preview .kw {
+	color: var(--p-kw);
+	font-weight: bold;
+}
+.prompt-preview .fn {
+	color: var(--p-fn);
+}
+.prompt-preview .str {
+	color: var(--p-str);
+}
+.prompt-preview .num {
+	color: var(--p-num);
+}
 .prompt-preview figcaption {
 	margin-top: 0.4rem;
 	font-size: 0.85rem;

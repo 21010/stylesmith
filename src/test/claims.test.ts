@@ -56,7 +56,14 @@ describe("readability claims on the website", () => {
 	});
 
 	it("makes no medical or universal promises", () => {
-		for (const page of ["index.html", "ergonomics.html", "themes.html", "fonts.html"]) {
+		for (const page of [
+			"index.html",
+			"ergonomics.html",
+			"themes.html",
+			"fonts.html",
+			"oh-my-posh.html",
+			"vim.html"
+		]) {
 			const copy = text(page).toLowerCase();
 			for (const phrase of [
 				"prevents eye strain",

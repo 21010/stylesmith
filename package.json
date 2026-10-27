@@ -32,7 +32,8 @@
 		"icon theme",
 		"presets",
 		"terminal",
-		"oh my posh"
+		"oh my posh",
+		"vim"
 	],
 	"repository": {
 		"type": "git",
@@ -577,6 +578,7 @@
 		"product-icons": "node scripts/build-product-icons.mjs",
 		"themes-page": "npm run compile && node scripts/build-themes-page.mjs",
 		"prompt-previews": "node scripts/build-prompt-previews.mjs",
+		"vim-previews": "node scripts/build-vim-previews.mjs",
 		"icons": "npm run compile && node scripts/build-icons.mjs",
 		"fit:syntax": "npm run compile && node scripts/fit-syntax-colors.mjs",
 		"fit:terminal": "npm run compile && node scripts/fit-terminal-palettes.mjs",

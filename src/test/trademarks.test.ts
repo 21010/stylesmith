@@ -40,7 +40,7 @@ const DENYLIST: RegExp[] = [
 	/\bStar Wars\b/i
 ];
 
-const TEXT = /\.(md|json|html|js|mjs|ts|css|toml|ya?ml|txt)$/;
+const TEXT = /\.(md|json|html|js|mjs|ts|css|toml|ya?ml|txt|vim)$/;
 
 function files(dir: string): string[] {
 	return readdirSync(path.join(ROOT, dir)).flatMap(name => {
