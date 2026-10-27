@@ -233,6 +233,38 @@ export function claimSignalSlot(hide: () => void): void {
 	activeSignalHide = hide;
 }
 
+export interface TransientSignalItem {
+	text: string;
+	tooltip?: string | unknown;
+	accessibilityInformation?: { label: string };
+	show(): void;
+	hide(): void;
+}
+
+/**
+ * Shows a transient status-bar pill for `ERROR_SIGNAL_DURATION`, claiming the shared signal
+ * slot so any previous transient signal hides immediately (#250).
+ */
+export function showTransientSignal(
+	item: TransientSignalItem,
+	text: string,
+	label: string,
+	actionHint: string,
+	previousTimer: ReturnType<typeof setTimeout> | undefined
+): ReturnType<typeof setTimeout> {
+	clearTimeout(previousTimer);
+	claimSignalSlot(() => {
+		clearTimeout(timer);
+		item.hide();
+	});
+	item.text = text;
+	item.tooltip = `${label}. ${actionHint}`;
+	item.accessibilityInformation = { label };
+	item.show();
+	const timer = setTimeout(() => item.hide(), ERROR_SIGNAL_DURATION);
+	return timer;
+}
+
 /**
  * Decides when to signal that the number of errors went up: only on an increase (not when
  * Stylesmith starts, or when errors go down), and at most once per ERROR_SIGNAL_COOLDOWN, so
@@ -240,15 +272,13 @@ export function claimSignalSlot(hide: () => void): void {
  */
 export class ErrorSignal {
 	private last: number | undefined;
-	private shownAt = Number.NEGATIVE_INFINITY;
+	private readonly cooldown = new SignalCooldown();
 
 	/** Records the current number of errors; true if the signal should show now. */
 	next(errors: number, now: number): boolean {
 		const wentUp = this.last !== undefined && errors > this.last;
 		this.last = errors;
-		if (!wentUp || now - this.shownAt < ERROR_SIGNAL_COOLDOWN) return false;
-		this.shownAt = now;
-		return true;
+		return wentUp && this.cooldown.ready(now);
 	}
 }
 

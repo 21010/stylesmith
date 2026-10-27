@@ -133,14 +133,14 @@ export class FontInstaller {
 		if (choice === quit) await vscode.commands.executeCommand("workbench.action.quit");
 	}
 
-	/** Lets the user remove fonts Stylesmith installed, returning the removed font ids (#210). */
+	/** Lets the user remove fonts Stylesmith installed, returning the removed font ids (#210, #251). */
 	async remove(): Promise<string[]> {
-		const installs = recorded((await this.store.read()).installedFonts);
-		const ids = Object.keys(installs).filter(id => FONTS.some(font => font.id === id));
+		const ids = await this.recordedIds();
 		if (ids.length === 0) {
 			void vscode.window.showInformationMessage("Stylesmith hasn't installed any fonts.");
 			return [];
 		}
+		const installs = recorded((await this.store.read()).installedFonts);
 		const picked = await vscode.window.showQuickPick(
 			ids.map(id => ({ label: FONTS.find(font => font.id === id)!.label, id, picked: true })),
 			{ title: "Stylesmith: Remove Installed Fonts", canPickMany: true }

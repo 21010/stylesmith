@@ -14,8 +14,8 @@ import * as path from "node:path";
 import { describe, it } from "node:test";
 import { FONTS } from "../fonts";
 import {
+	installedFontIds,
 	installFont,
-	isInstalled,
 	nodeSystem,
 	REGISTRY_KEY,
 	removeFont,
@@ -24,6 +24,8 @@ import {
 
 const font = FONTS.find(candidate => candidate.id === "SpaceMono");
 const system = nodeSystem();
+const isInstalled = async () =>
+	font ? (await installedFontIds([font], system)).has(font.id) : false;
 
 /** Whether the operating system itself lists the font. */
 function systemSees(family: string, registry: string[]): boolean {
@@ -48,7 +50,7 @@ describe(`installing a font on ${process.platform}`, () => {
 		assert.ok(font, "SpaceMono is one of Stylesmith's fonts");
 		const licenses = await mkdtemp(path.join(os.tmpdir(), "stylesmith-licenses-"));
 		try {
-			assert.equal(await isInstalled(font, system), false, "not installed beforehand");
+			assert.equal(await isInstalled(), false, "not installed beforehand");
 
 			const installed = await installFont(font, system, licenses);
 			for (const file of installed.files) {
@@ -56,12 +58,12 @@ describe(`installing a font on ${process.platform}`, () => {
 				assert.ok(existsSync(file), file);
 			}
 			assert.ok(existsSync(path.join(licenses, font.license.name)));
-			assert.equal(await isInstalled(font, system), true);
+			assert.equal(await isInstalled(), true);
 			assert.ok(systemSees(font.family, installed.registry), "the system lists the font");
 
 			assert.deepEqual(await removeFont(installed, system), []);
 			for (const file of installed.files) assert.equal(existsSync(file), false, file);
-			assert.equal(await isInstalled(font, system), false);
+			assert.equal(await isInstalled(), false);
 			if (process.platform === "win32") {
 				assert.equal(systemSees(font.family, installed.registry), false, "unregistered");
 			}

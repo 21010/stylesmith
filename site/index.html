@@ -124,37 +124,8 @@
 
 			<section id="presets" aria-labelledby="presets-title">
 				<h2 id="presets-title">
-					<span aria-hidden="true">01 //</span> Presets & Aesthetics
+					<span aria-hidden="true">01 //</span> Presets &amp; Aesthetics
 				</h2>
-				<div class="cards" style="margin-bottom: 3.5rem">
-					<article>
-						<h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text)">
-							Instant Makeover
-						</h3>
-						<p>
-							Transform your entire editor in a single click without writing CSS from
-							scratch.
-						</p>
-					</article>
-					<article>
-						<h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text)">
-							Curated Palettes
-						</h3>
-						<p>
-							Choose from clean, minimal setups or dive into immersive retro
-							environments.
-						</p>
-					</article>
-					<article>
-						<h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text)">
-							Dynamic Effects
-						</h3>
-						<p>
-							Native cursor, current-line, bracket-guide, sticky-scroll, minimap and
-							terminal settings.
-						</p>
-					</article>
-				</div>
 				<div class="carousel-wrapper" style="max-width: 60rem; margin: 0 auto">
 					<input
 						type="radio"
@@ -252,12 +223,12 @@
 
 				<div class="cards grid-2">
 					<article class="feature-card">
-						<h3>Themes & Aesthetics</h3>
+						<h3>Themes &amp; Aesthetics</h3>
 						<p>
 							Apply a retro or cyberpunk vibe. Each preset includes a curated color
 							palette, pixel icons, and an ergonomic setup.
 						</p>
-						<div class="card-actions" style="margin-top: auto">
+						<div class="card-actions">
 							<a
 								class="button ghost btn-secondary"
 								href="themes.html"
@@ -274,7 +245,7 @@
 							and terminal contrast and cursor, plus optional undo/paste highlights,
 							save receipts, Boot Sequence and Digital Rain.
 						</p>
-						<div class="card-actions" style="margin-top: auto">
+						<div class="card-actions">
 							<a
 								class="button ghost btn-secondary"
 								href="effects.html"
@@ -291,7 +262,7 @@
 							with optional status-bar signals for error increases and terminal
 							commands.
 						</p>
-						<div class="card-actions" style="margin-top: auto">
+						<div class="card-actions">
 							<a
 								class="button ghost btn-secondary"
 								href="problem-lens.html"
@@ -307,7 +278,7 @@
 							after you confirm. Stylesmith changes the editor and terminal font
 							settings through VS Code.
 						</p>
-						<div class="card-actions" style="margin-top: auto">
+						<div class="card-actions">
 							<a
 								class="button ghost btn-secondary"
 								href="fonts.html"
@@ -319,33 +290,9 @@
 				</div>
 			</section>
 
-			<section id="custom-css" aria-labelledby="custom-css-title">
-				<h2 id="custom-css-title">
-					<span aria-hidden="true">03 //</span> Built-in Customization
-				</h2>
-				<div class="split-section">
-					<div class="split-text">
-						<ul class="checks">
-							<li>
-								<strong>Extension API only:</strong> Stylesmith does not read or
-								write VS Code installation files.
-							</li>
-							<li>
-								<strong>VS Code settings:</strong> Features that have supported
-								settings use those directly.
-							</li>
-							<li>
-								<strong>No injected code:</strong> Stylesmith does not add CSS or
-								JavaScript to the workbench.
-							</li>
-						</ul>
-					</div>
-				</div>
-			</section>
-
 			<section id="addons" aria-labelledby="addons-title">
 				<h2 id="addons-title">
-					<span aria-hidden="true">04 //</span> Integrations & Add-ons
+					<span aria-hidden="true">03 //</span> Integrations &amp; Add-ons
 				</h2>
 				<p>
 					Extend the aesthetic outside the editor. Connect Stylesmith with external tools
@@ -387,7 +334,7 @@
 
 			<section id="ergonomics" aria-labelledby="ergonomics-title">
 				<h2 id="ergonomics-title">
-					<span aria-hidden="true">05 //</span> Checked for Contrast and Color Blindness
+					<span aria-hidden="true">04 //</span> Checked for Contrast and Color Blindness
 				</h2>
 
 				<div class="ergo-grid">
@@ -462,7 +409,7 @@
 
 			<section id="security" aria-labelledby="security-title">
 				<h2 id="security-title">
-					<span aria-hidden="true">06 //</span> Extension API Only
+					<span aria-hidden="true">05 //</span> Extension API Only
 				</h2>
 				<div class="security-grid">
 					<article class="security-card">
@@ -488,7 +435,7 @@
 						<p>
 							Themes and icon themes are manifest contributions. Problem Lens uses
 							editor decorations and diagnostics APIs. Settings are changed through VS
-							Code.
+							Code without injecting CSS or JavaScript into the workbench.
 						</p>
 					</article>
 					<article class="security-card">
@@ -529,52 +476,24 @@
 									stroke-linecap="round"
 									stroke-linejoin="round"
 								>
-									<polyline points="23 4 23 10 17 10"></polyline>
-									<polyline points="1 20 1 14 7 14"></polyline>
 									<path
-										d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+										d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
 									></path>
 								</svg>
 							</div>
 							<h3>Does not run workspace code</h3>
 						</div>
 						<p>
-							Stylesmith does not load project files or settings to select and execute
-							code, and it declares support for untrusted workspaces.
-						</p>
-					</article>
-					<article class="security-card">
-						<div class="card-header">
-							<div class="sec-icon">
-								<svg
-									aria-hidden="true"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path
-										d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
-									></path>
-								</svg>
-							</div>
-							<h3>Workspace Immunity</h3>
-						</div>
-						<p>
-							Stylesmith does not load code or configuration from the opened
-							workspace. Other extensions and code remain subject to VS Code's own
-							trust controls.
+							Stylesmith reads only your global user settings, never loads code or
+							configuration from the opened workspace, and declares support for
+							untrusted workspaces.
 						</p>
 					</article>
 				</div>
 			</section>
 
 			<section id="install" aria-labelledby="install-title">
-				<h2 id="install-title"><span aria-hidden="true">07 //</span> Quickstart</h2>
+				<h2 id="install-title"><span aria-hidden="true">06 //</span> Quickstart</h2>
 				<ol class="steps-list">
 					<li>
 						<p><strong>Install:</strong> Choose your preferred method:</p>

@@ -9,7 +9,6 @@ import { FONT_RELEASE, FONTS, NERD_FONTS_LICENSE, type NerdFont, type PinnedFile
 import {
 	installedFontIds,
 	installFont,
-	isInstalled,
 	REGISTRY_KEY,
 	regExe,
 	removeFont,
@@ -17,6 +16,9 @@ import {
 	type System
 } from "../fontInstall";
 import { ROOT } from "./files";
+
+const isInstalled = async (font: NerdFont, sys: System) =>
+	(await installedFontIds([font], sys)).has(font.id);
 
 const sha256 = (data: Buffer) => createHash("sha256").update(data).digest("hex");
 const pin = (name: string, data: Buffer): PinnedFile => ({

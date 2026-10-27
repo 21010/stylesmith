@@ -10,15 +10,25 @@ import { changedLines } from "./problems";
 /** How long the tint shows (ms). */
 const DURATION = 600;
 
-export class UndoHighlight implements vscode.Disposable {
-	private readonly type = vscode.window.createTextEditorDecorationType({
-		isWholeLine: true,
-		backgroundColor: new vscode.ThemeColor("stylesmith.undoHighlightBackground")
-	});
+/**
+ * Shared whole-line temporary highlight decoration for editor changes (#249), used by
+ * UndoHighlight and PasteHighlight.
+ */
+export class LineHighlight implements vscode.Disposable {
+	private readonly type: vscode.TextEditorDecorationType;
 	private readonly timers = new Map<vscode.TextEditor, ReturnType<typeof setTimeout>>();
 	private readonly listeners: vscode.Disposable[];
 
-	constructor(private readonly enabled: () => boolean) {
+	constructor(
+		private readonly setting: string,
+		themeColor: string,
+		private readonly enabled: () => boolean,
+		private readonly linesForChange: (event: vscode.TextDocumentChangeEvent) => number[]
+	) {
+		this.type = vscode.window.createTextEditorDecorationType({
+			isWholeLine: true,
+			backgroundColor: new vscode.ThemeColor(themeColor)
+		});
 		this.listeners = [
 			vscode.workspace.onDidChangeTextDocument(event => this.changed(event)),
 			vscode.window.onDidChangeVisibleTextEditors(editors => {
@@ -31,7 +41,7 @@ export class UndoHighlight implements vscode.Disposable {
 				}
 			}),
 			vscode.workspace.onDidChangeConfiguration(event => {
-				if (event.affectsConfiguration("stylesmith.undoHighlight") && !this.enabled()) {
+				if (event.affectsConfiguration(this.setting) && !this.enabled()) {
 					for (const [editor, timer] of this.timers) {
 						clearTimeout(timer);
 						editor.setDecorations(this.type, []);
@@ -59,16 +69,15 @@ export class UndoHighlight implements vscode.Disposable {
 
 	private changed(event: vscode.TextDocumentChangeEvent): void {
 		if (event.contentChanges.length === 0) return;
-		if (event.reason !== vscode.TextDocumentChangeReason.Undo || !this.enabled()) {
+		if (!this.enabled()) {
 			this.clearDocument(event.document);
 			return;
 		}
-		const lines = changedLines(
-			event.contentChanges.map(change => ({
-				line: change.range.start.line,
-				text: change.text
-			}))
-		).filter(line => line < event.document.lineCount);
+		const lines = this.linesForChange(event).filter(line => line < event.document.lineCount);
+		if (lines.length === 0) {
+			this.clearDocument(event.document);
+			return;
+		}
 		for (const editor of vscode.window.visibleTextEditors) {
 			if (editor.document !== event.document) continue;
 			editor.setDecorations(
@@ -84,5 +93,20 @@ export class UndoHighlight implements vscode.Disposable {
 				}, DURATION)
 			);
 		}
+	}
+}
+
+export class UndoHighlight extends LineHighlight {
+	constructor(enabled: () => boolean) {
+		super("stylesmith.undoHighlight", "stylesmith.undoHighlightBackground", enabled, event =>
+			event.reason === vscode.TextDocumentChangeReason.Undo
+				? changedLines(
+						event.contentChanges.map(change => ({
+							line: change.range.start.line,
+							text: change.text
+						}))
+					)
+				: []
+		);
 	}
 }

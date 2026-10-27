@@ -205,15 +205,13 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-tea-garden",
 		font: "RecMonoCasual",
 		effects: {
-			"effects.smoothCursor": true,
-			"effects.currentLine": true,
+			...BASE,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
 			"effects.readableTerminal": false,
-			"effects.stickyScroll": false,
 			"effects.calmMinimap": true
 		}
 	},
@@ -225,15 +223,13 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-sunroom",
 		font: "RecMonoCasual",
 		effects: {
-			"effects.smoothCursor": true,
-			"effects.currentLine": true,
+			...BASE,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
 			"effects.readableTerminal": false,
-			"effects.stickyScroll": false,
 			"effects.calmMinimap": true
 		}
 	},
@@ -332,16 +328,14 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-corridor",
 		font: "3270",
 		effects: {
+			...BASE,
 			"effects.smoothCursor": false,
-			"effects.currentLine": true,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": true,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false,
-			"effects.stickyScroll": false,
-			"effects.calmMinimap": false
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -353,16 +347,15 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-teal-terminal",
 		font: "3270",
 		effects: {
+			...BASE,
 			"effects.smoothCursor": false,
-			"effects.currentLine": true,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": true,
 			"effects.blockCursor": true,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false,
 			"effects.readableTerminal": false,
-			"effects.stickyScroll": true,
-			"effects.calmMinimap": false
+			"effects.stickyScroll": true
 		}
 	},
 	{
@@ -406,16 +399,13 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-daylight",
 		font: "JetBrainsMono",
 		effects: {
-			"effects.smoothCursor": true,
-			"effects.currentLine": true,
+			...BASE,
 			"effects.bracketGuides": false,
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false,
-			"effects.stickyScroll": false,
-			"effects.calmMinimap": false
+			"effects.readableTerminal": false
 		}
 	},
 	{
@@ -427,16 +417,13 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-neon-high-contrast",
 		font: "AtkynsonMono",
 		effects: {
+			...BASE,
 			"effects.smoothCursor": false,
-			"effects.currentLine": true,
-			"effects.bracketGuides": true,
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": true,
-			"effects.stickyScroll": false,
-			"effects.calmMinimap": false
+			"effects.readableTerminal": true
 		}
 	},
 	{
@@ -448,16 +435,13 @@ export const PRESETS: readonly Preset[] = [
 		iconTheme: "stylesmith-pixel-daylight-high-contrast",
 		font: "AtkynsonMono",
 		effects: {
+			...BASE,
 			"effects.smoothCursor": false,
-			"effects.currentLine": true,
-			"effects.bracketGuides": true,
 			"effects.compactLayout": false,
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": true,
-			"effects.stickyScroll": false,
-			"effects.calmMinimap": false
+			"effects.readableTerminal": true
 		}
 	}
 ];

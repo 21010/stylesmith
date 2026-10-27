@@ -34,29 +34,23 @@ export const FONT_GROUP: Group = {
 	userChangeWins: false
 };
 
-/** Settings effects turn on: a value the user changed is entirely theirs. */
-export const EFFECT_GROUP: Group = {
-	name: "effectSettings",
+const userWinsGroup = (name: Group["name"]): Group => ({
+	name,
 	userPart: current => current,
 	userChangeWins: true
-};
+});
+
+/** Settings effects turn on: a value the user changed is entirely theirs. */
+export const EFFECT_GROUP: Group = userWinsGroup("effectSettings");
 
 /**
- * The color theme, file icon theme and product icon theme a preset chose: a value the user changed is entirely
+ * The color theme and file icon theme a preset chose: a value the user changed is entirely
  * theirs, so Disable keeps a theme they picked after the preset.
  */
-export const THEME_GROUP: Group = {
-	name: "themeSettings",
-	userPart: current => current,
-	userChangeWins: true
-};
+export const THEME_GROUP: Group = userWinsGroup("themeSettings");
 
 /** The product icon theme toggled in the menu (#185): restored on Disable or when toggled off. */
-export const PRODUCT_ICON_GROUP: Group = {
-	name: "productIconSettings",
-	userPart: current => current,
-	userChangeWins: true
-};
+export const PRODUCT_ICON_GROUP: Group = userWinsGroup("productIconSettings");
 
 /** Puts `family` first in the font list, keeping the user's fonts as fallbacks. */
 export function fontWanted(family: string, leaveEmpty: boolean): Wanted {

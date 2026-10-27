@@ -1,13 +1,12 @@
 import * as vscode from "vscode";
 import {
-	ERROR_SIGNAL_DURATION,
 	ErrorSignal,
 	LINE_TINT,
 	SEVERITIES,
-	claimSignalSlot,
 	documentProblems,
 	lineDecorations,
 	lineTooltip,
+	showTransientSignal,
 	statusItem,
 	stylesmithTheme,
 	type LineProblem,
@@ -150,17 +149,13 @@ export class ProblemLens implements vscode.Disposable {
 					0
 				);
 			if (!this.errorSignal.next(errors, Date.now())) return;
-			claimSignalSlot(() => {
-				clearTimeout(this.signalTimer);
-				this.signalItem.hide();
-			});
-			const label = `Errors went up to ${errors}`;
-			this.signalItem.text = `$(error) ${errors}`;
-			this.signalItem.tooltip = `${label}. Click to open the Problems panel.`;
-			this.signalItem.accessibilityInformation = { label };
-			this.signalItem.show();
-			clearTimeout(this.signalTimer);
-			this.signalTimer = setTimeout(() => this.signalItem.hide(), ERROR_SIGNAL_DURATION);
+			this.signalTimer = showTransientSignal(
+				this.signalItem,
+				`$(error) ${errors}`,
+				`Errors went up to ${errors}`,
+				"Click to open the Problems panel.",
+				this.signalTimer
+			);
 		}, UPDATE_DELAY);
 	}
 

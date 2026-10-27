@@ -355,37 +355,32 @@ async function pickFont(
 	if (font && justInstalled) await fonts.announce(font);
 }
 
-/** Installs a font the user picks among those that aren't installed, after confirming. */
+/** Installs a font the user picks among those that aren't installed, after confirming (#251). */
 export async function installFontCommand(
 	config: Config,
 	fonts: FontInstaller,
 	fontId?: unknown
 ): Promise<void> {
-	if (typeof fontId === "string") {
-		const target = FONTS.find(candidate => candidate.id === fontId);
-		if (!target || !(await fonts.offer(target))) return;
-		await config.set("fonts.enabled", true);
-		await config.set("fonts.family", target.id);
-		await vscode.commands.executeCommand("stylesmith.enable");
-		await fonts.announce(target);
-		return;
+	let target =
+		typeof fontId === "string" ? FONTS.find(candidate => candidate.id === fontId) : undefined;
+	if (typeof fontId !== "string") {
+		const ids = await fonts.installedIds();
+		const missing = FONTS.filter(font => !ids.has(font.id));
+		if (missing.length === 0) {
+			void vscode.window.showInformationMessage("All of Stylesmith's fonts are installed.");
+			return;
+		}
+		const choice = await vscode.window.showQuickPick(
+			missing.map(font => ({ label: font.label, font })),
+			{ title: "Stylesmith: Install Font" }
+		);
+		target = choice?.font;
 	}
-	const ids = await fonts.installedIds();
-	const states = FONTS.map(font => ids.has(font.id));
-	const missing = FONTS.filter((_, i) => !states[i]);
-	if (missing.length === 0) {
-		void vscode.window.showInformationMessage("All of Stylesmith's fonts are installed.");
-		return;
-	}
-	const choice = await vscode.window.showQuickPick(
-		missing.map(font => ({ label: font.label, font })),
-		{ title: "Stylesmith: Install Font" }
-	);
-	if (!choice || !(await fonts.offer(choice.font))) return;
+	if (!target || !(await fonts.offer(target))) return;
 	await config.set("fonts.enabled", true);
-	await config.set("fonts.family", choice.font.id);
+	await config.set("fonts.family", target.id);
 	await vscode.commands.executeCommand("stylesmith.enable");
-	await fonts.announce(choice.font);
+	await fonts.announce(target);
 }
 
 /**

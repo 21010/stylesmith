@@ -105,11 +105,6 @@ export async function installedFontIds(
 	);
 }
 
-/** Whether one font looks installed (see installedFontIds). */
-export async function isInstalled(font: NerdFont, system: System): Promise<boolean> {
-	return (await installedFontIds([font], system)).has(font.id);
-}
-
 /** Downloads a pinned file and checks it; throws unless it matches exactly. */
 async function fetchPinned(
 	file: PinnedFile,

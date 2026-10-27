@@ -6,13 +6,7 @@
  */
 
 import * as vscode from "vscode";
-import {
-	ERROR_SIGNAL_DURATION,
-	SignalCooldown,
-	claimSignalSlot,
-	commandFailed,
-	commandFailedLabel
-} from "./problems";
+import { SignalCooldown, commandFailed, commandFailedLabel, showTransientSignal } from "./problems";
 
 export class FailSignal implements vscode.Disposable {
 	private readonly item: vscode.StatusBarItem;
@@ -52,16 +46,12 @@ export class FailSignal implements vscode.Disposable {
 
 	private ended(exitCode: number | undefined): void {
 		if (!this.enabled() || !commandFailed(exitCode) || !this.cooldown.ready(Date.now())) return;
-		claimSignalSlot(() => {
-			clearTimeout(this.timer);
-			this.item.hide();
-		});
-		const label = commandFailedLabel(exitCode!);
-		this.item.text = `$(terminal) exit ${exitCode}`;
-		this.item.tooltip = `${label}. Click to open the terminal.`;
-		this.item.accessibilityInformation = { label };
-		this.item.show();
-		clearTimeout(this.timer);
-		this.timer = setTimeout(() => this.item.hide(), ERROR_SIGNAL_DURATION);
+		this.timer = showTransientSignal(
+			this.item,
+			`$(terminal) exit ${exitCode}`,
+			commandFailedLabel(exitCode!),
+			"Click to open the terminal.",
+			this.timer
+		);
 	}
 }

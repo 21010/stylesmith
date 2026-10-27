@@ -62,46 +62,18 @@ const GROUPS = [
 		["daylight", "high-contrast", "high-contrast-light"]
 	]
 ];
+
+// The id VS Code stores in settings: a renamed theme keeps its earlier name as `id`.
+const settingsId = t => t.id ?? t.label;
+
 /** @type {[title: string, labels: string[]][]} */
-const THEME_GROUPS = [
-	["Retro terminals", ["Stylesmith Phosphor", "Stylesmith Amber", "Stylesmith ICE"]],
-	[
-		"Inspired by film",
-		[
-			"Stylesmith Neon Night",
-			"Stylesmith Monolith",
-			"Stylesmith Glass Lab",
-			"Stylesmith Vault",
-			"Stylesmith Simulation",
-			"Stylesmith Steel and Rust",
-			"Stylesmith Deep Desert",
-			"Stylesmith Haze",
-			"Stylesmith Grid",
-			"Stylesmith Corridor",
-			"Stylesmith Teal Terminal",
-			"Stylesmith Horizon",
-			"Stylesmith Command Deck"
-		]
-	],
-	[
-		"Inspired by books",
-		[
-			"Stylesmith Brass",
-			"Stylesmith Tea Garden",
-			"Stylesmith Sunroom",
-			"Stylesmith Countdown",
-			"Stylesmith Overlay"
-		]
-	],
-	[
-		"Everyday",
-		[
-			"Stylesmith Daylight",
-			"Stylesmith Neon High Contrast",
-			"Stylesmith Daylight High Contrast"
-		]
-	]
-];
+const THEME_GROUPS = GROUPS.map(([title, , ids]) => [
+	title,
+	ids.map(id => {
+		const preset = PRESETS.find(p => p.id === id);
+		return pkg.contributes.themes.find(t => settingsId(t) === preset.theme).label;
+	})
+]);
 
 const sameSet = (a, b) => [...a].sort().join() === [...b].sort().join();
 if (
@@ -118,9 +90,6 @@ if (
 	)
 )
 	throw new Error("every theme must be in exactly one group");
-
-// The id VS Code stores in settings: a renamed theme keeps its earlier name as `id`.
-const settingsId = t => t.id ?? t.label;
 
 const theme = label => {
 	const entry = pkg.contributes.themes.find(t => t.label === label);
