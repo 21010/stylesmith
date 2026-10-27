@@ -214,6 +214,12 @@
 					"scope": "application",
 					"markdownDescription": "When a command in the integrated terminal fails, show its exit code in the status bar for a moment, on the error background. It shows once, at most every two seconds; a command stopped with Ctrl+C doesn't count. Needs VS Code's shell integration (`terminal.integrated.shellIntegration.enabled`, on by default for bash, zsh, fish and PowerShell)."
 				},
+				"stylesmith.terminal.doneSignal": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"markdownDescription": "When a command in the integrated terminal finishes after running for at least 10 seconds, show its duration in the status bar for a moment. It shows once, at most every two seconds. Needs VS Code's shell integration (`terminal.integrated.shellIntegration.enabled`, on by default for bash, zsh, fish and PowerShell)."
+				},
 				"stylesmith.statusbar": {
 					"type": "boolean",
 					"default": true,
@@ -225,6 +231,12 @@
 					"default": false,
 					"scope": "application",
 					"description": "After an undo, tint the lines it changed for a moment, so you can see what came back. Uses the stylesmith.undoHighlightBackground theme color."
+				},
+				"stylesmith.pasteHighlight": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "After a multi-line paste, tint the lines it added for a moment, so you can see what landed and where. Uses the stylesmith.pasteHighlightBackground theme color."
 				},
 				"stylesmith.saveReceipt": {
 					"type": "boolean",
@@ -279,6 +291,18 @@
 					"default": false,
 					"scope": "application",
 					"description": "Raise the minimum contrast of terminal text to 7:1 (WCAG AAA), with VS Code’s native terminal.integrated.minimumContrastRatio. VS Code then adjusts any terminal color below that ratio, including colors that programs choose."
+				},
+				"stylesmith.effects.stickyScroll": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Pin the enclosing scope at the top of the editor and terminal as you scroll, with VS Code’s native editor.stickyScroll.enabled and terminal.integrated.stickyScroll.enabled settings."
+				},
+				"stylesmith.effects.calmMinimap": {
+					"type": "boolean",
+					"default": false,
+					"scope": "application",
+					"description": "Draw the editor minimap as color blocks instead of tiny letters, and show its slider only on hover, with VS Code’s native editor.minimap settings."
 				}
 			}
 		},
@@ -286,6 +310,16 @@
 			{
 				"id": "stylesmith.undoHighlightBackground",
 				"description": "Background of the lines an undo changed, shown briefly when stylesmith.undoHighlight is on.",
+				"defaults": {
+					"dark": "editor.findMatchHighlightBackground",
+					"light": "editor.findMatchHighlightBackground",
+					"highContrast": "editor.findMatchHighlightBackground",
+					"highContrastLight": "editor.findMatchHighlightBackground"
+				}
+			},
+			{
+				"id": "stylesmith.pasteHighlightBackground",
+				"description": "Background of the lines a multi-line paste added, shown briefly when stylesmith.pasteHighlight is on.",
 				"defaults": {
 					"dark": "editor.findMatchHighlightBackground",
 					"light": "editor.findMatchHighlightBackground",

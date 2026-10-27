@@ -13,11 +13,16 @@ import {
 	ErrorSignal,
 	ERROR_SIGNAL_COOLDOWN,
 	changedLines,
+	pastedLines,
 	SAVE_RECEIPT_DURATION,
 	saveReceiptText,
 	showsSaveReceipt,
 	commandFailed,
 	commandFailedLabel,
+	commandDone,
+	commandDoneLabel,
+	DONE_SIGNAL_MIN_DURATION,
+	formatDuration,
 	INTERRUPTED,
 	SignalCooldown,
 	stylesmithTheme
@@ -287,6 +292,27 @@ describe("lines an undo changed", () => {
 	});
 });
 
+describe("lines a paste added", () => {
+	it("marks the lines of a single multi-line insertion", () => {
+		assert.deepEqual(pastedLines([{ line: 3, text: "first\nsecond\nthird" }]), [3, 4, 5]);
+	});
+
+	it("ignores single-line typing, Enter indentation, multi-cursor edits, and undo or redo", () => {
+		assert.deepEqual(pastedLines([{ line: 0, text: "abc" }]), []);
+		assert.deepEqual(pastedLines([{ line: 0, text: "\n\t\t" }]), []);
+		assert.deepEqual(pastedLines([{ line: 0, text: "\r\n  " }]), []);
+		assert.deepEqual(
+			pastedLines([
+				{ line: 0, text: "a\nb" },
+				{ line: 5, text: "a\nb" }
+			]),
+			[]
+		);
+		assert.deepEqual(pastedLines([{ line: 0, text: "a\nb" }], "undo"), []);
+		assert.deepEqual(pastedLines([{ line: 0, text: "a\nb" }], "redo"), []);
+	});
+});
+
 describe("save receipt", () => {
 	it("shows only for a manual save", () => {
 		assert.equal(showsSaveReceipt("manual", false), true);
@@ -342,6 +368,24 @@ describe("failed-command signal", () => {
 
 	it("has an accessible label", () => {
 		assert.equal(commandFailedLabel(1), "Command failed with exit code 1");
+	});
+});
+
+describe("long-command done signal", () => {
+	it("triggers only for a command that succeeded after at least 10 seconds", () => {
+		assert.equal(DONE_SIGNAL_MIN_DURATION, 10_000);
+		assert.equal(commandDone(0, 10_000), true);
+		assert.equal(commandDone(0, 45_000), true);
+		assert.equal(commandDone(0, 9_999), false);
+		assert.equal(commandDone(1, 20_000), false);
+		assert.equal(commandDone(undefined, 20_000), false);
+	});
+
+	it("formats durations in seconds and minutes", () => {
+		assert.equal(formatDuration(10_200), "10s");
+		assert.equal(formatDuration(60_000), "1m");
+		assert.equal(formatDuration(125_000), "2m 5s");
+		assert.equal(commandDoneLabel(18_000), "Command finished in 18s");
 	});
 });
 

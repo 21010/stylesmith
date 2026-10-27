@@ -13,7 +13,9 @@ import assert from "node:assert/strict";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, it, mock } from "node:test";
 import type * as vscode from "vscode";
+import { DoneSignal } from "../doneSignal";
 import { FailSignal } from "../failSignal";
+import { PasteHighlight } from "../pasteHighlight";
 import { ProblemLens } from "../problemLens";
 import { ERROR_SIGNAL_DURATION, INTERRUPTED, SAVE_RECEIPT_DURATION } from "../problems";
 import { SaveReceipt } from "../saveReceipt";
@@ -244,5 +246,109 @@ describe("undo highlight (#120)", () => {
 		});
 		assert.deepEqual(tinted(editor, type), []);
 		highlight.dispose();
+	});
+});
+
+describe("paste highlight", () => {
+	let enabled = true;
+	const tinted = (editor: FakeEditor, type: DecorationType) =>
+		((editor.decorations.get(type) ?? []) as Range[]).map(range => range.start.line);
+
+	it("tints the lines a multi-line paste added, then clears them", () => {
+		enabled = true;
+		const editor = openEditor(["a", "b", "c", "d"]);
+		const highlight = new PasteHighlight(() => enabled);
+		const type = state.decorationTypes.at(-1)!;
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(1, 0, 1, 0), text: "x\ny\nz" }]
+		});
+		assert.deepEqual(tinted(editor, type), [1, 2, 3]);
+		mock.timers.tick(600);
+		assert.deepEqual(tinted(editor, type), []);
+		highlight.dispose();
+	});
+
+	it("tints nothing for single-line edits, Enter, undo, or when off", () => {
+		const editor = openEditor(["a", "b", "c"]);
+		enabled = true;
+		const highlight = new PasteHighlight(() => enabled);
+		const type = state.decorationTypes.at(-1)!;
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(0, 0, 0, 0), text: "x" }]
+		});
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(0, 0, 0, 0), text: "\n\t" }]
+		});
+		events.documentChange.fire({
+			document: editor.document,
+			reason: UNDO,
+			contentChanges: [{ range: new Range(0, 0, 0, 0), text: "x\ny" }]
+		});
+		enabled = false;
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(0, 0, 0, 0), text: "x\ny" }]
+		});
+		assert.deepEqual(tinted(editor, type), []);
+		highlight.dispose();
+	});
+});
+
+describe("long-command done signal", () => {
+	let enabled = true;
+	const item = () => state.statusItems.find(i => i.id === "stylesmith.doneSignal")!;
+
+	it("shows a finished long command's duration, then hides it", () => {
+		enabled = true;
+		const signal = new DoneSignal(() => enabled);
+		const execution = {};
+		const realNow = Date.now;
+		let now = 1_000;
+		Date.now = () => now;
+		try {
+			events.shellStart.fire({ execution });
+			now += 15_000;
+			events.shellEnd.fire({ execution, exitCode: 0 });
+			assert.equal(item().visible, true);
+			assert.equal(item().text, "$(check) done 15s");
+			mock.timers.tick(ERROR_SIGNAL_DURATION);
+			assert.equal(item().visible, false);
+		} finally {
+			Date.now = realNow;
+			signal.dispose();
+		}
+	});
+
+	it("stays quiet for short commands, failed commands, or when off", () => {
+		enabled = true;
+		const signal = new DoneSignal(() => enabled);
+		const realNow = Date.now;
+		let now = 1_000;
+		Date.now = () => now;
+		try {
+			const fast = {};
+			events.shellStart.fire({ execution: fast });
+			now += 3_000;
+			events.shellEnd.fire({ execution: fast, exitCode: 0 });
+
+			const failed = {};
+			events.shellStart.fire({ execution: failed });
+			now += 20_000;
+			events.shellEnd.fire({ execution: failed, exitCode: 1 });
+
+			enabled = false;
+			const off = {};
+			events.shellStart.fire({ execution: off });
+			now += 20_000;
+			events.shellEnd.fire({ execution: off, exitCode: 0 });
+
+			assert.equal(item().visible, false);
+		} finally {
+			Date.now = realNow;
+			signal.dispose();
+		}
 	});
 });

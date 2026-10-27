@@ -18,7 +18,9 @@ export const ICON_THEME = "stylesmith-pixel";
 const BASE = {
 	"effects.smoothCursor": true,
 	"effects.currentLine": true,
-	"effects.bracketGuides": true
+	"effects.bracketGuides": true,
+	"effects.stickyScroll": false,
+	"effects.calmMinimap": false
 };
 
 export const PRESETS: readonly Preset[] = [
@@ -204,7 +206,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
 		}
 	},
 	{
@@ -222,7 +226,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": true,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
 		}
 	},
 	{
@@ -322,7 +328,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": true,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
 		}
 	},
 	{
@@ -372,7 +380,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": false
+			"effects.readableTerminal": false,
+			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
 		}
 	},
 	{
@@ -391,7 +401,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": true
+			"effects.readableTerminal": true,
+			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
 		}
 	},
 	{
@@ -410,7 +422,9 @@ export const PRESETS: readonly Preset[] = [
 			"effects.blockCursor": false,
 			"effects.blockTerminalCursor": false,
 			"effects.dimUnfocused": false,
-			"effects.readableTerminal": true
+			"effects.readableTerminal": true,
+			"effects.stickyScroll": false,
+			"effects.calmMinimap": false
 		}
 	}
 ];

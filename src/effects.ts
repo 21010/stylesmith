@@ -89,5 +89,23 @@ export const EFFECTS: readonly Effect[] = [
 				isOn: value => typeof value === "number" && value >= 7
 			}
 		]
+	},
+	{
+		setting: "effects.stickyScroll",
+		label: "Sticky scroll",
+		enabledByDefault: false,
+		editorSettings: [
+			{ key: "editor.stickyScroll.enabled", value: true, isOn: equals(true) },
+			{ key: "terminal.integrated.stickyScroll.enabled", value: true, isOn: equals(true) }
+		]
+	},
+	{
+		setting: "effects.calmMinimap",
+		label: "Calm minimap",
+		enabledByDefault: false,
+		editorSettings: [
+			{ key: "editor.minimap.renderCharacters", value: false, isOn: equals(false) },
+			{ key: "editor.minimap.showSlider", value: "mouseover", isOn: equals("mouseover") }
+		]
 	}
 ];

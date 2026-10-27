@@ -241,6 +241,19 @@ export function changedLines(changes: readonly TextChange[]): number[] {
 	return [...lines].sort((a, b) => a - b);
 }
 
+/**
+ * The lines a multi-line paste added, to tint them (stylesmith.pasteHighlight): only when a
+ * single change inserts at least one newline and isn't an undo or redo. Typing a character, a
+ * single-line paste, or pressing Enter (which inserts a newline plus indentation) is left
+ * alone: a paste of several lines has content beyond indentation.
+ */
+export function pastedLines(changes: readonly TextChange[], reason?: "undo" | "redo"): number[] {
+	if (reason || changes.length !== 1) return [];
+	const [change] = changes;
+	if (!change || !change.text.includes("\n") || /^\r?\n[ \t]*$/.test(change.text)) return [];
+	return changedLines(changes);
+}
+
 /** Why a document was saved, from VS Code's TextDocumentSaveReason. */
 export type SaveReason = "manual" | "afterDelay" | "focusOut";
 
@@ -286,6 +299,31 @@ export function commandFailed(exitCode: number | undefined): boolean {
 
 /** What a screen reader says for a failed command. */
 export const commandFailedLabel = (exitCode: number) => `Command failed with exit code ${exitCode}`;
+
+/** Minimum duration (ms) for a terminal command to trigger the done signal. */
+export const DONE_SIGNAL_MIN_DURATION = 10_000;
+
+/**
+ * Whether a terminal command that finished should trigger the long-command done signal
+ * (stylesmith.terminal.doneSignal): it succeeded (exit code 0) and ran for at least
+ * DONE_SIGNAL_MIN_DURATION.
+ */
+export function commandDone(exitCode: number | undefined, durationMs: number): boolean {
+	return exitCode === 0 && durationMs >= DONE_SIGNAL_MIN_DURATION;
+}
+
+/** Formats a duration in ms for the status bar, e.g. "12s" or "2m 5s". */
+export function formatDuration(durationMs: number): string {
+	const totalSeconds = Math.max(1, Math.round(durationMs / 1000));
+	const minutes = Math.floor(totalSeconds / 60);
+	const seconds = totalSeconds % 60;
+	if (minutes === 0) return `${seconds}s`;
+	return seconds === 0 ? `${minutes}m` : `${minutes}m ${seconds}s`;
+}
+
+/** What a screen reader says for a finished long command. */
+export const commandDoneLabel = (durationMs: number) =>
+	`Command finished in ${formatDuration(durationMs)}`;
 
 /**
  * Lets a signal show at most once per ERROR_SIGNAL_COOLDOWN, like the error signal, so it can

@@ -27,10 +27,14 @@ export interface Config {
 	problemLens(): ProblemLensOptions;
 	/** Whether to tint the lines an undo changed, briefly. */
 	undoHighlight(): boolean;
+	/** Whether to tint the lines a multi-line paste added, briefly. */
+	pasteHighlight(): boolean;
 	/** Whether to note a manual save briefly at the end of the cursor's line. */
 	saveReceipt(): boolean;
 	/** Whether to show a failed terminal command in the status bar for a moment. */
 	failSignal(): boolean;
+	/** Whether to show a finished long terminal command in the status bar for a moment. */
+	doneSignal(): boolean;
 }
 
 function userValue<T>(section: string, key: string, fallback: T): T {
@@ -67,9 +71,13 @@ export const vscodeConfig: Config = {
 
 	undoHighlight: () => get("undoHighlight", false),
 
+	pasteHighlight: () => get("pasteHighlight", false),
+
 	saveReceipt: () => get("saveReceipt", false),
 
 	failSignal: () => get("terminal.failSignal", false),
+
+	doneSignal: () => get("terminal.doneSignal", false),
 
 	problemLens: () => ({
 		enabled: get("problems.enabled", true),

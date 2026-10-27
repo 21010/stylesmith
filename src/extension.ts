@@ -10,7 +10,9 @@ import { showDigitalRain } from "./digitalRain";
 import { PresetGallery } from "./presetGallery";
 import { ProblemLens } from "./problemLens";
 import { StateFile } from "./store";
+import { DoneSignal } from "./doneSignal";
 import { FailSignal } from "./failSignal";
+import { PasteHighlight } from "./pasteHighlight";
 import { SaveReceipt } from "./saveReceipt";
 import { UndoHighlight } from "./undoHighlight";
 import { FontInstaller } from "./fontUi";
@@ -77,7 +79,9 @@ export function activate(context: vscode.ExtensionContext): void {
 		}),
 		lens,
 		new UndoHighlight(() => services.config.undoHighlight()),
+		new PasteHighlight(() => services.config.pasteHighlight()),
 		new FailSignal(() => services.config.failSignal()),
+		new DoneSignal(() => services.config.doneSignal()),
 		new SaveReceipt(
 			() => services.config.saveReceipt(),
 			(document, line) => lens.showsMessageOn(document, line)

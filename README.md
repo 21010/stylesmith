@@ -26,9 +26,9 @@ As with any extension, installing Stylesmith means trusting its published extens
 
 Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and file icon theme a preset chose. These operations do not require a window reload.
 
-Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up. With `stylesmith.terminal.failSignal` on, it does the same when a command in the integrated terminal fails, showing its exit code; this needs VS Code's shell integration (on by default for bash, zsh, fish and PowerShell), and a command stopped with Ctrl+C doesn't count.
+Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up. With `stylesmith.terminal.failSignal` on, it does the same when a command in the integrated terminal fails, showing its exit code; with `stylesmith.terminal.doneSignal` on, it briefly shows the duration when a command finishes after running for at least 10 seconds. Both terminal signals need VS Code's shell integration (on by default for bash, zsh, fish and PowerShell), and a command stopped with Ctrl+C doesn't count.
 
-With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a moment. Themes can change the tint with the `stylesmith.undoHighlightBackground` color.
+With `stylesmith.undoHighlight` on, the lines an undo changed are tinted for a moment. With `stylesmith.pasteHighlight` on, the lines a multi-line paste added are tinted the same way. Themes can change the tints with the `stylesmith.undoHighlightBackground` and `stylesmith.pasteHighlightBackground` colors.
 
 With `stylesmith.saveReceipt` on, a manual save is noted at the end of the cursor's line for two seconds, like a terminal log: `▸ saved 14:02:11`. Auto-saves get no note, and a Problem Lens message on the line takes precedence. Themes can change its color with `stylesmith.saveReceiptForeground`.
 
@@ -123,6 +123,8 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.effects.blockTerminalCursor": false,
 	"stylesmith.effects.dimUnfocused": false,
 	"stylesmith.effects.readableTerminal": false,
+	"stylesmith.effects.stickyScroll": false,
+	"stylesmith.effects.calmMinimap": false,
 	"stylesmith.problems.enabled": true,
 	"stylesmith.problems.minimumSeverity": "warning",
 	"stylesmith.problems.inlineMessages": true,
@@ -130,8 +132,10 @@ All Stylesmith settings are global user settings. The font settings select a fam
 	"stylesmith.problems.statusBar": true,
 	"stylesmith.problems.errorSignal": false,
 	"stylesmith.terminal.failSignal": false,
+	"stylesmith.terminal.doneSignal": false,
 	"stylesmith.statusbar": true,
 	"stylesmith.undoHighlight": false,
+	"stylesmith.pasteHighlight": false,
 	"stylesmith.saveReceipt": false
 }
 ```
@@ -140,18 +144,20 @@ All Stylesmith settings are global user settings. The font settings select a fam
 
 Stylesmith manages the following VS Code settings while enabled. Disable restores the saved value, unless the user changed that setting while Stylesmith was active; in that case, the newer user value is preserved. Stylesmith also keeps such a change when it re-applies its settings at startup or after a Stylesmith setting changes; running **Stylesmith: Enable** applies its values again.
 
-| VS Code setting                                                         | Stylesmith option                                     |
-| ----------------------------------------------------------------------- | ----------------------------------------------------- |
-| `workbench.colorTheme`, `workbench.iconTheme`                           | the preset you apply                                  |
-| `editor.fontFamily`, `terminal.integrated.fontFamily`                   | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
-| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`            | `stylesmith.effects.smoothCursor`                     |
-| `editor.renderLineHighlight`                                            | `stylesmith.effects.currentLine`                      |
-| `editor.guides.bracketPairs`                                            | `stylesmith.effects.bracketGuides`                    |
-| `window.density.layout`                                                 | `stylesmith.effects.compactLayout`                    |
-| `editor.cursorStyle`                                                    | `stylesmith.effects.blockCursor`                      |
-| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking` | `stylesmith.effects.blockTerminalCursor`              |
-| `accessibility.dimUnfocused.enabled`                                    | `stylesmith.effects.dimUnfocused`                     |
-| `terminal.integrated.minimumContrastRatio`                              | `stylesmith.effects.readableTerminal`                 |
+| VS Code setting                                                           | Stylesmith option                                     |
+| ------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `workbench.colorTheme`, `workbench.iconTheme`                             | the preset you apply                                  |
+| `editor.fontFamily`, `terminal.integrated.fontFamily`                     | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
+| `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`              | `stylesmith.effects.smoothCursor`                     |
+| `editor.renderLineHighlight`                                              | `stylesmith.effects.currentLine`                      |
+| `editor.guides.bracketPairs`                                              | `stylesmith.effects.bracketGuides`                    |
+| `window.density.layout`                                                   | `stylesmith.effects.compactLayout`                    |
+| `editor.cursorStyle`                                                      | `stylesmith.effects.blockCursor`                      |
+| `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking`   | `stylesmith.effects.blockTerminalCursor`              |
+| `accessibility.dimUnfocused.enabled`                                      | `stylesmith.effects.dimUnfocused`                     |
+| `terminal.integrated.minimumContrastRatio`                                | `stylesmith.effects.readableTerminal`                 |
+| `editor.stickyScroll.enabled`, `terminal.integrated.stickyScroll.enabled` | `stylesmith.effects.stickyScroll`                     |
+| `editor.minimap.renderCharacters`, `editor.minimap.showSlider`            | `stylesmith.effects.calmMinimap`                      |
 
 Settings that are not available in the installed VS Code version are skipped. Stylesmith writes user (global) settings only, so a workspace or folder value for the same setting takes precedence in that workspace.
 

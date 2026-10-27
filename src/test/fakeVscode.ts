@@ -122,7 +122,8 @@ export const events = {
 		reason?: number;
 		contentChanges: { range: Range; text: string }[];
 	}>(),
-	shellEnd: new Emitter<{ exitCode: number | undefined }>()
+	shellStart: new Emitter<{ execution: unknown }>(),
+	shellEnd: new Emitter<{ execution?: unknown; exitCode: number | undefined }>()
 };
 
 const window = {
@@ -162,6 +163,7 @@ const window = {
 	onDidChangeTextEditorSelection: events.selection.event,
 	onDidChangeActiveTextEditor: events.activeEditor.event,
 	onDidChangeActiveColorTheme: events.colorTheme.event,
+	onDidStartTerminalShellExecution: events.shellStart.event,
 	onDidEndTerminalShellExecution: events.shellEnd.event
 };
 

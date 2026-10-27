@@ -28,10 +28,14 @@ describe("API-backed effects", () => {
 				"editor.cursorStyle",
 				"editor.cursorSmoothCaretAnimation",
 				"editor.guides.bracketPairs",
+				"editor.minimap.renderCharacters",
+				"editor.minimap.showSlider",
 				"editor.renderLineHighlight",
+				"editor.stickyScroll.enabled",
 				"terminal.integrated.cursorBlinking",
 				"terminal.integrated.cursorStyle",
 				"terminal.integrated.minimumContrastRatio",
+				"terminal.integrated.stickyScroll.enabled",
 				"window.density.layout"
 			].sort()
 		);
