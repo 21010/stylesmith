@@ -748,25 +748,19 @@
 					Installation
 				</h2>
 				<ol class="steps-list">
-					<li style="margin-bottom: 3rem">
-						<h3 style="color: var(--pink); margin-top: 0; font-size: 1.25rem">
-							1. Install Oh My Posh
-						</h3>
-						<p style="color: var(--muted); margin-bottom: 1rem">
+					<li>
+						<h3 style="color: var(--pink)">1. Install Oh My Posh</h3>
+						<p>
 							Follow the
-							<a
-								href="https://ohmyposh.dev/docs/installation/windows"
-								style="color: var(--cyan)"
+							<a href="https://ohmyposh.dev/docs/installation/windows"
 								>official Oh My Posh documentation</a
 							>
 							for your specific operating system to install the core engine.
 						</p>
 					</li>
-					<li style="margin-bottom: 3rem">
-						<h3 style="color: var(--yellow); margin-top: 0; font-size: 1.25rem">
-							2. Get the Stylesmith theme
-						</h3>
-						<p style="color: var(--muted); margin-bottom: 1rem">
+					<li>
+						<h3 style="color: var(--yellow)">2. Get the Stylesmith theme</h3>
+						<p>
 							Download the official configuration file to your home directory, or copy
 							<code>stylesmith.omp.json</code> (and 16-color terminal ANSI palettes
 							for Windows Terminal, Alacritty, Kitty, and Ghostty) directly inside VS
@@ -776,7 +770,7 @@
 								add-ons&hellip;</strong
 							>.
 						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<div class="code-wrapper">
 							<pre><code>curl -O https://raw.githubusercontent.com/21010/stylesmith/main/extras/oh-my-posh/stylesmith.omp.json</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
@@ -826,14 +820,12 @@
 						</div>
 					</li>
 					<li>
-						<h3 style="color: var(--cyan); margin-top: 0; font-size: 1.25rem">
-							3. Configure your Shell
-						</h3>
-						<p style="color: var(--muted); margin-bottom: 1rem">
+						<h3>3. Configure your Shell</h3>
+						<p>
 							Set Oh My Posh to use the downloaded theme. For PowerShell, add this to
 							your <code>$PROFILE</code>:
 						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<div class="code-wrapper">
 							<pre><code>oh-my-posh init pwsh --config ~/stylesmith.omp.json | Invoke-Expression</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
@@ -883,10 +875,8 @@
 								>
 							</button>
 						</div>
-						<p style="color: var(--muted); margin: 1.5rem 0 1rem">
-							For Bash (<code>~/.bashrc</code>) or Zsh (<code>~/.zshrc</code>):
-						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<p>For Bash (<code>~/.bashrc</code>) or Zsh (<code>~/.zshrc</code>):</p>
+						<div class="code-wrapper">
 							<pre><code>eval "$(oh-my-posh init bash --config ~/stylesmith.omp.json)"
 # or for Zsh:
 eval "$(oh-my-posh init zsh --config ~/stylesmith.omp.json)"</code></pre>
@@ -938,10 +928,8 @@ eval "$(oh-my-posh init zsh --config ~/stylesmith.omp.json)"</code></pre>
 								>
 							</button>
 						</div>
-						<p style="color: var(--muted); margin: 1.5rem 0 1rem">
-							For Fish (<code>~/.config/fish/config.fish</code>):
-						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<p>For Fish (<code>~/.config/fish/config.fish</code>):</p>
+						<div class="code-wrapper">
 							<pre><code>oh-my-posh init fish --config ~/stylesmith.omp.json | source</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
@@ -996,7 +984,7 @@ eval "$(oh-my-posh init zsh --config ~/stylesmith.omp.json)"</code></pre>
 			</section>
 		</main>
 
-		<footer class="site-footer">
+		<footer>
 			<div class="footer-grid">
 				<div class="footer-brand">
 					<a class="brand" href="./">

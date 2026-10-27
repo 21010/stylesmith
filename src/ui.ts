@@ -235,34 +235,28 @@ const PALETTE_FORMATS: readonly {
 
 async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 	const root = extension.extensionPath;
+	const copyExtra = async (file: string, message: string) => {
+		await vscode.env.clipboard.writeText(readFileSync(path.join(root, file), "utf-8"));
+		void vscode.window.showInformationMessage(message);
+	};
 	const items: MenuItem[] = [
 		{
 			label: "$(code) Copy Vim / Neovim color scheme",
 			detail: "Copies extras/vim/colors/stylesmith.vim to your clipboard",
-			run: async () => {
-				const content = readFileSync(
-					path.join(root, "extras", "vim", "colors", "stylesmith.vim"),
-					"utf-8"
-				);
-				await vscode.env.clipboard.writeText(content);
-				void vscode.window.showInformationMessage(
+			run: () =>
+				copyExtra(
+					path.join("extras", "vim", "colors", "stylesmith.vim"),
 					"Copied stylesmith.vim to clipboard. Save it as ~/.vim/colors/stylesmith.vim or ~/.config/nvim/colors/stylesmith.vim."
-				);
-			}
+				)
 		},
 		{
 			label: "$(terminal) Copy Oh My Posh prompt",
 			detail: "Copies extras/oh-my-posh/stylesmith.omp.json to your clipboard",
-			run: async () => {
-				const content = readFileSync(
-					path.join(root, "extras", "oh-my-posh", "stylesmith.omp.json"),
-					"utf-8"
-				);
-				await vscode.env.clipboard.writeText(content);
-				void vscode.window.showInformationMessage(
+			run: () =>
+				copyExtra(
+					path.join("extras", "oh-my-posh", "stylesmith.omp.json"),
 					"Copied stylesmith.omp.json to clipboard. Save it as ~/stylesmith.omp.json."
-				);
-			}
+				)
 		},
 		{
 			label: "$(symbol-color) Copy terminal ANSI palette…",
@@ -305,6 +299,11 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 	await choice?.run?.();
 }
 
+async function setFontFamily(config: Config, family: string): Promise<void> {
+	await config.set("fonts.enabled", true);
+	await config.set("fonts.family", family);
+}
+
 async function pickFont(
 	config: Config,
 	fonts: FontInstaller,
@@ -345,12 +344,14 @@ async function pickFont(
 	const font = FONTS.find(candidate => candidate.id === choice.id);
 	// A font that isn't installed: offer to install it. Declining still selects it, as before.
 	const justInstalled = font && !states[FONTS.indexOf(font)] && (await fonts.offer(font));
-	await config.set("fonts.enabled", choice.id !== undefined);
 	if (choice.id) {
-		await config.set("fonts.family", choice.id);
+		await setFontFamily(config, choice.id);
 		await vscode.commands.executeCommand("stylesmith.enable");
-	} else if (!isEnabled || (await isEnabled())) {
-		await vscode.commands.executeCommand("stylesmith.enable");
+	} else {
+		await config.set("fonts.enabled", false);
+		if (!isEnabled || (await isEnabled())) {
+			await vscode.commands.executeCommand("stylesmith.enable");
+		}
 	}
 	if (font && justInstalled) await fonts.announce(font);
 }
@@ -377,8 +378,7 @@ export async function installFontCommand(
 		target = choice?.font;
 	}
 	if (!target || !(await fonts.offer(target))) return;
-	await config.set("fonts.enabled", true);
-	await config.set("fonts.family", target.id);
+	await setFontFamily(config, target.id);
 	await vscode.commands.executeCommand("stylesmith.enable");
 	await fonts.announce(target);
 }
@@ -415,8 +415,7 @@ export async function applyPreset(
 	await setThemes(preset.theme, preset.iconTheme);
 	for (const [setting, on] of presetEffects(preset)) await config.set(setting, on);
 	if (installedFonts && (await installedFonts()).has(preset.font)) {
-		await config.set("fonts.enabled", true);
-		await config.set("fonts.family", preset.font);
+		await setFontFamily(config, preset.font);
 	}
 	await vscode.commands.executeCommand("stylesmith.enable");
 }

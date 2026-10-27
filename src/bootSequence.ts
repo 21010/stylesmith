@@ -12,43 +12,76 @@ import { PRESETS } from "./presets";
 import { activeColorTheme } from "./problemLens";
 import { DEFAULT_BOOT_LOG, type BootLog } from "./stories";
 
-const HIDE_CURSOR = "\x1b[?25l";
-const SHOW_CURSOR = "\x1b[?25h";
-const CLEAR = "\x1b[0m\x1b[2J\x1b[H";
+export const HIDE_CURSOR = "\x1b[?25l";
+export const SHOW_CURSOR = "\x1b[?25h";
+export const CLEAR = "\x1b[0m\x1b[2J\x1b[H";
 
-class BootTerminal implements vscode.Pseudoterminal {
-	private readonly write = new vscode.EventEmitter<string>();
+/**
+ * Shared Pseudoterminal base class for Boot Sequence and Digital Rain (#256): handles
+ * EventEmitter plumbing, workbench.reduceMotion changes, any-key close, and cursor cleanup.
+ */
+export abstract class EffectTerminal implements vscode.Pseudoterminal {
+	protected readonly write = new vscode.EventEmitter<string>();
 	private readonly closed = new vscode.EventEmitter<void>();
 	readonly onDidWrite = this.write.event;
 	readonly onDidClose = this.closed.event;
-	private readonly timers: ReturnType<typeof setTimeout>[] = [];
-	private readonly listeners: vscode.Disposable[] = [];
-	private log: BootLog = DEFAULT_BOOT_LOG;
-	private columns = 80;
-	private reduced = false;
-	private done = false;
+	protected readonly listeners: vscode.Disposable[] = [];
+	protected reduced = reducesMotion(
+		vscode.workspace.getConfiguration("workbench").get("reduceMotion")
+	);
+	protected done = false;
 
 	constructor(private readonly onClosed?: () => void) {}
 
-	open(size: vscode.TerminalDimensions | undefined): void {
-		if (size) this.columns = size.columns;
-		this.log = bootLogFor(activeColorTheme(), PRESETS);
-		this.reduced = reducesMotion(
-			vscode.workspace.getConfiguration("workbench").get("reduceMotion")
-		);
+	protected watchReducedMotion(onChanged: (reduced: boolean) => void): void {
 		this.listeners.push(
 			vscode.workspace.onDidChangeConfiguration(event => {
 				if (!event.affectsConfiguration("workbench.reduceMotion") || this.done) return;
 				this.reduced = reducesMotion(
 					vscode.workspace.getConfiguration("workbench").get("reduceMotion")
 				);
-				if (this.reduced) {
-					for (const timer of this.timers) clearTimeout(timer);
-					this.timers.length = 0;
-					this.drawAll(true);
-				}
+				onChanged(this.reduced);
 			})
 		);
+	}
+
+	abstract open(size: vscode.TerminalDimensions | undefined): void;
+
+	/** Any key closes it. */
+	handleInput(): void {
+		this.closed.fire();
+		this.close();
+	}
+
+	protected stop(): void {}
+
+	/** Stops everything; VS Code may call it again after a key closed the tab. */
+	close(): void {
+		if (this.done) return;
+		this.done = true;
+		this.stop();
+		for (const listener of this.listeners) listener.dispose();
+		this.onClosed?.();
+		this.write.fire(SHOW_CURSOR);
+		this.write.dispose();
+		this.closed.dispose();
+	}
+}
+
+class BootTerminal extends EffectTerminal {
+	private readonly timers: ReturnType<typeof setTimeout>[] = [];
+	private log: BootLog = DEFAULT_BOOT_LOG;
+	private columns = 80;
+
+	open(size: vscode.TerminalDimensions | undefined): void {
+		if (size) this.columns = size.columns;
+		this.log = bootLogFor(activeColorTheme(), PRESETS);
+		this.watchReducedMotion(reduced => {
+			if (reduced) {
+				this.stop();
+				this.drawAll(true);
+			}
+		});
 		if (this.reduced) {
 			this.drawAll(false);
 			return;
@@ -79,6 +112,11 @@ class BootTerminal implements vscode.Pseudoterminal {
 		if (this.reduced && !this.done) this.drawAll(true);
 	}
 
+	protected override stop(): void {
+		for (const timer of this.timers) clearTimeout(timer);
+		this.timers.length = 0;
+	}
+
 	private drawAll(clear: boolean): void {
 		const parts = [
 			...this.log.lines.map((line, i) =>
@@ -87,24 +125,6 @@ class BootTerminal implements vscode.Pseudoterminal {
 			`\r\n\x1b[2m${PROMPT}\x1b[0m`
 		];
 		this.write.fire((clear ? CLEAR : "") + HIDE_CURSOR + parts.join(""));
-	}
-
-	/** Any key closes it. */
-	handleInput(): void {
-		this.closed.fire();
-		this.close();
-	}
-
-	/** Stops everything; VS Code may call it again after a key closed the tab. */
-	close(): void {
-		if (this.done) return;
-		this.done = true;
-		for (const timer of this.timers) clearTimeout(timer);
-		for (const listener of this.listeners) listener.dispose();
-		this.onClosed?.();
-		this.write.fire(SHOW_CURSOR);
-		this.write.dispose();
-		this.closed.dispose();
 	}
 }
 

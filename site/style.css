@@ -735,14 +735,18 @@ img {
 	padding-top: 1.5rem;
 }
 
+.card-actions .button {
+	padding: 0.6rem 1.2rem;
+	font-size: 0.9rem;
+}
+
 .cards p {
 	margin: 0;
 	color: var(--muted);
 }
 
-/* Not part of the extension: a full row, in the second accent color. */
+/* Not part of the extension: in the second accent color. */
 .cards .addon {
-	grid-column: 1 / -1;
 	border-left-color: var(--pink);
 }
 
@@ -1112,8 +1116,19 @@ footer a {
 	background: var(--raised);
 	font-size: 1.05rem;
 }
+.steps-list h3 {
+	margin-top: 0;
+	font-size: 1.25rem;
+}
 .steps-list li p {
-	margin-bottom: 0;
+	margin: 0;
+	color: var(--muted);
+}
+.steps-list .code-wrapper {
+	margin-top: 1rem;
+}
+.steps-list .code-wrapper + p {
+	margin-top: 1.5rem;
 }
 .steps-list pre {
 	margin-top: 1rem;
@@ -1125,6 +1140,9 @@ footer a {
 	align-items: center;
 	margin-top: 1rem;
 	flex-wrap: wrap;
+}
+.install-options .code-wrapper {
+	margin-top: 0;
 }
 .code-wrapper {
 	position: relative;
@@ -1796,25 +1814,65 @@ kbd {
 	padding: 1.5rem 2rem;
 	background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(10, 10, 10, 0.1) 100%);
 	border: 1px solid var(--border);
+	border-left: 3px solid var(--cyan);
 	border-radius: 6px;
 }
-.ergo-block h4 {
+.ergo-block.pink {
+	border-left-color: var(--pink);
+}
+.ergo-block.yellow,
+.ergo-impact {
+	border-left: 3px solid var(--yellow);
+}
+.ergo-block h3 {
+	margin: 0 0 1rem;
+	font-size: 1.25rem;
+}
+.ergo-block.yellow h3,
+.ergo-impact h4 {
+	color: var(--yellow);
+}
+.ergo-block h4,
+.ergo-impact h4 {
 	text-transform: uppercase;
 	font-size: 0.85rem;
 	letter-spacing: 0.1em;
 	margin: 0 0 0.75rem 0;
 }
-.ergo-block p {
+.ergo-block h4 {
+	color: var(--cyan);
+}
+.ergo-block.pink h4 {
+	color: var(--pink);
+}
+.ergo-block p,
+.ergo-impact p {
+	color: var(--text);
 	font-size: 1.1rem;
 	line-height: 1.7;
 	margin: 0;
+}
+.ergo-block.pink p {
+	color: var(--muted);
 }
 .ergo-impact {
 	padding: 1rem 1.5rem;
 	background: var(--bg-deep);
 	border: 1px solid var(--border);
+	border-left: 3px solid var(--yellow);
 	border-radius: 6px;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.cta-section {
+	text-align: center;
+	margin: 4rem 0;
+}
+.prose-section {
+	max-width: 50rem;
+	margin: 0 auto;
+}
+.prose-section p {
+	color: var(--muted);
 }
 
 @media (max-width: 768px) {

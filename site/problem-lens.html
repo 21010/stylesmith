@@ -122,50 +122,18 @@
 						gap: 3rem;
 					"
 				>
-					<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
-						<h3
-							style="
-								color: var(--cyan);
-								margin-top: 0;
-								font-size: 1.25rem;
-								margin-bottom: 1rem;
-							"
-						>
-							Zero Friction
-						</h3>
-						<p
-							style="
-								color: var(--text);
-								line-height: 1.6;
-								margin: 0;
-								font-size: 1.05rem;
-							"
-						>
+					<div class="ergo-block">
+						<h3>Zero Friction</h3>
+						<p>
 							By rendering diagnostics inline, you see typos and logical errors
 							immediately. You do not need to open the terminal or move your mouse to
 							discover what broke.
 						</p>
 					</div>
 
-					<div class="ergo-block" style="border-left: 3px solid var(--yellow)">
-						<h3
-							style="
-								color: var(--yellow);
-								margin-top: 0;
-								font-size: 1.25rem;
-								margin-bottom: 1rem;
-							"
-						>
-							Fully Integrated
-						</h3>
-						<p
-							style="
-								color: var(--text);
-								line-height: 1.6;
-								margin: 0;
-								font-size: 1.05rem;
-							"
-						>
+					<div class="ergo-block yellow">
+						<h3>Fully Integrated</h3>
+						<p>
 							Problem Lens uses the diagnostic colors of your active palette. Errors,
 							warnings and info match the current theme instead of clashing with
 							default editor colors.
@@ -173,9 +141,9 @@
 					</div>
 				</div>
 			</section>
-			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
+			<section class="prose-section">
 				<h2>Multiple diagnostics on one line</h2>
-				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
+				<p>
 					When a line has more than one problem, Problem Lens shows the most severe one at
 					the end of the line followed by a count of the others, such as
 					<code>&rtrif; ERR Cannot find name 'x'. +2</code>. Hovering the Problem Lens
@@ -183,18 +151,18 @@
 					line in severity order.
 				</p>
 			</section>
-			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
+			<section class="prose-section">
 				<h2>Error signal</h2>
-				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
+				<p>
 					Turn on <code>stylesmith.problems.errorSignal</code>, and when the number of
 					errors in your files goes up, the status bar shows the new count for a moment,
 					on the error background. It shows once, at most every two seconds, so it never
 					flashes; click it to open the Problems panel. Off by default.
 				</p>
 			</section>
-			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
+			<section class="prose-section">
 				<h2>Failed-command &amp; long-command signals</h2>
-				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
+				<p>
 					Turn on <code>stylesmith.terminal.failSignal</code>, and when a command in the
 					integrated terminal fails, the status bar shows its exit code for a moment, such
 					as <code>exit 1</code>, on the error background, with the same two-second limit
@@ -209,7 +177,7 @@
 			</section>
 		</main>
 
-		<footer class="site-footer">
+		<footer>
 			<div class="footer-grid">
 				<div class="footer-brand">
 					<a class="brand" href="./">

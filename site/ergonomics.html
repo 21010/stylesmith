@@ -132,16 +132,16 @@
 							</div>
 							Minimum Contrast
 						</h3>
-						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
-							<h4 style="color: var(--pink)">The Challenge</h4>
-							<p style="color: var(--muted)">
+						<div class="ergo-block pink">
+							<h4>The Challenge</h4>
+							<p>
 								Low-contrast syntax colors, like grey on grey, can be hard to read,
 								especially in a bright room or on a dim screen.
 							</p>
 						</div>
-						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
-							<h4 style="color: var(--cyan)">Our Approach</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-block">
+							<h4>Our Approach</h4>
+							<p>
 								Every theme is tested with the WCAG contrast formula. Editor text,
 								terminal text and key interface text, such as the active tab, the
 								side bar, inputs, suggestions and the selected list item, need at
@@ -157,18 +157,18 @@
 								underlined instead.
 							</p>
 						</div>
-						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
-							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-impact">
+							<h4>What It Doesn&rsquo;t Cover</h4>
+							<p>
 								Contrast ratios are computed from the colors in the theme files.
 								They don&rsquo;t measure how your screen, its brightness, the light
 								in the room or your eyesight change what you see, and a good ratio
 								alone doesn&rsquo;t make a theme comfortable for everyone.
 							</p>
 						</div>
-						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
-							<h4 style="color: var(--cyan)">Readable Terminal</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-block">
+							<h4>Readable Terminal</h4>
+							<p>
 								Programs choose their own terminal colors, and a theme can&rsquo;t
 								test those. The readable terminal setting raises VS Code&rsquo;s
 								minimum terminal contrast from 4.5:1 to 7:1: VS Code then lightens
@@ -202,26 +202,26 @@
 							</div>
 							Maximum Contrast
 						</h3>
-						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
-							<h4 style="color: var(--pink)">The Challenge</h4>
-							<p style="color: var(--muted)">
+						<div class="ergo-block pink">
+							<h4>The Challenge</h4>
+							<p>
 								Some people find very high contrast, like pure white text on pure
 								black, uncomfortable: text can seem to glow or bleed into the
 								background.
 							</p>
 						</div>
-						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
-							<h4 style="color: var(--cyan)">Our Approach</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-block">
+							<h4>Our Approach</h4>
+							<p>
 								In every theme except the two high-contrast ones, the tests reject
 								pure black and pure white for the editor background and for editor
 								text, and cap the contrast of editor text at 16:1. The current
 								themes measure between 9.9:1 and 15.3:1.
 							</p>
 						</div>
-						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
-							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-impact">
+							<h4>What It Doesn&rsquo;t Cover</h4>
+							<p>
 								The cap is a design choice meant to reduce glare. It isn&rsquo;t
 								proven to prevent eye strain or fatigue. If you need the most
 								contrast, use a high-contrast theme, which has no cap.
@@ -251,17 +251,17 @@
 							</div>
 							Color-Vision Deficiencies
 						</h3>
-						<div class="ergo-block" style="border-left: 3px solid var(--pink)">
-							<h4 style="color: var(--pink)">The Challenge</h4>
-							<p style="color: var(--muted)">
+						<div class="ergo-block pink">
+							<h4>The Challenge</h4>
+							<p>
 								Colors that differ mainly in hue, such as red and green, can look
 								alike to people with color blindness, for example git&rsquo;s added
 								and deleted lines, or a terminal&rsquo;s red and green.
 							</p>
 						</div>
-						<div class="ergo-block" style="border-left: 3px solid var(--cyan)">
-							<h4 style="color: var(--cyan)">Our Approach</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-block">
+							<h4>Our Approach</h4>
+							<p>
 								For each theme, the tests simulate full protanopia, deuteranopia and
 								tritanopia (the Machado, Oliveira &amp; Fernandes 2009 model) and
 								require a color difference of at least 15 (CIE76 &Delta;E, where
@@ -273,9 +273,9 @@
 								bar in the gutter and modified lines with a striped one.
 							</p>
 						</div>
-						<div class="ergo-impact" style="border-left: 3px solid var(--yellow)">
-							<h4 style="color: var(--yellow)">What It Doesn&rsquo;t Cover</h4>
-							<p style="color: var(--text)">
+						<div class="ergo-impact">
+							<h4>What It Doesn&rsquo;t Cover</h4>
+							<p>
 								Syntax colors aren&rsquo;t compared with each other, and milder
 								forms of color blindness and total color blindness (monochromacy)
 								aren&rsquo;t simulated. Problem Lens doesn&rsquo;t rely on color
@@ -289,7 +289,7 @@
 			</section>
 		</main>
 
-		<footer class="site-footer">
+		<footer>
 			<div class="footer-grid">
 				<div class="footer-brand">
 					<a class="brand" href="./">

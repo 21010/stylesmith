@@ -343,17 +343,20 @@
 				</div>
 			</section>
 
-			<section style="max-width: 800px; margin: 4rem auto 2rem; padding: 0 2rem">
-				<h2>How to install a font yourself</h2>
-				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.5">
-					Choosing a font that isn&rsquo;t installed in the Stylesmith menu offers to
-					install it for you: it downloads the font from this project&rsquo;s release,
-					checks it against a SHA-256 built into Stylesmith, and installs it for your user
-					account, without administrator rights. To do it yourself, download the .zip
-					above and unpack it. Each family has several files; the ones ending in
-					<code>NerdFontMono</code> are the ones Stylesmith uses.
+			<section class="prose-section">
+				<h2>Using &amp; installing fonts</h2>
+				<p>
+					Applying a preset selects its recommended Nerd Font when that family is already
+					installed, and each card in <strong>Stylesmith: Preset Gallery</strong> offers
+					an inline <strong>Install</strong> button when it isn&rsquo;t. Choosing a font
+					in <strong>Stylesmith: Show Menu &rarr; Font</strong> (or running
+					<strong>Stylesmith: Install Font&hellip;</strong>) also offers to download the
+					<code>NerdFontMono</code> files from this project&rsquo;s release, verify their
+					built-in SHA-256, and install them for your user account without administrator
+					rights. To install a font manually from its <code>.zip</code> above, unpack the
+					<code>NerdFontMono</code> files and:
 				</p>
-				<ol class="steps-list" style="margin-top: 1.5rem">
+				<ol class="steps-list">
 					<li>
 						<strong>Windows:</strong> select the <code>NerdFontMono</code> files,
 						right-click and choose <strong>Install</strong> (no administrator rights
@@ -370,36 +373,9 @@
 					<li><strong>Then restart VS Code</strong>, so it sees the new font.</li>
 				</ol>
 			</section>
-			<section style="max-width: 800px; margin: 4rem auto 2rem; padding: 0 2rem">
-				<h2>How to apply a font</h2>
-				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.5">
-					Applying a preset automatically selects its recommended Nerd Font family when
-					that font is already installed on your system, and each card in
-					<strong>Stylesmith: Preset Gallery</strong> offers an inline
-					<strong>Install</strong> button when its font isn&rsquo;t installed yet. You can
-					also switch or install any font on its own from the Stylesmith menu:
-				</p>
-				<ol class="steps-list" style="margin-top: 1.5rem">
-					<li>
-						<strong>Open the menu:</strong> Click the Stylesmith paint-can icon in your
-						VS Code status bar, or open the Command Palette (<code
-							>Cmd/Ctrl + Shift + P</code
-						>) and run <code>Stylesmith: Show Menu</code>.
-					</li>
-					<li>
-						<strong>Select a font:</strong> Click the <strong>Font</strong> option to
-						choose a system-installed family.
-					</li>
-					<li>
-						<strong>Choose a family:</strong> Stylesmith sets the editor and terminal
-						font names through VS Code. It doesn&rsquo;t inject web fonts or reload the
-						window.
-					</li>
-				</ol>
-			</section>
-			<section style="max-width: 800px; margin: 2rem auto; padding: 0 2rem">
+			<section class="prose-section">
 				<h2>Font licenses</h2>
-				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.5">
+				<p>
 					The previews on this page use the Nerd Fonts builds of these fonts, under the
 					SIL Open Font License 1.1:
 					<a href="fonts/licenses/JetBrainsMono.txt">JetBrains Mono</a>,
@@ -419,7 +395,7 @@
 			</section>
 		</main>
 
-		<footer class="site-footer">
+		<footer>
 			<div class="footer-grid">
 				<div class="footer-brand">
 					<a class="brand" href="./">

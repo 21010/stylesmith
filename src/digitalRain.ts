@@ -7,50 +7,30 @@
  */
 
 import * as vscode from "vscode";
-import { reducesMotion } from "./motion";
+import { CLEAR, EffectTerminal, HIDE_CURSOR } from "./bootSequence";
 import { FRAME_MS, Rain, render, stillFrame } from "./rain";
 
-const HIDE_CURSOR = "\x1b[?25l";
-const SHOW_CURSOR = "\x1b[?25h";
-const CLEAR = "\x1b[0m\x1b[2J\x1b[H";
-
-class RainTerminal implements vscode.Pseudoterminal {
-	private readonly write = new vscode.EventEmitter<string>();
-	private readonly closed = new vscode.EventEmitter<void>();
-	readonly onDidWrite = this.write.event;
-	readonly onDidClose = this.closed.event;
-
+class RainTerminal extends EffectTerminal {
 	terminal: vscode.Terminal | undefined;
 	private rain: Rain | undefined;
 	private size: vscode.TerminalDimensions | undefined;
 	private timer: ReturnType<typeof setInterval> | undefined;
-	private readonly listeners: vscode.Disposable[] = [];
-	private done = false;
-	private still = reducesMotion(
-		vscode.workspace.getConfiguration("workbench").get("reduceMotion")
-	);
-
-	constructor(private readonly onClosed?: () => void) {}
 
 	open(size: vscode.TerminalDimensions | undefined): void {
 		this.size = size;
 		this.listeners.push(
 			vscode.window.onDidChangeActiveTerminal(() => this.updateRunning()),
-			vscode.window.onDidChangeWindowState(() => this.updateRunning()),
-			vscode.workspace.onDidChangeConfiguration(event => {
-				if (!event.affectsConfiguration("workbench.reduceMotion") || this.done) return;
-				this.still = reducesMotion(
-					vscode.workspace.getConfiguration("workbench").get("reduceMotion")
-				);
-				if (this.still) {
-					this.stop();
-					this.drawStill();
-				} else {
-					this.restart();
-				}
-			})
+			vscode.window.onDidChangeWindowState(() => this.updateRunning())
 		);
-		if (this.still) {
+		this.watchReducedMotion(reduced => {
+			if (reduced) {
+				this.stop();
+				this.drawStill();
+			} else {
+				this.restart();
+			}
+		});
+		if (this.reduced) {
 			this.drawStill();
 			return;
 		}
@@ -59,26 +39,8 @@ class RainTerminal implements vscode.Pseudoterminal {
 
 	setDimensions(size: vscode.TerminalDimensions): void {
 		this.size = size;
-		if (this.still) this.drawStill();
+		if (this.reduced) this.drawStill();
 		else this.restart();
-	}
-
-	/** Any key closes it. */
-	handleInput(): void {
-		this.closed.fire();
-		this.close();
-	}
-
-	/** Stops everything; VS Code may call it again after a key closed the tab. */
-	close(): void {
-		if (this.done) return;
-		this.done = true;
-		this.stop();
-		for (const listener of this.listeners) listener.dispose();
-		this.onClosed?.();
-		this.write.fire(SHOW_CURSOR);
-		this.write.dispose();
-		this.closed.dispose();
 	}
 
 	private restart(): void {
@@ -100,7 +62,7 @@ class RainTerminal implements vscode.Pseudoterminal {
 		}
 	}
 
-	private stop(): void {
+	protected override stop(): void {
 		clearInterval(this.timer);
 		this.timer = undefined;
 	}

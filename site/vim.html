@@ -659,15 +659,19 @@
 					Installation
 				</h2>
 				<ol class="steps-list">
-					<li style="margin-bottom: 3rem">
-						<h3 style="color: var(--pink); margin-top: 0; font-size: 1.25rem">
-							1. Download the color scheme
-						</h3>
-						<p style="color: var(--muted); margin-bottom: 1rem">
+					<li>
+						<h3 style="color: var(--pink)">1. Download the color scheme</h3>
+						<p>
 							Save <code>stylesmith.vim</code> to your Vim or Neovim
-							<code>colors</code> folder. For Vim:
+							<code>colors</code> folder, or copy it (and 16-color terminal ANSI
+							palettes for Windows Terminal, Alacritty, Kitty, and Ghostty) offline
+							from inside VS Code via
+							<strong
+								>Stylesmith: Show Menu &rarr; Terminal &amp; editor
+								add-ons&hellip;</strong
+							>. For Vim:
 						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<div class="code-wrapper">
 							<pre><code>curl -fLo ~/.vim/colors/stylesmith.vim --create-dirs https://raw.githubusercontent.com/21010/stylesmith/main/extras/vim/colors/stylesmith.vim</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
@@ -715,8 +719,8 @@
 								>
 							</button>
 						</div>
-						<p style="color: var(--muted); margin: 1.5rem 0 1rem">Or for Neovim:</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<p>Or for Neovim:</p>
+						<div class="code-wrapper">
 							<pre><code>curl -fLo ~/.config/nvim/colors/stylesmith.vim --create-dirs https://raw.githubusercontent.com/21010/stylesmith/main/extras/vim/colors/stylesmith.vim</code></pre>
 							<button
 								class="button ghost copy-btn on-deep"
@@ -766,22 +770,14 @@
 						</div>
 					</li>
 					<li>
-						<h3 style="color: var(--cyan); margin-top: 0; font-size: 1.25rem">
-							2. Enable the color scheme
-						</h3>
-						<p style="color: var(--muted); margin-bottom: 1rem">
-							You can also copy <code>stylesmith.vim</code> (or 16-color terminal ANSI
-							palettes for Windows Terminal, Alacritty, Kitty, and Ghostty) offline
-							from inside VS Code via
-							<strong
-								>Stylesmith: Show Menu &rarr; Terminal &amp; editor
-								add-ons&hellip;</strong
-							>. The scheme turns off 24-bit <code>termguicolors</code> automatically
-							so Vim and Neovim use the terminal&rsquo;s ANSI palette; load
+						<h3>2. Enable the color scheme</h3>
+						<p>
+							The scheme turns off 24-bit <code>termguicolors</code> automatically so
+							Vim and Neovim use the terminal&rsquo;s ANSI palette; load
 							<code>stylesmith</code> in your <code>~/.vimrc</code> or
 							<code>~/.config/nvim/init.vim</code>:
 						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<div class="code-wrapper">
 							<pre><code>set notermguicolors
 syntax on
 colorscheme stylesmith</code></pre>
@@ -833,11 +829,11 @@ colorscheme stylesmith</code></pre>
 								>
 							</button>
 						</div>
-						<p style="color: var(--muted); margin: 1.5rem 0 1rem">
+						<p>
 							Or in Neovim&rsquo;s Lua configuration
 							(<code>~/.config/nvim/init.lua</code>):
 						</p>
-						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+						<div class="code-wrapper">
 							<pre><code>vim.opt.termguicolors = false
 vim.cmd.colorscheme("stylesmith")</code></pre>
 							<button
@@ -893,7 +889,7 @@ vim.cmd.colorscheme("stylesmith")</code></pre>
 			</section>
 		</main>
 
-		<footer class="site-footer">
+		<footer>
 			<div class="footer-grid">
 				<div class="footer-brand">
 					<a class="brand" href="./">

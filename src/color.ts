@@ -104,10 +104,7 @@ export function colorDifference(a: string, b: string, vision: Matrix): number {
  * family, and that it isn't more saturated than its theme.
  */
 export function oklch(hex: string): { l: number; c: number; h: number } {
-	const [r, g, b] = [1, 3, 5].map(i => {
-		const v = parseInt(hex.slice(i, i + 2), 16) / 255;
-		return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-	}) as [number, number, number];
+	const [r, g, b] = linear(hex);
 	const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
 	const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
 	const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
