@@ -67,4 +67,13 @@ describe("README", () => {
 		];
 		for (const key of keys) assert.ok(managed.includes(`\`${key}\``), key);
 	});
+
+	it("documents every contributed command by title (#248)", () => {
+		for (const command of manifest().contributes.commands) {
+			assert.ok(
+				readme.includes(`Stylesmith: ${command.title}`),
+				`README documents "Stylesmith: ${command.title}" (${command.command})`
+			);
+		}
+	});
 });

@@ -92,17 +92,24 @@ export class ProblemLens implements vscode.Disposable {
 				this.update();
 			}),
 			vscode.workspace.onDidChangeConfiguration(event => {
-				if (!event.affectsConfiguration("stylesmith.problems")) return;
-				const wasOn = this.signalOn;
-				this.options = this.readOptions();
-				if (this.signalOn && !wasOn) {
-					// Start from the current count, so turning the signal on doesn't signal.
-					this.errorSignal = new ErrorSignal();
-					this.scheduleCount();
-				}
-				if (!this.signalOn) {
-					clearTimeout(this.signalTimer);
-					this.signalItem.hide();
+				const problemsChanged = event.affectsConfiguration("stylesmith.problems");
+				const themeChanged =
+					event.affectsConfiguration("workbench.colorTheme") ||
+					event.affectsConfiguration("workbench.preferred") ||
+					event.affectsConfiguration("window.autoDetectColorScheme");
+				if (!problemsChanged && !themeChanged) return;
+				if (problemsChanged) {
+					const wasOn = this.signalOn;
+					this.options = this.readOptions();
+					if (this.signalOn && !wasOn) {
+						// Start from the current count, so turning the signal on doesn't signal.
+						this.errorSignal = new ErrorSignal();
+						this.scheduleCount();
+					}
+					if (!this.signalOn) {
+						clearTimeout(this.signalTimer);
+						this.signalItem.hide();
+					}
 				}
 				this.replaceTypes();
 				this.update();

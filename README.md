@@ -24,7 +24,7 @@ As with any extension, installing Stylesmith means trusting its published extens
 
 ## Use
 
-Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), or click the Stylesmith status-bar button to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and file icon theme a preset chose. These operations do not require a window reload.
+Choose a Stylesmith color theme, file icon theme or product icon theme from the normal VS Code selectors (**Preferences: Product Icon Theme** for the interface icons), click the Stylesmith status-bar button (or run **Stylesmith: Show Menu**), or run **Stylesmith: Apply Preset…** to choose a preset. **Stylesmith: Enable** applies the selected native settings; **Stylesmith: Disable** restores the settings Stylesmith manages, including the color theme and file icon theme a preset chose. These operations do not require a window reload.
 
 Problem Lens runs independently and updates as diagnostics change. Configure it under `stylesmith.problems`. With `stylesmith.problems.errorSignal` on, the status bar briefly shows the new error count whenever it goes up. With `stylesmith.terminal.failSignal` on, it does the same when a command in the integrated terminal fails, showing its exit code; with `stylesmith.terminal.doneSignal` on, it briefly shows the duration when a command finishes after running for at least 10 seconds. Both terminal signals need VS Code's shell integration (on by default for bash, zsh, fish and PowerShell), and a command stopped with Ctrl+C doesn't count.
 
@@ -54,7 +54,7 @@ A preset sets a color theme, a file icon theme for the Explorer, and native VS C
 - **Simulation**: A greyed, green-cast city where only the code glows: a late-1990s film world, with a block cursor in the terminal.
 - **Steel and Rust**: Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.
 - **Brass**: Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.
-- **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, mustard and terracotta accents, with only a smooth cursor and the current line.
+- **Tea Garden**: A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, mustard and terracotta accents, with a smooth cursor, the current line and a calm minimap.
 - **Sunroom**: Soft sunlight on pale walls: warm cream, muted grey-blue structure and terracotta accents, with unfocused editors dimmed.
 - **Countdown**: A deep blue-black night sky with sun-gold keywords and every number in red, like a countdown, with unfocused editors dimmed.
 - **Overlay**: A security unit's view of the world: cyan interface overlays and amber alerts on dark slate, with a block cursor in the terminal.

@@ -140,6 +140,11 @@ highlight DiagnosticSignWarn ctermfg=Yellow ctermbg=NONE cterm=NONE
 highlight DiagnosticSignInfo ctermfg=Cyan ctermbg=NONE cterm=NONE
 highlight DiagnosticSignHint ctermfg=DarkGray ctermbg=NONE cterm=NONE
 highlight DiagnosticSignOk ctermfg=Green ctermbg=NONE cterm=NONE
+highlight DiagnosticFloatingError ctermfg=Red ctermbg=NONE cterm=NONE
+highlight DiagnosticFloatingWarn ctermfg=Yellow ctermbg=NONE cterm=NONE
+highlight DiagnosticFloatingInfo ctermfg=Cyan ctermbg=NONE cterm=NONE
+highlight DiagnosticFloatingHint ctermfg=DarkGray ctermbg=NONE cterm=NONE
+highlight DiagnosticFloatingOk ctermfg=Green ctermbg=NONE cterm=NONE
 highlight LspReferenceText ctermfg=NONE ctermbg=NONE cterm=underline
 highlight LspReferenceRead ctermfg=NONE ctermbg=NONE cterm=underline
 highlight LspReferenceWrite ctermfg=LightCyan ctermbg=NONE cterm=bold,underline

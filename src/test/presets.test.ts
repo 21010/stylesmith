@@ -9,6 +9,7 @@ import {
 	PRESET_ALIASES,
 	PRESETS,
 	presetEffects,
+	presetForTheme,
 	presetKind
 } from "../presets";
 import { PRESET_STORIES, PRESET_TALES } from "../stories";
@@ -89,11 +90,16 @@ describe("presets", () => {
 		}
 	});
 
-	it("keeps a renamed theme's earlier name as its id, so existing settings still find it", () => {
+	it("keeps a renamed theme's earlier name as its id, so existing settings still find it (#239)", () => {
 		const simulation = manifest().contributes.themes.find(
 			theme => theme.label === "Stylesmith Simulation"
 		);
 		assert.equal(simulation?.id, "Stylesmith Digital Rain");
+		assert.equal(presetForTheme("Stylesmith Digital Rain")?.id, "simulation");
+		assert.equal(presetForTheme("Stylesmith Simulation")?.id, "simulation");
+		const ordered = orderPresetsForPicker(PRESETS, "Stylesmith Simulation");
+		assert.equal(ordered[0]?.preset.id, "simulation");
+		assert.equal(ordered[0]?.current, true);
 	});
 
 	it("orders presets for the picker with kind and current badges (#193)", () => {

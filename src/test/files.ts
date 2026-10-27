@@ -19,6 +19,7 @@ export interface SettingSchema {
 
 export interface Manifest {
 	contributes: {
+		commands: { command: string; title: string; category?: string }[];
 		configuration: { properties: Record<string, SettingSchema> };
 		themes: { id?: string; label: string; uiTheme: string; path: string }[];
 		iconThemes: { id: string; label: string; path: string }[];

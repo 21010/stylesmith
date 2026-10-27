@@ -38,10 +38,10 @@ describe("API-only security boundary", () => {
 			assert.doesNotMatch(read(file), /Stylesmith 1\.x|1\.x\b/, file);
 	});
 
-	it("documents the API-only boundary and font licenses (#227)", () => {
+	it("documents the API-only boundary and font licenses (#227, #247)", () => {
 		assert.match(read("README.md"), /does not modify VS Code installation files/);
 		assert.match(read("SECURITY.md"), /does not read or write VS Code installation files/);
-		for (const file of ["README.md", "SECURITY.md", "site/fonts.html"]) {
+		for (const file of ["README.md", "SECURITY.md", "site/fonts.html", "site/security.html"]) {
 			assert.match(read(file), /SIL Open Font License/, file);
 			assert.match(read(file), /BSD 3-Clause/, file);
 		}

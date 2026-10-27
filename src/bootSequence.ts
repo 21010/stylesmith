@@ -22,16 +22,32 @@ class BootTerminal implements vscode.Pseudoterminal {
 	readonly onDidWrite = this.write.event;
 	readonly onDidClose = this.closed.event;
 	private readonly timers: ReturnType<typeof setTimeout>[] = [];
+	private readonly listeners: vscode.Disposable[] = [];
 	private log: BootLog = DEFAULT_BOOT_LOG;
 	private columns = 80;
 	private reduced = false;
 	private done = false;
+
+	constructor(private readonly onClosed?: () => void) {}
 
 	open(size: vscode.TerminalDimensions | undefined): void {
 		if (size) this.columns = size.columns;
 		this.log = bootLogFor(activeColorTheme(), PRESETS);
 		this.reduced = reducesMotion(
 			vscode.workspace.getConfiguration("workbench").get("reduceMotion")
+		);
+		this.listeners.push(
+			vscode.workspace.onDidChangeConfiguration(event => {
+				if (!event.affectsConfiguration("workbench.reduceMotion") || this.done) return;
+				this.reduced = reducesMotion(
+					vscode.workspace.getConfiguration("workbench").get("reduceMotion")
+				);
+				if (this.reduced) {
+					for (const timer of this.timers) clearTimeout(timer);
+					this.timers.length = 0;
+					this.drawAll(true);
+				}
+			})
 		);
 		if (this.reduced) {
 			this.drawAll(false);
@@ -84,6 +100,8 @@ class BootTerminal implements vscode.Pseudoterminal {
 		if (this.done) return;
 		this.done = true;
 		for (const timer of this.timers) clearTimeout(timer);
+		for (const listener of this.listeners) listener.dispose();
+		this.onClosed?.();
 		this.write.fire(SHOW_CURSOR);
 		this.write.dispose();
 		this.closed.dispose();
@@ -92,19 +110,18 @@ class BootTerminal implements vscode.Pseudoterminal {
 
 let currentTerminal: vscode.Terminal | undefined;
 
-/** Opens the boot log in a new terminal tab in the editor area, replacing any previous one (#226). */
+/** Opens the boot log in a new terminal tab in the editor area, replacing any previous one (#226, #246). */
 export function showBootSequence(): vscode.Terminal {
 	currentTerminal?.dispose();
-	const pty = new BootTerminal();
+	const pty = new BootTerminal(() => {
+		if (currentTerminal === terminal) currentTerminal = undefined;
+	});
 	const terminal = vscode.window.createTerminal({
 		name: "Boot Sequence",
 		pty,
 		location: vscode.TerminalLocation.Editor
 	});
 	currentTerminal = terminal;
-	pty.onDidClose(() => {
-		if (currentTerminal === terminal) currentTerminal = undefined;
-	});
 	terminal.show();
 	return terminal;
 }

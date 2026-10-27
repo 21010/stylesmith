@@ -19,6 +19,7 @@ import {
 	PRESET_ALIASES,
 	PRESETS,
 	presetEffects,
+	presetForTheme,
 	type Preset
 } from "./presets";
 import { activeColorTheme } from "./problemLens";
@@ -37,10 +38,7 @@ export interface StatusButton {
 
 /** Tooltip for the status bar button when Stylesmith is active (#206). */
 export function activeStatusTooltip(colorTheme: string | undefined): string {
-	const preset = PRESETS.find(
-		candidate =>
-			candidate.theme === colorTheme || `Stylesmith ${candidate.label}` === colorTheme
-	);
+	const preset = presetForTheme(colorTheme);
 	return preset
 		? `Stylesmith is on (${preset.label}). Click for presets, effects and fonts.`
 		: messages.statusActive;
@@ -60,8 +58,10 @@ export function createStatusButton(context: vscode.ExtensionContext, config: Con
 	let active = false;
 	const show = (isActive: boolean) => {
 		active = isActive;
+		const tooltip = active ? activeStatusTooltip(activeColorTheme()) : messages.statusInactive;
 		item.text = active ? "$(paintcan)" : "$(paintcan) off";
-		item.tooltip = active ? activeStatusTooltip(activeColorTheme()) : messages.statusInactive;
+		item.tooltip = tooltip;
+		item.accessibilityInformation = { label: tooltip };
 		if (config.get("statusbar", true)) item.show();
 		else item.hide();
 	};
@@ -103,11 +103,7 @@ export async function showMenu(
 	isEnabled?: () => Promise<boolean>
 ): Promise<void> {
 	const font = config.font();
-	const activeTheme = activeColorTheme();
-	const activePreset = PRESETS.find(
-		candidate =>
-			candidate.theme === activeTheme || `Stylesmith ${candidate.label}` === activeTheme
-	);
+	const activePreset = presetForTheme(activeColorTheme());
 	const workbench = vscode.workspace.getConfiguration("workbench");
 	const pixelProductIcons = workbench.get<string>("productIconTheme") === ICON_THEME;
 	const separator = (label: string): MenuItem => ({

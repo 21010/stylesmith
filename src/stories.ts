@@ -30,7 +30,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 		"Cold blue-grey steel and dim light, with rust for what matters: the real world outside the simulation, with dimmed unfocused editors.",
 	Brass: "Brass and copper on dark bronze, with verdigris in the strings, and only the calm settings, for slow and careful thinking.",
 	"Tea Garden":
-		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, mustard and terracotta accents, with only a smooth cursor and the current line.",
+		"A sunlit greenhouse: off-white with a hint of green, moss text, and leaf, mustard and terracotta accents, with a smooth cursor, the current line and a calm minimap.",
 	Sunroom:
 		"Soft sunlight on pale walls: warm cream, muted grey-blue structure and terracotta accents, with unfocused editors dimmed.",
 	Countdown:
@@ -185,7 +185,7 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 		origin: "Becky Chambers' A Psalm for the Wild-Built (2021) follows a tea monk through a gentle world where people learned to live within their means, long after the robots walked away into the wilderness.",
 		colors: "A warm off-white with a hint of green, like light through a greenhouse. Text in dark moss, keywords in leaf green, strings in terracotta and numbers in a deep mustard.",
 		settings:
-			"Only a smooth cursor and the current-line highlight: nothing mechanical, nothing that ticks."
+			"A smooth cursor, the current-line highlight and a calm minimap: nothing mechanical, nothing that ticks."
 	},
 	Sunroom: {
 		origin: "Kazuo Ishiguro's Klara and the Sun (2021) is told by an artificial friend who watches the world through a shop window, and trusts in the kindness of the Sun.",

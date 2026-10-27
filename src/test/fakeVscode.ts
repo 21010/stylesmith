@@ -87,6 +87,7 @@ interface StatusItem {
 	id: string;
 	text: string;
 	tooltip?: string;
+	accessibilityInformation?: { label: string };
 	visible: boolean;
 	backgroundColor?: ThemeColor;
 	show(): void;
@@ -117,6 +118,7 @@ export const events = {
 	colorTheme: new Emitter<unknown>(),
 	willSave: new Emitter<{ document: FakeDocument; reason: number }>(),
 	didSave: new Emitter<FakeDocument>(),
+	didClose: new Emitter<FakeDocument>(),
 	documentChange: new Emitter<{
 		document: FakeDocument;
 		reason?: number;
@@ -194,6 +196,7 @@ export const fake = {
 		onDidChangeConfiguration: events.configuration.event,
 		onWillSaveTextDocument: events.willSave.event,
 		onDidSaveTextDocument: events.didSave.event,
+		onDidCloseTextDocument: events.didClose.event,
 		onDidChangeTextDocument: events.documentChange.event
 	},
 	languages: {

@@ -30,6 +30,8 @@ class RainTerminal implements vscode.Pseudoterminal {
 		vscode.workspace.getConfiguration("workbench").get("reduceMotion")
 	);
 
+	constructor(private readonly onClosed?: () => void) {}
+
 	open(size: vscode.TerminalDimensions | undefined): void {
 		this.size = size;
 		this.listeners.push(
@@ -73,6 +75,7 @@ class RainTerminal implements vscode.Pseudoterminal {
 		this.done = true;
 		this.stop();
 		for (const listener of this.listeners) listener.dispose();
+		this.onClosed?.();
 		this.write.fire(SHOW_CURSOR);
 		this.write.dispose();
 		this.closed.dispose();
@@ -117,10 +120,12 @@ class RainTerminal implements vscode.Pseudoterminal {
 
 let currentTerminal: vscode.Terminal | undefined;
 
-/** Opens the rain in a new terminal tab in the editor area, replacing any previous one (#226). */
+/** Opens the rain in a new terminal tab in the editor area, replacing any previous one (#226, #246). */
 export function showDigitalRain(): vscode.Terminal {
 	currentTerminal?.dispose();
-	const pty = new RainTerminal();
+	const pty = new RainTerminal(() => {
+		if (currentTerminal === terminal) currentTerminal = undefined;
+	});
 	const terminal = vscode.window.createTerminal({
 		name: "Digital Rain",
 		pty,
@@ -128,9 +133,6 @@ export function showDigitalRain(): vscode.Terminal {
 	});
 	currentTerminal = terminal;
 	pty.terminal = terminal;
-	pty.onDidClose(() => {
-		if (currentTerminal === terminal) currentTerminal = undefined;
-	});
 	terminal.show();
 	return terminal;
 }

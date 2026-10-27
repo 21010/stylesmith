@@ -124,6 +124,11 @@ describe("Problem Lens gutter icons (#106, #120)", () => {
 		assert.equal(activeColorTheme("hc-light"), "Stylesmith Daylight High Contrast");
 		const problemLens = lens();
 		assert.match(errorIcons().dark ?? "", /problems[/\\]phosphor[/\\]error\.svg$/);
+		state.settings.set("workbench.preferredDarkColorTheme", "Stylesmith Amber");
+		events.configuration.fire({
+			affectsConfiguration: section => section === "workbench.preferred"
+		});
+		assert.match(errorIcons().dark ?? "", /problems[/\\]amber[/\\]error\.svg$/);
 		problemLens.dispose();
 	});
 
@@ -242,6 +247,16 @@ describe("save receipt (#120)", () => {
 		save(editor, SAVE.Manual);
 		underMessage.dispose();
 		assert.deepEqual(receipt(editor), []);
+
+		// A rejected manual save followed by an auto-save must not show a manual receipt (#245).
+		const afterRejected = new SaveReceipt(
+			() => enabled,
+			() => false
+		);
+		events.willSave.fire({ document: editor.document, reason: SAVE.Manual });
+		save(editor, SAVE.AfterDelay);
+		assert.deepEqual(receipt(editor), []);
+		afterRejected.dispose();
 	});
 });
 
@@ -578,8 +593,14 @@ describe("preset font auto-apply (#168) and menu feedback toggles (#176)", () =>
 			item.tooltip,
 			"Stylesmith is on (Phosphor Terminal). Click for presets, effects and fonts."
 		);
+		assert.deepEqual(item.accessibilityInformation, {
+			label: "Stylesmith is on (Phosphor Terminal). Click for presets, effects and fonts."
+		});
 		button.show(false);
 		assert.equal(item.tooltip, "Stylesmith is off. Click for presets, effects and fonts.");
+		assert.deepEqual(item.accessibilityInformation, {
+			label: "Stylesmith is off. Click for presets, effects and fonts."
+		});
 		for (const sub of subscriptions) sub.dispose();
 	});
 });

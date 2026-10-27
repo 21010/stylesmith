@@ -21,6 +21,15 @@ export class PasteHighlight implements vscode.Disposable {
 	constructor(private readonly enabled: () => boolean) {
 		this.listeners = [
 			vscode.workspace.onDidChangeTextDocument(event => this.changed(event)),
+			vscode.window.onDidChangeVisibleTextEditors(editors => {
+				const visible = new Set(editors);
+				for (const [editor, timer] of this.timers) {
+					if (!visible.has(editor)) {
+						clearTimeout(timer);
+						this.timers.delete(editor);
+					}
+				}
+			}),
 			vscode.workspace.onDidChangeConfiguration(event => {
 				if (event.affectsConfiguration("stylesmith.pasteHighlight") && !this.enabled()) {
 					for (const [editor, timer] of this.timers) {

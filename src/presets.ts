@@ -488,6 +488,22 @@ const KIND_LABELS: Readonly<Record<PresetKind, string>> = {
 };
 
 /**
+ * Finds the preset for a color theme settings value or display label (#239), handling
+ * Simulation's historical settings id ("Stylesmith Digital Rain").
+ */
+export function presetForTheme(
+	colorTheme: unknown,
+	presets: readonly Preset[] = PRESETS
+): Preset | undefined {
+	if (typeof colorTheme !== "string") return undefined;
+	return presets.find(
+		preset =>
+			preset.theme === colorTheme ||
+			(preset.theme === "Stylesmith Digital Rain" && colorTheme === "Stylesmith Simulation")
+	);
+}
+
+/**
  * Orders presets for the Apply Preset QuickPick (#193): the active preset comes first, and every
  * item's description names its kind (`dark`, `light`, `high contrast`) plus `current` when active.
  */
@@ -495,12 +511,10 @@ export function orderPresetsForPicker(
 	presets: readonly Preset[],
 	activeColorTheme: string | undefined
 ): { preset: Preset; current: boolean; kind: PresetKind; description: string }[] {
+	const activePreset = presetForTheme(activeColorTheme, presets);
 	const annotated = presets.map(preset => {
 		const kind = presetKind(preset);
-		const current =
-			preset.theme === activeColorTheme ||
-			(preset.theme === "Stylesmith Digital Rain" &&
-				activeColorTheme === "Stylesmith Simulation");
+		const current = preset === activePreset;
 		const description = current ? `${KIND_LABELS[kind]} · current` : KIND_LABELS[kind];
 		return { preset, current, kind, description };
 	});

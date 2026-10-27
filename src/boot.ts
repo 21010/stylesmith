@@ -4,7 +4,7 @@
  * themselves are in stories.ts.
  */
 
-import type { Preset } from "./presets";
+import { presetForTheme, type Preset } from "./presets";
 import { BOOT_LOGS, DEFAULT_BOOT_LOG, type BootLine, type BootLog } from "./stories";
 
 /** The log types out over about this long (ms); the prompt follows it. */
@@ -14,12 +14,7 @@ export const PROMPT = "Press any key to close.";
 
 /** The log of the preset that uses this color theme (its settings id or label), or the default log. */
 export function bootLogFor(colorTheme: unknown, presets: readonly Preset[]): BootLog {
-	const preset = presets.find(
-		candidate =>
-			candidate.theme === colorTheme ||
-			(candidate.theme === "Stylesmith Digital Rain" &&
-				colorTheme === "Stylesmith Simulation")
-	);
+	const preset = presetForTheme(colorTheme, presets);
 	return (preset && BOOT_LOGS[preset.label]) ?? DEFAULT_BOOT_LOG;
 }
 

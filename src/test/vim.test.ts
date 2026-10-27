@@ -65,7 +65,12 @@ const REQUIRED_GROUPS = [
 	"WinBarNC",
 	"LspReferenceText",
 	"LspReferenceRead",
-	"LspReferenceWrite"
+	"LspReferenceWrite",
+	"DiagnosticFloatingError",
+	"DiagnosticFloatingWarn",
+	"DiagnosticFloatingInfo",
+	"DiagnosticFloatingHint",
+	"DiagnosticFloatingOk"
 ];
 
 const scheme = readFileSync(path.join(ROOT, "extras", "vim", "colors", "stylesmith.vim"), "utf-8");

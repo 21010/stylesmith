@@ -42,9 +42,20 @@ export class SaveReceipt implements vscode.Disposable {
 			vscode.workspace.onWillSaveTextDocument(event => {
 				if (this.enabled() && REASONS[event.reason] === "manual")
 					this.manual.add(event.document);
+				else this.manual.delete(event.document);
 			}),
 			vscode.workspace.onDidSaveTextDocument(document => {
 				if (this.manual.delete(document)) this.saved(document);
+			}),
+			vscode.workspace.onDidCloseTextDocument(document => {
+				this.manual.delete(document);
+				this.clearForDocument(document);
+			}),
+			vscode.window.onDidChangeVisibleTextEditors(editors => {
+				const visible = new Set(editors);
+				for (const editor of [...this.timers.keys()]) {
+					if (!visible.has(editor)) this.clearEditor(editor);
+				}
 			}),
 			vscode.workspace.onDidChangeTextDocument(event => {
 				if (event.contentChanges.length > 0) this.clearForDocument(event.document);
