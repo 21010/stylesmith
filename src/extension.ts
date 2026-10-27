@@ -2,7 +2,14 @@ import * as path from "node:path";
 import * as vscode from "vscode";
 import { vscodeConfig, vscodeSettings } from "./config";
 import { FEEDBACK_URL, feedbackStep } from "./feedback";
-import { applyThemes, checkAfterStartup, disable, enable, type Services } from "./lifecycle";
+import {
+	applyProductIcons,
+	applyThemes,
+	checkAfterStartup,
+	disable,
+	enable,
+	type Services
+} from "./lifecycle";
 import { ManagedSettings } from "./managed";
 import { messages } from "./messages";
 import { showBootSequence } from "./bootSequence";
@@ -62,7 +69,11 @@ export function activate(context: vscode.ExtensionContext): void {
 			)
 		),
 		vscode.commands.registerCommand("stylesmith.menu", () =>
-			reportErrors(() => showMenu(services.config, fonts, context.extension))
+			reportErrors(() =>
+				showMenu(services.config, fonts, context.extension, enabled =>
+					applyProductIcons(services, enabled)
+				)
+			)
 		),
 		vscode.commands.registerCommand("stylesmith.installFont", () =>
 			reportErrors(() => installFontCommand(services.config, fonts))

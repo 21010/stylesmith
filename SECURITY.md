@@ -2,7 +2,7 @@
 
 ## Scope
 
-Stylesmith uses only VS Code's extension API and does not read or write VS Code installation files. It does not patch `workbench.html`, update `product.json`, or load custom or remote CSS/JavaScript. It installs a font only when the user asks it to and confirms, as described under [Font installation](#font-installation). Themes and icon themes are declared contributions; Problem Lens uses the VS Code decoration and diagnostics APIs; settings are changed through the VS Code configuration API.
+Stylesmith uses only VS Code's extension API and does not read or write VS Code installation files. It does not patch `workbench.html`, update `product.json`, or load custom or remote CSS/JavaScript. It installs a font only when the user asks it to and confirms, as described under [Font installation](#font-installation). Themes and icon themes are declared contributions; Problem Lens uses the VS Code decoration and diagnostics APIs; settings are changed through the VS Code configuration API. The bundled terminal and Vim add-ons in `extras/` are static files that are copied to the clipboard only when requested from the Stylesmith menu, and are never written to shell or Vim startup files automatically.
 
 Stylesmith does not read workspace content or workspace settings to choose or execute code. Its manifest declares support for untrusted workspaces. Its extension code still runs with the normal capabilities granted to a local VS Code extension, so installing it remains a trust decision.
 

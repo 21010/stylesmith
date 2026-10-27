@@ -200,6 +200,16 @@
 				</div>
 			</section>
 			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
+				<h2>Multiple diagnostics on one line</h2>
+				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
+					When a line has more than one problem, Problem Lens shows the most severe one at
+					the end of the line followed by a count of the others, such as
+					<code>&rtrif; ERR Cannot find name 'x'. +2</code>. Hovering the Problem Lens
+					status bar item when the cursor is on that line lists every diagnostic on the
+					line in severity order.
+				</p>
+			</section>
+			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
 				<h2>Error signal</h2>
 				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
 					Turn on <code>stylesmith.problems.errorSignal</code>, and when the number of
@@ -209,15 +219,18 @@
 				</p>
 			</section>
 			<section style="max-width: 800px; margin: 0 auto 4rem; padding: 0 2rem">
-				<h2>Failed-command signal</h2>
+				<h2>Failed-command &amp; long-command signals</h2>
 				<p style="margin-top: 1rem; color: var(--muted); line-height: 1.6">
 					Turn on <code>stylesmith.terminal.failSignal</code>, and when a command in the
 					integrated terminal fails, the status bar shows its exit code for a moment, such
 					as <code>exit 1</code>, on the error background, with the same two-second limit
-					as the error signal. A command you stop with Ctrl+C doesn&rsquo;t count; click
-					it to open the terminal. It relies on VS Code&rsquo;s shell integration, which
-					is on by default for bash, zsh, fish and PowerShell; without it, the signal
-					stays silent. Off by default.
+					as the error signal. Turn on <code>stylesmith.terminal.doneSignal</code>, and
+					when a command finishes with exit code <code>0</code> after running for at least
+					10 seconds, the status bar briefly shows how long it took, such as
+					<code>done 14s</code>. A command you stop with Ctrl+C doesn&rsquo;t count; click
+					either signal to open the terminal. Both rely on VS Code&rsquo;s shell
+					integration, which is on by default for bash, zsh, fish and PowerShell; without
+					it, they stay silent. Off by default.
 				</p>
 			</section>
 		</main>

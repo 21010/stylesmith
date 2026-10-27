@@ -35,6 +35,8 @@ export interface StoredState {
 	effectSettings?: Record<string, SavedValue>;
 	/** The color and icon theme a preset chose, so Disable can put the user's own back. */
 	themeSettings?: Record<string, SavedValue>;
+	/** The product icon theme toggled in the menu (#185), restored on Disable. */
+	productIconSettings?: Record<string, SavedValue>;
 	enabled?: boolean;
 	/** When Stylesmith first ran on this computer, for the one-time feedback question. */
 	firstRunAt?: number;

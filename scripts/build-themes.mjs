@@ -430,6 +430,7 @@ function theme(p) {
 			"profileBadge.foreground": p.fg,
 			"chart.line": p.accent,
 			"charts.green": p.status.added,
+			"charts.orange": p.status.warning,
 			"charts.purple": t.type,
 
 			// Terminal

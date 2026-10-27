@@ -15,7 +15,7 @@ export type Wanted = (userValue: unknown) => unknown;
 
 /** A kind of managed setting: where it's remembered, and what part of a value is the user's. */
 export interface Group {
-	name: "fontSettings" | "effectSettings" | "themeSettings";
+	name: "fontSettings" | "effectSettings" | "themeSettings" | "productIconSettings";
 	/** The user's own part of a value they changed after Stylesmith; what to put back. */
 	userPart(current: unknown): unknown;
 	/**
@@ -47,6 +47,13 @@ export const EFFECT_GROUP: Group = {
  */
 export const THEME_GROUP: Group = {
 	name: "themeSettings",
+	userPart: current => current,
+	userChangeWins: true
+};
+
+/** The product icon theme toggled in the menu (#185): restored on Disable or when toggled off. */
+export const PRODUCT_ICON_GROUP: Group = {
+	name: "productIconSettings",
 	userPart: current => current,
 	userChangeWins: true
 };

@@ -315,6 +315,7 @@
 		"profileBadge.foreground": "#ffd28f",
 		"chart.line": "#ffb000",
 		"charts.green": "#bfe36a",
+		"charts.orange": "#ffcc4d",
 		"charts.purple": "#fddda5",
 		"terminal.background": "#0f0b04",
 		"terminal.foreground": "#ffd28f",

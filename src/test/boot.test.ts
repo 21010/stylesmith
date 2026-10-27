@@ -11,7 +11,12 @@ const RETRO = [
 	"Black ICE",
 	"Vault",
 	"Simulation",
-	"Steel and Rust"
+	"Steel and Rust",
+	"Overlay",
+	"Grid",
+	"Corridor",
+	"Teal Terminal",
+	"Command Deck"
 ];
 
 // Built from strings: the lint rule forbids control characters in regex literals.

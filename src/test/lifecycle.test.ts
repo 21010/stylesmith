@@ -6,7 +6,14 @@ import { afterEach, beforeEach, describe, it } from "node:test";
 import type { Config } from "../config";
 import { DEFAULT_FONT_ID, findFont } from "../fonts";
 import { EFFECTS } from "../effects";
-import { applyThemes, checkAfterStartup, disable, enable, type Services } from "../lifecycle";
+import {
+	applyProductIcons,
+	applyThemes,
+	checkAfterStartup,
+	disable,
+	enable,
+	type Services
+} from "../lifecycle";
 import { ManagedSettings, type SettingsAccess } from "../managed";
 import { StateFile } from "../store";
 
@@ -158,6 +165,19 @@ describe("API-only lifecycle", () => {
 		values.set("workbench.productIconTheme", "their-icons");
 		await applyThemes(services, "Stylesmith Vault", "stylesmith-pixel");
 		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
+		await disable(services);
+		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
+	});
+
+	it("restores the user's product icons when toggled in the menu or on Disable (#185)", async () => {
+		values.set("workbench.productIconTheme", "their-icons");
+		await applyProductIcons(services, true);
+		assert.equal(values.get("workbench.productIconTheme"), "stylesmith-pixel");
+		await applyProductIcons(services, false);
+		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
+
+		await applyProductIcons(services, true);
+		assert.equal(values.get("workbench.productIconTheme"), "stylesmith-pixel");
 		await disable(services);
 		assert.equal(values.get("workbench.productIconTheme"), "their-icons");
 	});

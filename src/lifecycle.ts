@@ -5,12 +5,14 @@ import { EFFECTS, type Effect } from "./effects";
 import {
 	EFFECT_GROUP,
 	FONT_GROUP,
+	PRODUCT_ICON_GROUP,
 	THEME_GROUP,
 	fontWanted,
 	toggleWanted,
 	type ManagedSettings,
 	type Wanted
 } from "./managed";
+import { ICON_THEME } from "./presets";
 import type { StateFile } from "./store";
 import type { NerdFont } from "./fonts";
 
@@ -65,11 +67,28 @@ export async function applyThemes(
 // Presets up to 2.8 set the product icon theme too; Stylesmith no longer manages it.
 const RELEASED_SETTINGS = ["workbench.productIconTheme"];
 
+/**
+ * Toggles the Stylesmith Pixel product icon theme (#171, #185) as a managed setting: turning it
+ * off or running Disable puts the user's own product icon theme back. Presets never call this.
+ */
+export async function applyProductIcons(services: Services, enabled: boolean): Promise<void> {
+	const wanted = enabled
+		? new Map([
+				[
+					"workbench.productIconTheme",
+					toggleWanted(ICON_THEME, value => value === ICON_THEME)
+				]
+			])
+		: new Map<string, Wanted>();
+	await services.managed.update(PRODUCT_ICON_GROUP, wanted);
+}
+
 /** Restores the user's prior settings through the VS Code configuration API. */
 export async function disable(services: Services): Promise<void> {
 	await services.managed.update(FONT_GROUP, new Map());
 	await services.managed.update(EFFECT_GROUP, new Map());
 	await services.managed.update(THEME_GROUP, new Map());
+	await services.managed.update(PRODUCT_ICON_GROUP, new Map());
 	await services.store.update({ enabled: false });
 }
 

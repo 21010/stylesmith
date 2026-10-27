@@ -121,6 +121,13 @@ describe("preset gallery page", () => {
 		assert.ok(mixed.includes('<li data-kind="dark">'));
 		assert.ok(mixed.includes('<li data-kind="light">'));
 		assert.ok(mixed.includes('<li data-kind="hc">'));
+		assert.ok(mixed.includes("All (3)"));
+		assert.ok(mixed.includes("Dark (1)"));
+		assert.ok(mixed.includes("Light (1)"));
+		assert.ok(mixed.includes("High contrast (1)"));
+		assert.ok(
+			mixed.includes('id="filter-status" class="sr-only" role="status" aria-live="polite"')
+		);
 	});
 
 	it("escapes every text, and refuses anything but hex colors", () => {

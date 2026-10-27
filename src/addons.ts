@@ -69,3 +69,18 @@ export function buildTerminalScheme(
 export function terminalSchemeJson(name: string, colors: Readonly<Record<string, string>>): string {
 	return `${JSON.stringify(buildTerminalScheme(name, colors), null, "\t")}\n`;
 }
+
+/**
+ * Orders color themes for the terminal palette picker (#182): the currently active Stylesmith
+ * theme comes first and is marked `current: true`.
+ */
+export function orderThemesForPicker<T extends { id?: string; label: string; path: string }>(
+	themes: readonly T[],
+	activeColorTheme: string | undefined
+): { theme: T; current: boolean }[] {
+	const annotated = themes.map(theme => ({
+		theme,
+		current: (theme.id ?? theme.label) === activeColorTheme || theme.label === activeColorTheme
+	}));
+	return [...annotated.filter(item => item.current), ...annotated.filter(item => !item.current)];
+}

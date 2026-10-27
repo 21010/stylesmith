@@ -1,10 +1,22 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { buildTerminalScheme, terminalSchemeJson } from "../addons";
+import { buildTerminalScheme, orderThemesForPicker, terminalSchemeJson } from "../addons";
 import { manifest, readJson, type ColorTheme } from "./files";
 
-describe("terminal ANSI palette export (#174)", () => {
+describe("terminal ANSI palette export (#174, #182)", () => {
 	const themes = manifest().contributes.themes;
+
+	it("floats the active Stylesmith theme to the top of the picker and marks it current (#182)", () => {
+		const ordered = orderThemesForPicker(themes, "Stylesmith Daylight");
+		assert.equal(ordered[0]?.theme.label, "Stylesmith Daylight");
+		assert.equal(ordered[0]?.current, true);
+		assert.ok(ordered.slice(1).every(item => !item.current));
+
+		// Simulation's settings id is its earlier name ("Stylesmith Digital Rain").
+		const byId = orderThemesForPicker(themes, "Stylesmith Digital Rain");
+		assert.equal(byId[0]?.theme.label, "Stylesmith Simulation");
+		assert.equal(byId[0]?.current, true);
+	});
 
 	for (const entry of themes) {
 		it(`exports a complete 16-color hex terminal scheme for ${entry.label}`, () => {

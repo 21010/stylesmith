@@ -8,7 +8,7 @@ export interface Preset {
 	theme: string;
 	/** The file icon theme for the Explorer. VS Code's own interface icons are left alone. */
 	iconTheme: string;
-	/** The font that suits it (a FONTS id). Presets don't set fonts; the website recommends this. */
+	/** The font that suits it (a FONTS id). Applied automatically if already installed (#168). */
 	font: string;
 	effects: Record<string, boolean>;
 }

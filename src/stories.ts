@@ -363,6 +363,62 @@ export const BOOT_LOGS: Readonly<Record<string, BootLog>> = {
 			{ text: "CREW AWAKE: 9", status: "ok" },
 			{ text: "DINNER: THE SAME AS YESTERDAY." }
 		]
+	},
+	Overlay: {
+		color: "cyan",
+		lines: [
+			{ text: "SECUNIT FEED OVERLAY  REV 4.2" },
+			{ text: "GOVERNOR MODULE: OFFLINE", status: "warn" },
+			{ text: "HALLWAY CAMERAS", status: "ok" },
+			{ text: "DRONE PERIMETER", status: "ok" },
+			{ text: "MEDIA ARCHIVE BUFFER", status: "ok" },
+			{ text: "CLIENTS: STILL TALKING", status: "warn" },
+			{ text: "RESUMING SERIAL EPISODE 412." }
+		]
+	},
+	Grid: {
+		color: "cyan",
+		lines: [
+			{ text: "GRID SYSTEM  SECTOR 01" },
+			{ text: "LIGHT CYCLES", status: "ok" },
+			{ text: "I/O TOWER LINK", status: "ok" },
+			{ text: "IDENTITY DISC SYNC", status: "ok" },
+			{ text: "ORANGE TRACE IN SECTOR 7", status: "warn" },
+			{ text: "END OF LINE." }
+		]
+	},
+	Corridor: {
+		color: "green",
+		lines: [
+			{ text: "DATA REFINEMENT FLOOR  DESK 04" },
+			{ text: "ELEVATOR TOKEN", status: "ok" },
+			{ text: "PARTITION BARRIER", status: "ok" },
+			{ text: "NUMBER BINS 1 TO 5", status: "ok" },
+			{ text: "QUOTA PROGRESS: 74%", status: "warn" },
+			{ text: "PLEASE ENJOY EACH FILE EQUALLY." }
+		]
+	},
+	"Teal Terminal": {
+		color: "cyan",
+		lines: [
+			{ text: "REFINEMENT CONSOLE  NIGHT SHIFT" },
+			{ text: "CRT TUBE WARM-UP", status: "ok" },
+			{ text: "TRACKBALL CALIBRATION", status: "ok" },
+			{ text: "BIN ALLOCATION TABLE", status: "ok" },
+			{ text: "UNSORTED CLUSTER DETECTED", status: "warn" },
+			{ text: "THE WORK IS MYSTERIOUS AND IMPORTANT." }
+		]
+	},
+	"Command Deck": {
+		color: "blue",
+		lines: [
+			{ text: "BRIDGE CONSOLE  SECTOR COMMAND" },
+			{ text: "DEFLECTOR SHIELDS", status: "ok" },
+			{ text: "HYPERDRIVE MOTIVATOR", status: "ok" },
+			{ text: "LONG-RANGE SENSORS", status: "ok" },
+			{ text: "TRACTOR BEAM COOLANT", status: "warn" },
+			{ text: "ALL STATIONS STANDING BY." }
+		]
 	}
 };
 

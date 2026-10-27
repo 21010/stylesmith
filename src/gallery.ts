@@ -109,6 +109,7 @@ button.filter { margin: 0; color: var(--vscode-button-secondaryForeground, #ffff
 	background: var(--vscode-button-secondaryBackground, #3a3d41); }
 button.filter[aria-pressed="true"] { color: var(--vscode-button-foreground, #ffffff);
 	background: var(--vscode-button-background, #0e639c); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 li[hidden] { display: none; }
 button:focus-visible { outline: 2px solid var(--vscode-focusBorder, #3794ff); outline-offset: 2px; }
 `;
@@ -124,8 +125,14 @@ document.addEventListener("click", event => {
 		const kind = button.dataset.filter;
 		for (const item of document.querySelectorAll(".filters button"))
 			item.setAttribute("aria-pressed", String(item === button));
-		for (const card of document.querySelectorAll("main li"))
+		let shown = 0;
+		const cards = document.querySelectorAll("main li");
+		for (const card of cards) {
 			card.hidden = kind !== "all" && card.dataset.kind !== kind;
+			if (!card.hidden) shown++;
+		}
+		const status = document.getElementById("filter-status");
+		if (status) status.textContent = "Showing " + shown + " of " + cards.length + " presets.";
 	}
 });
 `;
@@ -158,6 +165,8 @@ export function galleryHtml(cards: readonly GalleryCard[], nonce: string): strin
 				`.s${i} { --bg: ${hex(c.bg)}; --fg: ${hex(c.fg)}; --kw: ${hex(c.keyword)}; --fn: ${hex(c.function)}; --str: ${hex(c.string)}; --num: ${hex(c.number)}; --cm: ${hex(c.comment)}; }`
 		)
 		.join("\n");
+	const count = (kind: "dark" | "light" | "hc") =>
+		cards.filter(c => (c.kind ?? "dark") === kind).length;
 	return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -175,11 +184,12 @@ ${colors}</style>
 </header>
 <main>
 <nav class="filters" aria-label="Filter presets by kind">
-<button type="button" class="filter" aria-pressed="true" data-filter="all">All</button>
-<button type="button" class="filter" aria-pressed="false" data-filter="dark">Dark</button>
-<button type="button" class="filter" aria-pressed="false" data-filter="light">Light</button>
-<button type="button" class="filter" aria-pressed="false" data-filter="hc">High contrast</button>
+<button type="button" class="filter" aria-pressed="true" data-filter="all">All (${cards.length})</button>
+<button type="button" class="filter" aria-pressed="false" data-filter="dark">Dark (${count("dark")})</button>
+<button type="button" class="filter" aria-pressed="false" data-filter="light">Light (${count("light")})</button>
+<button type="button" class="filter" aria-pressed="false" data-filter="hc">High contrast (${count("hc")})</button>
 </nav>
+<p id="filter-status" class="sr-only" role="status" aria-live="polite"></p>
 <ul>
 ${cards.map(card).join("\n")}
 </ul>

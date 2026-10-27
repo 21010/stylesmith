@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { terminalSchemeJson } from "./addons";
+import { orderThemesForPicker, terminalSchemeJson } from "./addons";
 import { CONFIG_SECTION, type Config } from "./config";
 import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
@@ -65,7 +65,8 @@ export const FEEDBACK_TOGGLES: readonly { setting: string; label: string; defaul
 export async function showMenu(
 	config: Config,
 	fonts: FontInstaller,
-	extension?: vscode.Extension<unknown>
+	extension?: vscode.Extension<unknown>,
+	setProductIcons?: (enabled: boolean) => Promise<void>
 ): Promise<void> {
 	const font = config.font();
 	const workbench = vscode.workspace.getConfiguration("workbench");
@@ -116,11 +117,13 @@ export async function showMenu(
 			label: `${pixelProductIcons ? "$(pass-filled)" : "$(circle-large-outline)"} Pixel product icons`,
 			description: pixelProductIcons ? "on" : "off",
 			run: () =>
-				workbench.update(
-					"productIconTheme",
-					pixelProductIcons ? undefined : ICON_THEME,
-					vscode.ConfigurationTarget.Global
-				)
+				setProductIcons
+					? setProductIcons(!pixelProductIcons)
+					: workbench.update(
+							"productIconTheme",
+							pixelProductIcons ? undefined : ICON_THEME,
+							vscode.ConfigurationTarget.Global
+						)
 		},
 		...(extension
 			? [
@@ -188,11 +191,18 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 			run: async () => {
 				const themes = (
 					extension.packageJSON as {
-						contributes: { themes: { label: string; path: string }[] };
+						contributes: { themes: { id?: string; label: string; path: string }[] };
 					}
 				).contributes.themes;
+				const active = vscode.workspace
+					.getConfiguration("workbench")
+					.get<string>("colorTheme");
 				const picked = await vscode.window.showQuickPick(
-					themes.map(theme => ({ label: theme.label, theme })),
+					orderThemesForPicker(themes, active).map(({ theme, current }) => ({
+						label: theme.label,
+						description: current ? "current" : undefined,
+						theme
+					})),
 					{ title: "Stylesmith: Copy Terminal ANSI Palette" }
 				);
 				if (!picked) return;

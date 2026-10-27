@@ -199,7 +199,7 @@ const howTo = `<h3 class="group-title">How presets work</h3>
 </div>
 <div>
 <h4>What it leaves to you</h4>
-<p>A preset doesn&rsquo;t choose a font or change Problem Lens. Each card recommends a font: choose it in the Stylesmith menu, which can install it for you after you confirm.</p>
+<p>A preset applies its recommended font if you already have it installed, and leaves Problem Lens as it is. If the font isn&rsquo;t installed yet, choose it in the Stylesmith menu, which can install it for you after you confirm.</p>
 </div>
 </div>`;
 
