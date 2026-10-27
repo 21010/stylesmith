@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext): void {
 			return queue;
 		});
 	const status = createStatusButton(context, services.config);
-	const gallery = new PresetGallery(context.extension);
+	const gallery = new PresetGallery(context.extension, () => fonts.installedIds());
 	const lens = new ProblemLens(context, () => services.config.problemLens());
 	let reapply: ReturnType<typeof setTimeout> | undefined;
 
@@ -75,8 +75,8 @@ export function activate(context: vscode.ExtensionContext): void {
 				)
 			)
 		),
-		vscode.commands.registerCommand("stylesmith.installFont", () =>
-			reportErrors(() => installFontCommand(services.config, fonts))
+		vscode.commands.registerCommand("stylesmith.installFont", (fontId?: unknown) =>
+			reportErrors(() => installFontCommand(services.config, fonts, fontId))
 		),
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
 			reportErrors(() => fonts.remove())

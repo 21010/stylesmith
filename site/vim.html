@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'"
+			content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
 		/>
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<title>Vim &amp; Neovim - Stylesmith Integrations</title>
@@ -813,6 +813,61 @@ colorscheme stylesmith</code></pre>
 										></path></svg
 									><span
 										>Copy<span class="sr-only"> configuration</span></span
+									></span
+								>
+								<span class="copy-success"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<polyline points="20 6 9 17 4 12"></polyline></svg
+									><span>Copied</span></span
+								>
+							</button>
+						</div>
+						<p style="color: var(--muted); margin: 1.5rem 0 1rem">
+							Or in Neovim&rsquo;s Lua configuration
+							(<code>~/.config/nvim/init.lua</code>):
+						</p>
+						<div class="code-wrapper" style="position: relative; margin-top: 1rem">
+							<pre><code>vim.opt.termguicolors = false
+vim.cmd.colorscheme("stylesmith")</code></pre>
+							<button
+								class="button ghost copy-btn on-deep"
+								data-copy='vim.opt.termguicolors = false&#10;vim.cmd.colorscheme("stylesmith")'
+							>
+								<span class="copy-default"
+									><svg
+										aria-hidden="true"
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<rect
+											x="9"
+											y="9"
+											width="13"
+											height="13"
+											rx="2"
+											ry="2"
+										></rect>
+										<path
+											d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+										></path></svg
+									><span
+										>Copy<span class="sr-only"> Lua configuration</span></span
 									></span
 								>
 								<span class="copy-success"

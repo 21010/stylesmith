@@ -54,6 +54,7 @@ describe("website", () => {
 				assert.match(policy, /default-src 'none'/);
 				assert.match(policy, /script-src 'self'(;|$)/, "scripts only from the site");
 				assert.doesNotMatch(policy, /connect-src/, "no connections");
+				assert.doesNotMatch(policy, /media-src/, "no unused media-src (#198)");
 				// Every script tag is app.js, and each is closed right away, with nothing inside.
 				const scripts = html.match(/<script\b[^>]*>/gi) ?? [];
 				for (const tag of scripts) {

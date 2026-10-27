@@ -57,4 +57,12 @@ describe("API-only security boundary", () => {
 		assert.deepEqual(using, ["fontInstall.ts"]);
 		assert.match(read("SECURITY.md"), /src\/fontInstall\.ts/);
 	});
+
+	it("keeps .vscodeignore free of blanket !out/** overrides so tests, maps and declarations stay excluded (#197)", () => {
+		const ignore = read(".vscodeignore");
+		assert.doesNotMatch(ignore, /^!out\b/m);
+		assert.match(ignore, /^out\/test\/\*\*$/m);
+		assert.match(ignore, /^\*\*\/\*\.map$/m);
+		assert.match(ignore, /^\*\*\/\*\.ts$/m);
+	});
 });

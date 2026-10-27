@@ -44,6 +44,9 @@ export class SaveReceipt implements vscode.Disposable {
 			}),
 			vscode.workspace.onDidSaveTextDocument(document => {
 				if (this.manual.delete(document)) this.saved(document);
+			}),
+			vscode.workspace.onDidChangeTextDocument(event => {
+				if (event.contentChanges.length > 0) this.clearForDocument(event.document);
 			})
 		];
 	}
@@ -52,6 +55,15 @@ export class SaveReceipt implements vscode.Disposable {
 		for (const timer of this.timers.values()) clearTimeout(timer);
 		for (const listener of this.listeners) listener.dispose();
 		this.type.dispose();
+	}
+
+	private clearForDocument(document: vscode.TextDocument): void {
+		for (const [editor, timer] of this.timers) {
+			if (editor.document !== document) continue;
+			clearTimeout(timer);
+			editor.setDecorations(this.type, []);
+			this.timers.delete(editor);
+		}
 	}
 
 	private saved(document: vscode.TextDocument): void {

@@ -468,3 +468,41 @@ export const PRESET_ALIASES: Readonly<Record<string, string>> = { "digital-rain"
 export function presetEffects(preset: Preset): [string, boolean][] {
 	return EFFECTS.map(effect => [effect.setting, preset.effects[effect.setting] ?? false]);
 }
+
+const LIGHT_PRESET_IDS = new Set(["tea-garden", "sunroom", "corridor", "daylight"]);
+const HC_PRESET_IDS = new Set(["high-contrast", "high-contrast-light"]);
+
+export type PresetKind = "dark" | "light" | "hc";
+
+/** Returns the luminance / contrast category of a preset (#193). */
+export function presetKind(preset: Preset): PresetKind {
+	if (HC_PRESET_IDS.has(preset.id)) return "hc";
+	if (LIGHT_PRESET_IDS.has(preset.id)) return "light";
+	return "dark";
+}
+
+const KIND_LABELS: Readonly<Record<PresetKind, string>> = {
+	dark: "dark",
+	light: "light",
+	hc: "high contrast"
+};
+
+/**
+ * Orders presets for the Apply Preset QuickPick (#193): the active preset comes first, and every
+ * item's description names its kind (`dark`, `light`, `high contrast`) plus `current` when active.
+ */
+export function orderPresetsForPicker(
+	presets: readonly Preset[],
+	activeColorTheme: string | undefined
+): { preset: Preset; current: boolean; kind: PresetKind; description: string }[] {
+	const annotated = presets.map(preset => {
+		const kind = presetKind(preset);
+		const current =
+			preset.theme === activeColorTheme ||
+			(preset.theme === "Stylesmith Digital Rain" &&
+				activeColorTheme === "Stylesmith Simulation");
+		const description = current ? `${KIND_LABELS[kind]} · current` : KIND_LABELS[kind];
+		return { preset, current, kind, description };
+	});
+	return [...annotated.filter(item => item.current), ...annotated.filter(item => !item.current)];
+}

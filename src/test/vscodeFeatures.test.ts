@@ -162,6 +162,23 @@ describe("save receipt (#120)", () => {
 		saveReceipt.dispose();
 	});
 
+	it("clears the save receipt immediately when the document is edited (#195)", () => {
+		enabled = true;
+		const editor = openEditor();
+		const saveReceipt = new SaveReceipt(
+			() => enabled,
+			() => false
+		);
+		save(editor, SAVE.Manual);
+		assert.equal(receipt(editor).length, 1);
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(0, 0, 0, 0), text: "x" }]
+		});
+		assert.deepEqual(receipt(editor), []);
+		saveReceipt.dispose();
+	});
+
 	it("notes nothing for an auto-save, when off, or under a Problem Lens message", () => {
 		const editor = openEditor();
 		enabled = true;
@@ -378,6 +395,26 @@ describe("long-command done signal", () => {
 			Date.now = realNow;
 			done.dispose();
 			fail.dispose();
+		}
+	});
+
+	it("drops tracked executions when their terminal closes (#196)", () => {
+		const done = new DoneSignal(() => true);
+		const doneItem = state.statusItems.find(i => i.id === "stylesmith.doneSignal")!;
+		const realNow = Date.now;
+		let now = 1_000;
+		Date.now = () => now;
+		try {
+			const term = {};
+			const exec = {};
+			events.shellStart.fire({ execution: exec, terminal: term });
+			events.terminalClose.fire(term);
+			now += 15_000;
+			events.shellEnd.fire({ execution: exec, exitCode: 0 });
+			assert.equal(doneItem.visible, false);
+		} finally {
+			Date.now = realNow;
+			done.dispose();
 		}
 	});
 });

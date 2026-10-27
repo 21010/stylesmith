@@ -1,13 +1,25 @@
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { orderThemesForPicker, terminalSchemeJson } from "./addons";
+import {
+	alacrittySchemeToml,
+	kittySchemeConf,
+	orderThemesForPicker,
+	terminalSchemeJson
+} from "./addons";
 import { CONFIG_SECTION, type Config } from "./config";
 import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
 import type { FontInstaller } from "./fontUi";
 import { messages } from "./messages";
-import { ICON_THEME, PRESET_ALIASES, PRESETS, presetEffects, type Preset } from "./presets";
+import {
+	ICON_THEME,
+	orderPresetsForPicker,
+	PRESET_ALIASES,
+	PRESETS,
+	presetEffects,
+	type Preset
+} from "./presets";
 
 /** Stylesmith's UI uses VS Code commands, settings, themes, decorations and status bar APIs. */
 
@@ -135,6 +147,17 @@ export async function showMenu(
 					}
 				]
 			: []),
+		separator("Terminal"),
+		{
+			label: "$(terminal) Boot sequence",
+			detail: "Type out a short boot log in a terminal tab, in the style of the active preset",
+			run: () => vscode.commands.executeCommand("stylesmith.bootSequence")
+		},
+		{
+			label: "$(sparkle) Digital rain",
+			detail: "Watch characters fall down a terminal tab in your theme's terminal greens",
+			run: () => vscode.commands.executeCommand("stylesmith.digitalRain")
+		},
 		separator(""),
 		{
 			label: "$(refresh) Apply settings",
@@ -153,6 +176,28 @@ export async function showMenu(
 	const choice = await vscode.window.showQuickPick(items, { title: "Stylesmith" });
 	await choice?.run?.();
 }
+
+const PALETTE_FORMATS: readonly {
+	label: string;
+	detail: string;
+	format: (name: string, colors: Readonly<Record<string, string>>) => string;
+}[] = [
+	{
+		label: "Windows Terminal (JSON)",
+		detail: "A scheme object for Windows Terminal's settings.json schemes array",
+		format: terminalSchemeJson
+	},
+	{
+		label: "Alacritty (TOML)",
+		detail: "A [colors] table for alacritty.toml",
+		format: alacrittySchemeToml
+	},
+	{
+		label: "Kitty / Ghostty (conf)",
+		detail: "Color directives for kitty.conf",
+		format: kittySchemeConf
+	}
+];
 
 async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 	const root = extension.extensionPath;
@@ -186,8 +231,8 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 			}
 		},
 		{
-			label: "$(symbol-color) Copy terminal ANSI palette (Windows Terminal JSON)…",
-			detail: "Copies a Stylesmith theme's 16-color terminal scheme to your clipboard",
+			label: "$(symbol-color) Copy terminal ANSI palette…",
+			detail: "Copies a Stylesmith theme's 16-color terminal scheme (Windows Terminal, Alacritty, Kitty)",
 			run: async () => {
 				const themes = (
 					extension.packageJSON as {
@@ -206,14 +251,18 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 					{ title: "Stylesmith: Copy Terminal ANSI Palette" }
 				);
 				if (!picked) return;
+				const target = await vscode.window.showQuickPick(PALETTE_FORMATS, {
+					title: `Stylesmith: Format for ${picked.theme.label}`
+				});
+				if (!target) return;
 				const file = JSON.parse(
 					readFileSync(path.join(root, picked.theme.path), "utf-8")
 				) as { colors: Record<string, string> };
 				await vscode.env.clipboard.writeText(
-					terminalSchemeJson(picked.theme.label, file.colors)
+					target.format(picked.theme.label, file.colors)
 				);
 				void vscode.window.showInformationMessage(
-					`Copied ${picked.theme.label} terminal palette to clipboard.`
+					`Copied ${picked.theme.label} terminal palette (${target.label}) to clipboard.`
 				);
 			}
 		}
@@ -253,7 +302,20 @@ async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 }
 
 /** Installs a font the user picks among those that aren't installed, after confirming. */
-export async function installFontCommand(config: Config, fonts: FontInstaller): Promise<void> {
+export async function installFontCommand(
+	config: Config,
+	fonts: FontInstaller,
+	fontId?: unknown
+): Promise<void> {
+	if (typeof fontId === "string") {
+		const target = FONTS.find(candidate => candidate.id === fontId);
+		if (!target || !(await fonts.offer(target))) return;
+		await config.set("fonts.enabled", true);
+		await config.set("fonts.family", target.id);
+		await vscode.commands.executeCommand("stylesmith.enable");
+		await fonts.announce(target);
+		return;
+	}
 	const ids = await fonts.installedIds();
 	const states = FONTS.map(font => ids.has(font.id));
 	const missing = FONTS.filter((_, i) => !states[i]);
@@ -288,11 +350,13 @@ export async function applyPreset(
 		preset = PRESETS.find(candidate => candidate.id === wanted);
 		if (!preset) throw new Error(`there's no preset "${id}"`);
 	} else {
+		const active = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
 		const choice = await vscode.window.showQuickPick(
-			PRESETS.map(candidate => ({
-				label: candidate.label,
-				detail: candidate.description,
-				preset: candidate
+			orderPresetsForPicker(PRESETS, active).map(item => ({
+				label: item.preset.label,
+				description: item.description,
+				detail: item.preset.description,
+				preset: item.preset
 			})),
 			{ title: "Stylesmith: Apply a preset" }
 		);

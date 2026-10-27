@@ -9,6 +9,7 @@ import { ROOT, manifest } from "./files";
 /** The preset gallery (#84): what its page may load, and what it may ask for. */
 
 const ids = PRESETS.map(preset => preset.id);
+const fontIds = ["JetBrainsMono", "DepartureMono"];
 const NONCE = "c3R5bGVzbWl0aC10ZXN0LW5vbmNl";
 const colors = sampleColors(
 	JSON.parse(
@@ -28,10 +29,18 @@ const card = (over: Partial<GalleryCard> = {}): GalleryCard => ({
 });
 
 describe("preset gallery messages", () => {
-	it("accepts Apply for every known preset, and Disable", () => {
+	it("accepts Apply for every known preset, installFont for known fonts, and Disable", () => {
 		for (const id of ids)
-			assert.deepEqual(parseMessage({ type: "apply", id }, ids), { type: "apply", id });
-		assert.deepEqual(parseMessage({ type: "disable" }, ids), { type: "disable" });
+			assert.deepEqual(parseMessage({ type: "apply", id }, ids, fontIds), {
+				type: "apply",
+				id
+			});
+		for (const id of fontIds)
+			assert.deepEqual(parseMessage({ type: "installFont", id }, ids, fontIds), {
+				type: "installFont",
+				id
+			});
+		assert.deepEqual(parseMessage({ type: "disable" }, ids, fontIds), { type: "disable" });
 	});
 
 	it("ignores anything else", () => {
@@ -44,13 +53,14 @@ describe("preset gallery messages", () => {
 			{},
 			{ type: "apply" },
 			{ type: "apply", id: "no-such-preset" },
+			{ type: "installFont", id: "no-such-font" },
 			{ type: "apply", id: ["night-city"] },
 			{ type: "apply", id: "__proto__" },
 			{ type: "apply", id: "constructor" },
 			{ type: "run", command: "workbench.action.terminal.new" },
 			{ type: "Apply", id: "night-city" }
 		]) {
-			assert.equal(parseMessage(message, ids), undefined, JSON.stringify(message));
+			assert.equal(parseMessage(message, ids, fontIds), undefined, JSON.stringify(message));
 		}
 	});
 
@@ -127,6 +137,36 @@ describe("preset gallery page", () => {
 		assert.ok(mixed.includes("High contrast (1)"));
 		assert.ok(
 			mixed.includes('id="filter-status" class="sr-only" role="status" aria-live="polite"')
+		);
+		assert.ok(mixed.includes("vscode.getState()"), "restores active filter across re-renders");
+		assert.ok(mixed.includes("vscode.setState("), "saves active filter across re-renders");
+	});
+
+	it("shows whether the recommended font is installed and offers an install button when missing (#189)", () => {
+		const withFonts = galleryHtml(
+			[
+				card({
+					id: "night-city",
+					fontId: "JetBrainsMono",
+					fontLabel: "JetBrainsMono Nerd Font",
+					fontInstalled: true
+				}),
+				card({
+					id: "phosphor-terminal",
+					fontId: "DepartureMono",
+					fontLabel: "DepartureMono Nerd Font",
+					fontInstalled: false
+				})
+			],
+			NONCE
+		);
+		assert.ok(withFonts.includes("JetBrainsMono Nerd Font (installed)"));
+		assert.ok(!withFonts.includes('data-install-font="JetBrainsMono"'));
+		assert.ok(withFonts.includes("DepartureMono Nerd Font (not installed)"));
+		assert.ok(
+			withFonts.includes(
+				'<button type="button" class="secondary" data-install-font="DepartureMono">Install DepartureMono Nerd Font</button>'
+			)
 		);
 	});
 

@@ -17,7 +17,7 @@ import {
 export class DoneSignal implements vscode.Disposable {
 	private readonly item: vscode.StatusBarItem;
 	private readonly cooldown = new SignalCooldown();
-	private readonly started = new Map<unknown, number>();
+	private readonly started = new Map<unknown, { start: number; terminal?: unknown }>();
 	private readonly listeners: vscode.Disposable[];
 	private timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -32,13 +32,25 @@ export class DoneSignal implements vscode.Disposable {
 		this.item.command = "workbench.action.terminal.focus";
 		this.listeners = [
 			vscode.window.onDidStartTerminalShellExecution(event => {
-				this.started.set(event.execution, Date.now());
+				this.started.set(event.execution, {
+					start: Date.now(),
+					terminal: event.terminal
+				});
 			}),
 			vscode.window.onDidEndTerminalShellExecution(event => {
-				const start = this.started.get(event.execution);
+				const entry = this.started.get(event.execution);
 				this.started.delete(event.execution);
-				if (start !== undefined) this.ended(event.exitCode, Date.now() - start);
-			})
+				if (entry !== undefined) this.ended(event.exitCode, Date.now() - entry.start);
+			}),
+			...(typeof vscode.window.onDidCloseTerminal === "function"
+				? [
+						vscode.window.onDidCloseTerminal(closed => {
+							for (const [execution, entry] of this.started) {
+								if (entry.terminal === closed) this.started.delete(execution);
+							}
+						})
+					]
+				: [])
 		];
 	}
 

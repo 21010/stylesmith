@@ -1,9 +1,15 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { buildTerminalScheme, orderThemesForPicker, terminalSchemeJson } from "../addons";
+import {
+	alacrittySchemeToml,
+	buildTerminalScheme,
+	kittySchemeConf,
+	orderThemesForPicker,
+	terminalSchemeJson
+} from "../addons";
 import { manifest, readJson, type ColorTheme } from "./files";
 
-describe("terminal ANSI palette export (#174, #182)", () => {
+describe("terminal ANSI palette export (#174, #182, #192)", () => {
 	const themes = manifest().contributes.themes;
 
 	it("floats the active Stylesmith theme to the top of the picker and marks it current (#182)", () => {
@@ -32,6 +38,16 @@ describe("terminal ANSI palette export (#174, #182)", () => {
 				string
 			>;
 			assert.deepEqual(parsed, scheme);
+
+			const toml = alacrittySchemeToml(entry.label, theme.colors);
+			assert.ok(toml.includes("[colors.primary]"));
+			assert.ok(toml.includes(`background = "${scheme.background}"`));
+			assert.ok(toml.includes(`magenta = "${scheme.purple}"`));
+
+			const kitty = kittySchemeConf(entry.label, theme.colors);
+			assert.ok(kitty.includes(`background ${scheme.background}`));
+			assert.ok(kitty.includes(`color0 ${scheme.black}`));
+			assert.ok(kitty.includes(`color15 ${scheme.brightWhite}`));
 		});
 	}
 });

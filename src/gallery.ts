@@ -27,6 +27,10 @@ export interface GalleryCard {
 	colors: SampleColors;
 	settingsOn: readonly string[];
 	fontLabel: string;
+	/** The font id in FONTS, used when offering an inline install button (#189). */
+	fontId?: string;
+	/** Whether the preset's recommended font is already installed on this machine (#189). */
+	fontInstalled?: boolean;
 	/** The preset's color theme is the one in use. */
 	current: boolean;
 	/** The luminance / contrast group of the preset's color theme (#170). */
@@ -34,14 +38,21 @@ export interface GalleryCard {
 }
 
 /** What the page may ask for. */
-export type GalleryMessage = { type: "apply"; id: string } | { type: "disable" };
+export type GalleryMessage =
+	{ type: "apply"; id: string } | { type: "installFont"; id: string } | { type: "disable" };
 
 /** A message from the page, if it's one the gallery accepts: anything else is ignored. */
-export function parseMessage(message: unknown, ids: readonly string[]): GalleryMessage | undefined {
+export function parseMessage(
+	message: unknown,
+	ids: readonly string[],
+	fontIds: readonly string[] = []
+): GalleryMessage | undefined {
 	if (typeof message !== "object" || message === null) return undefined;
 	const { type, id } = message as Record<string, unknown>;
 	if (type === "disable") return { type };
 	if (type === "apply" && typeof id === "string" && ids.includes(id)) return { type, id };
+	if (type === "installFont" && typeof id === "string" && fontIds.includes(id))
+		return { type, id };
 	return undefined;
 }
 
@@ -104,6 +115,8 @@ button { margin-top: auto; align-self: flex-start; font: inherit; padding: 6px 1
 button:hover { background: var(--vscode-button-hoverBackground, #1177bb); }
 button.secondary { margin: 0; color: var(--vscode-button-secondaryForeground, #ffffff);
 	background: var(--vscode-button-secondaryBackground, #3a3d41); }
+.card-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.card-actions button { margin-top: 0; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 button.filter { margin: 0; color: var(--vscode-button-secondaryForeground, #ffffff);
 	background: var(--vscode-button-secondaryBackground, #3a3d41); }
@@ -116,23 +129,34 @@ button:focus-visible { outline: 2px solid var(--vscode-focusBorder, #3794ff); ou
 
 const SCRIPT = `
 const vscode = acquireVsCodeApi();
+const applyFilter = (kind, announce) => {
+	const button = document.querySelector('.filters button[data-filter="' + kind + '"]');
+	if (!button) return;
+	for (const item of document.querySelectorAll(".filters button"))
+		item.setAttribute("aria-pressed", String(item === button));
+	let shown = 0;
+	const cards = document.querySelectorAll("main li");
+	for (const card of cards) {
+		card.hidden = kind !== "all" && card.dataset.kind !== kind;
+		if (!card.hidden) shown++;
+	}
+	if (announce) {
+		const status = document.getElementById("filter-status");
+		if (status) status.textContent = "Showing " + shown + " of " + cards.length + " presets.";
+	}
+};
+const saved = typeof vscode.getState === "function" ? vscode.getState() : undefined;
+if (saved && typeof saved.filter === "string") applyFilter(saved.filter, false);
 document.addEventListener("click", event => {
 	const button = event.target.closest("button");
 	if (!button) return;
 	if (button.dataset.preset) vscode.postMessage({ type: "apply", id: button.dataset.preset });
+	else if (button.dataset.installFont) vscode.postMessage({ type: "installFont", id: button.dataset.installFont });
 	else if (button.dataset.action === "disable") vscode.postMessage({ type: "disable" });
 	else if (button.dataset.filter) {
 		const kind = button.dataset.filter;
-		for (const item of document.querySelectorAll(".filters button"))
-			item.setAttribute("aria-pressed", String(item === button));
-		let shown = 0;
-		const cards = document.querySelectorAll("main li");
-		for (const card of cards) {
-			card.hidden = kind !== "all" && card.dataset.kind !== kind;
-			if (!card.hidden) shown++;
-		}
-		const status = document.getElementById("filter-status");
-		if (status) status.textContent = "Showing " + shown + " of " + cards.length + " presets.";
+		if (typeof vscode.setState === "function") vscode.setState({ filter: kind });
+		applyFilter(kind, true);
 	}
 });
 `;
@@ -143,6 +167,16 @@ function card(card: GalleryCard, i: number): string {
   <span class="kw">return</span> hours * <span class="num">1.5</span> + <span class="str">" h"</span>;
 }</code></pre>`;
 	const kind = card.kind ?? "dark";
+	const fontStatus =
+		card.fontInstalled === true
+			? " (installed)"
+			: card.fontInstalled === false
+				? " (not installed)"
+				: "";
+	const installBtn =
+		card.fontInstalled === false && card.fontId
+			? `\n<button type="button" class="secondary" data-install-font="${escape(card.fontId)}">Install ${escape(card.fontLabel)}</button>`
+			: "";
 	return `<li data-kind="${escape(kind)}"><article class="${card.current ? "current" : ""}" aria-labelledby="p${i}">
 <h2 id="p${i}">${escape(card.label)}${card.current ? ' <span class="badge">In use</span>' : ""}</h2>
 ${sample}
@@ -150,9 +184,9 @@ ${sample}
 <dl>
 <dt>Color theme</dt><dd>${escape(card.themeLabel)}</dd>
 <dt>Settings on</dt><dd>${escape(card.settingsOn.join(", ") || "none")}</dd>
-<dt>Recommended font</dt><dd>${escape(card.fontLabel)}</dd>
+<dt>Recommended font</dt><dd>${escape(card.fontLabel)}${fontStatus}</dd>
 </dl>
-<button type="button" data-preset="${escape(card.id)}">Apply ${escape(card.label)}</button>
+<div class="card-actions"><button type="button" data-preset="${escape(card.id)}">Apply ${escape(card.label)}</button>${installBtn}</div>
 </article></li>`;
 }
 

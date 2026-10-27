@@ -13,7 +13,7 @@ Stylesmith uses only VS Code's extension API. It does not modify VS Code install
 - Twenty-four color themes; pixel file icons for each of them, in its own colors, plus Stylesmith Pixel in each language's colors, with icons for common project files and folders (manifests, CI, AI agent instructions and skills, BPMN models, Robocorp robots, tests by category); and a pixel product icon theme, Stylesmith Pixel, for VS Code's own interface icons (the activity bar, view actions, the status bar). All are contributed through the extension manifest.
 - Problem Lens diagnostics shown with editor decorations, gutter icons, inline messages, and a status bar item.
 - Presets that select a Stylesmith theme and icon theme, plus supported editor settings.
-- Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, and dimming unfocused editors.
+- Native VS Code settings for smooth caret animation, current-line highlighting, bracket guides, compact layout where supported, block cursors in the editor and terminal, dimming unfocused editors, readable terminal contrast (7:1), sticky scroll, and a calm minimap.
 - Optional font selection through VS Code's `editor.fontFamily` and `terminal.integrated.fontFamily` settings. The selected Nerd Font family must be installed on your system: install it yourself, or let Stylesmith install it for your user account after you confirm (see [Installing a font](#installing-a-font)).
 
 ## Security model
@@ -148,6 +148,7 @@ Stylesmith manages the following VS Code settings while enabled. Disable restore
 | VS Code setting                                                           | Stylesmith option                                     |
 | ------------------------------------------------------------------------- | ----------------------------------------------------- |
 | `workbench.colorTheme`, `workbench.iconTheme`                             | the preset you apply                                  |
+| `workbench.productIconTheme`                                              | **Pixel product icons** in the Stylesmith menu        |
 | `editor.fontFamily`, `terminal.integrated.fontFamily`                     | `stylesmith.fonts.enabled`, `stylesmith.fonts.family` |
 | `editor.cursorSmoothCaretAnimation`, `editor.cursorBlinking`              | `stylesmith.effects.smoothCursor`                     |
 | `editor.renderLineHighlight`                                              | `stylesmith.effects.currentLine`                      |

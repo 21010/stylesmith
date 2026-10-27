@@ -21,10 +21,6 @@ const applyMotion = () => {
 	document.documentElement.classList.toggle("motion-paused", motionPaused);
 	motionButton?.setAttribute("aria-pressed", String(motionPaused));
 	if (motionButton) motionButton.title = motionPaused ? "Play animations" : "Pause animations";
-	for (const video of document.querySelectorAll("video[autoplay]")) {
-		if (motionPaused) video.pause();
-		else video.play().catch(() => {});
-	}
 };
 if (motionButton) {
 	motionButton.hidden = false;

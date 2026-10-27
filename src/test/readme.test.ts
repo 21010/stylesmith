@@ -57,9 +57,10 @@ describe("README", () => {
 		}
 	});
 
-	it("names every VS Code setting that an effect or the font changes", () => {
+	it("names every VS Code setting that an effect, the font or product icon toggle changes", () => {
 		const managed = section("### Settings Stylesmith changes for you");
 		const keys = [
+			"workbench.productIconTheme",
 			"editor.fontFamily",
 			"terminal.integrated.fontFamily",
 			...EFFECTS.flatMap(effect => effect.editorSettings ?? []).map(setting => setting.key)

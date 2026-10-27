@@ -2,9 +2,10 @@
 .vscode/
 .agents/
 src/
-!out
-!out/**
 out/test/**
+out/color.js
+out/colorAudit.js
+out/readability.js
 **/*.map
 **/*.ts
 node_modules/
@@ -12,6 +13,7 @@ eslint.config.mjs
 tsconfig*.json
 .prettierrc.yaml
 .gitignore
+.gitattributes
 scripts/
 out/test-integration/**
 out/test-os/**

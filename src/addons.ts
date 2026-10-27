@@ -70,6 +70,80 @@ export function terminalSchemeJson(name: string, colors: Readonly<Record<string,
 	return `${JSON.stringify(buildTerminalScheme(name, colors), null, "\t")}\n`;
 }
 
+/** Formats a Stylesmith theme's terminal palette as an Alacritty TOML config (#192). */
+export function alacrittySchemeToml(
+	name: string,
+	colors: Readonly<Record<string, string>>
+): string {
+	const s = buildTerminalScheme(name, colors);
+	return [
+		`# ${s.name} — Alacritty color scheme`,
+		"[colors.primary]",
+		`background = "${s.background}"`,
+		`foreground = "${s.foreground}"`,
+		"",
+		"[colors.cursor]",
+		`text = "${s.background}"`,
+		`cursor = "${s.cursorColor}"`,
+		"",
+		"[colors.selection]",
+		`text = "${s.foreground}"`,
+		`background = "${s.selectionBackground}"`,
+		"",
+		"[colors.normal]",
+		`black = "${s.black}"`,
+		`red = "${s.red}"`,
+		`green = "${s.green}"`,
+		`yellow = "${s.yellow}"`,
+		`blue = "${s.blue}"`,
+		`magenta = "${s.purple}"`,
+		`cyan = "${s.cyan}"`,
+		`white = "${s.white}"`,
+		"",
+		"[colors.bright]",
+		`black = "${s.brightBlack}"`,
+		`red = "${s.brightRed}"`,
+		`green = "${s.brightGreen}"`,
+		`yellow = "${s.brightYellow}"`,
+		`blue = "${s.brightBlue}"`,
+		`magenta = "${s.brightPurple}"`,
+		`cyan = "${s.brightCyan}"`,
+		`white = "${s.brightWhite}"`,
+		""
+	].join("\n");
+}
+
+/** Formats a Stylesmith theme's terminal palette as a Kitty config (#192). */
+export function kittySchemeConf(name: string, colors: Readonly<Record<string, string>>): string {
+	const s = buildTerminalScheme(name, colors);
+	return [
+		`# ${s.name} — Kitty color scheme`,
+		`background ${s.background}`,
+		`foreground ${s.foreground}`,
+		`cursor ${s.cursorColor}`,
+		`cursor_text_color ${s.background}`,
+		`selection_foreground ${s.foreground}`,
+		`selection_background ${s.selectionBackground}`,
+		`color0 ${s.black}`,
+		`color1 ${s.red}`,
+		`color2 ${s.green}`,
+		`color3 ${s.yellow}`,
+		`color4 ${s.blue}`,
+		`color5 ${s.purple}`,
+		`color6 ${s.cyan}`,
+		`color7 ${s.white}`,
+		`color8 ${s.brightBlack}`,
+		`color9 ${s.brightRed}`,
+		`color10 ${s.brightGreen}`,
+		`color11 ${s.brightYellow}`,
+		`color12 ${s.brightBlue}`,
+		`color13 ${s.brightPurple}`,
+		`color14 ${s.brightCyan}`,
+		`color15 ${s.brightWhite}`,
+		""
+	].join("\n");
+}
+
 /**
  * Orders color themes for the terminal palette picker (#182): the currently active Stylesmith
  * theme comes first and is marked `current: true`.

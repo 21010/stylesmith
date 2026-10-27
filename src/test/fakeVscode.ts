@@ -122,8 +122,9 @@ export const events = {
 		reason?: number;
 		contentChanges: { range: Range; text: string }[];
 	}>(),
-	shellStart: new Emitter<{ execution: unknown }>(),
-	shellEnd: new Emitter<{ execution?: unknown; exitCode: number | undefined }>()
+	shellStart: new Emitter<{ execution: unknown; terminal?: unknown }>(),
+	shellEnd: new Emitter<{ execution?: unknown; exitCode: number | undefined }>(),
+	terminalClose: new Emitter<unknown>()
 };
 
 const window = {
@@ -164,7 +165,8 @@ const window = {
 	onDidChangeActiveTextEditor: events.activeEditor.event,
 	onDidChangeActiveColorTheme: events.colorTheme.event,
 	onDidStartTerminalShellExecution: events.shellStart.event,
-	onDidEndTerminalShellExecution: events.shellEnd.event
+	onDidEndTerminalShellExecution: events.shellEnd.event,
+	onDidCloseTerminal: events.terminalClose.event
 };
 
 export const fake = {

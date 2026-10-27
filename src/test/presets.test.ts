@@ -3,7 +3,14 @@ import { describe, it } from "node:test";
 import { EFFECTS } from "../effects";
 import { FONTS } from "../fonts";
 import { colorDifference, VISION } from "../color";
-import { ICON_THEME, PRESET_ALIASES, PRESETS, presetEffects } from "../presets";
+import {
+	ICON_THEME,
+	orderPresetsForPicker,
+	PRESET_ALIASES,
+	PRESETS,
+	presetEffects,
+	presetKind
+} from "../presets";
 import { PRESET_STORIES, PRESET_TALES } from "../stories";
 import { manifest, readJson, themeLook, themeSettingsId, type IconTheme } from "./files";
 
@@ -87,6 +94,17 @@ describe("presets", () => {
 			theme => theme.label === "Stylesmith Simulation"
 		);
 		assert.equal(simulation?.id, "Stylesmith Digital Rain");
+	});
+
+	it("orders presets for the picker with kind and current badges (#193)", () => {
+		assert.equal(PRESETS.filter(p => presetKind(p) === "dark").length, 18);
+		assert.equal(PRESETS.filter(p => presetKind(p) === "light").length, 4);
+		assert.equal(PRESETS.filter(p => presetKind(p) === "hc").length, 2);
+		const ordered = orderPresetsForPicker(PRESETS, "Stylesmith Tea Garden");
+		assert.equal(ordered[0]?.preset.id, "tea-garden");
+		assert.equal(ordered[0]?.current, true);
+		assert.equal(ordered[0]?.description, "light · current");
+		assert.ok(ordered.slice(1).every(item => !item.current));
 	});
 });
 
