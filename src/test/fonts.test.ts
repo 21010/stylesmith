@@ -2,7 +2,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
-import { DEFAULT_FONT_ID, FONTS, findFont, withFontFirst, withoutStylesmithFonts } from "../fonts";
+import {
+	DEFAULT_FONT_ID,
+	FONTS,
+	findFont,
+	fontLicenseName,
+	withFontFirst,
+	withoutStylesmithFonts
+} from "../fonts";
 import { manifest, ROOT } from "./files";
 
 const settings = manifest().contributes.configuration.properties;
@@ -27,6 +34,13 @@ describe("system-installed fonts", () => {
 
 	it("falls back to the default font for an unknown setting value", () => {
 		assert.equal(findFont("nope").id, DEFAULT_FONT_ID);
+	});
+
+	it("names BSD 3-Clause License for 3270 and SIL Open Font License 1.1 for the others (#217)", () => {
+		assert.equal(fontLicenseName(findFont("3270")), "BSD 3-Clause License");
+		for (const font of FONTS.filter(f => f.id !== "3270")) {
+			assert.equal(fontLicenseName(font), "SIL Open Font License 1.1");
+		}
 	});
 });
 

@@ -84,7 +84,12 @@ export function activate(context: vscode.ExtensionContext): void {
 		),
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
 			reportErrors(async () => {
-				await fonts.remove();
+				const removed = await fonts.remove();
+				const activeFont = services.config.font()?.id;
+				if (activeFont && removed.includes(activeFont)) {
+					await services.config.set("fonts.enabled", false);
+					await vscode.commands.executeCommand("stylesmith.enable");
+				}
 				gallery.refresh();
 			})
 		),

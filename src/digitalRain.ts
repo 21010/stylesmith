@@ -26,20 +26,32 @@ class RainTerminal implements vscode.Pseudoterminal {
 	private timer: ReturnType<typeof setInterval> | undefined;
 	private readonly listeners: vscode.Disposable[] = [];
 	private done = false;
-	private readonly still = reducesMotion(
+	private still = reducesMotion(
 		vscode.workspace.getConfiguration("workbench").get("reduceMotion")
 	);
 
 	open(size: vscode.TerminalDimensions | undefined): void {
 		this.size = size;
+		this.listeners.push(
+			vscode.window.onDidChangeActiveTerminal(() => this.updateRunning()),
+			vscode.window.onDidChangeWindowState(() => this.updateRunning()),
+			vscode.workspace.onDidChangeConfiguration(event => {
+				if (!event.affectsConfiguration("workbench.reduceMotion") || this.done) return;
+				this.still = reducesMotion(
+					vscode.workspace.getConfiguration("workbench").get("reduceMotion")
+				);
+				if (this.still) {
+					this.stop();
+					this.drawStill();
+				} else {
+					this.restart();
+				}
+			})
+		);
 		if (this.still) {
 			this.drawStill();
 			return;
 		}
-		this.listeners.push(
-			vscode.window.onDidChangeActiveTerminal(() => this.updateRunning()),
-			vscode.window.onDidChangeWindowState(() => this.updateRunning())
-		);
 		this.restart();
 	}
 

@@ -6,7 +6,7 @@
 
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { FONT_RELEASE, FONTS, NERD_FONTS_LICENSE, type NerdFont } from "./fonts";
+import { FONT_RELEASE, fontLicenseName, FONTS, NERD_FONTS_LICENSE, type NerdFont } from "./fonts";
 import {
 	installFont,
 	installedFontIds,
@@ -52,6 +52,12 @@ export class FontInstaller {
 		return found;
 	}
 
+	/** The ids of fonts Stylesmith itself installed and recorded (#210). */
+	async recordedIds(): Promise<string[]> {
+		const installs = recorded((await this.store.read()).installedFonts);
+		return Object.keys(installs).filter(id => FONTS.some(font => font.id === id));
+	}
+
 	/**
 	 * Asks whether to install the font, and installs it if the user agrees. Returns true when the
 	 * font is installed afterwards.
@@ -67,7 +73,7 @@ export class FontInstaller {
 				: "Quit and reopen VS Code afterwards: only then does VS Code see a new font.";
 		const detail = [
 			`Stylesmith downloads ${font.files.length} font file${font.files.length > 1 ? "s" : ""} and the license (${megabytes(size)}) from ${new URL(FONT_RELEASE).host}${new URL(FONT_RELEASE).pathname}, checks each file against a SHA-256 built into Stylesmith, and copies the font to ${userFontDir(this.system)}.`,
-			"No administrator rights are needed. The font is under the SIL Open Font License; its license is saved with Stylesmith's data.",
+			`No administrator rights are needed. The font is under the ${fontLicenseName(font)}; its license is saved with Stylesmith's data.`,
 			restart,
 			"To remove it later, run Stylesmith: Remove Installed Fonts."
 		].join("\n\n");
@@ -127,19 +133,19 @@ export class FontInstaller {
 		if (choice === quit) await vscode.commands.executeCommand("workbench.action.quit");
 	}
 
-	/** Lets the user remove fonts Stylesmith installed. */
-	async remove(): Promise<void> {
+	/** Lets the user remove fonts Stylesmith installed, returning the removed font ids (#210). */
+	async remove(): Promise<string[]> {
 		const installs = recorded((await this.store.read()).installedFonts);
 		const ids = Object.keys(installs).filter(id => FONTS.some(font => font.id === id));
 		if (ids.length === 0) {
 			void vscode.window.showInformationMessage("Stylesmith hasn't installed any fonts.");
-			return;
+			return [];
 		}
 		const picked = await vscode.window.showQuickPick(
 			ids.map(id => ({ label: FONTS.find(font => font.id === id)!.label, id, picked: true })),
 			{ title: "Stylesmith: Remove Installed Fonts", canPickMany: true }
 		);
-		if (!picked?.length) return;
+		if (!picked?.length) return [];
 		const locked: string[] = [];
 		for (const { id } of picked) {
 			locked.push(...(await removeFont(installs[id]!, this.system)));
@@ -160,5 +166,6 @@ export class FontInstaller {
 						locked.join(", ")
 				: "Removed. Choose another font in the Stylesmith menu; VS Code stops showing the removed font after it's reopened."
 		);
+		return picked.map(item => item.id);
 	}
 }

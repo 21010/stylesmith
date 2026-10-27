@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import * as path from "node:path";
 import { describe, it } from "node:test";
 import { VISION } from "../color";
@@ -56,14 +56,9 @@ describe("readability claims on the website", () => {
 	});
 
 	it("makes no medical or universal promises", () => {
-		for (const page of [
-			"index.html",
-			"ergonomics.html",
-			"themes.html",
-			"fonts.html",
-			"oh-my-posh.html",
-			"vim.html"
-		]) {
+		const pages = readdirSync(path.join(ROOT, "site")).filter(file => file.endsWith(".html"));
+		assert.ok(pages.length >= 10, "scans every HTML page in site/");
+		for (const page of pages) {
 			const copy = text(page).toLowerCase();
 			for (const phrase of [
 				"prevents eye strain",

@@ -17,7 +17,7 @@ import {
 export class FailSignal implements vscode.Disposable {
 	private readonly item: vscode.StatusBarItem;
 	private readonly cooldown = new SignalCooldown();
-	private readonly listener: vscode.Disposable;
+	private readonly listeners: vscode.Disposable[];
 	private timer: ReturnType<typeof setTimeout> | undefined;
 
 	constructor(private readonly enabled: () => boolean) {
@@ -30,14 +30,23 @@ export class FailSignal implements vscode.Disposable {
 		this.item.name = "Stylesmith: a command failed";
 		this.item.command = "workbench.action.terminal.focus";
 		this.item.backgroundColor = new vscode.ThemeColor("statusBarItem.errorBackground");
-		this.listener = vscode.window.onDidEndTerminalShellExecution(event =>
-			this.ended(event.exitCode)
-		);
+		this.listeners = [
+			vscode.window.onDidEndTerminalShellExecution(event => this.ended(event.exitCode)),
+			vscode.workspace.onDidChangeConfiguration(event => {
+				if (
+					event.affectsConfiguration("stylesmith.terminal.failSignal") &&
+					!this.enabled()
+				) {
+					clearTimeout(this.timer);
+					this.item.hide();
+				}
+			})
+		];
 	}
 
 	dispose(): void {
 		clearTimeout(this.timer);
-		this.listener.dispose();
+		for (const listener of this.listeners) listener.dispose();
 		this.item.dispose();
 	}
 

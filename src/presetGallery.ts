@@ -13,6 +13,7 @@ import { EFFECTS } from "./effects";
 import { FONTS } from "./fonts";
 import { galleryHtml, parseMessage, sampleColors, type GalleryCard } from "./gallery";
 import { PRESETS } from "./presets";
+import { activeColorTheme } from "./problemLens";
 import { PRESET_STORIES } from "./stories";
 
 interface ThemeContribution {
@@ -67,10 +68,13 @@ export class PresetGallery implements vscode.Disposable {
 			vscode.workspace.onDidChangeConfiguration(event => {
 				if (
 					event.affectsConfiguration("workbench.colorTheme") ||
+					event.affectsConfiguration("workbench.preferred") ||
+					event.affectsConfiguration("window.autoDetectColorScheme") ||
 					event.affectsConfiguration("stylesmith.fonts")
 				)
 					void this.render();
-			})
+			}),
+			vscode.window.onDidChangeActiveColorTheme(() => void this.render())
 		];
 		panel.onDidDispose(() => {
 			for (const listener of listeners) listener.dispose();
@@ -101,7 +105,7 @@ export class PresetGallery implements vscode.Disposable {
 		).contributes;
 		const themes = contributes.themes;
 		const iconThemes = contributes.iconThemes ?? [];
-		const current = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
+		const current = activeColorTheme();
 		const cards = PRESETS.map((preset): GalleryCard => {
 			const theme = themes.find(entry => (entry.id ?? entry.label) === preset.theme)!;
 			const iconTheme = iconThemes.find(entry => entry.id === preset.iconTheme);

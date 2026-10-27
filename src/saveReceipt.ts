@@ -30,6 +30,7 @@ export class SaveReceipt implements vscode.Disposable {
 	/** Documents being saved by hand: the receipt shows once the save has worked. */
 	private readonly manual = new Set<vscode.TextDocument>();
 	private readonly timers = new Map<vscode.TextEditor, ReturnType<typeof setTimeout>>();
+	private readonly lines = new Map<vscode.TextEditor, number>();
 	private readonly listeners: vscode.Disposable[];
 
 	constructor(
@@ -47,6 +48,15 @@ export class SaveReceipt implements vscode.Disposable {
 			}),
 			vscode.workspace.onDidChangeTextDocument(event => {
 				if (event.contentChanges.length > 0) this.clearForDocument(event.document);
+			}),
+			vscode.languages.onDidChangeDiagnostics(() => {
+				for (const [editor, line] of this.lines) {
+					if (this.problemMessageOn(editor.document, line)) this.clearEditor(editor);
+				}
+			}),
+			vscode.workspace.onDidChangeConfiguration(event => {
+				if (event.affectsConfiguration("stylesmith.saveReceipt") && !this.enabled())
+					this.clearAll();
 			})
 		];
 	}
@@ -57,12 +67,20 @@ export class SaveReceipt implements vscode.Disposable {
 		this.type.dispose();
 	}
 
+	private clearEditor(editor: vscode.TextEditor): void {
+		clearTimeout(this.timers.get(editor));
+		editor.setDecorations(this.type, []);
+		this.timers.delete(editor);
+		this.lines.delete(editor);
+	}
+
+	private clearAll(): void {
+		for (const editor of [...this.timers.keys()]) this.clearEditor(editor);
+	}
+
 	private clearForDocument(document: vscode.TextDocument): void {
-		for (const [editor, timer] of this.timers) {
-			if (editor.document !== document) continue;
-			clearTimeout(timer);
-			editor.setDecorations(this.type, []);
-			this.timers.delete(editor);
+		for (const [editor] of this.timers) {
+			if (editor.document === document) this.clearEditor(editor);
 		}
 	}
 
@@ -81,12 +99,10 @@ export class SaveReceipt implements vscode.Disposable {
 			}
 		]);
 		clearTimeout(this.timers.get(editor));
+		this.lines.set(editor, line);
 		this.timers.set(
 			editor,
-			setTimeout(() => {
-				editor.setDecorations(this.type, []);
-				this.timers.delete(editor);
-			}, SAVE_RECEIPT_DURATION)
+			setTimeout(() => this.clearEditor(editor), SAVE_RECEIPT_DURATION)
 		);
 	}
 }

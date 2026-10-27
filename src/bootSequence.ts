@@ -9,9 +9,12 @@ import * as vscode from "vscode";
 import { PROMPT, bootLogFor, bootSchedule, renderBootLine } from "./boot";
 import { reducesMotion } from "./motion";
 import { PRESETS } from "./presets";
+import { activeColorTheme } from "./problemLens";
+import { DEFAULT_BOOT_LOG, type BootLog } from "./stories";
 
 const HIDE_CURSOR = "\x1b[?25l";
 const SHOW_CURSOR = "\x1b[?25h";
+const CLEAR = "\x1b[0m\x1b[2J\x1b[H";
 
 class BootTerminal implements vscode.Pseudoterminal {
 	private readonly write = new vscode.EventEmitter<string>();
@@ -19,30 +22,55 @@ class BootTerminal implements vscode.Pseudoterminal {
 	readonly onDidWrite = this.write.event;
 	readonly onDidClose = this.closed.event;
 	private readonly timers: ReturnType<typeof setTimeout>[] = [];
+	private log: BootLog = DEFAULT_BOOT_LOG;
+	private columns = 80;
+	private reduced = false;
 	private done = false;
 
 	open(size: vscode.TerminalDimensions | undefined): void {
-		const log = bootLogFor(
-			vscode.workspace.getConfiguration("workbench").get("colorTheme"),
-			PRESETS
-		);
-		const reduced = reducesMotion(
+		if (size) this.columns = size.columns;
+		this.log = bootLogFor(activeColorTheme(), PRESETS);
+		this.reduced = reducesMotion(
 			vscode.workspace.getConfiguration("workbench").get("reduceMotion")
 		);
-		const columns = size?.columns ?? 80;
-		const parts = [
-			...log.lines.map((line, i) => renderBootLine(line, i === 0, log.color, columns)),
-			`\r\n\x1b[2m${PROMPT}\x1b[0m`
-		];
-		const times = bootSchedule(log.lines.length, reduced);
-		if (reduced) {
-			this.write.fire(HIDE_CURSOR + parts.join(""));
+		if (this.reduced) {
+			this.drawAll(false);
 			return;
 		}
+		const times = bootSchedule(this.log.lines.length, false);
 		this.write.fire(HIDE_CURSOR);
-		parts.forEach((part, i) => {
-			this.timers.push(setTimeout(() => this.write.fire(part), times[i]));
+		this.log.lines.forEach((line, i) => {
+			this.timers.push(
+				setTimeout(
+					() =>
+						this.write.fire(
+							renderBootLine(line, i === 0, this.log.color, this.columns)
+						),
+					times[i]
+				)
+			);
 		});
+		this.timers.push(
+			setTimeout(
+				() => this.write.fire(`\r\n\x1b[2m${PROMPT}\x1b[0m`),
+				times[this.log.lines.length]
+			)
+		);
+	}
+
+	setDimensions(size: vscode.TerminalDimensions): void {
+		this.columns = size.columns;
+		if (this.reduced && !this.done) this.drawAll(true);
+	}
+
+	private drawAll(clear: boolean): void {
+		const parts = [
+			...this.log.lines.map((line, i) =>
+				renderBootLine(line, i === 0, this.log.color, this.columns)
+			),
+			`\r\n\x1b[2m${PROMPT}\x1b[0m`
+		];
+		this.write.fire((clear ? CLEAR : "") + HIDE_CURSOR + parts.join(""));
 	}
 
 	/** Any key closes it. */

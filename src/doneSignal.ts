@@ -50,7 +50,17 @@ export class DoneSignal implements vscode.Disposable {
 							}
 						})
 					]
-				: [])
+				: []),
+			vscode.workspace.onDidChangeConfiguration(event => {
+				if (
+					event.affectsConfiguration("stylesmith.terminal.doneSignal") &&
+					!this.enabled()
+				) {
+					clearTimeout(this.timer);
+					this.item.hide();
+					this.started.clear();
+				}
+			})
 		];
 	}
 

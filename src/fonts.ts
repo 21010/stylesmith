@@ -270,6 +270,11 @@ export function findFont(id: string): NerdFont {
 	return FONTS.find(font => font.id === id) ?? FONTS[0];
 }
 
+/** The license name of a bundled Nerd Font family (#217). */
+export function fontLicenseName(font: NerdFont): string {
+	return font.id === "3270" ? "BSD 3-Clause License" : "SIL Open Font License 1.1";
+}
+
 /**
  * Prepends the selected system-installed family while keeping the user's fallbacks. A
  * previously selected Stylesmith family is replaced rather than kept as a fallback.

@@ -177,7 +177,7 @@ export class ProblemLens implements vscode.Disposable {
 		const kind = themeKind();
 		const tint = LINE_TINT[kind];
 		const themes = (this.context.extension.packageJSON as PackageJson).contributes.themes;
-		const theme = stylesmithTheme(activeThemeLabel(kind), kind, themes);
+		const theme = stylesmithTheme(activeColorTheme(kind), kind, themes);
 		const create = (severity: Severity) => {
 			const color = COLOR[severity];
 			// A Stylesmith theme's own icons, or a dark and a light icon for any other theme.
@@ -285,21 +285,31 @@ interface PackageJson {
 
 /**
  * The color theme the settings name for the current kind of theme: the chosen theme, or the
- * preferred dark or light one while VS Code follows the system's color scheme.
+ * preferred dark, light or high-contrast one while VS Code follows the system's color scheme (#213).
  */
-function activeThemeLabel(kind: ThemeKind): string | undefined {
+export function activeColorTheme(kind: ThemeKind = themeKind()): string | undefined {
 	const workbench = vscode.workspace.getConfiguration("workbench");
 	if (!vscode.workspace.getConfiguration("window").get<boolean>("autoDetectColorScheme")) {
 		return workbench.get<string>("colorTheme");
 	}
+	if (kind === "hc-dark") {
+		return (
+			workbench.get<string>("preferredHighContrastColorTheme") ??
+			workbench.get<string>("preferredDarkColorTheme")
+		);
+	}
+	if (kind === "hc-light") {
+		return (
+			workbench.get<string>("preferredHighContrastLightColorTheme") ??
+			workbench.get<string>("preferredLightColorTheme")
+		);
+	}
 	return workbench.get<string>(
-		kind === "light" || kind === "hc-light"
-			? "preferredLightColorTheme"
-			: "preferredDarkColorTheme"
+		kind === "light" ? "preferredLightColorTheme" : "preferredDarkColorTheme"
 	);
 }
 
-function themeKind(): ThemeKind {
+export function themeKind(): ThemeKind {
 	switch (vscode.window.activeColorTheme.kind) {
 		case vscode.ColorThemeKind.Light:
 			return "light";

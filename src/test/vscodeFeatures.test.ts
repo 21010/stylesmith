@@ -16,7 +16,7 @@ import type * as vscode from "vscode";
 import { DoneSignal } from "../doneSignal";
 import { FailSignal } from "../failSignal";
 import { PasteHighlight } from "../pasteHighlight";
-import { ProblemLens } from "../problemLens";
+import { activeColorTheme, ProblemLens } from "../problemLens";
 import { ERROR_SIGNAL_DURATION, INTERRUPTED, SAVE_RECEIPT_DURATION } from "../problems";
 import { SaveReceipt } from "../saveReceipt";
 import { UndoHighlight } from "../undoHighlight";
@@ -107,10 +107,21 @@ describe("Problem Lens gutter icons (#106, #120)", () => {
 		problemLens.dispose();
 	});
 
-	it("follows the preferred theme while VS Code follows the system's color scheme", () => {
+	it("follows the preferred theme while VS Code follows the system's color scheme, including high contrast (#213)", () => {
 		state.settings.set("window.autoDetectColorScheme", true);
 		state.settings.set("workbench.colorTheme", "Default Dark Modern");
 		state.settings.set("workbench.preferredDarkColorTheme", "Stylesmith Phosphor");
+		state.settings.set(
+			"workbench.preferredHighContrastColorTheme",
+			"Stylesmith Neon High Contrast"
+		);
+		state.settings.set(
+			"workbench.preferredHighContrastLightColorTheme",
+			"Stylesmith Daylight High Contrast"
+		);
+		assert.equal(activeColorTheme("dark"), "Stylesmith Phosphor");
+		assert.equal(activeColorTheme("hc-dark"), "Stylesmith Neon High Contrast");
+		assert.equal(activeColorTheme("hc-light"), "Stylesmith Daylight High Contrast");
 		const problemLens = lens();
 		assert.match(errorIcons().dark ?? "", /problems[/\\]phosphor[/\\]error\.svg$/);
 		problemLens.dispose();
@@ -182,6 +193,31 @@ describe("save receipt (#120)", () => {
 		events.documentChange.fire({
 			document: editor.document,
 			contentChanges: [{ range: new Range(0, 0, 0, 0), text: "x" }]
+		});
+		assert.deepEqual(receipt(editor), []);
+		saveReceipt.dispose();
+	});
+
+	it("clears the save receipt when a Problem Lens diagnostic arrives on the line or the setting is turned off (#216)", () => {
+		enabled = true;
+		let hasProblem = false;
+		const editor = openEditor();
+		const saveReceipt = new SaveReceipt(
+			() => enabled,
+			() => hasProblem
+		);
+		save(editor, SAVE.Manual);
+		assert.equal(receipt(editor).length, 1);
+		hasProblem = true;
+		events.diagnostics.fire({ uris: [editor.document.uri] });
+		assert.deepEqual(receipt(editor), []);
+
+		hasProblem = false;
+		save(editor, SAVE.Manual);
+		assert.equal(receipt(editor).length, 1);
+		enabled = false;
+		events.configuration.fire({
+			affectsConfiguration: section => section === "stylesmith.saveReceipt"
 		});
 		assert.deepEqual(receipt(editor), []);
 		saveReceipt.dispose();

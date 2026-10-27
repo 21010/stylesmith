@@ -20,6 +20,7 @@ import {
 	presetEffects,
 	type Preset
 } from "./presets";
+import { activeColorTheme } from "./problemLens";
 
 /** Stylesmith's UI uses VS Code commands, settings, themes, decorations and status bar APIs. */
 
@@ -58,9 +59,8 @@ export function createStatusButton(context: vscode.ExtensionContext, config: Con
 	let active = false;
 	const show = (isActive: boolean) => {
 		active = isActive;
-		const colorTheme = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
 		item.text = active ? "$(paintcan)" : "$(paintcan) off";
-		item.tooltip = active ? activeStatusTooltip(colorTheme) : messages.statusInactive;
+		item.tooltip = active ? activeStatusTooltip(activeColorTheme()) : messages.statusInactive;
 		if (config.get("statusbar", true)) item.show();
 		else item.hide();
 	};
@@ -68,11 +68,14 @@ export function createStatusButton(context: vscode.ExtensionContext, config: Con
 		vscode.workspace.onDidChangeConfiguration(event => {
 			if (
 				event.affectsConfiguration(`${CONFIG_SECTION}.statusbar`) ||
-				event.affectsConfiguration("workbench.colorTheme")
+				event.affectsConfiguration("workbench.colorTheme") ||
+				event.affectsConfiguration("workbench.preferred") ||
+				event.affectsConfiguration("window.autoDetectColorScheme")
 			) {
 				show(active);
 			}
-		})
+		}),
+		vscode.window.onDidChangeActiveColorTheme(() => show(active))
 	);
 	return { show };
 }
@@ -256,9 +259,7 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 						contributes: { themes: { id?: string; label: string; path: string }[] };
 					}
 				).contributes.themes;
-				const active = vscode.workspace
-					.getConfiguration("workbench")
-					.get<string>("colorTheme");
+				const active = activeColorTheme();
 				const picked = await vscode.window.showQuickPick(
 					orderThemesForPicker(themes, active).map(({ theme, current }) => ({
 						label: theme.label,
@@ -293,6 +294,7 @@ async function pickAddon(extension: vscode.Extension<unknown>): Promise<void> {
 async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 	const current = config.font()?.id;
 	const ids = await fonts.installedIds();
+	const ours = await fonts.recordedIds();
 	const states = FONTS.map(font => ids.has(font.id));
 	const items = [
 		...FONTS.map((font, i) => ({
@@ -305,10 +307,23 @@ async function pickFont(config: Config, fonts: FontInstaller): Promise<void> {
 						: "not installed: Stylesmith can install it",
 			id: font.id
 		})),
-		{ label: "Use my own font", description: current ? undefined : "current", id: undefined }
+		{ label: "Use my own font", description: current ? undefined : "current", id: undefined },
+		...(ours.length > 0
+			? [
+					{
+						label: "$(trash) Remove installed fonts…",
+						description: `${ours.length} installed by Stylesmith`,
+						id: "__remove__"
+					}
+				]
+			: [])
 	];
 	const choice = await vscode.window.showQuickPick(items, { title: "Stylesmith: Font" });
 	if (!choice) return;
+	if (choice.id === "__remove__") {
+		await vscode.commands.executeCommand("stylesmith.removeFonts");
+		return;
+	}
 	const font = FONTS.find(candidate => candidate.id === choice.id);
 	// A font that isn't installed: offer to install it. Declining still selects it, as before.
 	const justInstalled = font && !states[FONTS.indexOf(font)] && (await fonts.offer(font));
@@ -367,7 +382,7 @@ export async function applyPreset(
 		preset = PRESETS.find(candidate => candidate.id === wanted);
 		if (!preset) throw new Error(`there's no preset "${id}"`);
 	} else {
-		const active = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
+		const active = activeColorTheme();
 		const choice = await vscode.window.showQuickPick(
 			orderPresetsForPicker(PRESETS, active).map(item => ({
 				label: item.preset.label,
