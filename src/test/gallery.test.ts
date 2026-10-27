@@ -147,12 +147,14 @@ describe("preset gallery page", () => {
 			[
 				card({
 					id: "night-city",
+					iconThemeLabel: "Stylesmith Pixel",
 					fontId: "JetBrainsMono",
 					fontLabel: "JetBrainsMono Nerd Font",
 					fontInstalled: true
 				}),
 				card({
 					id: "phosphor-terminal",
+					iconThemeLabel: "Stylesmith Pixel Phosphor",
 					fontId: "DepartureMono",
 					fontLabel: "DepartureMono Nerd Font",
 					fontInstalled: false
@@ -160,6 +162,8 @@ describe("preset gallery page", () => {
 			],
 			NONCE
 		);
+		assert.ok(withFonts.includes("<dt>File icons</dt><dd>Stylesmith Pixel</dd>"));
+		assert.ok(withFonts.includes("<dt>File icons</dt><dd>Stylesmith Pixel Phosphor</dd>"));
 		assert.ok(withFonts.includes("JetBrainsMono Nerd Font (installed)"));
 		assert.ok(!withFonts.includes('data-install-font="JetBrainsMono"'));
 		assert.ok(withFonts.includes("DepartureMono Nerd Font (not installed)"));

@@ -69,17 +69,24 @@ export function activate(context: vscode.ExtensionContext): void {
 			)
 		),
 		vscode.commands.registerCommand("stylesmith.menu", () =>
-			reportErrors(() =>
-				showMenu(services.config, fonts, context.extension, enabled =>
+			reportErrors(async () => {
+				await showMenu(services.config, fonts, context.extension, enabled =>
 					applyProductIcons(services, enabled)
-				)
-			)
+				);
+				gallery.refresh();
+			})
 		),
 		vscode.commands.registerCommand("stylesmith.installFont", (fontId?: unknown) =>
-			reportErrors(() => installFontCommand(services.config, fonts, fontId))
+			reportErrors(async () => {
+				await installFontCommand(services.config, fonts, fontId);
+				gallery.refresh();
+			})
 		),
 		vscode.commands.registerCommand("stylesmith.removeFonts", () =>
-			reportErrors(() => fonts.remove())
+			reportErrors(async () => {
+				await fonts.remove();
+				gallery.refresh();
+			})
 		),
 		gallery,
 		vscode.commands.registerCommand("stylesmith.presetGallery", () => gallery.show()),

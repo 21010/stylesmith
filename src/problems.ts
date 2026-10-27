@@ -50,9 +50,9 @@ const UI_THEME_KIND: Record<string, ThemeKind> = {
 export function stylesmithTheme(
 	label: string | undefined,
 	kind: ThemeKind,
-	themes: readonly { label: string; uiTheme: string; path: string }[]
+	themes: readonly { id?: string; label: string; uiTheme: string; path: string }[]
 ): string | undefined {
-	const theme = themes.find(t => t.label === label);
+	const theme = themes.find(t => (t.id ?? t.label) === label || t.label === label);
 	if (!theme || UI_THEME_KIND[theme.uiTheme] !== kind) return undefined;
 	return /([^/]+)-color-theme\.json$/.exec(theme.path)?.[1];
 }

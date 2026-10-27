@@ -24,6 +24,8 @@ export interface GalleryCard {
 	label: string;
 	story: string;
 	themeLabel: string;
+	/** The preset's file icon theme label (#199). */
+	iconThemeLabel?: string;
 	colors: SampleColors;
 	settingsOn: readonly string[];
 	fontLabel: string;
@@ -177,12 +179,15 @@ function card(card: GalleryCard, i: number): string {
 		card.fontInstalled === false && card.fontId
 			? `\n<button type="button" class="secondary" data-install-font="${escape(card.fontId)}">Install ${escape(card.fontLabel)}</button>`
 			: "";
+	const iconRow = card.iconThemeLabel
+		? `\n<dt>File icons</dt><dd>${escape(card.iconThemeLabel)}</dd>`
+		: "";
 	return `<li data-kind="${escape(kind)}"><article class="${card.current ? "current" : ""}" aria-labelledby="p${i}">
 <h2 id="p${i}">${escape(card.label)}${card.current ? ' <span class="badge">In use</span>' : ""}</h2>
 ${sample}
 <p>${escape(card.story)}</p>
 <dl>
-<dt>Color theme</dt><dd>${escape(card.themeLabel)}</dd>
+<dt>Color theme</dt><dd>${escape(card.themeLabel)}</dd>${iconRow}
 <dt>Settings on</dt><dd>${escape(card.settingsOn.join(", ") || "none")}</dd>
 <dt>Recommended font</dt><dd>${escape(card.fontLabel)}${fontStatus}</dd>
 </dl>

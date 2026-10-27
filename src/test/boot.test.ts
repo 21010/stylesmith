@@ -53,8 +53,9 @@ describe("boot sequence", () => {
 
 	it("picks the log by the active color theme's preset, else the default", () => {
 		assert.equal(bootLogFor("Stylesmith Amber", PRESETS), BOOT_LOGS["Amber Monitor"]);
-		// Simulation's theme keeps its earlier name as the id in settings.
+		// Simulation's theme keeps its earlier name as the id in settings, and also matches by label (#203).
 		assert.equal(bootLogFor("Stylesmith Digital Rain", PRESETS), BOOT_LOGS["Simulation"]);
+		assert.equal(bootLogFor("Stylesmith Simulation", PRESETS), BOOT_LOGS["Simulation"]);
 		assert.equal(bootLogFor("Stylesmith Monolith", PRESETS), DEFAULT_BOOT_LOG);
 		assert.equal(bootLogFor("Default Dark Modern", PRESETS), DEFAULT_BOOT_LOG);
 		assert.equal(bootLogFor(undefined, PRESETS), DEFAULT_BOOT_LOG);

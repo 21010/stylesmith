@@ -22,6 +22,11 @@ interface ThemeContribution {
 	path: string;
 }
 
+interface IconThemeContribution {
+	id: string;
+	label: string;
+}
+
 export class PresetGallery implements vscode.Disposable {
 	private panel: vscode.WebviewPanel | undefined;
 
@@ -60,13 +65,22 @@ export class PresetGallery implements vscode.Disposable {
 				}
 			}),
 			vscode.workspace.onDidChangeConfiguration(event => {
-				if (event.affectsConfiguration("workbench.colorTheme")) void this.render();
+				if (
+					event.affectsConfiguration("workbench.colorTheme") ||
+					event.affectsConfiguration("stylesmith.fonts")
+				)
+					void this.render();
 			})
 		];
 		panel.onDidDispose(() => {
 			for (const listener of listeners) listener.dispose();
 			this.panel = undefined;
 		});
+	}
+
+	/** Re-renders the gallery if open, e.g. after fonts are installed or removed (#200). */
+	refresh(): void {
+		if (this.panel) void this.render();
 	}
 
 	dispose(): void {
@@ -77,12 +91,20 @@ export class PresetGallery implements vscode.Disposable {
 		if (!this.panel) return;
 		const installed = this.installedFonts ? await this.installedFonts() : undefined;
 		if (!this.panel) return;
-		const themes = (
-			this.extension.packageJSON as { contributes: { themes: ThemeContribution[] } }
-		).contributes.themes;
+		const contributes = (
+			this.extension.packageJSON as {
+				contributes: {
+					themes: ThemeContribution[];
+					iconThemes?: IconThemeContribution[];
+				};
+			}
+		).contributes;
+		const themes = contributes.themes;
+		const iconThemes = contributes.iconThemes ?? [];
 		const current = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
 		const cards = PRESETS.map((preset): GalleryCard => {
 			const theme = themes.find(entry => (entry.id ?? entry.label) === preset.theme)!;
+			const iconTheme = iconThemes.find(entry => entry.id === preset.iconTheme);
 			const file = JSON.parse(
 				readFileSync(path.join(this.extension.extensionPath, theme.path), "utf-8")
 			) as Parameters<typeof sampleColors>[0];
@@ -91,6 +113,7 @@ export class PresetGallery implements vscode.Disposable {
 				label: preset.label,
 				story: PRESET_STORIES[preset.label] ?? preset.description,
 				themeLabel: theme.label,
+				iconThemeLabel: iconTheme?.label,
 				colors: sampleColors(file),
 				settingsOn: EFFECTS.filter(effect => preset.effects[effect.setting]).map(
 					effect => effect.label
@@ -98,7 +121,7 @@ export class PresetGallery implements vscode.Disposable {
 				fontLabel: FONTS.find(font => font.id === preset.font)?.label ?? preset.font,
 				fontId: preset.font,
 				fontInstalled: installed ? installed.has(preset.font) : undefined,
-				current: current === preset.theme,
+				current: current === preset.theme || current === theme.label,
 				kind: theme.uiTheme?.startsWith("hc")
 					? "hc"
 					: theme.uiTheme === "vs"

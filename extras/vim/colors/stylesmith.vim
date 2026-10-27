@@ -54,6 +54,9 @@ highlight Pmenu ctermfg=Cyan ctermbg=NONE cterm=reverse
 highlight PmenuSel ctermfg=LightCyan ctermbg=NONE cterm=reverse,bold
 highlight PmenuSbar ctermfg=DarkGray ctermbg=NONE cterm=reverse
 highlight PmenuThumb ctermfg=Cyan ctermbg=NONE cterm=reverse
+highlight NormalFloat ctermfg=NONE ctermbg=NONE cterm=NONE
+highlight FloatBorder ctermfg=DarkGray ctermbg=NONE cterm=NONE
+highlight FloatTitle ctermfg=LightMagenta ctermbg=NONE cterm=bold
 highlight QuickFixLine ctermfg=LightCyan ctermbg=NONE cterm=bold
 
 " Messages and prompts
@@ -124,3 +127,13 @@ highlight DiagnosticUnderlineWarn ctermfg=Yellow ctermbg=NONE cterm=underline
 highlight DiagnosticUnderlineInfo ctermfg=Cyan ctermbg=NONE cterm=underline
 highlight DiagnosticUnderlineHint ctermfg=DarkGray ctermbg=NONE cterm=underline
 highlight DiagnosticUnderlineOk ctermfg=Green ctermbg=NONE cterm=underline
+highlight DiagnosticVirtualTextError ctermfg=Red ctermbg=NONE cterm=NONE
+highlight DiagnosticVirtualTextWarn ctermfg=Yellow ctermbg=NONE cterm=NONE
+highlight DiagnosticVirtualTextInfo ctermfg=Cyan ctermbg=NONE cterm=NONE
+highlight DiagnosticVirtualTextHint ctermfg=DarkGray ctermbg=NONE cterm=NONE
+highlight DiagnosticVirtualTextOk ctermfg=Green ctermbg=NONE cterm=NONE
+highlight DiagnosticSignError ctermfg=Red ctermbg=NONE cterm=NONE
+highlight DiagnosticSignWarn ctermfg=Yellow ctermbg=NONE cterm=NONE
+highlight DiagnosticSignInfo ctermfg=Cyan ctermbg=NONE cterm=NONE
+highlight DiagnosticSignHint ctermfg=DarkGray ctermbg=NONE cterm=NONE
+highlight DiagnosticSignOk ctermfg=Green ctermbg=NONE cterm=NONE

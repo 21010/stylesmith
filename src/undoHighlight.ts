@@ -28,8 +28,21 @@ export class UndoHighlight implements vscode.Disposable {
 		this.type.dispose();
 	}
 
+	private clearDocument(document: vscode.TextDocument): void {
+		for (const [editor, timer] of this.timers) {
+			if (editor.document !== document) continue;
+			clearTimeout(timer);
+			this.timers.delete(editor);
+			editor.setDecorations(this.type, []);
+		}
+	}
+
 	private changed(event: vscode.TextDocumentChangeEvent): void {
-		if (event.reason !== vscode.TextDocumentChangeReason.Undo || !this.enabled()) return;
+		if (event.contentChanges.length === 0) return;
+		if (event.reason !== vscode.TextDocumentChangeReason.Undo || !this.enabled()) {
+			this.clearDocument(event.document);
+			return;
+		}
 		const lines = changedLines(
 			event.contentChanges.map(change => ({
 				line: change.range.start.line,

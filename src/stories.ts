@@ -52,7 +52,7 @@ export const PRESET_STORIES: Readonly<Record<string, string>> = {
 	Daylight:
 		"Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.",
 	"High Contrast":
-		"The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.",
+		"The high-contrast theme with borders around every area, no smooth cursor animation, clear bracket guides and readable terminal contrast.",
 	"High Contrast Light":
 		"The light high-contrast theme, black text on white, with the same calm settings as High Contrast."
 };
@@ -254,12 +254,14 @@ export const PRESET_TALES: Readonly<Record<string, Tale>> = {
 	"High Contrast": {
 		origin: "Some days, and some eyes, need the most contrast a screen can give. This preset pairs well with AtkynsonMono, based on Atkinson Hyperlegible Mono, which the Braille Institute designed for readers with low vision.",
 		colors: "White text on black with Neon Night's accents at full strength: every text color at least 7:1, and borders around every area.",
-		settings: "No smooth cursor animation, a current-line highlight and clear bracket guides."
+		settings:
+			"No smooth cursor animation, a current-line highlight, clear bracket guides and readable terminal contrast."
 	},
 	"High Contrast Light": {
 		origin: "High contrast for a bright room: the same care as High Contrast, on white. It pairs well with AtkynsonMono, based on Atkinson Hyperlegible Mono, which the Braille Institute designed for readers with low vision.",
 		colors: "Black text on white with dark, saturated accents: every text color at least 7:1, and borders around every area.",
-		settings: "No smooth cursor animation, a current-line highlight and clear bracket guides."
+		settings:
+			"No smooth cursor animation, a current-line highlight, clear bracket guides and readable terminal contrast."
 	}
 };
 

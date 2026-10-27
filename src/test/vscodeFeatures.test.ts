@@ -20,7 +20,7 @@ import { ProblemLens } from "../problemLens";
 import { ERROR_SIGNAL_DURATION, INTERRUPTED, SAVE_RECEIPT_DURATION } from "../problems";
 import { SaveReceipt } from "../saveReceipt";
 import { UndoHighlight } from "../undoHighlight";
-import { applyPreset, FEEDBACK_TOGGLES } from "../ui";
+import { activeStatusTooltip, applyPreset, createStatusButton, FEEDBACK_TOGGLES } from "../ui";
 import type { Config } from "../config";
 import { manifest } from "./files";
 
@@ -67,7 +67,7 @@ describe("Problem Lens gutter icons (#106, #120)", () => {
 	};
 	const lens = (opts = options) => new ProblemLens(context, () => opts);
 
-	it("uses a Stylesmith theme's own icons", () => {
+	it("uses a Stylesmith theme's own icons, including renamed themes matched by id (#203)", () => {
 		state.settings.set("workbench.colorTheme", "Stylesmith Amber");
 		const problemLens = lens();
 		assert.deepEqual(errorIcons(), {
@@ -75,6 +75,14 @@ describe("Problem Lens gutter icons (#106, #120)", () => {
 			light: path.join("/stylesmith", "icons/problems/amber/error.svg")
 		});
 		problemLens.dispose();
+
+		state.settings.set("workbench.colorTheme", "Stylesmith Digital Rain");
+		const simLens = lens();
+		assert.deepEqual(errorIcons(), {
+			dark: path.join("/stylesmith", "icons/problems/simulation/error.svg"),
+			light: path.join("/stylesmith", "icons/problems/simulation/error.svg")
+		});
+		simLens.dispose();
 	});
 
 	it("keeps the generic dark and light icons for any other theme", () => {
@@ -250,6 +258,25 @@ describe("undo highlight (#120)", () => {
 		highlight.dispose();
 	});
 
+	it("clears the undo tint immediately when the document is edited (#205)", () => {
+		enabled = true;
+		const editor = openEditor();
+		const highlight = new UndoHighlight(() => enabled);
+		const type = state.decorationTypes.at(-1)!;
+		events.documentChange.fire({
+			document: editor.document,
+			reason: UNDO,
+			contentChanges: [{ range: new Range(1, 0, 1, 1), text: "b" }]
+		});
+		assert.deepEqual(tinted(editor, type), [1]);
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(1, 0, 1, 1), text: "x" }]
+		});
+		assert.deepEqual(tinted(editor, type), []);
+		highlight.dispose();
+	});
+
 	it("tints nothing for typing, or when off", () => {
 		const editor = openEditor();
 		enabled = true;
@@ -284,6 +311,24 @@ describe("paste highlight", () => {
 		});
 		assert.deepEqual(tinted(editor, type), [1, 2, 3]);
 		mock.timers.tick(600);
+		assert.deepEqual(tinted(editor, type), []);
+		highlight.dispose();
+	});
+
+	it("clears the paste tint immediately when the document is edited (#205)", () => {
+		enabled = true;
+		const editor = openEditor(["a", "b", "c", "d"]);
+		const highlight = new PasteHighlight(() => enabled);
+		const type = state.decorationTypes.at(-1)!;
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(1, 0, 1, 0), text: "x\ny\nz" }]
+		});
+		assert.deepEqual(tinted(editor, type), [1, 2, 3]);
+		events.documentChange.fire({
+			document: editor.document,
+			contentChanges: [{ range: new Range(1, 0, 1, 1), text: "q" }]
+		});
 		assert.deepEqual(tinted(editor, type), []);
 		highlight.dispose();
 	});
@@ -470,5 +515,35 @@ describe("preset font auto-apply (#168) and menu feedback toggles (#176)", () =>
 			assert.equal(prop.type, "boolean");
 			assert.equal(prop.default, item.defaultOn);
 		}
+	});
+
+	it("includes the active preset label in the status bar tooltip when active (#206)", () => {
+		assert.equal(
+			activeStatusTooltip("Stylesmith Neon Night"),
+			"Stylesmith is on (Night City). Click for presets, effects and fonts."
+		);
+		assert.equal(
+			activeStatusTooltip("Stylesmith Digital Rain"),
+			"Stylesmith is on (Simulation). Click for presets, effects and fonts."
+		);
+		assert.equal(
+			activeStatusTooltip("Default Dark Modern"),
+			"Stylesmith is on. Click for presets, effects and fonts."
+		);
+
+		const subscriptions: vscode.Disposable[] = [];
+		const context = { subscriptions } as unknown as vscode.ExtensionContext;
+		const config = { get: () => true } as unknown as Config;
+		state.settings.set("workbench.colorTheme", "Stylesmith Phosphor");
+		const button = createStatusButton(context, config);
+		button.show(true);
+		const item = state.statusItems.find(i => i.id === "stylesmith.status")!;
+		assert.equal(
+			item.tooltip,
+			"Stylesmith is on (Phosphor Terminal). Click for presets, effects and fonts."
+		);
+		button.show(false);
+		assert.equal(item.tooltip, "Stylesmith is off. Click for presets, effects and fonts.");
+		for (const sub of subscriptions) sub.dispose();
 	});
 });

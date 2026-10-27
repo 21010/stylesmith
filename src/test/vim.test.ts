@@ -54,7 +54,12 @@ const REQUIRED_GROUPS = [
 	"DiffDelete",
 	"DiagnosticError",
 	"DiagnosticWarn",
-	"DiagnosticInfo"
+	"DiagnosticInfo",
+	"NormalFloat",
+	"FloatBorder",
+	"FloatTitle",
+	"DiagnosticVirtualTextError",
+	"DiagnosticSignError"
 ];
 
 const scheme = readFileSync(path.join(ROOT, "extras", "vim", "colors", "stylesmith.vim"), "utf-8");

@@ -65,4 +65,40 @@ describe("API-only security boundary", () => {
 		assert.match(ignore, /^\*\*\/\*\.map$/m);
 		assert.match(ignore, /^\*\*\/\*\.ts$/m);
 	});
+
+	it("matches .vscodeignore out/*.js exclusions to the extension.ts runtime module graph (#208)", () => {
+		const ignoreLines = new Set(
+			read(".vscodeignore")
+				.split(/\r?\n/)
+				.map(line => line.trim())
+		);
+		const reachable = new Set<string>();
+		const queue = ["extension.ts"];
+		while (queue.length > 0) {
+			const current = queue.pop()!;
+			if (reachable.has(current)) continue;
+			reachable.add(current);
+			const content = read(`src/${current}`);
+			for (const match of content.matchAll(
+				/import\s+(?!type\b)[\s\S]*?from\s+"\.\/*([^"]+)"/g
+			)) {
+				const target = `${match[1]}.ts`;
+				if (sources.includes(target) && !reachable.has(target)) queue.push(target);
+			}
+		}
+		for (const file of sources) {
+			const outJs = `out/${file.replace(/\.ts$/, ".js")}`;
+			if (reachable.has(file)) {
+				assert.ok(
+					!ignoreLines.has(outJs),
+					`${outJs} is imported at runtime and must not be in .vscodeignore`
+				);
+			} else {
+				assert.ok(
+					ignoreLines.has(outJs),
+					`${outJs} is only used by tests/scripts and must be excluded in .vscodeignore`
+				);
+			}
+		}
+	});
 });

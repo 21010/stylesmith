@@ -28,8 +28,21 @@ export class PasteHighlight implements vscode.Disposable {
 		this.type.dispose();
 	}
 
+	private clearDocument(document: vscode.TextDocument): void {
+		for (const [editor, timer] of this.timers) {
+			if (editor.document !== document) continue;
+			clearTimeout(timer);
+			this.timers.delete(editor);
+			editor.setDecorations(this.type, []);
+		}
+	}
+
 	private changed(event: vscode.TextDocumentChangeEvent): void {
-		if (!this.enabled()) return;
+		if (event.contentChanges.length === 0) return;
+		if (!this.enabled()) {
+			this.clearDocument(event.document);
+			return;
+		}
 		const reason =
 			event.reason === vscode.TextDocumentChangeReason.Undo
 				? "undo"
@@ -43,7 +56,10 @@ export class PasteHighlight implements vscode.Disposable {
 			})),
 			reason
 		).filter(line => line < event.document.lineCount);
-		if (lines.length === 0) return;
+		if (lines.length === 0) {
+			this.clearDocument(event.document);
+			return;
+		}
 		for (const editor of vscode.window.visibleTextEditors) {
 			if (editor.document !== event.document) continue;
 			editor.setDecorations(

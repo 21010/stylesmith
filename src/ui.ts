@@ -33,6 +33,17 @@ export interface StatusButton {
 	show(active: boolean): void;
 }
 
+/** Tooltip for the status bar button when Stylesmith is active (#206). */
+export function activeStatusTooltip(colorTheme: string | undefined): string {
+	const preset = PRESETS.find(
+		candidate =>
+			candidate.theme === colorTheme || `Stylesmith ${candidate.label}` === colorTheme
+	);
+	return preset
+		? `Stylesmith is on (${preset.label}). Click for presets, effects and fonts.`
+		: messages.statusActive;
+}
+
 /** The paint-can button in the status bar, which opens the Stylesmith menu. */
 export function createStatusButton(context: vscode.ExtensionContext, config: Config): StatusButton {
 	const item = vscode.window.createStatusBarItem(
@@ -47,14 +58,20 @@ export function createStatusButton(context: vscode.ExtensionContext, config: Con
 	let active = false;
 	const show = (isActive: boolean) => {
 		active = isActive;
+		const colorTheme = vscode.workspace.getConfiguration("workbench").get<string>("colorTheme");
 		item.text = active ? "$(paintcan)" : "$(paintcan) off";
-		item.tooltip = active ? messages.statusActive : messages.statusInactive;
+		item.tooltip = active ? activeStatusTooltip(colorTheme) : messages.statusInactive;
 		if (config.get("statusbar", true)) item.show();
 		else item.hide();
 	};
 	context.subscriptions.push(
 		vscode.workspace.onDidChangeConfiguration(event => {
-			if (event.affectsConfiguration(`${CONFIG_SECTION}.statusbar`)) show(active);
+			if (
+				event.affectsConfiguration(`${CONFIG_SECTION}.statusbar`) ||
+				event.affectsConfiguration("workbench.colorTheme")
+			) {
+				show(active);
+			}
 		})
 	);
 	return { show };

@@ -12,9 +12,14 @@ export const BOOT_DURATION = 2000;
 const PROMPT_DELAY = 300;
 export const PROMPT = "Press any key to close.";
 
-/** The log of the preset that uses this color theme (its settings id), or the default log. */
+/** The log of the preset that uses this color theme (its settings id or label), or the default log. */
 export function bootLogFor(colorTheme: unknown, presets: readonly Preset[]): BootLog {
-	const preset = presets.find(candidate => candidate.theme === colorTheme);
+	const preset = presets.find(
+		candidate =>
+			candidate.theme === colorTheme ||
+			(candidate.theme === "Stylesmith Digital Rain" &&
+				colorTheme === "Stylesmith Simulation")
+	);
 	return (preset && BOOT_LOGS[preset.label]) ?? DEFAULT_BOOT_LOG;
 }
 

@@ -66,7 +66,7 @@ A preset sets a color theme, a file icon theme for the Explorer, and native VS C
 - **Horizon**: Warm orange, peach and lilac on black, with blue for structure: calm, friendly and optimistic.
 - **Command Deck**: The grey-black consoles of a military starship, with one red alarm for the moments that change the flow, and a block cursor in the terminal.
 - **Daylight**: Dark ink on a warm, paper-like background for well-lit rooms, with pixel file icons.
-- **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, and clear bracket guides.
+- **High Contrast**: The high-contrast theme with borders around every area, no smooth cursor animation, clear bracket guides and readable terminal contrast.
 - **High Contrast Light**: The light high-contrast theme, black text on white, with the same calm settings as High Contrast.
 
 ### Color themes
